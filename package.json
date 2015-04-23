@@ -1,7 +1,7 @@
 {
   "name": "ember-sortable",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Sortable UI primitives for Ember.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -34,7 +34,8 @@
     "ember-try": "0.0.4"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "sortable"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.0.0"

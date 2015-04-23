@@ -1,6 +1,6 @@
 # Ember-sortable
 
-This README outlines the details of collaborating on this Ember addon.
+Sortable UI primitives for Ember.
 
 ## Installation
 
