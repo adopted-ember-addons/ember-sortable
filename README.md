@@ -24,8 +24,14 @@ $ ember install ember-sortable
 {{/sortable-group}}
 ```
 
-The source model is *not* mutated. Instead the `onChange` action handler
-receives a fresh array of items in the new order:
+Things to note:
+
+1. `sortable-group` and `sortable-item` do not mutate any data. Instead, a
+   fresh array is passed with the `onChange` action (see below).
+2. `sortable-group` yields itself and must be assigned to the `group` property
+   of each sortable item (`group=group`).
+3. `sortable-item` takes a `model` property which is handed back
+   `sortable-group`’s `onChange` handler.
 
 ```js
 actions: {
