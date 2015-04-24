@@ -9,7 +9,7 @@ Sortable UI primitives for Ember.
 ## Installation
 
 ```sh
-$ ember install jgwhite/ember-sortable
+$ ember install ember-sortable
 ```
 
 ## Usage
