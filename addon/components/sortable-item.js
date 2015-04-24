@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-item';
-const { $, Component, computed, on } = Ember;
-const UPDATE_THROTTLE = 125;
+const { $, Component, computed, observer, run } = Ember;
+const { Promise } = Ember.RSVP;
 
 export default Component.extend({
   layout: layout,
@@ -9,7 +9,7 @@ export default Component.extend({
   classNameBindings: ['isDragging'],
 
   /**
-    Group to which item belongs.
+    Group to which the item belongs.
 
     @property group
     @type SortableGroup
@@ -36,14 +36,38 @@ export default Component.extend({
   isDragging: false,
 
   /**
+    True if the item transitions with animation.
+
+    @property isAnimated
+    @type Boolean
+  */
+  isAnimated: computed(function() {
+    let el = this.$();
+    let property = el.css('transition-property');
+    let duration = parseFloat(el.css('transition-duration'));
+
+    return property.match(/all|transform/)
+        && duration > 0;
+  }).volatile(),
+
+  /**
     Vertical position of the item relative to its offset parent.
 
     @property y
     @type Number
   */
-  y: computed(function() {
-    return this.$().position().top;
-  }).volatile(),
+  y: computed(function(_, value) {
+    if (arguments.length === 2) {
+      this._y = value;
+      this._scheduleApplyPosition();
+    }
+
+    if (this._y !== undefined) {
+      return this._y;
+    } else {
+      return this.element.offsetTop;
+    }
+  }),
 
   /**
     Height of the item including margins.
@@ -52,22 +76,23 @@ export default Component.extend({
     @type Number
   */
   height: computed(function() {
-    return this.$().outerHeight(true);
+    let height = this.$().outerHeight();
+    let marginBottom = parseFloat(this.$().css('margin-bottom'));
+    return height + marginBottom;
   }).volatile(),
-
 
   /**
     @method didInsertElement
   */
   didInsertElement() {
-    this.tellGroup('registerItem', this);
+    this._tellGroup('registerItem', this);
   },
 
   /**
     @method willDestroyElement
   */
   willDestroyElement() {
-    this.tellGroup('deregisterItem', this);
+    this._tellGroup('deregisterItem', this);
   },
 
   /**
@@ -92,48 +117,43 @@ export default Component.extend({
     event.preventDefault();
     event.stopPropagation();
 
-    let oy = getY(event);
+    let originalElementY = this.get('y');
+    let dragStartY = getY(event);
 
     let drag = event => {
-      event.dy = getY(event) - oy;
+      let dy = getY(event) - dragStartY;
+      let y = originalElementY + dy;
 
-      this._drag(event);
+      this.set('y', y);
+      this._tellGroup('update');
     }
 
     let drop = event => {
-      $('body')
+      $(window)
         .off('mousemove touchmove', drag)
         .off('mouseup touchend', drop);
 
-      this._drop(event);
+      if (!this.element) { return; }
+
+      this.set('isDragging', false);
+      this._tellGroup('update');
+
+      run.next(() => {
+        if (this.get('isAnimated')) {
+          this.$().one('transitionend', () => {
+            this._tellGroup('commit');
+          });
+        } else {
+          this._tellGroup('commit');
+        }
+      });
     }
 
-    $('body')
+    $(window)
       .on('mousemove touchmove', drag)
       .on('mouseup touchend', drop);
 
     this.set('isDragging', true);
-  },
-
-  /**
-    @method _drag
-    @private
-  */
-  drag(event) {
-    this.$().css({
-      transform: `translate3d(0, ${event.dy}px, 0)`
-    });
-
-    run.throttle(this, 'tellGroup', 'update', UPDATE_THROTTLE);
-  },
-
-  /**
-    @method _drop
-    @private
-  */
-  _drop(event) {
-    this.set('isDragging', false);
-    this.tellGroup('commit');
   },
 
   /**
@@ -146,6 +166,29 @@ export default Component.extend({
     if (group) {
       group[method](...args);
     }
+  },
+
+  /**
+    @method _scheduleApplyPosition
+    @private
+  */
+  _scheduleApplyPosition() {
+    run.scheduleOnce('render', this, '_applyPosition');
+  },
+
+  /**
+    @method _applyPosition
+    @private
+  */
+  _applyPosition() {
+    if (!this.element) { return; }
+
+    let y = this.get('y');
+    let dy = y - this.element.offsetTop;
+
+    this.$().css({
+      transform: `translateY(${dy}px)`
+    });
   }
 });
 

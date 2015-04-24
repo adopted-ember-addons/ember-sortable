@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
-const { Component, computed, Set } = Ember;
+const { A, Component, computed, Set } = Ember;
+const { Promise } = Ember.RSVP;
 
 export default Component.extend({
   tagName: '',
@@ -8,11 +9,21 @@ export default Component.extend({
 
   /**
     @property items
-    @type Ember.Set
+    @type Ember.NativeArray
   */
-  items: computed(() => { return Set.create() }),
+  items: computed(() => { return A() }),
 
   /**
+    @property sortedItems
+    @type Array
+  */
+  sortedItems: computed('items.@each.y', function() {
+    return this.get('items').sortBy('y');
+  }),
+
+  /**
+    Register an item with this group.
+
     @method registerItem
     @param {SortableItem} [item]
   */
@@ -21,10 +32,39 @@ export default Component.extend({
   },
 
   /**
+    De-register an item with this group.
+
     @method deregisterItem
     @param {SortableItem} [item]
   */
   deregisterItem(item) {
     this.get('items').removeObject(item);
+  },
+
+  /**
+    Update item positions.
+
+    @method update
+  */
+  update() {
+    let sortedItems = this.get('sortedItems');
+    let y = 0;
+
+    sortedItems.forEach(item => {
+      if (!item.get('isDragging')) {
+        item.set('y', y);
+      }
+      y += item.get('height');
+    });
+  },
+
+  /**
+    @method commit
+  */
+  commit() {
+    let items = this.get('sortedItems');
+    let models = items.mapBy('model');
+
+    this.sendAction('onChange', models);
   }
 });

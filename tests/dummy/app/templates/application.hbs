@@ -1,11 +1,9 @@
 <h2>Ember Sortable</h2>
 
-<ol>
-  {{#sortable-group onChange="update" as |group|}}
-    {{#each model as |item|}}
-      {{#sortable-item tagName="li" model=item}}
-        {{item.name}}
-      {{/sortable-item}}
-    {{/each}}
-  {{/sortable-group}}
-</ol>
+{{#sortable-group tagName="ol" onChange="update" as |group|}}
+  {{#each model as |item|}}
+    {{#sortable-item tagName="li" model=item group=group}}
+      {{item.name}}
+    {{/sortable-item}}
+  {{/each}}
+{{/sortable-group}}

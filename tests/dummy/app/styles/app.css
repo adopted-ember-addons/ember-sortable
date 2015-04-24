@@ -1,0 +1,34 @@
+body {
+  font-size: 32px;
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 1em;
+}
+
+ol {
+  display: block;
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none outside;
+}
+
+li {
+  display: block;
+  position: relative;
+  background: pink;
+  margin: 4px 0;
+  padding: 4px;
+}
+
+.sortable-item {
+  transition: all .125s;
+}
+
+.sortable-item.is-dragging {
+  transition-duration: 0s;
+  box-shadow: 0 0 4px rgba(0, 0, 0, .5);
+  z-index: 10;
+}

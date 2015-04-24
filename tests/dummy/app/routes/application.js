@@ -1,4 +1,5 @@
 import Ember from 'ember';
+const { A } = Ember;
 
 export default Ember.Route.extend({
   model() {
@@ -12,12 +13,12 @@ export default Ember.Route.extend({
       name: 'Cuatro'
     }, {
       name: 'Cinco'
-    }, {
-      name: 'Seis'
-    }, {
-      name: 'Siete'
-    }, {
-      name: 'Ocho'
     }]);
+  },
+
+  actions: {
+    update(newOrder) {
+      this.set('controller.model', A(newOrder));
+    }
   }
 });
