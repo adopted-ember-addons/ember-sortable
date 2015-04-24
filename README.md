@@ -6,7 +6,9 @@ Sortable UI primitives for Ember.
 
 ## Installation
 
-* `ember install ember-sortable`
+```sh
+$ ember install ember-sortable
+```
 
 ## Usage
 
@@ -33,18 +35,21 @@ actions: {
 
 ## Developing
 
-* `git clone git@github.com:jgwhite/ember-sortable`
-* `ember install`
-
-### Developing
-
-* `ember server`
+```sh
+$ git clone git@github.com:jgwhite/ember-sortable
+$ cd ember-sortable
+$ ember install
+$ ember server
+```
 
 ### Running Tests
 
-* `ember test`
-* `ember test --server`
+```sh
+$ ember test
+```
 
-### Building the demo
+### Building and publishing the demo
 
-* `make demo`
+```sh
+$ make demo
+```
