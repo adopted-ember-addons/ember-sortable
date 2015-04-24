@@ -2,7 +2,7 @@
 
 Sortable UI primitives for Ember.
 
-![ember-sortable in action](demo.gif)
+![ember-sortable in action](https://raw.githubusercontent.com/jgwhite/ember-sortable/master/demo.gif)
 
 ## Installation
 
