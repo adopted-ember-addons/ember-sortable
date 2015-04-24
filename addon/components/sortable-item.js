@@ -36,6 +36,16 @@ export default Component.extend({
   isDragging: false,
 
   /**
+    The frequency with which the group is informed
+    that an update is required.
+
+    @property updateInterval
+    @type Number
+    @default 125
+  */
+  updateInterval: 125,
+
+  /**
     True if the item transitions with animation.
 
     @property isAnimated
@@ -117,6 +127,7 @@ export default Component.extend({
     event.preventDefault();
     event.stopPropagation();
 
+    let updateInterval = this.get('updateInterval');
     let originalElementY = this.get('y');
     let dragStartY = getY(event);
 
@@ -125,7 +136,7 @@ export default Component.extend({
       let y = originalElementY + dy;
 
       this.set('y', y);
-      this._tellGroup('update');
+      run.throttle(this, '_tellGroup', 'update', updateInterval);
     }
 
     let drop = event => {

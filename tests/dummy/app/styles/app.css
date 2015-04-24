@@ -28,7 +28,7 @@ li {
 }
 
 .sortable-item.is-dragging {
+  background: red;
   transition-duration: 0s;
-  box-shadow: 0 0 4px rgba(0, 0, 0, .5);
   z-index: 10;
 }
