@@ -1,27 +1,50 @@
 # Ember-sortable
 
-**WARNING: Work in progress**
-
 Sortable UI primitives for Ember.
+
+![ember-sortable in action](demo.gif)
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+* `ember install ember-sortable`
 
-## Running
+## Usage
+
+```hbs
+{{#sortable-group tagName="ul" onChange="reorderItems" as |group|}}
+  {{#each model.items as |item|}}
+    {{#sortable-item tagName="li" model=item group=group}}
+      {{item.name}}
+    {{/sortable-item}}
+  {{/each}}
+{{/sortable-group}}
+```
+
+The source model is *not* mutated. Instead the `onChange` action handler
+receives a fresh array of items in the new order:
+
+```js
+actions: {
+  reorderItems(newOrder) {
+    this.set('currentModel.items', newOrder);
+  }
+}
+```
+
+## Developing
+
+* `git clone git@github.com:jgwhite/ember-sortable`
+* `ember install`
+
+### Developing
 
 * `ember server`
-* Visit your app at http://localhost:4200.
 
-## Running Tests
+### Running Tests
 
 * `ember test`
 * `ember test --server`
 
-## Building
+### Building the demo
 
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+* `make demo`

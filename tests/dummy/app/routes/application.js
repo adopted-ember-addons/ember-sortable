@@ -4,22 +4,14 @@ const a = A;
 
 export default Ember.Route.extend({
   model() {
-    return Ember.A([{
-      name: 'Uno'
-    }, {
-      name: 'Dos'
-    }, {
-      name: 'Tres'
-    }, {
-      name: 'Cuatro'
-    }, {
-      name: 'Cinco'
-    }]);
+    return {
+      items: a(['Uno', 'Dos', 'Tres', 'Cuatro', 'Cinco'])
+    };
   },
 
   actions: {
     update(newOrder) {
-      this.set('controller.model', a(newOrder));
+      this.set('currentModel.items', a(newOrder));
     }
   }
 });

@@ -1,13 +1,28 @@
-<h2>Ember Sortable</h2>
+<header>
+  <h2>Ember Sortable</h2>
+</header>
 
-{{#sortable-group tagName="ol" onChange="update" as |group|}}
-  {{#each model as |item|}}
-    {{#sortable-item tagName="li" model=item group=group}}
-      {{item.name}}
-    {{/sortable-item}}
-  {{/each}}
-{{/sortable-group}}
+<main>
+  {{#sortable-group tagName="ol" onChange="update" as |group|}}
+    {{#each model.items as |item|}}
+      {{#sortable-item tagName="li" model=item group=group}}
+        {{item}}
+      {{/sortable-item}}
+    {{/each}}
+  {{/sortable-group}}
+</main>
 
-<p>
-  <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
-</p>
+<footer>
+  <p>
+    <code>
+      model.items:<br>
+      {{#each model.items as |item|}}
+        {{item}}
+      {{/each}}
+    </code>
+  </p>
+
+  <p>
+    <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
+  </p>
+</footer>

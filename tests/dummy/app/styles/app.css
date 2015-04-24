@@ -23,6 +23,11 @@ li {
   padding: 4px;
 }
 
+footer {
+  margin-top: 2em;
+  font-size: .5em;
+}
+
 .sortable-item {
   transition: all .125s;
 }
