@@ -1,5 +1,7 @@
 # Ember-sortable
 
+**WARNING: Work in progress**
+
 Sortable UI primitives for Ember.
 
 ## Installation
