@@ -33,6 +33,10 @@ actions: {
 }
 ```
 
+## Styling
+
+Ensure the parent element (the `ul` in our demo) has `position: relative`.
+
 ## Developing
 
 ```sh
