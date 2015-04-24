@@ -33,6 +33,15 @@ export default Mixin.create({
   isDragging: false,
 
   /**
+    True if the item is currently dropping.
+
+    @property isDropping
+    @type Boolean
+    @default false
+  */
+  isDropping: false,
+
+  /**
     The frequency with which the group is informed
     that an update is required.
 
@@ -123,6 +132,9 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
+    if (this.get('isDragging')) { return; }
+    if (this.get('isDropping')) { return; }
+
     let updateInterval = this.get('updateInterval');
     let originalElementY = this.get('y');
     let dragStartY = getY(event);
@@ -143,17 +155,22 @@ export default Mixin.create({
       if (!this.element) { return; }
 
       this.set('isDragging', false);
+      this.set('isDropping', false);
+
       this._tellGroup('update');
 
       run.next(() => {
         if (this.get('isAnimated')) {
-          this.$().one('transitionend', () => {
-            this._tellGroup('commit');
-          });
+          this.$().one('transitionend', complete);
         } else {
-          this._tellGroup('commit');
+          complete();
         }
       });
+    };
+
+    let complete = () => {
+      this.set('isDropping', false);
+      this._tellGroup('commit');
     };
 
     $(window)
