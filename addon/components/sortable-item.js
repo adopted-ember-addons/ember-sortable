@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-item';
-const { $, Component, computed, observer, run } = Ember;
-const { Promise } = Ember.RSVP;
+const { $, Component, computed, run } = Ember;
 
 export default Component.extend({
   layout: layout,
@@ -56,8 +55,7 @@ export default Component.extend({
     let property = el.css('transition-property');
     let duration = parseFloat(el.css('transition-duration'));
 
-    return property.match(/all|transform/)
-        && duration > 0;
+    return property.match(/all|transform/) && duration > 0;
   }).volatile(),
 
   /**
@@ -137,9 +135,9 @@ export default Component.extend({
 
       this.set('y', y);
       run.throttle(this, '_tellGroup', 'update', updateInterval);
-    }
+    };
 
-    let drop = event => {
+    let drop = () => {
       $(window)
         .off('mousemove touchmove', drag)
         .off('mouseup touchend', drop);
@@ -158,7 +156,7 @@ export default Component.extend({
           this._tellGroup('commit');
         }
       });
-    }
+    };
 
     $(window)
       .on('mousemove touchmove', drag)

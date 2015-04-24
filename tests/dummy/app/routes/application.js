@@ -1,5 +1,6 @@
 import Ember from 'ember';
 const { A } = Ember;
+const a = A;
 
 export default Ember.Route.extend({
   model() {
@@ -18,7 +19,7 @@ export default Ember.Route.extend({
 
   actions: {
     update(newOrder) {
-      this.set('controller.model', A(newOrder));
+      this.set('controller.model', a(newOrder));
     }
   }
 });

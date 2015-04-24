@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
-const { A, Component, computed, Set } = Ember;
-const { Promise } = Ember.RSVP;
+const { A, Component, computed } = Ember;
+const a = A;
 
 export default Component.extend({
   tagName: '',
@@ -11,7 +11,7 @@ export default Component.extend({
     @property items
     @type Ember.NativeArray
   */
-  items: computed(() => { return A() }),
+  items: computed(() => { return a(); }),
 
   /**
     @property sortedItems
