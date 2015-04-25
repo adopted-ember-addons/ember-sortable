@@ -24,14 +24,14 @@ $ ember install ember-sortable
 {{/sortable-group}}
 ```
 
-Things to note:
+**Things to note:**
 
 1. `sortable-group` and `sortable-item` do not mutate any data. Instead, a
    fresh array is passed with the `onChange` action (see below).
 2. `sortable-group` yields itself and must be assigned to the `group` property
    of each sortable item (`group=group`).
-3. `sortable-item` takes a `model` property which is handed back
-   `sortable-group`’s `onChange` handler.
+3. `sortable-item` takes a `model` property which is handed back in
+   `sortable-group`’s `onChange` action.
 
 ```js
 actions: {
@@ -41,9 +41,17 @@ actions: {
 }
 ```
 
-## Styling
+## CSS
 
 Ensure the parent element (the `ul` in our demo) has `position: relative`.
+
+Two classes are applied during interaction:
+
+- `is-dragging`
+- `is-dropping`
+
+Ember sortable will detect animation and wait accordingly before firing the
+`onChange` action.
 
 ## Developing
 

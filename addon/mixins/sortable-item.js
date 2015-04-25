@@ -3,7 +3,7 @@ const { Mixin, $, computed, run } = Ember;
 
 export default Mixin.create({
   classNames: ['sortable-item'],
-  classNameBindings: ['isDragging'],
+  classNameBindings: ['isDragging', 'isDropping'],
 
   /**
     Group to which the item belongs.
@@ -139,6 +139,11 @@ export default Mixin.create({
     let originalElementY = this.get('y');
     let dragStartY = getY(event);
 
+    let complete = () => {
+      this.set('isDropping', false);
+      this._tellGroup('commit');
+    };
+
     let drag = event => {
       let dy = getY(event) - dragStartY;
       let y = originalElementY + dy;
@@ -155,7 +160,7 @@ export default Mixin.create({
       if (!this.element) { return; }
 
       this.set('isDragging', false);
-      this.set('isDropping', false);
+      this.set('isDropping', true);
 
       this._tellGroup('update');
 
@@ -166,11 +171,6 @@ export default Mixin.create({
           complete();
         }
       });
-    };
-
-    let complete = () => {
-      this.set('isDropping', false);
-      this._tellGroup('commit');
     };
 
     $(window)

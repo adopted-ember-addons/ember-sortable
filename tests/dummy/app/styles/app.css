@@ -37,3 +37,8 @@ footer {
   transition-duration: 0s;
   z-index: 10;
 }
+
+.sortable-item.is-dropping {
+  background: #f66;
+  z-index: 10;
+}
