@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import SortableItemMixin from '../../../mixins/sortable-item';
+import SortableItemMixin from 'ember-sortable/mixins/sortable-item';
 import { module, test } from 'qunit';
 
 module('SortableItemMixin');
