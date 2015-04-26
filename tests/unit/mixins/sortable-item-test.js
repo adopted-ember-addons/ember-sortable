@@ -37,25 +37,18 @@ module('mixin:sortable-item', {
   }
 });
 
-test('isAnimated with transform and duration', function(assert) {
+test('isAnimated', function(assert) {
   subject.$().css({ transition: 'all .25s' });
+  assert.equal(subject.get('isAnimated'), true);
 
-  assert.equal(subject.get('isAnimated'), true,
-    'expected isAnimated to be true');
-});
-
-test('isAnimated with transform but no duration', function(assert) {
   subject.$().css({ transition: 'all 0s' });
+  assert.equal(subject.get('isAnimated'), false);
 
-  assert.equal(subject.get('isAnimated'), false,
-    'expected isAnimated to be false');
-});
+  subject.$().css({ transition: 'color .25s' });
+  assert.equal(subject.get('isAnimated'), false);
 
-test('isAnimated with duration but no transform', function(assert) {
   subject.$().css({ transition: 'none' });
-
-  assert.equal(subject.get('isAnimated'), false,
-    'expected isAnimated to be false');
+  assert.equal(subject.get('isAnimated'), false);
 });
 
 test('get y', function(assert) {
