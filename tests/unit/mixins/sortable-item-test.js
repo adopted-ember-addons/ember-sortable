@@ -43,7 +43,7 @@ test('isAnimated with duration but no transform', function(assert) {
     'expected isAnimated to be false');
 });
 
-test('get y without explicitly setting a value', function(assert) {
+test('get y', function(assert) {
   assert.equal(subject.get('y'), subject.element.offsetTop,
     'expected y to be element.offsetTop');
 });
