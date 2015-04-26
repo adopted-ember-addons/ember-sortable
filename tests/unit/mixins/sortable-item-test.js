@@ -61,6 +61,17 @@ test('set y', function(assert) {
     'expected y to retain value');
 });
 
+test('height', function(assert) {
+  subject.$().css({
+    height: '50px',
+    marginTop: '10px',
+    marginBottom: '10px'
+  });
+
+  assert.equal(subject.get('height'), 60,
+    'expected height to be height + margin-bottom');
+});
+
 function getTransform(element) {
   let style = element.style;
 
