@@ -42,6 +42,12 @@ export default Mixin.create({
   isDropping: false,
 
   /**
+    @property isBusy
+    @type Boolean
+  */
+  isBusy: computed.or('isDragging', 'isDropping'),
+
+  /**
     The frequency with which the group is informed
     that an update is required.
 
@@ -133,24 +139,16 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-    if (this.get('isDragging')) { return; }
-    if (this.get('isDropping')) { return; }
+    if (this.get('isBusy')) { return; }
 
-    let updateInterval = this.get('updateInterval');
-    let originalElementY = this.get('y');
-    let dragStartY = getY(event);
-
-    let complete = () => {
-      this.set('isDropping', false);
-      this._tellGroup('commit');
-    };
+    let dragOrigin = getY(event);
+    let elementOrigin = this.get('y');
 
     let drag = event => {
-      let dy = getY(event) - dragStartY;
-      let y = originalElementY + dy;
+      let dy = getY(event) - dragOrigin;
+      let y = elementOrigin + dy;
 
-      this.set('y', y);
-      run.throttle(this, '_tellGroup', 'update', updateInterval);
+      this._drag(y);
     };
 
     let drop = () => {
@@ -158,20 +156,7 @@ export default Mixin.create({
         .off('mousemove touchmove', drag)
         .off('mouseup touchend', drop);
 
-      if (!this.element) { return; }
-
-      this.set('isDragging', false);
-      this.set('isDropping', true);
-
-      this._tellGroup('update');
-
-      run.next(() => {
-        if (this.get('isAnimated')) {
-          this.$().one('transitionend', complete);
-        } else {
-          complete();
-        }
-      });
+      this._drop();
     };
 
     $(window)
@@ -214,6 +199,48 @@ export default Mixin.create({
     this.$().css({
       transform: `translateY(${dy}px)`
     });
+  },
+
+  /**
+    @method _drag
+    @private
+  */
+  _drag(y) {
+    let updateInterval = this.get('updateInterval');
+
+    this.set('y', y);
+
+    run.throttle(this, '_tellGroup', 'update', updateInterval);
+  },
+
+  /**
+    @method _drop
+    @private
+  */
+  _drop() {
+    if (!this.element) { return; }
+
+    this.set('isDragging', false);
+    this.set('isDropping', true);
+
+    this._tellGroup('update');
+
+    run.next(() => {
+      if (this.get('isAnimated')) {
+        this.$().one('transitionend', run.bind(this, '_complete'));
+      } else {
+        this._complete();
+      }
+    });
+  },
+
+  /**
+    @method _complete
+    @private
+  */
+  _complete() {
+    this.set('isDropping', false);
+    this._tellGroup('commit');
   }
 });
 
