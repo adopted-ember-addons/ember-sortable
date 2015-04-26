@@ -1,13 +1,13 @@
-body {
+.ember-application {
   font-size: 32px;
   font-family: sans-serif;
 }
 
-h2 {
+.ember-application h2 {
   font-size: 1em;
 }
 
-ol {
+.ember-application ol {
   display: block;
   position: relative;
   margin: 0;
@@ -15,7 +15,7 @@ ol {
   list-style: none outside;
 }
 
-li {
+.ember-application li {
   display: block;
   position: relative;
   background: pink;
@@ -23,7 +23,7 @@ li {
   padding: 4px;
 }
 
-footer {
+.ember-application footer {
   margin-top: 2em;
   font-size: .5em;
 }
