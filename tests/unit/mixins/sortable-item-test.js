@@ -4,13 +4,28 @@ import { module, test } from 'qunit';
 const { Component, run } = Ember;
 
 const MockComponent = Component.extend(SortableItemMixin);
+const MockGroup = Ember.Object.extend({
+    registerItem(item) {
+      this.item = item;
+    },
 
+    deregisterItem(item) {
+      delete this.item;
+    },
+
+    update() {},
+
+    commit() {}
+});
+
+let group;
 let subject;
 
 module('mixin:sortable-item', {
   beforeEach() {
     run(() => {
-      subject = MockComponent.create();
+      group = MockGroup.create();
+      subject = MockComponent.create({ group });
       subject.appendTo('#ember-testing');
     });
   },
@@ -70,6 +85,18 @@ test('height', function(assert) {
 
   assert.equal(subject.get('height'), 60,
     'expected height to be height + margin-bottom');
+});
+
+test('registers itself with group', function(assert) {
+  assert.equal(group.item, subject,
+    'expected to be registered with group');
+});
+
+test('deregisters itself when removed', function(assert) {
+  subject.remove();
+
+  assert.equal(group.item, undefined,
+    'expected to be deregistered with group');
 });
 
 function getTransform(element) {
