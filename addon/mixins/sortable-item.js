@@ -61,8 +61,9 @@ export default Mixin.create({
     let el = this.$();
     let property = el.css('transition-property');
     let duration = parseFloat(el.css('transition-duration'));
+    let result = property.match(/all|transform/) && duration > 0;
 
-    return property.match(/all|transform/) && duration > 0;
+    return !!result;
   }).volatile(),
 
   /**
