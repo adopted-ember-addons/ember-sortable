@@ -226,7 +226,8 @@ export default Mixin.create({
   @private
 */
 function getY(event) {
-  let touches = event.originalEvent.changedTouches;
+  let originalEvent = event.originalEvent;
+  let touches = originalEvent && originalEvent.changedTouches;
   let touch = touches && touches[0];
 
   if (touch) {
