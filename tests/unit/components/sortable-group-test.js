@@ -98,3 +98,31 @@ test('update', function(assert) {
   assert.deepEqual(items, expected,
     'expected y positions to be applied to all but isDragging');
 });
+
+test('commit', function(assert) {
+  let items = [{
+    y: 20,
+    model: 'bar'
+  }, {
+    y: 30,
+    model: 'baz'
+  }, {
+    y: 10,
+    model: 'foo'
+  }];
+  let targetObject = Ember.Object.create({
+    reorder(newOrder) {
+      this.newOrder = newOrder;
+    }
+  });
+  let component = this.subject({
+    items,
+    targetObject,
+    onChange: 'reorder'
+  });
+
+  component.commit();
+
+  assert.deepEqual(targetObject.newOrder, ['foo', 'bar', 'baz'],
+    'expected target to receive models in order');
+});
