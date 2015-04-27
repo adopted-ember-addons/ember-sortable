@@ -48,3 +48,18 @@ test('sortedItems', function(assert) {
   assert.deepEqual(component.get('sortedItems'), expected,
     'expected sortedItems to sort on y');
 });
+
+test('[de]registerItem', function(assert) {
+  let item = 'foo';
+  let component = this.subject();
+
+  component.registerItem(item);
+
+  assert.ok(component.get('items').contains(item),
+    'expected registerItem to add item to items');
+
+  component.deregisterItem(item);
+
+  assert.ok(!component.get('items').contains(item),
+    'expected registerItem to remove item from items');
+});
