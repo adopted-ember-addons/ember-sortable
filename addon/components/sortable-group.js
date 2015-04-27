@@ -1,10 +1,9 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
-const { A, Component, computed } = Ember;
+const { $, A, Component, computed } = Ember;
 const a = A;
 
 export default Component.extend({
-  tagName: '',
   layout: layout,
 
   /**
@@ -12,6 +11,22 @@ export default Component.extend({
     @type Ember.NativeArray
   */
   items: computed(() => { return a(); }),
+
+  /**
+    Vertical position for the first item.
+
+    @property itemPosition
+    @type Number
+  */
+  itemPosition: computed(function() {
+    let element = this.element;
+    let stooge = $('<span style="position: absolute" />');
+    let result = stooge.prependTo(element).position().top;
+
+    stooge.remove();
+
+    return result;
+  }).volatile(),
 
   /**
     @property sortedItems
@@ -48,7 +63,7 @@ export default Component.extend({
   */
   update() {
     let sortedItems = this.get('sortedItems');
-    let y = 0;
+    let y = this.get('itemPosition');
 
     sortedItems.forEach(item => {
       if (!item.get('isDragging')) {
