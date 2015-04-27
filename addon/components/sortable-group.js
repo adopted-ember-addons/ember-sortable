@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
-const { $, A, Component, computed } = Ember;
+const { $, A, Component, computed, get, set } = Ember;
 const a = A;
 
 export default Component.extend({
@@ -66,10 +66,10 @@ export default Component.extend({
     let y = this.get('itemPosition');
 
     sortedItems.forEach(item => {
-      if (!item.get('isDragging')) {
-        item.set('y', y);
+      if (!get(item, 'isDragging')) {
+        set(item, 'y', y);
       }
-      y += item.get('height');
+      y += get(item, 'height');
     });
   },
 

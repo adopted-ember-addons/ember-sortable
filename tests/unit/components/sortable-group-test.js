@@ -63,3 +63,38 @@ test('[de]registerItem', function(assert) {
   assert.ok(!component.get('items').contains(item),
     'expected registerItem to remove item from items');
 });
+
+test('update', function(assert) {
+  let items = [{
+    y: 10,
+    height: 15
+  }, {
+    y: 20,
+    height: 10
+  }, {
+    y: 5,
+    height: 20,
+    isDragging: true
+  }];
+  let component = this.subject({ items });
+
+  this.render();
+  component.$().css({ position: 'relative' });
+
+  component.update();
+
+  let expected = [{
+    y: 20,
+    height: 15
+  }, {
+    y: 35,
+    height: 10
+  }, {
+    y: 5,
+    height: 20,
+    isDragging: true
+  }];
+
+  assert.deepEqual(items, expected,
+    'expected y positions to be applied to all but isDragging');
+});
