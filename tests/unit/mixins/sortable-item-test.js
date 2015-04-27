@@ -5,17 +5,17 @@ const { Component, run } = Ember;
 
 const MockComponent = Component.extend(SortableItemMixin);
 const MockGroup = Ember.Object.extend({
-    registerItem(item) {
-      this.item = item;
-    },
+  registerItem(item) {
+    this.item = item;
+  },
 
-    deregisterItem(item) {
-      delete this.item;
-    },
+  deregisterItem(item) {
+    delete this.item;
+  },
 
-    update() {},
+  update() {},
 
-    commit() {}
+  commit() {}
 });
 
 let group;
