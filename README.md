@@ -11,6 +11,12 @@ Sortable UI primitives for Ember.
 
 [Check out the demo](http://jgwhite.co.uk/ember-sortable/demo)
 
+## Requirements
+
+Version 1.0 depends upon the availability of 2D CSS transforms.
+Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
+to see if your target browsers are compatible.
+
 ## Installation
 
 ```sh
@@ -20,8 +26,10 @@ $ ember install ember-sortable
 ## Usage
 
 ```hbs
+{{! app/templates/my-route.hbs }}
+
 {{#sortable-group tagName="ul" onChange="reorderItems" as |group|}}
-  {{#each model.items as |item|}}
+  {{#each model.items as |item|}}  
     {{#sortable-item tagName="li" model=item group=group}}
       {{item.name}}
     {{/sortable-item}}
@@ -29,16 +37,9 @@ $ ember install ember-sortable
 {{/sortable-group}}
 ```
 
-**Things to note:**
-
-1. `sortable-group` and `sortable-item` do not mutate any data. Instead, a
-   fresh array is passed with the `onChange` action (see below).
-2. `sortable-group` yields itself and must be assigned to the `group` property
-   of each sortable item (`group=group`).
-3. `sortable-item` takes a `model` property which is handed back in
-   `sortable-group`’s `onChange` action.
-
 ```js
+// app/routes/my-route.js
+
 actions: {
   reorderItems(newOrder) {
     this.set('currentModel.items', newOrder);
@@ -46,31 +47,75 @@ actions: {
 }
 ```
 
-## Requirements
+### Notes on Usage
 
-Version 1.0 depends upon the availability of 2D CSS transforms.
-Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
-to see if your target browsers are compatible.
+No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
+
+`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property. While it would be technically possible to automatically discover the parent group, we feel establishing this relationship explicitly is clearer. Feedback welcome.
+
+Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
 ## CSS
 
-Ensure the parent element (the `ul` in our demo) has `position: relative`.
+Sortable items can be in one of three states: default, dragging, dropping.
+The classes look like this:
 
-Two classes are applied during interaction:
+```html
+<!-- Default -->
+<li class="sortable-item">...</li>
+<!-- Dragging -->
+<li class="sortable-item is-dragging">...</li>
+<!-- Dropping -->
+<li class="sortable-item is-dropping">...</li>
+```
 
-- `is-dragging`
-- `is-dropping`
+In our [example app.css](tests/dummy/app/styles/app.css) we apply a
+transition of `.125s` in the default case:
 
-Ember sortable will detect animation and wait accordingly before firing the
-`onChange` action.
+```css
+.sortable-item {
+  transition: all .125s;
+}
+```
+
+While an item is dragging we want it to move pixel-for-pixel with the
+user’s mouse so we bring the transition duration to 0. We also give
+it a highlight color and bring it to the top of the stack:
+
+```css
+.sortable-item.is-dragging {
+  transition-duration: 0s;
+  background: red;
+  z-index: 10;
+}
+```
+
+While dropping, the `is-dragging` class is removed and the item returns to its default transition duration. If we wanted to apply a
+different duration we could do so with the `is-dropping` class. In
+our example we opt to simply maintain the z-index and apply a
+slightly different colour:
+
+```css
+.sortable-item.is-dropping {
+  background: #f66;
+  z-index: 10;
+}
+```
 
 ## Developing
+
+### Setup
 
 ```sh
 $ git clone git@github.com:jgwhite/ember-sortable
 $ cd ember-sortable
 $ ember install
-$ ember server
+```
+
+### Dev Server
+
+```sh
+$ ember serve
 ```
 
 ### Running Tests
@@ -79,7 +124,7 @@ $ ember server
 $ ember test
 ```
 
-### Building and publishing the demo
+### Publishing Demo
 
 ```sh
 $ make demo
