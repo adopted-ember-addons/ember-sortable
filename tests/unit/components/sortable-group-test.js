@@ -5,6 +5,13 @@ import {
 
 moduleForComponent('sortable-group');
 
+test('items', function(assert) {
+  let component = this.subject();
+
+  assert.deepEqual(component.get('items'), [],
+    'expected items to default to an empty array');
+});
+
 test('itemPosition', function(assert) {
   let component = this.subject();
 
