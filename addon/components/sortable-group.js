@@ -33,7 +33,7 @@ export default Component.extend({
     @type Array
   */
   sortedItems: computed('items.@each.y', function() {
-    return this.get('items').sortBy('y');
+    return a(this.get('items')).sortBy('y');
   }),
 
   /**

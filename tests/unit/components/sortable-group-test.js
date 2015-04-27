@@ -2,6 +2,8 @@ import {
   moduleForComponent,
   test
 } from 'ember-qunit';
+import Ember from 'ember';
+const a = Ember.A;
 
 moduleForComponent('sortable-group');
 
@@ -36,4 +38,13 @@ test('itemPosition', function(assert) {
   assert.equal(component.get('itemPosition'),
     component.$().position().top + 10,
     'expected itemPosition to work with static positioning and padding');
+});
+
+test('sortedItems', function(assert) {
+  let items = [{ y: 30 }, { y: 10 }, { y: 20 }];
+  let component = this.subject({ items });
+  let expected = [{ y: 10 }, { y: 20 }, { y: 30 }];
+
+  assert.deepEqual(component.get('sortedItems'), expected,
+    'expected sortedItems to sort on y');
 });
