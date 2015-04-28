@@ -41,3 +41,15 @@
   background: #f66;
   z-index: 10;
 }
+
+.sortable-item .handle {
+  position: absolute;
+  padding: 0 .5em;
+  top: 0; right: 0; bottom: 0;
+  background: rgba(127, 0, 0, .5);
+  color: pink;
+  cursor: move;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
