@@ -24,6 +24,16 @@ export default Mixin.create({
   model: null,
 
   /**
+    Selector for the element to use as handle.
+    If unset, the entire element will be used as the handle.
+
+    @property handle
+    @type String
+    @default null
+  */
+  handle: null,
+
+  /**
     True if the item is currently being dragged.
 
     @property isDragging
@@ -136,6 +146,12 @@ export default Mixin.create({
     @private
   */
   _startDrag(event) {
+    let handle = this.get('handle');
+
+    if (handle && !$(event.target).is(handle)) {
+      return;
+    }
+
     event.preventDefault();
     event.stopPropagation();
 

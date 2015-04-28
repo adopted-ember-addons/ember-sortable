@@ -5,8 +5,9 @@
 <main>
   {{#sortable-group tagName="ol" onChange="update" as |group|}}
     {{#each model.items as |item|}}
-      {{#sortable-item tagName="li" model=item group=group}}
+      {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
         {{item}}
+        <span class="handle">&vArr;</span>
       {{/sortable-item}}
     {{/each}}
   {{/sortable-group}}
