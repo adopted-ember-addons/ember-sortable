@@ -89,16 +89,16 @@ export default Mixin.create({
     @type Number
   */
   y: computed(function(_, value) {
-    if (arguments.length === 2) {
+    if (arguments.length === 2 && value !== this._y) {
       this._y = value;
       this._scheduleApplyPosition();
     }
 
-    if (this._y !== undefined) {
-      return this._y;
-    } else {
-      return this.element.offsetTop;
+    if (this._y === undefined) {
+      this._y = this.element.offsetTop;
     }
+
+    return this._y;
   }),
 
   /**
@@ -179,6 +179,7 @@ export default Mixin.create({
       .on('mousemove touchmove', drag)
       .on('mouseup touchend', drop);
 
+    this._tellGroup('prepare');
     this.set('isDragging', true);
   },
 

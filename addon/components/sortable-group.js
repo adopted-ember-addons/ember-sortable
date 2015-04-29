@@ -57,13 +57,29 @@ export default Component.extend({
   },
 
   /**
+    Prepare for sorting.
+    Main purpose is to stash the current itemPosition so
+    we don’t incur expensive re-layouts.
+
+    @method prepare
+  */
+  prepare() {
+    this._itemPosition = this.get('itemPosition');
+  },
+
+  /**
     Update item positions.
 
     @method update
   */
   update() {
     let sortedItems = this.get('sortedItems');
-    let y = this.get('itemPosition');
+    let y = this._itemPosition;
+
+    // Just in case we haven’t called prepare first.
+    if (y === undefined) {
+      y = this.get('itemPosition');
+    }
 
     sortedItems.forEach(item => {
       if (!get(item, 'isDragging')) {
@@ -79,6 +95,8 @@ export default Component.extend({
   commit() {
     let items = this.get('sortedItems');
     let models = items.mapBy('model');
+
+    delete this._itemPosition;
 
     this.sendAction('onChange', models);
   }
