@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import transitionend from '../utils/transitionend';
 const { Mixin, $, computed, run } = Ember;
 
 export default Mixin.create({
@@ -244,7 +245,7 @@ export default Mixin.create({
 
     run.next(() => {
       if (this.get('isAnimated')) {
-        this.$().one('transitionend', run.bind(this, '_complete'));
+        this.$().one(transitionend, run.bind(this, '_complete'));
       } else {
         this._complete();
       }
