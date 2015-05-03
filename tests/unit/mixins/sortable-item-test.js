@@ -38,17 +38,34 @@ module('mixin:sortable-item', {
 });
 
 test('isAnimated', function(assert) {
-  subject.$().css({ transition: 'all .25s' });
+  subject.$().css({ transition: 'all' });
   assert.equal(subject.get('isAnimated'), true);
 
-  subject.$().css({ transition: 'all 0s' });
-  assert.equal(subject.get('isAnimated'), false);
+  subject.$().css({ transition: 'transform' });
+  assert.equal(subject.get('isAnimated'), true);
 
-  subject.$().css({ transition: 'color .25s' });
+  subject.$().css({ transition: 'color' });
   assert.equal(subject.get('isAnimated'), false);
 
   subject.$().css({ transition: 'none' });
   assert.equal(subject.get('isAnimated'), false);
+});
+
+test('transitionDuration', function(assert) {
+  subject.$().css({ transition: 'all .25s' });
+  assert.equal(subject.get('transitionDuration'), 250);
+
+  subject.$().css({ transition: 'all 250ms' });
+  assert.equal(subject.get('transitionDuration'), 250);
+
+  subject.$().css({ transition: 'all 0s' });
+  assert.equal(subject.get('transitionDuration'), 0);
+
+  subject.$().css({ transition: 'all 0ms' });
+  assert.equal(subject.get('transitionDuration'), 0);
+
+  subject.$().css({ transition: 'none' });
+  assert.equal(subject.get('transitionDuration'), 0);
 });
 
 test('get y', function(assert) {
