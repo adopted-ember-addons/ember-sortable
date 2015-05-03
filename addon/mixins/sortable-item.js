@@ -77,10 +77,8 @@ export default Mixin.create({
   isAnimated: computed(function() {
     let el = this.$();
     let property = el.css('transition-property');
-    let duration = this.get('transitionDuration');
-    let result = property.match(/all|transform/) && duration > 0;
 
-    return !!result;
+    return /all|transform/.test(property);
   }).volatile(),
 
   /**

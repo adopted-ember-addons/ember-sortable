@@ -38,13 +38,13 @@ module('mixin:sortable-item', {
 });
 
 test('isAnimated', function(assert) {
-  subject.$().css({ transition: 'all .25s' });
+  subject.$().css({ transition: 'all' });
   assert.equal(subject.get('isAnimated'), true);
 
-  subject.$().css({ transition: 'all 0s' });
-  assert.equal(subject.get('isAnimated'), false);
+  subject.$().css({ transition: 'transform' });
+  assert.equal(subject.get('isAnimated'), true);
 
-  subject.$().css({ transition: 'color .25s' });
+  subject.$().css({ transition: 'color' });
   assert.equal(subject.get('isAnimated'), false);
 
   subject.$().css({ transition: 'none' });
