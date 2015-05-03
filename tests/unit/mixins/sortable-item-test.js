@@ -51,6 +51,23 @@ test('isAnimated', function(assert) {
   assert.equal(subject.get('isAnimated'), false);
 });
 
+test('transitionDuration', function(assert) {
+  subject.$().css({ transition: 'all .25s' });
+  assert.equal(subject.get('transitionDuration'), 250);
+
+  subject.$().css({ transition: 'all 250ms' });
+  assert.equal(subject.get('transitionDuration'), 250);
+
+  subject.$().css({ transition: 'all 0s' });
+  assert.equal(subject.get('transitionDuration'), 0);
+
+  subject.$().css({ transition: 'all 0ms' });
+  assert.equal(subject.get('transitionDuration'), 0);
+
+  subject.$().css({ transition: 'none' });
+  assert.equal(subject.get('transitionDuration'), 0);
+});
+
 test('get y', function(assert) {
   assert.equal(subject.get('y'), subject.element.offsetTop,
     'expected y to be element.offsetTop');

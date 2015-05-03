@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import transitionend from '../utils/transitionend';
 const { Mixin, $, computed, run } = Ember;
+const { Promise } = Ember.RSVP;
 
 export default Mixin.create({
   classNames: ['sortable-item'],
@@ -77,10 +77,35 @@ export default Mixin.create({
   isAnimated: computed(function() {
     let el = this.$();
     let property = el.css('transition-property');
-    let duration = parseFloat(el.css('transition-duration'));
+    let duration = this.get('transitionDuration');
     let result = property.match(/all|transform/) && duration > 0;
 
     return !!result;
+  }).volatile(),
+
+  /**
+    The current transition duration in milliseconds.
+
+    @property transitionDuration
+    @type Number
+  */
+  transitionDuration: computed(function() {
+    let el = this.$();
+    let rule = el.css('transition-duration');
+    let match = rule.match(/([\d\.]+)([ms]*)/);
+
+    if (match) {
+      let value = parseFloat(match[1]);
+      let unit = match[2];
+
+      if (unit === 's') {
+        value = value * 1000;
+      }
+
+      return value;
+    }
+
+    return 0;
   }).volatile(),
 
   /**
@@ -243,12 +268,26 @@ export default Mixin.create({
 
     this._tellGroup('update');
 
-    run.next(() => {
-      if (this.get('isAnimated')) {
-        this.$().one(transitionend, run.bind(this, '_complete'));
-      } else {
-        this._complete();
-      }
+    this._waitForTransition()
+      .then(run.bind(this, '_complete'));
+  },
+
+  /**
+    @method _waitForTransition
+    @private
+    @return Promise
+  */
+  _waitForTransition() {
+    return new Promise(resolve => {
+      run.next(() => {
+        let duration = 0;
+
+        if (this.get('isAnimated')) {
+          duration = this.get('transitionDuration');
+        }
+
+        run.later(this, resolve, duration);
+      });
     });
   },
 
