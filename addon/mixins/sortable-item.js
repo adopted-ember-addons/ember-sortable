@@ -123,7 +123,7 @@ export default Mixin.create({
     }
 
     return this._y;
-  }),
+  }).volatile(),
 
   /**
     Height of the item including margins.
@@ -163,6 +163,38 @@ export default Mixin.create({
   */
   touchStart(event) {
     this._startDrag(event);
+  },
+
+  /**
+    @method freeze
+  */
+  freeze() {
+    let el = this.$();
+    if (!el) { return; }
+
+    this.$().css({ transition: 'none' });
+    this.$().height(); // Force-apply styles
+  },
+
+  /**
+    @method reset
+  */
+  reset() {
+    let el = this.$();
+    if (!el) { return; }
+
+    delete this._y;
+    el.css({ transform: '' });
+  },
+
+  /**
+    @method thaw
+  */
+  thaw() {
+    let el = this.$();
+    if (!el) { return; }
+
+    el.css({ transition: '' });
   },
 
   /**
