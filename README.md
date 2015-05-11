@@ -25,6 +25,30 @@ $ ember install ember-sortable
 
 ## Usage
 
+```js
+// app/routes/my-route.js
+
+export default Ember.Route.extend({
+  model() {
+    return {
+      items: [
+        { name: 'Uno' },
+        { name: 'Dos' },
+        { name: 'Tres' },
+        { name: 'Cuatro' },
+        { name: 'Cinco' }
+      ]
+    };
+  },
+
+  actions: {
+    reorderItems(newOrder) {
+      this.set('currentModel.items', newOrder);
+    }
+  }
+});
+```
+
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -36,16 +60,6 @@ $ ember install ember-sortable
     {{/sortable-item}}
   {{/each}}
 {{/sortable-group}}
-```
-
-```js
-// app/routes/my-route.js
-
-actions: {
-  reorderItems(newOrder) {
-    this.set('currentModel.items', newOrder);
-  }
-}
 ```
 
 ### Notes on Usage
