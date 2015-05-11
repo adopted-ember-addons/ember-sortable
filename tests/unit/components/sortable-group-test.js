@@ -4,6 +4,7 @@ import {
 } from 'ember-qunit';
 import Ember from 'ember';
 const a = Ember.A;
+const { run } = Ember;
 
 moduleForComponent('sortable-group');
 
@@ -121,7 +122,9 @@ test('commit', function(assert) {
     onChange: 'reorder'
   });
 
-  component.commit();
+  run(() => {
+    component.commit();
+  });
 
   assert.deepEqual(targetObject.newOrder, ['foo', 'bar', 'baz'],
     'expected target to receive models in order');

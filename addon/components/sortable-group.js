@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
-const { $, A, Component, computed, get, set } = Ember;
+const { $, A, Component, computed, get, set, run } = Ember;
 const a = A;
 
 export default Component.extend({
@@ -97,6 +97,20 @@ export default Component.extend({
     let models = items.mapBy('model');
 
     delete this._itemPosition;
+
+    run.schedule('render', () => {
+      items.invoke('freeze');
+    });
+
+    run.schedule('afterRender', () => {
+      items.invoke('reset');
+    });
+
+    run.next(() => {
+      run.schedule('render', () => {
+        items.invoke('thaw');
+      });
+    });
 
     this.sendAction('onChange', models);
   }
