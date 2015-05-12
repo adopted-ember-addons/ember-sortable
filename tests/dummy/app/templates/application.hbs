@@ -3,8 +3,9 @@
 </header>
 
 <main>
-  {{#sortable-group tagName="ol" model=model onChange="update" as |group|}}
-    {{#each model.items as |item|}}
+  <h3>Vertical Sorting</h3>
+  {{#sortable-group tagName="ol" model=model onChange="updateVertical" as |group|}}
+    {{#each model.vertical as |item|}}
       {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
         {{item}}
         <span class="handle">
@@ -13,18 +14,37 @@
       {{/sortable-item}}
     {{/each}}
   {{/sortable-group}}
-</main>
-
-<footer>
+  <h4>Results</h4>
   <p>
     <code>
-      model.items:<br>
-      {{#each model.items as |item|}}
+      Vertical items:<br>
+      {{#each model.vertical as |item|}}
         {{item}}
       {{/each}}
     </code>
   </p>
+  <h3>Horizontal Sorting</h3>
+  <div class="Horizontal-example">
+    {{#sortable-group tagName="ol" direction='x' onChange="updateHorizontal" as |group|}}
+      {{#each model.horizontal as |item|}}
+        {{#sortable-item tagName="li" model=item group=group class="horizontal"}}
+          {{item}}
+        {{/sortable-item}}
+      {{/each}}
+    {{/sortable-group}}
+  </div>
+  <h4>Results</h4>
+  <p>
+    <code>
+      Horizontal items:<br>
+      {{#each model.horizontal as |item|}}
+        {{item}}
+      {{/each}}
+    </code>
+  </p>
+</main>
 
+<footer>
   <p>
     <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
   </p>

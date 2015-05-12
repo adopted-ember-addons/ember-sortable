@@ -9,6 +9,13 @@ export default Component.extend({
   layout: layout,
 
   /**
+    @property direction
+    @type string
+    @default y
+  */
+  direction: 'y',
+
+  /**
     @property model
     @type Any
     @default null
@@ -20,39 +27,59 @@ export default Component.extend({
     @type Ember.NativeArray
   */
   items: computed({
-    get() { return a(); }
-  }),
-  /**
-    Vertical position for the first item.
+    get() {
+      return a(); 
+    },
+  }), 
 
+  /**
+    @method _getFirstItemPosition
+    @private
+  */
+  _getFirstItemPosition: function() {
+    let element = this.element;
+    let stooge = $('<span style="position: absolute" />');
+    let prependedStoogePosition = stooge.prependTo(element).position();
+    let result;
+
+    let direction = this.get('direction');
+
+    if (direction === 'x') {
+      result = prependedStoogePosition.left;
+    }
+    if (direction === 'y') {
+      result = prependedStoogePosition.top;
+    }
+
+    stooge.remove();
+
+    return result;
+  },
+
+  /**
+    Position for the first item.
     @property itemPosition
     @type Number
   */
   itemPosition: computed({
     get() {
-      let element = this.element;
-      let stooge = $('<span style="position: absolute" />');
-      let result = stooge.prependTo(element).position().top;
-
-      stooge.remove();
-
-      return result;
+      return this._getFirstItemPosition();
     }
-  }).volatile(),
+  }).volatile().readOnly(),
 
   /**
     @property sortedItems
     @type Array
   */
-  sortedItems: computed('items.@each.y', {
+
+  sortedItems: computed('items.@each.y', 'items.@each.x', 'direction', {
     get() {
-      return a(this.get('items')).sortBy('y');
+      return a(this.get('items')).sortBy(this.get('direction'));
     }
-  }),
+  }).readOnly(),
 
   /**
     Register an item with this group.
-
     @method registerItem
     @param {SortableItem} [item]
   */
@@ -62,7 +89,6 @@ export default Component.extend({
 
   /**
     De-register an item with this group.
-
     @method deregisterItem
     @param {SortableItem} [item]
   */
@@ -74,7 +100,6 @@ export default Component.extend({
     Prepare for sorting.
     Main purpose is to stash the current itemPosition so
     we don’t incur expensive re-layouts.
-
     @method prepare
   */
   prepare() {
@@ -83,23 +108,33 @@ export default Component.extend({
 
   /**
     Update item positions.
-
     @method update
   */
   update() {
     let sortedItems = this.get('sortedItems');
-    let y = this._itemPosition;
+    let position = this._itemPosition;
 
     // Just in case we haven’t called prepare first.
-    if (y === undefined) {
-      y = this.get('itemPosition');
+    if (position === undefined) {
+      position = this.get('itemPosition');
     }
 
     sortedItems.forEach(item => {
+      let dimension;
+      let direction = this.get('direction');
+
       if (!get(item, 'isDragging')) {
-        set(item, 'y', y);
+        set(item, direction, position);
       }
-      y += get(item, 'height');
+
+      if (direction === 'x') {
+       dimension = 'width';
+      }
+      if (direction === 'y') {
+       dimension = 'height';
+      }
+
+      position += get(item, dimension);
     });
   },
 
