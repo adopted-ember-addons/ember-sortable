@@ -3,7 +3,7 @@
 </header>
 
 <main>
-  {{#sortable-group tagName="ol" onChange="update" as |group|}}
+  {{#sortable-group tagName="ol" model=model onChange="update" as |group|}}
     {{#each model.items as |item|}}
       {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
         {{item}}

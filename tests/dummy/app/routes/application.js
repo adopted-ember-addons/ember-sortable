@@ -10,8 +10,8 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    update(newOrder) {
-      this.set('currentModel.items', a(newOrder));
+    update(model, newOrder) {
+      a(model).set('items', a(newOrder));
     }
   }
 });

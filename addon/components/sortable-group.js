@@ -94,7 +94,8 @@ export default Component.extend({
   */
   commit() {
     let items = this.get('sortedItems');
-    let models = items.mapBy('model');
+    let groupModel = this.get('model');
+    let itemModels = items.mapBy('model');
 
     delete this._itemPosition;
 
@@ -111,7 +112,11 @@ export default Component.extend({
         items.invoke('thaw');
       });
     });
-
-    this.sendAction('onChange', models);
+    
+    if  (groupModel === null || groupModel === undefined) {
+      this.sendAction('onChange', itemModels);
+    } else {
+      this.sendAction('onChange', groupModel, itemModels);
+    }
   }
 });
