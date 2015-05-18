@@ -23,8 +23,7 @@ to see if your target browsers are compatible.
 $ ember install ember-sortable
 ```
 
-## Usage
-
+## Basic usage:
 ```js
 // app/routes/my-route.js
 
@@ -53,6 +52,30 @@ export default Ember.Route.extend({
 {{! app/templates/my-route.hbs }}
 
 {{#sortable-group tagName="ul" onChange="reorderItems" as |group|}}
+  {{#each model.items as |item|}}
+    {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+      {{item.name}}
+      <span class="handle">&varr;</span>
+    {{/sortable-item}}
+  {{/each}}
+{{/sortable-group}}
+```
+
+When `model` is set on the `sortable-group`, the `onChange` action is sent with two arguments: `groupModel` and `itemModels`:
+```js
+// app/routes/my-route.js
+  actions: {
+    reorderItems(groupModel, itemModels) {
+      groupModel.set('items', itemModels);
+    }
+  }
+});
+```
+
+```hbs
+{{! app/templates/my-route.hbs }}
+
+{{#sortable-group tagName="ul" model=model onChange="reorderItems" as |group|}}
   {{#each model.items as |item|}}
     {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
       {{item.name}}

@@ -103,8 +103,9 @@ test('registers itself with group', function(assert) {
 });
 
 test('deregisters itself when removed', function(assert) {
-  subject.remove();
-
+  run(() => {
+    subject.remove();
+  });
   assert.equal(group.item, undefined,
     'expected to be deregistered with group');
 });

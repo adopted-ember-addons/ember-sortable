@@ -2,16 +2,23 @@ import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
 const { $, A, Component, computed, get, set, run } = Ember;
 const a = A;
+const NO_MODEL = {};
 
 export default Component.extend({
   layout: layout,
+
+  /**
+    @property model
+    @type Any
+    @default null
+  */
+  model: NO_MODEL,
 
   /**
     @property items
     @type Ember.NativeArray
   */
   items: computed(() => { return a(); }),
-
   /**
     Vertical position for the first item.
 
@@ -94,7 +101,8 @@ export default Component.extend({
   */
   commit() {
     let items = this.get('sortedItems');
-    let models = items.mapBy('model');
+    let groupModel = this.get('model');
+    let itemModels = items.mapBy('model');
 
     delete this._itemPosition;
 
@@ -111,7 +119,11 @@ export default Component.extend({
         items.invoke('thaw');
       });
     });
-
-    this.sendAction('onChange', models);
+    
+    if (groupModel !== NO_MODEL) {
+      this.sendAction('onChange', groupModel, itemModels);
+    } else {
+      this.sendAction('onChange', itemModels);
+    }
   }
 });
