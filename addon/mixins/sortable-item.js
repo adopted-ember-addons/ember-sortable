@@ -1,5 +1,6 @@
 import Ember from 'ember';
-const { Mixin, $, computed, run } = Ember;
+import computed from 'ember-new-computed';
+const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
 export default Mixin.create({
@@ -56,7 +57,7 @@ export default Mixin.create({
     @property isBusy
     @type Boolean
   */
-  isBusy: computed.or('isDragging', 'isDropping'),
+  isBusy: Ember.computed.or('isDragging', 'isDropping'),
 
   /**
     The frequency with which the group is informed
@@ -74,11 +75,13 @@ export default Mixin.create({
     @property isAnimated
     @type Boolean
   */
-  isAnimated: computed(function() {
-    let el = this.$();
-    let property = el.css('transition-property');
+  isAnimated: computed({
+    get() {
+      let el = this.$();
+      let property = el.css('transition-property');
 
-    return /all|transform/.test(property);
+      return /all|transform/.test(property);
+    }
   }).volatile(),
 
   /**
@@ -87,23 +90,25 @@ export default Mixin.create({
     @property transitionDuration
     @type Number
   */
-  transitionDuration: computed(function() {
-    let el = this.$();
-    let rule = el.css('transition-duration');
-    let match = rule.match(/([\d\.]+)([ms]*)/);
+  transitionDuration: computed({
+    get() {
+      let el = this.$();
+      let rule = el.css('transition-duration');
+      let match = rule.match(/([\d\.]+)([ms]*)/);
 
-    if (match) {
-      let value = parseFloat(match[1]);
-      let unit = match[2];
+      if (match) {
+        let value = parseFloat(match[1]);
+        let unit = match[2];
 
-      if (unit === 's') {
-        value = value * 1000;
+        if (unit === 's') {
+          value = value * 1000;
+        }
+
+        return value;
       }
 
-      return value;
+      return 0;
     }
-
-    return 0;
   }).volatile(),
 
   /**
@@ -112,17 +117,20 @@ export default Mixin.create({
     @property y
     @type Number
   */
-  y: computed(function(_, value) {
-    if (arguments.length === 2 && value !== this._y) {
+  y: computed({
+    get() {
+      if (this._y === undefined) {
+        this._y = this.element.offsetTop;
+      }
+
+      return this._y;
+    },
+    set(key, value) {
       this._y = value;
       this._scheduleApplyPosition();
-    }
 
-    if (this._y === undefined) {
-      this._y = this.element.offsetTop;
+      return this._y;
     }
-
-    return this._y;
   }).volatile(),
 
   /**
@@ -131,10 +139,12 @@ export default Mixin.create({
     @property height
     @type Number
   */
-  height: computed(function() {
-    let height = this.$().outerHeight();
-    let marginBottom = parseFloat(this.$().css('margin-bottom'));
-    return height + marginBottom;
+  height: computed({
+    get() {
+      let height = this.$().outerHeight();
+      let marginBottom = parseFloat(this.$().css('margin-bottom'));
+      return height + marginBottom;
+    }
   }).volatile(),
 
   /**
