@@ -41,6 +41,7 @@
     "ember-cli-htmlbars": "0.7.4"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "demoURL": "http://jgwhite.co.uk/ember-sortable/demo/"
   }
 }
