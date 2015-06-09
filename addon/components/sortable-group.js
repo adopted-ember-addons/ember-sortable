@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
-const { $, A, Component, computed, get, set, run } = Ember;
+import computed from 'ember-new-computed';
+const { $, A, Component, get, set, run } = Ember;
 const a = A;
 const NO_MODEL = {};
 
@@ -18,29 +19,35 @@ export default Component.extend({
     @property items
     @type Ember.NativeArray
   */
-  items: computed(() => { return a(); }),
+  items: computed({
+    get() { return a(); }
+  }),
   /**
     Vertical position for the first item.
 
     @property itemPosition
     @type Number
   */
-  itemPosition: computed(function() {
-    let element = this.element;
-    let stooge = $('<span style="position: absolute" />');
-    let result = stooge.prependTo(element).position().top;
+  itemPosition: computed({
+    get() {
+      let element = this.element;
+      let stooge = $('<span style="position: absolute" />');
+      let result = stooge.prependTo(element).position().top;
 
-    stooge.remove();
+      stooge.remove();
 
-    return result;
+      return result;
+    }
   }).volatile(),
 
   /**
     @property sortedItems
     @type Array
   */
-  sortedItems: computed('items.@each.y', function() {
-    return a(this.get('items')).sortBy('y');
+  sortedItems: computed('items.@each.y', {
+    get() {
+      return a(this.get('items')).sortBy('y');
+    }
   }),
 
   /**
@@ -119,7 +126,7 @@ export default Component.extend({
         items.invoke('thaw');
       });
     });
-    
+
     if (groupModel !== NO_MODEL) {
       this.sendAction('onChange', groupModel, itemModels);
     } else {
