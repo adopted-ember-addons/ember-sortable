@@ -159,7 +159,7 @@ $ ember serve
 ### Running Tests
 
 ```sh
-$ ember test
+$ npm test
 ```
 
 ### Publishing Demo
