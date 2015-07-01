@@ -172,3 +172,35 @@ test('commit with missmatched group model', function(assert) {
   assert.equal(targetObject.correctActionFired, true,
     'expected reorder() to receive two params');
 });
+
+test('draggedModel', function(assert) {
+  assert.expect(1);
+
+  let items = [{
+    y: 1,
+    model: 'One',
+  }, {
+    y: 2,
+    model: 'Two',
+    wasDropped: true
+  }, {
+    y: 3,
+    model: 'Three'
+  }];
+
+  let targetObject = {
+    action(models, draggedModel) {
+      assert.equal(draggedModel, 'Two');
+    }
+  };
+
+  let component = this.subject({
+    items,
+    targetObject,
+    onChange: 'action'
+  });
+
+  run(() => {
+    component.commit();
+  });
+});
