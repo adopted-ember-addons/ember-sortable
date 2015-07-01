@@ -110,6 +110,9 @@ export default Component.extend({
     let items = this.get('sortedItems');
     let groupModel = this.get('model');
     let itemModels = items.mapBy('model');
+    let draggedItem = items.filter(i => get(i, 'wasDropped'))[0]
+    draggedItem.set('wasDropped', false) // Reset
+    let draggedModel = draggedItem.get('model')
 
     delete this._itemPosition;
 
@@ -128,9 +131,9 @@ export default Component.extend({
     });
 
     if (groupModel !== NO_MODEL) {
-      this.sendAction('onChange', groupModel, itemModels);
+      this.sendAction('onChange', groupModel, itemModels, draggedModel);
     } else {
-      this.sendAction('onChange', itemModels);
+      this.sendAction('onChange', itemModels, draggedModel);
     }
   }
 });
