@@ -7,7 +7,9 @@
     {{#each model.items as |item|}}
       {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
         {{item}}
-        <span class="handle">&vArr;</span>
+        <span class="handle">
+          <span>&vArr;</span>
+        </span>
       {{/sortable-item}}
     {{/each}}
   {{/sortable-group}}
