@@ -214,7 +214,7 @@ export default Mixin.create({
   _startDrag(event) {
     let handle = this.get('handle');
 
-    if (handle && !$(event.target).is(handle)) {
+    if (handle && !$(event.target).closest(handle).length) {
       return;
     }
 
