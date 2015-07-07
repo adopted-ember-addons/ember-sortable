@@ -2,6 +2,7 @@
 
 ### Master
 
+- [#29](https://github.com/jgwhite/ember-sortable/pull/29) Add horizontal sorting [@igorrKurr](https://github.com/igorrKurr)
 - [#35](https://github.com/jgwhite/ember-sortable/pull/35) Use `closest` vs `is` to support complex handles (e.g. SVG) [@rlivsey](https://github.com/rlivsey)
 
 ### 1.2.0 (2015-06-09)
