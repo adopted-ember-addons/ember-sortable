@@ -1,6 +1,6 @@
 # ember-sortable changelog
 
-### Master
+### 1.3.0 (2015-07-07)
 
 - [#29](https://github.com/jgwhite/ember-sortable/pull/29) Add horizontal sorting [@igorrKurr](https://github.com/igorrKurr)
 - [#35](https://github.com/jgwhite/ember-sortable/pull/35) Use `closest` vs `is` to support complex handles (e.g. SVG) [@rlivsey](https://github.com/rlivsey)
