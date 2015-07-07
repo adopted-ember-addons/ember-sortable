@@ -9,7 +9,6 @@ export default Mixin.create({
 
   /**
     Group to which the item belongs.
-
     @property group
     @type SortableGroup
     @default null
@@ -18,7 +17,6 @@ export default Mixin.create({
 
   /**
     Model which the item represents.
-
     @property model
     @type Object
     @default null
@@ -28,7 +26,6 @@ export default Mixin.create({
   /**
     Selector for the element to use as handle.
     If unset, the entire element will be used as the handle.
-
     @property handle
     @type String
     @default null
@@ -37,7 +34,6 @@ export default Mixin.create({
 
   /**
     True if the item is currently being dragged.
-
     @property isDragging
     @type Boolean
     @default false
@@ -46,7 +42,6 @@ export default Mixin.create({
 
   /**
     True if the item is currently dropping.
-
     @property isDropping
     @type Boolean
     @default false
@@ -62,7 +57,6 @@ export default Mixin.create({
   /**
     The frequency with which the group is informed
     that an update is required.
-
     @property updateInterval
     @type Number
     @default 125
@@ -71,7 +65,6 @@ export default Mixin.create({
 
   /**
     True if the item transitions with animation.
-
     @property isAnimated
     @type Boolean
   */
@@ -82,11 +75,10 @@ export default Mixin.create({
 
       return /all|transform/.test(property);
     }
-  }).volatile(),
+  }).volatile().readOnly(),
 
   /**
     The current transition duration in milliseconds.
-
     @property transitionDuration
     @type Number
   */
@@ -109,11 +101,10 @@ export default Mixin.create({
 
       return 0;
     }
-  }).volatile(),
+  }).volatile().readOnly(),
 
   /**
     Vertical position of the item relative to its offset parent.
-
     @property y
     @type Number
   */
@@ -126,16 +117,36 @@ export default Mixin.create({
       return this._y;
     },
     set(key, value) {
-      this._y = value;
-      this._scheduleApplyPosition();
-
-      return this._y;
+      if (value !== this._y) {
+        this._y = value;
+        this._scheduleApplyPosition();
+      }
     }
   }).volatile(),
 
   /**
-    Height of the item including margins.
+    Horizontal position of the item.
+    @property x
+    @type Number
+  */
+  x: computed({
+    get() {
+      if (this._x === undefined) {
+        this._x = this.element.scrollLeft + this.element.offsetLeft - parseFloat(this.$().css('margin-left'));
+      }
 
+      return this._x;
+    },
+    set(_, value) {
+      if (value !== this._x) {
+        this._x = value;
+        this._scheduleApplyPosition();
+      }
+    },
+  }).volatile(),
+
+  /**
+    Height of the item including margins.
     @property height
     @type Number
   */
@@ -145,8 +156,20 @@ export default Mixin.create({
       let marginBottom = parseFloat(this.$().css('margin-bottom'));
       return height + marginBottom;
     }
-  }).volatile(),
+  }).volatile().readOnly(),
 
+  /**
+    Width of the item.
+    @property height
+    @type Number
+  */
+  width: computed({
+    get() {
+      let width = this.$().outerWidth(true);
+      return width;
+    }
+  }).volatile().readOnly(),
+    
   /**
     @method didInsertElement
   */
@@ -194,6 +217,7 @@ export default Mixin.create({
     if (!el) { return; }
 
     delete this._y;
+    delete this._x;
     el.css({ transform: '' });
   },
 
@@ -221,17 +245,34 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
+    let drag; 
+
     if (this.get('isBusy')) { return; }
 
-    let dragOrigin = getY(event);
-    let elementOrigin = this.get('y');
+    const groupDirection = this.get('group.direction');
 
-    let drag = event => {
-      let dy = getY(event) - dragOrigin;
-      let y = elementOrigin + dy;
+    if (groupDirection === 'x') {
+      let dragOrigin = getX(event);
+      let elementOrigin = this.get('x');
 
-      this._drag(y);
-    };
+      drag = event => {
+        let dx = getX(event) - dragOrigin;
+        let x = elementOrigin + dx;
+
+        this._drag(x);
+      };
+    }
+    if (groupDirection === 'y') {
+      let dragOrigin = getY(event);
+      let elementOrigin = this.get('y');
+
+      drag  = event => {
+        let dy = getY(event) - dragOrigin;
+        let y = elementOrigin + dy;
+
+        this._drag(y);
+      };
+    }
 
     let drop = () => {
       $(window)
@@ -276,22 +317,40 @@ export default Mixin.create({
   _applyPosition() {
     if (!this.element) { return; }
 
-    let y = this.get('y');
-    let dy = y - this.element.offsetTop;
+    const groupDirection = this.get('group.direction');
 
-    this.$().css({
-      transform: `translateY(${dy}px)`
-    });
+    if (groupDirection === 'x') {
+      let x = this.get('x');
+      let dx = x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
+
+      this.$().css({
+        transform: `translateX(${dx}px)`
+      });
+    }
+    if (groupDirection === 'y') {
+      let y = this.get('y');
+      let dy = y - this.element.offsetTop;
+
+      this.$().css({
+        transform: `translateY(${dy}px)`
+      });
+    }
   },
 
   /**
     @method _drag
     @private
   */
-  _drag(y) {
+  _drag(dimension) {
     let updateInterval = this.get('updateInterval');
+    const groupDirection = this.get('group.direction');
 
-    this.set('y', y);
+    if(groupDirection === 'x') {
+      this.set('x', dimension);
+    }
+    if (groupDirection === 'y') {
+      this.set('y', dimension);
+    }
 
     run.throttle(this, '_tellGroup', 'update', updateInterval);
   },
@@ -344,7 +403,6 @@ export default Mixin.create({
 /**
   Gets the y offset for a given event.
   Work for touch and mouse events.
-
   @method getY
   @return {Number}
   @private
@@ -358,5 +416,22 @@ function getY(event) {
     return touch.screenY;
   } else {
     return event.pageY;
+  }
+}
+/**
+  Gets the x offset for a given event.
+  @method getX
+  @return {Number}
+  @private
+*/
+function getX(event) {
+  let originalEvent = event.originalEvent;
+  let touches = originalEvent && originalEvent.changedTouches;
+  let touch = touches && touches[0];
+
+  if (touch) {
+    return touch.screenX;
+  } else {
+    return event.pageX;
   }
 }
