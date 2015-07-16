@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import computed from 'ember-new-computed';
+import scrollparent from 'ember-sortable/utils/scrollparent';
+
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
@@ -169,7 +171,7 @@ export default Mixin.create({
       return width;
     }
   }).volatile().readOnly(),
-    
+
   /**
     @method didInsertElement
   */
@@ -245,7 +247,7 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-    let drag; 
+    let drag;
 
     if (this.get('isBusy')) { return; }
 
@@ -254,9 +256,10 @@ export default Mixin.create({
     if (groupDirection === 'x') {
       let dragOrigin = getX(event);
       let elementOrigin = this.get('x');
+      let scrollOrigin = scrollparent(this.element).scrollLeft;
 
       drag = event => {
-        let dx = getX(event) - dragOrigin;
+        let dx = getX(event) - dragOrigin + (scrollparent(this.element).scrollLeft - scrollOrigin);
         let x = elementOrigin + dx;
 
         this._drag(x);
@@ -265,9 +268,10 @@ export default Mixin.create({
     if (groupDirection === 'y') {
       let dragOrigin = getY(event);
       let elementOrigin = this.get('y');
+      let scrollOrigin = scrollparent(this.element).scrollTop;
 
       drag  = event => {
-        let dy = getY(event) - dragOrigin;
+        let dy = getY(event) - dragOrigin + (scrollparent(this.element).scrollTop - scrollOrigin);
         let y = elementOrigin + dy;
 
         this._drag(y);
