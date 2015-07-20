@@ -10,7 +10,7 @@ const MockGroup = Ember.Object.extend({
     this.item = item;
   },
 
-  deregisterItem(item) {
+  deregisterItem() {
     delete this.item;
   },
 

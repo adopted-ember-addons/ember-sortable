@@ -3,7 +3,6 @@ import {
   test
 } from 'ember-qunit';
 import Ember from 'ember';
-const a = Ember.A;
 const { run } = Ember;
 
 moduleForComponent('sortable-group');
