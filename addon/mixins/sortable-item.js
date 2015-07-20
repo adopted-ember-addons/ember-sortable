@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import computed from 'ember-new-computed';
-import scrollparent from 'ember-sortable/utils/scrollparent';
 
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
@@ -256,11 +255,13 @@ export default Mixin.create({
     if (groupDirection === 'x') {
       let dragOrigin = getX(event);
       let elementOrigin = this.get('x');
-      let scrollOrigin = scrollparent(this.element).scrollLeft;
+      let scrollOrigin = $(this.element).offset().left;
 
       drag = event => {
-        let dx = getX(event) - dragOrigin + (scrollparent(this.element).scrollLeft - scrollOrigin);
-        let x = elementOrigin + dx;
+        let dx = getX(event) - dragOrigin;
+        let elementX = this.get('x') - this.element.offsetLeft;
+        let scrollX = $(this.element).offset().left - elementX;
+        let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
         this._drag(x);
       };
@@ -268,11 +269,13 @@ export default Mixin.create({
     if (groupDirection === 'y') {
       let dragOrigin = getY(event);
       let elementOrigin = this.get('y');
-      let scrollOrigin = scrollparent(this.element).scrollTop;
+      let scrollOrigin = $(this.element).offset().top;
 
       drag  = event => {
-        let dy = getY(event) - dragOrigin + (scrollparent(this.element).scrollTop - scrollOrigin);
-        let y = elementOrigin + dy;
+        let dy = getY(event) - dragOrigin;
+        let elementY = this.get('y') - this.element.offsetTop;
+        let scrollY = $(this.element).offset().top - elementY;
+        let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
         this._drag(y);
       };
