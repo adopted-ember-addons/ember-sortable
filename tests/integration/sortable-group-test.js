@@ -99,7 +99,7 @@ test('Drag an item while scrolling', function(assert) {
     return {
       pageX: Math.floor(point.x),
       pageY: Math.floor(point.y)
-    }
+    };
   };
 
   run(function() {
