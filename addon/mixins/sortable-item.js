@@ -384,17 +384,16 @@ export default Mixin.create({
     @return Promise
   */
   _waitForTransition() {
-    return new Promise(resolve => {
-      run.next(() => {
-        let duration = 0;
-
-        if (this.get('isAnimated')) {
-          duration = this.get('transitionDuration');
-        }
-
-        run.later(this, resolve, duration);
+    if (this.get('isAnimated')) {
+      return Promise.resolve();
+    } else {
+      return new Promise(resolve => {
+        run.next(() => {
+          let duration = this.get('transitionDuration');
+          run.later(this, resolve, duration);
+        });
       });
-    });
+    }
   },
 
   /**
