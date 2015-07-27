@@ -169,11 +169,12 @@ export default Mixin.create({
       return width;
     }
   }).volatile().readOnly(),
-    
+
   /**
     @method didInsertElement
   */
   didInsertElement() {
+    this._super();
     this._tellGroup('registerItem', this);
   },
 
@@ -245,7 +246,7 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-    let drag; 
+    let drag;
 
     if (this.get('isBusy')) { return; }
 
