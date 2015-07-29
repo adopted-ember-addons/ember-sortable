@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import computed from 'ember-new-computed';
+
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
@@ -255,10 +256,13 @@ export default Mixin.create({
     if (groupDirection === 'x') {
       let dragOrigin = getX(event);
       let elementOrigin = this.get('x');
+      let scrollOrigin = $(this.element).offset().left;
 
       drag = event => {
         let dx = getX(event) - dragOrigin;
-        let x = elementOrigin + dx;
+        let elementX = this.get('x') - this.element.offsetLeft;
+        let scrollX = $(this.element).offset().left - elementX;
+        let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
         this._drag(x);
       };
@@ -266,10 +270,13 @@ export default Mixin.create({
     if (groupDirection === 'y') {
       let dragOrigin = getY(event);
       let elementOrigin = this.get('y');
+      let scrollOrigin = $(this.element).offset().top;
 
       drag  = event => {
         let dy = getY(event) - dragOrigin;
-        let y = elementOrigin + dy;
+        let elementY = this.get('y') - this.element.offsetTop;
+        let scrollY = $(this.element).offset().top - elementY;
+        let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
         this._drag(y);
       };
@@ -378,17 +385,16 @@ export default Mixin.create({
     @return Promise
   */
   _waitForTransition() {
-    return new Promise(resolve => {
-      run.next(() => {
-        let duration = 0;
-
-        if (this.get('isAnimated')) {
-          duration = this.get('transitionDuration');
-        }
-
-        run.later(this, resolve, duration);
+    if (this.get('isAnimated')) {
+      return new Promise(resolve => {
+        run.next(() => {
+          let duration = this.get('transitionDuration');
+          run.later(this, resolve, duration);
+        });
       });
-    });
+    } else {
+      return Promise.resolve();
+    }
   },
 
   /**
