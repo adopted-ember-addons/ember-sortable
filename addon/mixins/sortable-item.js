@@ -385,14 +385,14 @@ export default Mixin.create({
   */
   _waitForTransition() {
     if (this.get('isAnimated')) {
-      return Promise.resolve();
-    } else {
       return new Promise(resolve => {
         run.next(() => {
           let duration = this.get('transitionDuration');
           run.later(this, resolve, duration);
         });
       });
+    } else {
+      return Promise.resolve();
     }
   },
 

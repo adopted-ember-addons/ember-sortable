@@ -37,14 +37,16 @@ test('Drag an item', function(assert) {
     {{/sortable-group}}
   `);
 
+  $('.sortable-item').css({ 'transition-property': 'none' });
+
   assert.equal($('.sortable-item').length, 5,
     'it shows the correct number of items'
   );
 
-  let uno = $('.sortable-item:contains("Uno") .handle');
+  let handle = $('.sortable-item:contains("Uno") .handle');
 
   run(function() {
-    uno.simulate('drag', {
+    handle.simulate('drag', {
       dy: itemHeight() * 5
     });
   });
@@ -76,6 +78,8 @@ test('Drag an item while scrolling', function(assert) {
     </div>
   `);
 
+  $('.sortable-item').css({ 'transition-property': 'none' });
+
   let scrollable = $('.scrollable');
   let group = $('.group');
 
@@ -105,11 +109,7 @@ test('Drag an item while scrolling', function(assert) {
   run(function() {
     let steps = 3;
 
-    handle.simulate('mousedown', eventCoords({
-      x: center.x,
-      y: center.y
-    }));
-
+    handle.simulate('mousedown', eventCoords(center));
     scrollable.scrollTop(itemHeight());
 
     for(let i = 0; i < steps; i++) {
