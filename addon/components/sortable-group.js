@@ -42,12 +42,12 @@ export default Component.extend({
     @property sortedItems
     @type Array
   */
-  sortedItems: computed('items.@each.{x,y}', 'direction', function() {
+  sortedItems: computed(function() {
     let items = a(this.get('items'));
     let direction = this.get('direction');
 
     return items.sortBy(direction);
-  }),
+  }).volatile(),
 
   /**
     Register an item with this group.
