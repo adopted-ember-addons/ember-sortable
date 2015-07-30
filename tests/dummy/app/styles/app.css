@@ -7,6 +7,11 @@
   font-size: 1em;
 }
 
+.ember-application h3 {
+  font-size: 1em;
+  color: #aaa;
+}
+
 .ember-application ol {
   display: block;
   margin: 0;
