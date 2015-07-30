@@ -24,7 +24,7 @@
 
 li.horizontal {
   display: inline-block;
-  cursor: pointer;
+  cursor: move;
   background-color: #00A6E7;
   margin: 4px;
   padding: 5px;
