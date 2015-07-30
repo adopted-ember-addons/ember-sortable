@@ -29,21 +29,13 @@ export default Component.extend({
   items: computed(() => a()),
 
   /**
-    @method _getFirstItemPosition
-    @private
-  */
-  _getFirstItemPosition() {
-    let direction = this.get('direction');
-    return this.get(`sortedItems.firstObject.${direction}`);
-  },
-
-  /**
     Position for the first item.
     @property itemPosition
     @type Number
   */
   itemPosition: computed(function() {
-    return this._getFirstItemPosition();
+    let direction = this.get('direction');
+    return this.get(`sortedItems.firstObject.${direction}`);
   }).volatile(),
 
   /**
