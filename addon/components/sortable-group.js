@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
 import computed from 'ember-new-computed';
-const { $, A, Component, get, set, run } = Ember;
+const { A, Component, get, set, run } = Ember;
 const a = A;
 const NO_MODEL = {};
 
@@ -26,34 +26,15 @@ export default Component.extend({
     @property items
     @type Ember.NativeArray
   */
-  items: computed({
-    get() {
-      return a(); 
-    },
-  }), 
+  items: computed(() => a()),
 
   /**
     @method _getFirstItemPosition
     @private
   */
-  _getFirstItemPosition: function() {
-    let element = this.element;
-    let stooge = $('<span style="position: absolute" />');
-    let prependedStoogePosition = stooge.prependTo(element).position();
-    let result;
-
+  _getFirstItemPosition() {
     let direction = this.get('direction');
-
-    if (direction === 'x') {
-      result = prependedStoogePosition.left;
-    }
-    if (direction === 'y') {
-      result = prependedStoogePosition.top;
-    }
-
-    stooge.remove();
-
-    return result;
+    return this.get(`sortedItems.firstObject.${direction}`);
   },
 
   /**
@@ -61,22 +42,20 @@ export default Component.extend({
     @property itemPosition
     @type Number
   */
-  itemPosition: computed({
-    get() {
-      return this._getFirstItemPosition();
-    }
-  }).volatile().readOnly(),
+  itemPosition: computed(function() {
+    return this._getFirstItemPosition();
+  }).volatile(),
 
   /**
     @property sortedItems
     @type Array
   */
+  sortedItems: computed('items.@each.{x,y}', 'direction', function() {
+    let items = a(this.get('items'));
+    let direction = this.get('direction');
 
-  sortedItems: computed('items.@each.y', 'items.@each.x', 'direction', {
-    get() {
-      return a(this.get('items')).sortBy(this.get('direction'));
-    }
-  }).readOnly(),
+    return items.sortBy(direction);
+  }),
 
   /**
     Register an item with this group.
@@ -128,10 +107,10 @@ export default Component.extend({
       }
 
       if (direction === 'x') {
-       dimension = 'width';
+        dimension = 'width';
       }
       if (direction === 'y') {
-       dimension = 'height';
+        dimension = 'height';
       }
 
       position += get(item, dimension);

@@ -52,7 +52,7 @@ export default Mixin.create({
     @property isBusy
     @type Boolean
   */
-  isBusy: Ember.computed.or('isDragging', 'isDropping'),
+  isBusy: computed.or('isDragging', 'isDropping'),
 
   /**
     The frequency with which the group is informed
@@ -68,40 +68,36 @@ export default Mixin.create({
     @property isAnimated
     @type Boolean
   */
-  isAnimated: computed({
-    get() {
-      let el = this.$();
-      let property = el.css('transition-property');
+  isAnimated: computed(function() {
+    let el = this.$();
+    let property = el.css('transition-property');
 
-      return /all|transform/.test(property);
-    }
-  }).volatile().readOnly(),
+    return /all|transform/.test(property);
+  }).volatile(),
 
   /**
     The current transition duration in milliseconds.
     @property transitionDuration
     @type Number
   */
-  transitionDuration: computed({
-    get() {
-      let el = this.$();
-      let rule = el.css('transition-duration');
-      let match = rule.match(/([\d\.]+)([ms]*)/);
+  transitionDuration: computed(function() {
+    let el = this.$();
+    let rule = el.css('transition-duration');
+    let match = rule.match(/([\d\.]+)([ms]*)/);
 
-      if (match) {
-        let value = parseFloat(match[1]);
-        let unit = match[2];
+    if (match) {
+      let value = parseFloat(match[1]);
+      let unit = match[2];
 
-        if (unit === 's') {
-          value = value * 1000;
-        }
-
-        return value;
+      if (unit === 's') {
+        value = value * 1000;
       }
 
-      return 0;
+      return value;
     }
-  }).volatile().readOnly(),
+
+    return 0;
+  }).volatile(),
 
   /**
     Vertical position of the item relative to its offset parent.
@@ -132,7 +128,8 @@ export default Mixin.create({
   x: computed({
     get() {
       if (this._x === undefined) {
-        this._x = this.element.scrollLeft + this.element.offsetLeft - parseFloat(this.$().css('margin-left'));
+        let marginLeft = parseFloat(this.$().css('margin-left'));
+        this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
       }
 
       return this._x;
@@ -219,6 +216,7 @@ export default Mixin.create({
 
     delete this._y;
     delete this._x;
+
     el.css({ transform: '' });
   },
 
@@ -246,34 +244,10 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-    let drag;
 
     if (this.get('isBusy')) { return; }
 
-    const groupDirection = this.get('group.direction');
-
-    if (groupDirection === 'x') {
-      let dragOrigin = getX(event);
-      let elementOrigin = this.get('x');
-
-      drag = event => {
-        let dx = getX(event) - dragOrigin;
-        let x = elementOrigin + dx;
-
-        this._drag(x);
-      };
-    }
-    if (groupDirection === 'y') {
-      let dragOrigin = getY(event);
-      let elementOrigin = this.get('y');
-
-      drag  = event => {
-        let dy = getY(event) - dragOrigin;
-        let y = elementOrigin + dy;
-
-        this._drag(y);
-      };
-    }
+    let drag = this._makeDragHandler(event);
 
     let drop = () => {
       $(window)
@@ -289,6 +263,36 @@ export default Mixin.create({
 
     this._tellGroup('prepare');
     this.set('isDragging', true);
+  },
+
+  _makeDragHandler(startEvent) {
+    const groupDirection = this.get('group.direction');
+    let dragOrigin;
+    let elementOrigin;
+
+    if (groupDirection === 'x') {
+      dragOrigin = getX(startEvent);
+      elementOrigin = this.get('x');
+
+      return event => {
+        let dx = getX(event) - dragOrigin;
+        let x = elementOrigin + dx;
+
+        this._drag(x);
+      };
+    }
+
+    if (groupDirection === 'y') {
+      dragOrigin = getY(startEvent);
+      elementOrigin = this.get('y');
+
+      return event => {
+        let dy = getY(event) - dragOrigin;
+        let y = elementOrigin + dy;
+
+        this._drag(y);
+      };
+    }
   },
 
   /**
@@ -346,7 +350,7 @@ export default Mixin.create({
     let updateInterval = this.get('updateInterval');
     const groupDirection = this.get('group.direction');
 
-    if(groupDirection === 'x') {
+    if (groupDirection === 'x') {
       this.set('x', dimension);
     }
     if (groupDirection === 'y') {
@@ -419,6 +423,7 @@ function getY(event) {
     return event.pageY;
   }
 }
+
 /**
   Gets the x offset for a given event.
   @method getX
