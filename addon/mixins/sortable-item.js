@@ -244,7 +244,6 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-
     if (this.get('isBusy')) { return; }
 
     let drag = this._makeDragHandler(event);
