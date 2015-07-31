@@ -264,6 +264,12 @@ export default Mixin.create({
     this.set('isDragging', true);
   },
 
+  /**
+    @method _makeDragHandler
+    @param {Event} startEvent
+    @return {Function}
+    @private
+  */
   _makeDragHandler(startEvent) {
     const groupDirection = this.get('group.direction');
     let dragOrigin;
