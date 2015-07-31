@@ -104,7 +104,7 @@ To change sorting direction:
 
 No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
 
-`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property. While it would be technically possible to automatically discover the parent group, we feel establishing this relationship explicitly is clearer. Feedback welcome.
+`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property.
 
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
