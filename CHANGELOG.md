@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### Master
+
+- [#44](https://github.com/jgwhite/ember-sortable/pull/44) Refactor and cleanup [@jgwhite](https://github.com/jgwhite)
+
 ### 1.3.1 (2015-07-27)
 
 - [#42](https://github.com/jgwhite/ember-sortable/pull/42) Call `_super` in `didInsertElement` [@jgwhite](https://github.com/jgwhite)
