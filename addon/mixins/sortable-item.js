@@ -100,27 +100,6 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Vertical position of the item relative to its offset parent.
-    @property y
-    @type Number
-  */
-  y: computed({
-    get() {
-      if (this._y === undefined) {
-        this._y = this.element.offsetTop;
-      }
-
-      return this._y;
-    },
-    set(key, value) {
-      if (value !== this._y) {
-        this._y = value;
-        this._scheduleApplyPosition();
-      }
-    }
-  }).volatile(),
-
-  /**
     Horizontal position of the item.
     @property x
     @type Number
@@ -143,29 +122,56 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Height of the item including margins.
-    @property height
+    Vertical position of the item relative to its offset parent.
+    @property y
     @type Number
   */
-  height: computed({
+  y: computed({
     get() {
-      let height = this.$().outerHeight();
-      let marginBottom = parseFloat(this.$().css('margin-bottom'));
-      return height + marginBottom;
+      if (this._y === undefined) {
+        this._y = this.element.offsetTop;
+      }
+
+      return this._y;
+    },
+    set(key, value) {
+      if (value !== this._y) {
+        this._y = value;
+        this._scheduleApplyPosition();
+      }
     }
-  }).volatile().readOnly(),
+  }).volatile(),
 
   /**
     Width of the item.
     @property height
     @type Number
   */
-  width: computed({
-    get() {
-      let width = this.$().outerWidth(true);
-      return width;
-    }
-  }).volatile().readOnly(),
+  width: computed(function() {
+    let el = this.$();
+    let width = el.outerWidth(true);
+
+    width += getBorderSpacing(el).horizontal;
+
+    return width;
+  }).volatile(),
+
+  /**
+    Height of the item including margins.
+    @property height
+    @type Number
+  */
+  height: computed(function() {
+    let el = this.$();
+    let height = el.outerHeight();
+
+    let marginBottom = parseFloat(el.css('margin-bottom'));
+    height += marginBottom;
+
+    height += getBorderSpacing(el).vertical;
+
+    return height;
+  }).volatile(),
 
   /**
     @method didInsertElement
@@ -445,4 +451,24 @@ function getX(event) {
   } else {
     return event.pageX;
   }
+}
+
+/**
+  Gets a numeric border-spacing values for a given element.
+
+  @method getBorderSpacing
+  @param {Element} element
+  @return {Object}
+  @private
+*/
+function getBorderSpacing(el) {
+  el = $(el);
+
+  let css = el.css('border-spacing'); // '0px 0px'
+  let [horizontal, vertical] = css.split(' ');
+
+  return {
+    horizontal: parseFloat(horizontal),
+    vertical: parseFloat(vertical)
+  };
 }

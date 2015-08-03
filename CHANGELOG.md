@@ -2,6 +2,7 @@
 
 ### Master
 
+- [#45](https://github.com/jgwhite/ember-sortable/pull/44) Add support for tables [@jgwhite](https://github.com/jgwhite)
 - [#44](https://github.com/jgwhite/ember-sortable/pull/44) Refactor and cleanup [@jgwhite](https://github.com/jgwhite)
 
 ### 1.3.1 (2015-07-27)
