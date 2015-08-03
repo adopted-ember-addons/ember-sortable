@@ -1,6 +1,6 @@
 # ember-sortable changelog
 
-### Master
+### 1.4.0 (2015-08-03)
 
 - [#45](https://github.com/jgwhite/ember-sortable/pull/44) Add support for tables [@jgwhite](https://github.com/jgwhite)
 - [#44](https://github.com/jgwhite/ember-sortable/pull/44) Refactor and cleanup [@jgwhite](https://github.com/jgwhite)
