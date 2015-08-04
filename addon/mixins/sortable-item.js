@@ -49,6 +49,15 @@ export default Mixin.create({
   isDropping: false,
 
   /**
+    True if the item was dropped during the interaction
+    @property wasDropped
+    @type Boolean
+    @default false
+  */
+  wasDropped: false,
+
+
+  /**
     @property isBusy
     @type Boolean
   */
@@ -412,6 +421,7 @@ export default Mixin.create({
   */
   _complete() {
     this.set('isDropping', false);
+    this.set('wasDropped', true);
     this._tellGroup('commit');
   }
 });
