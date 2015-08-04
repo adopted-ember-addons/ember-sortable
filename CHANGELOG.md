@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.5.0 (2015-08-04)
+
+- [#49](https://github.com/jgwhite/ember-sortable/pull/49) Pass draggedModel with onChange [@scottmessinger](https://github.com/scottmessinger) & [@mehulkar](https://github.com/mehulkar)
+
 ### 1.4.0 (2015-08-03)
 
 - [#45](https://github.com/jgwhite/ember-sortable/pull/44) Add support for tables [@jgwhite](https://github.com/jgwhite)
