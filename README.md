@@ -23,7 +23,8 @@ to see if your target browsers are compatible.
 $ ember install ember-sortable
 ```
 
-## Basic usage:
+## Usage
+
 ```js
 // app/routes/my-route.js
 
@@ -61,13 +62,11 @@ export default Ember.Route.extend({
 {{/sortable-group}}
 ```
 
-To change sorting direction:
+### Declaring a “group model”
 
-```hbs
-{{#sortable-group direction="x" onChange="reorderItems" as |group|}} // default direction is 'y'
-```
+When `model` is set on the `sortable-group`, the `onChange` action is sent with
+two arguments: `groupModel` and `itemModels`:
 
-When `model` is set on the `sortable-group`, the `onChange` action is sent with two arguments: `groupModel` and `itemModels`:
 ```js
 // app/routes/my-route.js
   actions: {
@@ -91,24 +90,15 @@ When `model` is set on the `sortable-group`, the `onChange` action is sent with 
 {{/sortable-group}}
 ```
 
-To change sorting direction:
+### Changing sort direction
+
+To change sort direction, define `direction` on `sortable-group` (default is `y`):
 
 ```hbs
-...
-
-{{#sortable-group direction="x" onChange="reorderItems" as |group|}} // default direction is 'y'
-...
+{{#sortable-group direction="x" onChange="reorderItems" as |group|}}
 ```
 
-### Notes on Usage
-
-No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
-
-`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property.
-
-Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
-
-## CSS
+### CSS, Animation
 
 Sortable items can be in one of three states: default, dragging, dropping.
 The classes look like this:
@@ -154,6 +144,14 @@ slightly different colour:
   z-index: 10;
 }
 ```
+
+### Data down, actions up
+
+No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
+
+`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property.
+
+Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
 ## Developing
 
