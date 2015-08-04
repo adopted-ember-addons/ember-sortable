@@ -55,16 +55,6 @@ export default Ember.Route.extend({
 When `model` is set on the `sortable-group`, the `onChange` action is sent with
 two arguments: `groupModel` and `itemModels`:
 
-```js
-// app/routes/my-route.js
-  actions: {
-    reorderItems(groupModel, itemModels) {
-      groupModel.set('items', itemModels);
-    }
-  }
-});
-```
-
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -76,6 +66,16 @@ two arguments: `groupModel` and `itemModels`:
     {{/sortable-item}}
   {{/each}}
 {{/sortable-group}}
+```
+
+```js
+// app/routes/my-route.js
+  actions: {
+    reorderItems(groupModel, itemModels) {
+      groupModel.set('items', itemModels);
+    }
+  }
+});
 ```
 
 ### Changing sort direction
