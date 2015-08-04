@@ -29,7 +29,7 @@ $ ember install ember-sortable
 {{! app/templates/my-route.hbs }}
 
 {{#sortable-group tagName="ul" onChange="reorderItems" as |group|}}
-  {{#each items as |item|}}
+  {{#each model.items as |item|}}
     {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
       {{item.name}}
       <span class="handle">&varr;</span>
@@ -39,21 +39,9 @@ $ ember install ember-sortable
 ```
 
 ```js
-// app/controllers/my-route.js
+// app/routes/my-route.js
 
-export default Ember.Controller.extend({
-  model() {
-    return {
-      items: [
-        { name: 'Uno' },
-        { name: 'Dos' },
-        { name: 'Tres' },
-        { name: 'Cuatro' },
-        { name: 'Cinco' }
-      ]
-    };
-  },
-
+export default Ember.Route.extend({
   actions: {
     reorderItems(newOrder) {
       this.set('currentModel.items', newOrder);
