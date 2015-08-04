@@ -52,6 +52,10 @@
         {{/sortable-group}}
       </table>
     </section>
+
+    {{#if model.dragged}}
+      <p>Just dragged {{model.dragged}}</p>
+    {{/if}}
   </main>
 
   <footer>

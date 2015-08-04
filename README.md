@@ -38,13 +38,19 @@ $ ember install ember-sortable
 {{/sortable-group}}
 ```
 
+The `onChange` action is called with two arguments:
+
+- Your item models in their new order
+- The model you just dragged
+
 ```js
 // app/routes/my-route.js
 
 export default Ember.Route.extend({
   actions: {
-    reorderItems(newOrder) {
-      this.set('currentModel.items', newOrder);
+    reorderItems(itemModels, draggedModel) {
+      this.set('currentModel.items', itemModels);
+      this.set('currentModel.justDragged', draggedModel);
     }
   }
 });
@@ -52,8 +58,8 @@ export default Ember.Route.extend({
 
 ### Declaring a “group model”
 
-When `model` is set on the `sortable-group`, the `onChange` action is sent with
-two arguments: `groupModel` and `itemModels`:
+When `model` is set on the `sortable-group`, the `onChange` action is called
+with that group model as the first argument:
 
 ```hbs
 {{! app/templates/my-route.hbs }}
@@ -73,7 +79,7 @@ two arguments: `groupModel` and `itemModels`:
 
 export default Ember.Route.extend({
   actions: {
-    reorderItems(groupModel, itemModels) {
+    reorderItems(groupModel, itemModels, draggedModel) {
       groupModel.set('items', itemModels);
     }
   }
