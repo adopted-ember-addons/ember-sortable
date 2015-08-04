@@ -70,6 +70,7 @@ two arguments: `groupModel` and `itemModels`:
 
 ```js
 // app/routes/my-route.js
+export default Ember.Route.extend({
   actions: {
     reorderItems(groupModel, itemModels) {
       groupModel.set('items', itemModels);
