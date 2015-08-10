@@ -25,7 +25,7 @@
       {{#sortable-group tagName="ol" direction="x" onChange="update" as |group|}}
         {{#each model.items as |item|}}
           {{#sortable-item tagName="li" model=item group=group}}
-            {{item}}
+            {{item-presenter item=item}}
           {{/sortable-item}}
         {{/each}}
       {{/sortable-group}}
