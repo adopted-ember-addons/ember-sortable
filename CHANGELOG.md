@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.5.1 (2015-08-10)
+
+- [#51](https://github.com/jgwhite/ember-sortable/pull/51) Distinguish between clicking and dragging an item [@opsb](https://github.com/opsb)
+
 ### 1.5.0 (2015-08-04)
 
 - [#49](https://github.com/jgwhite/ember-sortable/pull/49) Pass draggedModel with onChange [@scottmessinger](https://github.com/scottmessinger) & [@mehulkar](https://github.com/mehulkar)
