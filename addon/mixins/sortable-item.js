@@ -201,14 +201,14 @@ export default Mixin.create({
     @method mouseDown
   */
   mouseDown(event) {
-    this._startDrag(event);
+    this._primeDrag(event);
   },
 
   /**
     @method touchStart
   */
   touchStart(event) {
-    this._startDrag(event);
+    this._primeDrag(event);
   },
 
   /**
@@ -246,10 +246,10 @@ export default Mixin.create({
   },
 
   /**
-    @method _startDrag
+    @method _primeDrag
     @private
   */
-  _startDrag(event) {
+  _primeDrag(event) {
     let handle = this.get('handle');
 
     if (handle && !$(event.target).closest(handle).length) {
@@ -259,6 +259,21 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
+    let startDragListener = this._startDrag.bind(this);
+
+    function cancelStartDragListener() {
+      $(window).off('mousemove', startDragListener);
+    }
+
+    $(window).one('mousemove', startDragListener);
+    $(window).one('mouseup', cancelStartDragListener);
+  },
+
+  /**
+    @method _startDrag
+    @private
+  */
+  _startDrag(event) {
     if (this.get('isBusy')) { return; }
 
     let drag = this._makeDragHandler(event);
@@ -387,6 +402,8 @@ export default Mixin.create({
   _drop() {
     if (!this.element) { return; }
 
+    this._preventClick(this.element);
+
     this.set('isDragging', false);
     this.set('isDropping', true);
 
@@ -394,6 +411,14 @@ export default Mixin.create({
 
     this._waitForTransition()
       .then(run.bind(this, '_complete'));
+  },
+
+  /**
+    @method _preventClick
+    @private
+  */
+  _preventClick(element) {
+    $(element).one('click', function(e){ e.stopImmediatePropagation(); } );
   },
 
   /**
