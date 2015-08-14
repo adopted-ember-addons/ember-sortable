@@ -5,7 +5,7 @@ import {
 import Ember from 'ember';
 const { run } = Ember;
 
-moduleForComponent('sortable-group');
+moduleForComponent('sortable-group', { unit: true });
 
 test('items', function(assert) {
   let component = this.subject();
