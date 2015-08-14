@@ -187,14 +187,18 @@ export default Mixin.create({
   */
   didInsertElement() {
     this._super();
-    this._tellGroup('registerItem', this);
+    // scheduled to prevent deprecation warning:
+    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
+    run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
   },
 
   /**
     @method willDestroyElement
   */
   willDestroyElement() {
-    this._tellGroup('deregisterItem', this);
+    // scheduled to prevent deprecation warning:
+    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
+    run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
   },
 
   /**
