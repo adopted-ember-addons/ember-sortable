@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.5.2 (2015-08-14)
+
+- [#53](https://github.com/jgwhite/ember-sortable/pull/53) Out out damm deprecations [@rlivsey](https://github.com/rlivsey)
+
 ### 1.5.1 (2015-08-10)
 
 - [#51](https://github.com/jgwhite/ember-sortable/pull/51) Distinguish between clicking and dragging an item [@opsb](https://github.com/opsb)
