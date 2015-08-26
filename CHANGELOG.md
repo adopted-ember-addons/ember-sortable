@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.5.3 (2015-08-26)
+
+- [#56](https://github.com/jgwhite/ember-sortable/pull/56) Fix touch support [@jgwhite](https://github.com/jgwhite)
+
 ### 1.5.2 (2015-08-14)
 
 - [#53](https://github.com/jgwhite/ember-sortable/pull/53) Out out damm deprecations [@rlivsey](https://github.com/rlivsey)
