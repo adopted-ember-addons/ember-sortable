@@ -263,7 +263,7 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-    let startDragListener = this._startDrag.bind(this);
+    let startDragListener = event => this._startDrag(event);
 
     function cancelStartDragListener() {
       $(window).off('mousemove touchmove', startDragListener);

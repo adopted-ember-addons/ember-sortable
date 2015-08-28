@@ -11,7 +11,7 @@
         {{#each model.items as |item|}}
           {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
             {{item}}
-            <span class="handle">
+            <span class="handle" data-item="{{item}}">
               <span>&vArr;</span>
             </span>
           {{/sortable-item}}
@@ -45,7 +45,7 @@
         {{#sortable-group tagName="tbody" onChange="update" as |group|}}
           {{#each model.items as |item|}}
             {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
-              <td><span class="handle">&vArr;</span></td>
+              <td><span class="handle" data-item="{{item}}">&vArr;</span></td>
               <td>{{item}}</td>
             {{/sortable-item}}
           {{/each}}
