@@ -23,30 +23,7 @@ to see if your target browsers are compatible.
 $ ember install ember-sortable
 ```
 
-## Basic usage:
-```js
-// app/routes/my-route.js
-
-export default Ember.Route.extend({
-  model() {
-    return {
-      items: [
-        { name: 'Uno' },
-        { name: 'Dos' },
-        { name: 'Tres' },
-        { name: 'Cuatro' },
-        { name: 'Cinco' }
-      ]
-    };
-  },
-
-  actions: {
-    reorderItems(newOrder) {
-      this.set('currentModel.items', newOrder);
-    }
-  }
-});
-```
+## Usage
 
 ```hbs
 {{! app/templates/my-route.hbs }}
@@ -61,22 +38,28 @@ export default Ember.Route.extend({
 {{/sortable-group}}
 ```
 
-To change sorting direction:
+The `onChange` action is called with two arguments:
 
-```hbs
-{{#sortable-group direction="x" onChange="reorderItems" as |group|}} // default direction is 'y'
-```
+- Your item models in their new order
+- The model you just dragged
 
-When `model` is set on the `sortable-group`, the `onChange` action is sent with two arguments: `groupModel` and `itemModels`:
 ```js
 // app/routes/my-route.js
+
+export default Ember.Route.extend({
   actions: {
-    reorderItems(groupModel, itemModels) {
-      groupModel.set('items', itemModels);
+    reorderItems(itemModels, draggedModel) {
+      this.set('currentModel.items', itemModels);
+      this.set('currentModel.justDragged', draggedModel);
     }
   }
 });
 ```
+
+### Declaring a “group model”
+
+When `model` is set on the `sortable-group`, the `onChange` action is called
+with that group model as the first argument:
 
 ```hbs
 {{! app/templates/my-route.hbs }}
@@ -91,24 +74,27 @@ When `model` is set on the `sortable-group`, the `onChange` action is sent with 
 {{/sortable-group}}
 ```
 
-To change sorting direction:
+```js
+// app/routes/my-route.js
 
-```hbs
-...
-
-{{#sortable-group direction="x" onChange="reorderItems" as |group|}} // default direction is 'y'
-...
+export default Ember.Route.extend({
+  actions: {
+    reorderItems(groupModel, itemModels, draggedModel) {
+      groupModel.set('items', itemModels);
+    }
+  }
+});
 ```
 
-### Notes on Usage
+### Changing sort direction
 
-No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
+To change sort direction, define `direction` on `sortable-group` (default is `y`):
 
-`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property. While it would be technically possible to automatically discover the parent group, we feel establishing this relationship explicitly is clearer. Feedback welcome.
+```hbs
+{{#sortable-group direction="x" onChange="reorderItems" as |group|}}
+```
 
-Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
-
-## CSS
+### CSS, Animation
 
 Sortable items can be in one of three states: default, dragging, dropping.
 The classes look like this:
@@ -154,6 +140,14 @@ slightly different colour:
   z-index: 10;
 }
 ```
+
+### Data down, actions up
+
+No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
+
+`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property.
+
+Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
 ## Developing
 

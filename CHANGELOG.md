@@ -1,5 +1,30 @@
 # ember-sortable changelog
 
+### 1.5.3 (2015-08-26)
+
+- [#56](https://github.com/jgwhite/ember-sortable/pull/56) Fix touch support [@jgwhite](https://github.com/jgwhite)
+
+### 1.5.2 (2015-08-14)
+
+- [#53](https://github.com/jgwhite/ember-sortable/pull/53) Out out damm deprecations [@rlivsey](https://github.com/rlivsey)
+
+### 1.5.1 (2015-08-10)
+
+- [#51](https://github.com/jgwhite/ember-sortable/pull/51) Distinguish between clicking and dragging an item [@opsb](https://github.com/opsb)
+
+### 1.5.0 (2015-08-04)
+
+- [#49](https://github.com/jgwhite/ember-sortable/pull/49) Pass draggedModel with onChange [@scottmessinger](https://github.com/scottmessinger) & [@mehulkar](https://github.com/mehulkar)
+
+### 1.4.0 (2015-08-03)
+
+- [#45](https://github.com/jgwhite/ember-sortable/pull/44) Add support for tables [@jgwhite](https://github.com/jgwhite)
+- [#44](https://github.com/jgwhite/ember-sortable/pull/44) Refactor and cleanup [@jgwhite](https://github.com/jgwhite)
+
+### 1.3.1 (2015-07-27)
+
+- [#42](https://github.com/jgwhite/ember-sortable/pull/42) Call `_super` in `didInsertElement` [@jgwhite](https://github.com/jgwhite)
+
 ### 1.3.0 (2015-07-07)
 
 - [#29](https://github.com/jgwhite/ember-sortable/pull/29) Add horizontal sorting [@igorrKurr](https://github.com/igorrKurr)

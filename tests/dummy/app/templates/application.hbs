@@ -1,51 +1,83 @@
-<header>
-  <h2>Ember Sortable</h2>
-</header>
+<article class="demo">
+  <header>
+    <h2>Ember Sortable</h2>
+  </header>
 
-<main>
-  <h3>Vertical Sorting</h3>
-  {{#sortable-group tagName="ol" model=model onChange="updateVertical" as |group|}}
-    {{#each model.vertical as |item|}}
-      {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
-        {{item}}
-        <span class="handle">
-          <span>&vArr;</span>
-        </span>
-      {{/sortable-item}}
-    {{/each}}
-  {{/sortable-group}}
-  <h4>Results</h4>
-  <p>
-    <code>
-      Vertical items:<br>
-      {{#each model.vertical as |item|}}
-        {{item}}
-      {{/each}}
-    </code>
-  </p>
-  <h3>Horizontal Sorting</h3>
-  <div class="Horizontal-example">
-    {{#sortable-group tagName="ol" direction='x' onChange="updateHorizontal" as |group|}}
-      {{#each model.horizontal as |item|}}
-        {{#sortable-item tagName="li" model=item group=group class="horizontal"}}
-          {{item}}
-        {{/sortable-item}}
-      {{/each}}
-    {{/sortable-group}}
-  </div>
-  <h4>Results</h4>
-  <p>
-    <code>
-      Horizontal items:<br>
-      {{#each model.horizontal as |item|}}
-        {{item}}
-      {{/each}}
-    </code>
-  </p>
-</main>
+  <main>
+    <section class="scrollable-demo">
+      <h3>Scrollable</h3>
 
-<footer>
-  <p>
-    <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
-  </p>
-</footer>
+      <div class="sortable-container">
+        {{#sortable-group tagName="ol" onChange="update" as |group|}}
+          {{#each model.items as |item|}}
+            {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+              {{item}}
+              <span class="handle" data-item="{{item}}">
+                <span>&vArr;</span>
+              </span>
+            {{/sortable-item}}
+          {{/each}}
+        {{/sortable-group}}
+      </div>
+    </section>
+    
+    <section class="vertical-demo">
+      <h3>Vertical</h3>
+
+      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+            {{item}}
+            <span class="handle" data-item="{{item}}">
+              <span>&vArr;</span>
+            </span>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
+
+    <section class="horizontal-demo">
+      <h3>Horizontal</h3>
+
+      {{#sortable-group tagName="ol" direction="x" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group}}
+            {{item-presenter item=item}}
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+
+    </section>
+
+    <section class="table-demo">
+      <h3>Table</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Item</th>
+          </tr>
+        </thead>
+        {{#sortable-group tagName="tbody" onChange="update" as |group|}}
+          {{#each model.items as |item|}}
+            {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
+              <td><span class="handle" data-item="{{item}}">&vArr;</span></td>
+              <td>{{item}}</td>
+            {{/sortable-item}}
+          {{/each}}
+        {{/sortable-group}}
+      </table>
+    </section>
+
+    {{#if model.dragged}}
+      <p>Just dragged {{model.dragged}}</p>
+    {{/if}}
+  </main>
+
+  <footer>
+    <p>
+      <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
+    </p>
+  </footer>
+</article>

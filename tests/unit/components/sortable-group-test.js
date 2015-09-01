@@ -5,39 +5,13 @@ import {
 import Ember from 'ember';
 const { run } = Ember;
 
-moduleForComponent('sortable-group');
+moduleForComponent('sortable-group', { unit: true });
 
 test('items', function(assert) {
   let component = this.subject();
 
   assert.deepEqual(component.get('items'), [],
     'expected items to default to an empty array');
-});
-
-test('itemPosition', function(assert) {
-  let component = this.subject();
-
-  this.render();
-
-  component.$().css({ position: 'static' });
-  assert.equal(component.get('itemPosition'),
-    component.$().position().top,
-    'expected itemPosition to work with static positioning');
-
-  component.$().css({ position: 'relative' });
-  assert.equal(component.get('itemPosition'),
-    0,
-    'expected itemPosition to work with relative positioning');
-
-  component.$().css({ paddingTop: '10px' });
-  assert.equal(component.get('itemPosition'),
-    10,
-    'expected itemPosition to work with relative positioning and padding');
-
-  component.$().css({ position: 'static' });
-  assert.equal(component.get('itemPosition'),
-    component.$().position().top + 10,
-    'expected itemPosition to work with static positioning and padding');
 });
 
 test('sortedItems', function(assert) {
@@ -79,15 +53,14 @@ test('update', function(assert) {
   let component = this.subject({ items });
 
   this.render();
-  component.$().css({ position: 'relative' });
 
   component.update();
 
   let expected = [{
-    y: 20,
+    y: 25,
     height: 15
   }, {
-    y: 35,
+    y: 40,
     height: 10
   }, {
     y: 5,
@@ -198,4 +171,36 @@ test('commit with missmatched group model', function(assert) {
 
   assert.equal(targetObject.correctActionFired, true,
     'expected reorder() to receive two params');
+});
+
+test('draggedModel', function(assert) {
+  assert.expect(1);
+
+  let items = [{
+    y: 1,
+    model: 'One',
+  }, {
+    y: 2,
+    model: 'Two',
+    wasDropped: true
+  }, {
+    y: 3,
+    model: 'Three'
+  }];
+
+  let targetObject = {
+    action(models, draggedModel) {
+      assert.equal(draggedModel, 'Two');
+    }
+  };
+
+  let component = this.subject({
+    items,
+    targetObject,
+    onChange: 'action'
+  });
+
+  run(() => {
+    component.commit();
+  });
 });

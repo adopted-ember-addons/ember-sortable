@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
 import computed from 'ember-new-computed';
-const { $, A, Component, get, set, run } = Ember;
+const { A, Component, get, set, run } = Ember;
 const a = A;
 const NO_MODEL = {};
 
@@ -26,57 +26,28 @@ export default Component.extend({
     @property items
     @type Ember.NativeArray
   */
-  items: computed({
-    get() {
-      return a(); 
-    },
-  }), 
-
-  /**
-    @method _getFirstItemPosition
-    @private
-  */
-  _getFirstItemPosition: function() {
-    let element = this.element;
-    let stooge = $('<span style="position: absolute" />');
-    let prependedStoogePosition = stooge.prependTo(element).position();
-    let result;
-
-    let direction = this.get('direction');
-
-    if (direction === 'x') {
-      result = prependedStoogePosition.left;
-    }
-    if (direction === 'y') {
-      result = prependedStoogePosition.top;
-    }
-
-    stooge.remove();
-
-    return result;
-  },
+  items: computed(() => a()),
 
   /**
     Position for the first item.
     @property itemPosition
     @type Number
   */
-  itemPosition: computed({
-    get() {
-      return this._getFirstItemPosition();
-    }
-  }).volatile().readOnly(),
+  itemPosition: computed(function() {
+    let direction = this.get('direction');
+    return this.get(`sortedItems.firstObject.${direction}`);
+  }).volatile(),
 
   /**
     @property sortedItems
     @type Array
   */
+  sortedItems: computed(function() {
+    let items = a(this.get('items'));
+    let direction = this.get('direction');
 
-  sortedItems: computed('items.@each.y', 'items.@each.x', 'direction', {
-    get() {
-      return a(this.get('items')).sortBy(this.get('direction'));
-    }
-  }).readOnly(),
+    return items.sortBy(direction);
+  }).volatile(),
 
   /**
     Register an item with this group.
@@ -128,10 +99,10 @@ export default Component.extend({
       }
 
       if (direction === 'x') {
-       dimension = 'width';
+        dimension = 'width';
       }
       if (direction === 'y') {
-       dimension = 'height';
+        dimension = 'height';
       }
 
       position += get(item, dimension);
@@ -145,6 +116,13 @@ export default Component.extend({
     let items = this.get('sortedItems');
     let groupModel = this.get('model');
     let itemModels = items.mapBy('model');
+    let draggedItem = items.findBy('wasDropped', true);
+    let draggedModel;
+
+    if (draggedItem) {
+      set(draggedItem, 'wasDropped', false); // Reset
+      draggedModel = get(draggedItem, 'model');
+    }
 
     delete this._itemPosition;
 
@@ -163,9 +141,9 @@ export default Component.extend({
     });
 
     if (groupModel !== NO_MODEL) {
-      this.sendAction('onChange', groupModel, itemModels);
+      this.sendAction('onChange', groupModel, itemModels, draggedModel);
     } else {
-      this.sendAction('onChange', itemModels);
+      this.sendAction('onChange', itemModels, draggedModel);
     }
   }
 });

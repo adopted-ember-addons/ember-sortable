@@ -21,7 +21,9 @@
     "andThen",
     "currentURL",
     "currentPath",
-    "currentRouteName"
+    "currentRouteName",
+    "reorder",
+    "drag"
   ],
   "node": false,
   "browser": false,
