@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import computed from 'ember-new-computed';
-
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
@@ -332,7 +331,6 @@ export default Mixin.create({
       scrollOrigin = $(this.element).offset().top;
 
       return event => {
-        console.log('moving');
         let dy = getY(event) - dragOrigin;
         let elementY = this.get('y') - this.element.offsetTop;
         let scrollY = $(this.element).offset().top - elementY;

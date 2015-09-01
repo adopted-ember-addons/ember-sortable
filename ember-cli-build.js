@@ -1,6 +1,5 @@
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-addon');
-var path = require('path');
 
 module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
