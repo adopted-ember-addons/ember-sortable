@@ -31,9 +31,9 @@ export function reorder(_app, mode, itemSelector, ...resultSelectors) {
     move = 'mousemove';
     end = 'mouseup';
   } else if (mode === 'touch') {
-    start = 'mousedown';
-    move = 'mousemove';
-    end = 'mouseup';
+    start = 'touchstart';
+    move = 'touchmove';
+    end = 'touchend';
   } else {
     throw new Error(`Unsupported mode: '${mode}'`);
   }
