@@ -3,6 +3,8 @@ import SortableItemMixin from 'ember-sortable/mixins/sortable-item';
 import { module, test } from 'qunit';
 const { Component, run } = Ember;
 
+const MockEvent = { originalEvent: null };
+const MockModel = { name: 'Mock Model' };
 const MockComponent = Component.extend(SortableItemMixin);
 const MockGroup = Ember.Object.extend({
   direction: 'y',
@@ -14,9 +16,9 @@ const MockGroup = Ember.Object.extend({
     delete this.item;
   },
 
+  commit() {},
+  prepare() {},
   update() {},
-
-  commit() {}
 });
 
 let group;
@@ -140,6 +142,40 @@ test('deregisters itself when removed', function(assert) {
   });
   assert.equal(group.item, undefined,
     'expected to be deregistered with group');
+});
+
+test('dragStart fires an action if provided', function(assert) {
+  assert.expect(1);
+
+  const targetObject = {
+    action(passedModel) {
+      assert.equal(passedModel, MockModel);
+    }
+  };
+
+  run(() => {
+    subject.set('model', MockModel);
+    subject.set('targetObject', targetObject);
+    subject.set('onDragStart', 'action');
+    subject._startDrag(MockEvent);
+  });
+});
+
+test('dragStop fires an action if provided', function(assert) {
+  assert.expect(1);
+
+  const targetObject = {
+    action(passedModel) {
+      assert.equal(passedModel, MockModel);
+    }
+  };
+
+  run(() => {
+    subject.set('model', MockModel);
+    subject.set('targetObject', targetObject);
+    subject.set('onDragStop', 'action');
+    subject._complete();
+  });
 });
 
 function getTransform(element) {

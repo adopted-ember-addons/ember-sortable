@@ -141,6 +141,37 @@ slightly different colour:
 }
 ```
 
+# Drag Actions
+
+The `onDragStart` and `onDragStop` actions are available for the
+`sortable-item`s. You can provide an action name to listen to these actions to
+be notified when an item is being dragged or not.
+
+When the action is called, the item's model will be provided as the only
+argument.
+
+```js
+// app/routes/my-route.js
+
+export default Ember.Route.extend({
+  actions: {
+    dragStarted(item) {
+      console.log(`Item started dragging: ${item.get('name')`);
+    },
+    dragStopped(item) {
+      console.log(`Item stopped dragging: ${item.get('name')`);
+    }
+  }
+});
+```
+
+```hbs
+  {{#sortable-item onDragStart="dragStarted" onDragStop="dragStopped" tagName="li" model=item group=group handle=".handle"}}
+    {{item.name}}
+    <span class="handle">&varr;</span>
+  {{/sortable-item}}
+```
+
 ### Data down, actions up
 
 No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
