@@ -141,7 +141,7 @@ slightly different colour:
 }
 ```
 
-# Drag Actions
+### Drag Actions
 
 The `onDragStart` and `onDragStop` actions are available for the
 `sortable-item`s. You can provide an action name to listen to these actions to
