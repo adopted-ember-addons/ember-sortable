@@ -82,7 +82,7 @@ test('reordering with mouse events', function(assert) {
     'mouse',
     '.scrollable-demo .handle[data-item=Uno]',
     () => {
-      return { y: itemHeight() + 1 };
+      return { dy: itemHeight() + 1 };
     },
     {
       dragend: function() {

@@ -9,7 +9,7 @@ import Ember from 'ember';
         'mouse',
         '.some-list li[data-item=uno]',
         function() {
-          return { y: 50 };
+          return { dy: 50, dx: 20 };
         }
       );
 
@@ -44,6 +44,8 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
     let item = findWithAssert(itemSelector);
     let itemOffset = item.offset();
     let offset = offsetFn();
+    let targetX = itemOffset.left + offset.dx;
+    let targetY = itemOffset.top + offset.dy;
 
     triggerEvent(item, start, {
       pageX: itemOffset.left,
@@ -64,13 +66,13 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
     });
 
     triggerEvent(item, move, {
-      pageX: itemOffset.left + offset.x,
-      pageY: itemOffset.top + offset.y
+      pageX: targetX,
+      pageY: targetY
     });
 
     triggerEvent(item, end, {
-      pageX: itemOffset.left + offset.x,
-      pageY: itemOffset.top + offset.y
+      pageX: targetX,
+      pageY: targetY
     }).then(() => {
       if (callbacks.dragend) {
         callbacks.dragend();
