@@ -41,6 +41,22 @@ export default Mixin.create({
   isDragging: false,
 
   /**
+    Action that fires when the item starts being dragged.
+    @property onDragStart
+    @type Action
+    @default null
+  */
+  onDragStart: null,
+
+  /**
+    Action that fires when the item stops being dragged.
+    @property onDragStop
+    @type Action
+    @default null
+  */
+  onDragStop: null,
+
+  /**
     True if the item is currently dropping.
     @property isDropping
     @type Boolean
@@ -296,6 +312,7 @@ export default Mixin.create({
 
     this._tellGroup('prepare');
     this.set('isDragging', true);
+    this.sendAction('onDragStart', this.get('model'));
   },
 
   /**
@@ -455,6 +472,7 @@ export default Mixin.create({
     @private
   */
   _complete() {
+    this.sendAction('onDragStop', this.get('model'));
     this.set('isDropping', false);
     this.set('wasDropped', true);
     this._tellGroup('commit');

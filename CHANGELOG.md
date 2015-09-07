@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.6.0 (2015-03-04)
+
+- [#60](https://github.com/jgwhite/ember-sortable/pull/60) Add actions for `onDragStart` and `onDragStop` [@drapergeek](https://github.com/drapergeek)
+
 ### 1.5.3 (2015-08-26)
 
 - [#56](https://github.com/jgwhite/ember-sortable/pull/56) Fix touch support [@jgwhite](https://github.com/jgwhite)
