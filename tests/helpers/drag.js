@@ -8,7 +8,9 @@ import Ember from 'ember';
       drag(
         'mouse',
         '.some-list li[data-item=uno]',
-        { y: 50 }
+        function() {
+          return { y: 50 };
+        }
       );
 
   @method drag
@@ -31,9 +33,9 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
     move = 'mousemove';
     end = 'mouseup';
   } else if (mode === 'touch') {
-    start = 'mousedown';
-    move = 'mousemove';
-    end = 'mouseup';
+    start = 'touchstart';
+    move = 'touchmove';
+    end = 'touchend';
   } else {
     throw new Error(`Unsupported mode: '${mode}'`);
   }
@@ -47,7 +49,7 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
       pageX: itemOffset.left,
       pageY: itemOffset.top
     }).then(() => {
-      if (callbacks.dragstart != null) {
+      if (callbacks.dragstart) {
         callbacks.dragstart();
       }
     });
@@ -56,7 +58,7 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
       pageX: itemOffset.left,
       pageY: itemOffset.top
     }).then(() => {
-      if (callbacks.dragmove != null) {
+      if (callbacks.dragmove) {
         callbacks.dragmove();
       }
     });
@@ -70,7 +72,7 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
       pageX: itemOffset.left + offset.x,
       pageY: itemOffset.top + offset.y
     }).then(() => {
-      if (callbacks.dragend != null) {
+      if (callbacks.dragend) {
         callbacks.dragend();
       }
     });

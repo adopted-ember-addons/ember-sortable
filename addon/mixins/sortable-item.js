@@ -309,16 +309,16 @@ export default Mixin.create({
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
+    let parentElement = $(this.element.parentNode);
 
     if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
       elementOrigin = this.get('x');
-      scrollOrigin = $(this.element).offset().left;
+      scrollOrigin = parentElement.offset().left;
 
       return event => {
         let dx = getX(event) - dragOrigin;
-        let elementX = this.get('x') - this.element.offsetLeft;
-        let scrollX = $(this.element).offset().left - elementX;
+        let scrollX = parentElement.offset().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
         this._drag(x);
@@ -328,12 +328,11 @@ export default Mixin.create({
     if (groupDirection === 'y') {
       dragOrigin = getY(startEvent);
       elementOrigin = this.get('y');
-      scrollOrigin = $(this.element).offset().top;
+      scrollOrigin = parentElement.offset().top;
 
       return event => {
         let dy = getY(event) - dragOrigin;
-        let elementY = this.get('y') - this.element.offsetTop;
-        let scrollY = $(this.element).offset().top - elementY;
+        let scrollY = parentElement.offset().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
         this._drag(y);
@@ -438,16 +437,17 @@ export default Mixin.create({
     @return Promise
   */
   _waitForTransition() {
-    if (this.get('isAnimated')) {
-      return new Promise(resolve => {
-        run.next(() => {
-          let duration = this.get('transitionDuration');
-          run.later(this, resolve, duration);
-        });
+    return new Promise(resolve => {
+      run.next(() => {
+        let duration = 0;
+
+        if (this.get('isAnimated')) {
+          duration = this.get('transitionDuration');
+        }
+
+        run.later(this, resolve, duration);
       });
-    } else {
-      return Promise.resolve();
-    }
+    });
   },
 
   /**
