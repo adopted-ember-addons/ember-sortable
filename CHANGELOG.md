@@ -1,6 +1,10 @@
 # ember-sortable changelog
 
-### 1.6.0 (2015-03-04)
+### 1.6.1 (2015-09-18)
+
+- [#58](https://github.com/jgwhite/ember-sortable/pull/58) Support scrolling while dragging [@eugeniodepalo](https://github.com/eugeniodepalo)
+
+### 1.6.0 (2015-09-04)
 
 - [#60](https://github.com/jgwhite/ember-sortable/pull/60) Add actions for `onDragStart` and `onDragStop` [@drapergeek](https://github.com/drapergeek)
 
