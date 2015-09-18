@@ -53,6 +53,23 @@
       </table>
     </section>
 
+    <section class="scrollable-demo">
+      <h3>Scrollable</h3>
+
+      <div class="sortable-container">
+        {{#sortable-group tagName="ol" onChange="update" as |group|}}
+          {{#each model.items as |item|}}
+            {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+              {{item}}
+              <span class="handle" data-item="{{item}}">
+                <span>&vArr;</span>
+              </span>
+            {{/sortable-item}}
+          {{/each}}
+        {{/sortable-group}}
+      </div>
+    </section>
+
     {{#if model.dragged}}
       <p>Just dragged {{model.dragged}}</p>
     {{/if}}

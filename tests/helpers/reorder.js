@@ -24,42 +24,15 @@ import Ember from 'ember';
 */
 
 export function reorder(_app, mode, itemSelector, ...resultSelectors) {
-  let start, move, end;
-
-  if (mode === 'mouse') {
-    start = 'mousedown';
-    move = 'mousemove';
-    end = 'mouseup';
-  } else if (mode === 'touch') {
-    start = 'touchstart';
-    move = 'touchmove';
-    end = 'touchend';
-  } else {
-    throw new Error(`Unsupported mode: '${mode}'`);
-  }
-
   resultSelectors.forEach((selector, targetIndex) => {
     andThen(() => {
       let items = findWithAssert(itemSelector);
       let element = items.filter(selector);
       let targetElement = items.eq(targetIndex);
+      let dx = targetElement.offset().left - 1 - element.offset().left;
+      let dy = targetElement.offset().top - 1 - element.offset().top;
 
-      triggerEvent(element, start, {
-        pageX: element.offset().left,
-        pageY: element.offset().top
-      });
-      triggerEvent(element, move, {
-        pageX: element.offset().left,
-        pageY: element.offset().top
-      });
-      triggerEvent(element, move, {
-        pageX: targetElement.offset().left - 1,
-        pageY: targetElement.offset().top - 1
-      });
-      triggerEvent(element, end, {
-        pageX: targetElement.offset().left - 1,
-        pageY: targetElement.offset().top - 1
-      });
+      drag(mode, element, () => { return { dx: dx, dy: dy }; });
     });
   });
 

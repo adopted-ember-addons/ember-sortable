@@ -19,6 +19,7 @@ test('reordering with mouse events', function(assert) {
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
   });
 
   reorder(
@@ -35,6 +36,7 @@ test('reordering with mouse events', function(assert) {
     assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
   });
 
   reorder(
@@ -51,6 +53,7 @@ test('reordering with mouse events', function(assert) {
     assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
     assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
     assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
+    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
   });
 
   reorder(
@@ -67,6 +70,36 @@ test('reordering with mouse events', function(assert) {
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+  });
+
+  let itemHeight = () => {
+    let item = findWithAssert('.scrollable-demo .sortable-item');
+    return item.outerHeight() + parseInt(item.css('margin-top'));
+  };
+
+  drag(
+    'mouse',
+    '.scrollable-demo .handle[data-item=Uno]',
+    () => {
+      return { dy: itemHeight() + 1 };
+    },
+    {
+      dragend: function() {
+        findWithAssert('.scrollable-demo .sortable-container').scrollTop(0);
+      },
+
+      dragmove: function() {
+        findWithAssert('.scrollable-demo .sortable-container').scrollTop(itemHeight());
+      }
+    }
+  );
+
+  andThen(() => {
+    assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco');
+    assert.equal(tableContents(), 'Dos Tres Uno Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Dos Tres Uno Cuatro Cinco');
   });
 });
 
@@ -77,6 +110,7 @@ test('reordering with touch events', function(assert) {
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
   });
 
   reorder(
@@ -93,6 +127,7 @@ test('reordering with touch events', function(assert) {
     assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
   });
 
   reorder(
@@ -109,6 +144,7 @@ test('reordering with touch events', function(assert) {
     assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
     assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
     assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
+    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
   });
 
   reorder(
@@ -125,6 +161,7 @@ test('reordering with touch events', function(assert) {
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
   });
 });
 
@@ -138,6 +175,10 @@ function horizontalContents() {
 
 function tableContents() {
   return contents('.table-demo tbody');
+}
+
+function scrollableContents() {
+  return contents('.scrollable-demo ol');
 }
 
 function contents(selector) {

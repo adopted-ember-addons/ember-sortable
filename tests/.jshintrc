@@ -22,7 +22,8 @@
     "currentURL",
     "currentPath",
     "currentRouteName",
-    "reorder"
+    "reorder",
+    "drag"
   ],
   "node": false,
   "browser": false,

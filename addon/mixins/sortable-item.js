@@ -325,14 +325,18 @@ export default Mixin.create({
     const groupDirection = this.get('group.direction');
     let dragOrigin;
     let elementOrigin;
+    let scrollOrigin;
+    let parentElement = $(this.element.parentNode);
 
     if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
       elementOrigin = this.get('x');
+      scrollOrigin = parentElement.offset().left;
 
       return event => {
         let dx = getX(event) - dragOrigin;
-        let x = elementOrigin + dx;
+        let scrollX = parentElement.offset().left;
+        let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
         this._drag(x);
       };
@@ -341,10 +345,12 @@ export default Mixin.create({
     if (groupDirection === 'y') {
       dragOrigin = getY(startEvent);
       elementOrigin = this.get('y');
+      scrollOrigin = parentElement.offset().top;
 
       return event => {
         let dy = getY(event) - dragOrigin;
-        let y = elementOrigin + dy;
+        let scrollY = parentElement.offset().top;
+        let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
         this._drag(y);
       };
