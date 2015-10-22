@@ -1,6 +1,13 @@
 import Ember from 'ember';
 
 /**
+  In tests, the dummy app is rendered at half size.
+  To avoid rounding errors, we must therefore double
+  the overshoot.
+*/
+const OVERSHOOT = 2;
+
+/**
   Reorders elements to the specified state.
 
   Examples
@@ -29,8 +36,8 @@ export function reorder(_app, mode, itemSelector, ...resultSelectors) {
       let items = findWithAssert(itemSelector);
       let element = items.filter(selector);
       let targetElement = items.eq(targetIndex);
-      let dx = targetElement.offset().left - 1 - element.offset().left;
-      let dy = targetElement.offset().top - 1 - element.offset().top;
+      let dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
+      let dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
 
       drag(mode, element, () => { return { dx: dx, dy: dy }; });
     });
