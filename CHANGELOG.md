@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.6.2 (2015-10-22)
+
+- [#64](https://github.com/jgwhite/ember-sortable/pull/64) Ignore right-click [@jgwhite](https://github.com/jgwhite)
+
 ### 1.6.1 (2015-09-18)
 
 - [#58](https://github.com/jgwhite/ember-sortable/pull/58) Support scrolling while dragging [@eugeniodepalo](https://github.com/eugeniodepalo)
