@@ -26,12 +26,13 @@ import Ember from 'ember';
 */
 
 export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
-  let start, move, end;
+  let start, move, end, which;
 
   if (mode === 'mouse') {
     start = 'mousedown';
     move = 'mousemove';
     end = 'mouseup';
+    which = 1;
   } else if (mode === 'touch') {
     start = 'touchstart';
     move = 'touchmove';
@@ -49,7 +50,8 @@ export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
 
     triggerEvent(item, start, {
       pageX: itemOffset.left,
-      pageY: itemOffset.top
+      pageY: itemOffset.top,
+      which
     }).then(() => {
       if (callbacks.dragstart) {
         callbacks.dragstart();

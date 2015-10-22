@@ -221,6 +221,9 @@ export default Mixin.create({
     @method mouseDown
   */
   mouseDown(event) {
+    if (event.which !== 1) { return; }
+    if (event.ctrlKey) { return; }
+
     this._primeDrag(event);
   },
 
