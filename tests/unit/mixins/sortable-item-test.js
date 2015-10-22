@@ -37,6 +37,8 @@ module('mixin:sortable-item', {
     run(() => {
       subject.destroy();
     });
+    // Otherwise we end up with dangling event handlers.
+    $(window).off();
   }
 });
 
