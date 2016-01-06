@@ -241,8 +241,8 @@ export default Mixin.create({
     let el = this.$();
     if (!el) { return; }
 
-    this.$().css({ transition: 'none' });
-    this.$().height(); // Force-apply styles
+    el.css({ transition: 'none' });
+    el.height(); // Force-apply styles
   },
 
   /**
@@ -256,6 +256,7 @@ export default Mixin.create({
     delete this._x;
 
     el.css({ transform: '' });
+    el.height(); // Force-apply styles
   },
 
   /**
@@ -266,6 +267,7 @@ export default Mixin.create({
     if (!el) { return; }
 
     el.css({ transition: '' });
+    el.height(); // Force-apply styles
   },
 
   /**
