@@ -86,6 +86,7 @@
 
 
 .table-demo table {
+  position: relative;
   border-collapse: separate;
   border-spacing: 2px;
 }
