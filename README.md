@@ -156,10 +156,10 @@ argument.
 export default Ember.Route.extend({
   actions: {
     dragStarted(item) {
-      console.log(`Item started dragging: ${item.get('name')`);
+      console.log(`Item started dragging: ${item.get('name')}`);
     },
     dragStopped(item) {
-      console.log(`Item stopped dragging: ${item.get('name')`);
+      console.log(`Item stopped dragging: ${item.get('name')}`);
     }
   }
 });
