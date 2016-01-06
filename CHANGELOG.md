@@ -1,5 +1,10 @@
 # ember-sortable changelog
 
+### 1.6.3 (2016-01-06)
+
+- [#78](https://github.com/jgwhite/ember-sortable/pull/78) Flush styles in reset and thaw [@jgwhite](https://github.com/jgwhite)
+- [#77](https://github.com/jgwhite/ember-sortable/pull/77) Fix typos in example [@HeroicEric](https://github.com/HeroicEric)
+
 ### 1.6.2 (2015-10-22)
 
 - [#64](https://github.com/jgwhite/ember-sortable/pull/64) Ignore right-click [@jgwhite](https://github.com/jgwhite)
