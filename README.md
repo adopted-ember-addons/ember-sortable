@@ -180,6 +180,24 @@ No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “d
 
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
+## Testing
+
+`ember-sortable` exposes some acceptance test helpers:
+
+* [`drag`][drag]: Drags elements by an offset specified in pixels.
+* [`reorder`][reorder]: Reorders elements to the specified state.
+
+[drag]: addon/helpers/drag.js
+[reorder]: addon/helpers/reorder.js
+
+To include them in your application, import then in your `test-helper.js`:
+
+```js
+// tests/test-helper.js
+
+import './ember-sortable/test-helpers';
+```
+
 ## Developing
 
 ### Setup

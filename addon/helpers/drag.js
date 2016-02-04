@@ -25,8 +25,15 @@ import Ember from 'ember';
   @return {Promise}
 */
 
-export function drag(_app, mode, itemSelector, offsetFn, callbacks = {}) {
+export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
   let start, move, end, which;
+
+  const {
+    andThen,
+    findWithAssert,
+    triggerEvent,
+    wait
+  } = app.testHelpers;
 
   if (mode === 'mouse') {
     start = 'mousedown';
