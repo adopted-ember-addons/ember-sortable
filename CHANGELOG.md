@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.7.0 (2016-02-04)
+
+- [#82](https://github.com/jgwhite/ember-sortable/pull/82) Expose `drag` and `reorder` test helpers [@seanpdoyle](https://github.com/seanpdoyle)
+
 ### 1.6.3 (2016-01-06)
 
 - [#78](https://github.com/jgwhite/ember-sortable/pull/78) Flush styles in reset and thaw [@jgwhite](https://github.com/jgwhite)
