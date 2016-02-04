@@ -30,7 +30,14 @@ const OVERSHOOT = 2;
   @return {Promise}
 */
 
-export function reorder(_app, mode, itemSelector, ...resultSelectors) {
+export function reorder(app, mode, itemSelector, ...resultSelectors) {
+  const {
+    andThen,
+    drag,
+    findWithAssert,
+    wait
+  } = app.testHelpers;
+
   resultSelectors.forEach((selector, targetIndex) => {
     andThen(() => {
       let items = findWithAssert(itemSelector);
