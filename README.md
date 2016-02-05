@@ -190,10 +190,10 @@ Each item takes a `model` property. This should be fairly self-explanatory but i
 [drag]: addon/helpers/drag.js
 [reorder]: addon/helpers/reorder.js
 
-To include them in your application, import then in your `test-helper.js`:
+To include them in your application, import then in your `start-app.js`:
 
 ```js
-// tests/test-helper.js
+// tests/helpers/start-app.js
 
 import './ember-sortable/test-helpers';
 ```
