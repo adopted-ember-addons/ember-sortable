@@ -30,12 +30,14 @@ export default Component.extend({
 
   /**
     Position for the first item.
+    If spacing is present, first item's position will have to change as well.
     @property itemPosition
     @type Number
   */
   itemPosition: computed(function() {
     let direction = this.get('direction');
-    return this.get(`sortedItems.firstObject.${direction}`);
+
+    return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
   }).volatile(),
 
   /**
@@ -78,11 +80,12 @@ export default Component.extend({
   },
 
   /**
-    Update item positions.
+    Update item positions (relatively to the first element position).
     @method update
   */
   update() {
     let sortedItems = this.get('sortedItems');
+    // Position of the first element
     let position = this._itemPosition;
 
     // Just in case we haven’t called prepare first.
@@ -96,6 +99,11 @@ export default Component.extend({
 
       if (!get(item, 'isDragging')) {
         set(item, direction, position);
+      }
+
+      // add additional spacing around active element
+      if (get(item, 'isBusy')) {
+        position += get(item, 'spacing') * 2;
       }
 
       if (direction === 'x') {

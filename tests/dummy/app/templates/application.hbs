@@ -53,6 +53,20 @@
       </table>
     </section>
 
+    <section class="vertical-spacing-demo">
+      <h3>Vertical with 15px spacing</h3>
+
+      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group spacing=15}}
+            {{item}}
+            <span class="handle" data-item="{{item}}">
+            </span>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
+
     <section class="scrollable-demo">
       <h3>Scrollable</h3>
 

@@ -67,6 +67,19 @@
   color: pink;
 }
 
+.vertical-spacing-demo .sortable-item {
+  display: block;
+  position: relative;
+  background: #58D3F7;
+  width: 50%;
+  line-height: 50px;
+  margin: 5px auto;
+  text-align: center;
+}
+
+.vertical-spacing-demo .sortable-item.is-dragging {
+  background: #A9E2F3;
+}
 
 .horizontal-demo .sortable-item {
   display: inline-block;

@@ -41,13 +41,16 @@ test('[de]registerItem', function(assert) {
 test('update', function(assert) {
   let items = [{
     y: 10,
-    height: 15
+    height: 15,
+    spacing: 0
   }, {
     y: 20,
-    height: 10
+    height: 10,
+    spacing: 0
   }, {
     y: 5,
     height: 20,
+    spacing: 0,
     isDragging: true
   }];
   let component = this.subject({ items });
@@ -58,18 +61,172 @@ test('update', function(assert) {
 
   let expected = [{
     y: 25,
-    height: 15
+    height: 15,
+    spacing: 0
   }, {
     y: 40,
-    height: 10
+    height: 10,
+    spacing: 0
   }, {
     y: 5,
     height: 20,
+    spacing: 0,
     isDragging: true
   }];
 
+
   assert.deepEqual(items, expected,
     'expected y positions to be applied to all but isDragging');
+});
+
+test('update', function(assert) {
+  let items = [{
+    y: 15,
+    height: 15,
+    spacing: 10
+  }, {
+    y: 20,
+    height: 10,
+    spacing: 10
+  }, {
+    y: 35,
+    height: 25,
+    spacing: 10,
+    isDragging: true
+  }, {
+    y: 45,
+    height: 20,
+    spacing: 10
+  }];
+
+  let component = this.subject({ items });
+
+  this.render();
+
+  component.update();
+
+  let expected = [{
+    y: 5,
+    height: 15,
+    spacing: 10
+  }, {
+    y: 20,
+    height: 10,
+    spacing: 10
+  }, {
+    y: 35,
+    height: 25,
+    spacing: 10,
+    isDragging: true
+  }, {
+    y: 55,
+    height: 20,
+    spacing: 10,
+  }];
+
+  assert.deepEqual(items, expected,
+    'expected y positions to be applied to all but isDragging and with regard to defined spacing');
+});
+
+test('update', function(assert) {
+  let items = [{
+    y: 15,
+    height: 15,
+    spacing: 8
+  }, {
+    y: 20,
+    height: 10,
+    spacing: 9
+  }, {
+    y: 35,
+    height: 25,
+    spacing: 10,
+    isDragging: true
+  }, {
+    y: 45,
+    height: 20,
+    spacing: 11
+  }];
+
+  let component = this.subject({ items });
+
+  this.render();
+
+  component.update();
+
+  let expected = [{
+    y: 7,
+    height: 15,
+    spacing: 8
+  }, {
+    y: 22,
+    height: 10,
+    spacing: 9
+  }, {
+    y: 35,
+    height: 25,
+    spacing: 10,
+    isDragging: true
+  }, {
+    y: 57,
+    height: 20,
+    spacing: 11,
+  }];
+
+  assert.deepEqual(items, expected,
+    'expected y positions to be applied to all but isDragging and with regard to defined spacing - for each element different');
+});
+
+test('update', function(assert) {
+  let items = [{
+    x: 15,
+    width: 15,
+    spacing: 10
+  }, {
+    x: 20,
+    width: 10,
+    spacing: 10
+  }, {
+    x: 35,
+    width: 25,
+    spacing: 10,
+    isDragging: true
+  }, {
+    x: 45,
+    width: 20,
+    spacing: 10
+  }];
+
+  let component = this.subject({
+    items,
+    direction: 'x'
+  });
+
+  this.render();
+
+  component.update();
+
+  let expected = [{
+    x: 5,
+    width: 15,
+    spacing: 10
+  }, {
+    x: 20,
+    width: 10,
+    spacing: 10
+  }, {
+    x: 35,
+    width: 25,
+    spacing: 10,
+    isDragging: true
+  }, {
+    x: 55,
+    width: 20,
+    spacing: 10,
+  }];
+
+  assert.deepEqual(items, expected,
+    'expected x positions to be applied to all but isDragging and with regard to defined spacing');
 });
 
 test('commit without specified group model', function(assert) {
