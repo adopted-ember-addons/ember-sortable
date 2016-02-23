@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.8.0 (2016-02-23)
+
+- [#87](https://github.com/jgwhite/ember-sortable/pull/87) Introduce `spacing` property on sortable-item [@dianafa](https://github.com/dianafa)
+
 ### 1.7.0 (2016-02-04)
 
 - [#82](https://github.com/jgwhite/ember-sortable/pull/82) Expose `drag` and `reorder` test helpers [@seanpdoyle](https://github.com/seanpdoyle)
