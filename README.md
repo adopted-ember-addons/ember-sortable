@@ -94,6 +94,19 @@ To change sort direction, define `direction` on `sortable-group` (default is `y`
 {{#sortable-group direction="x" onChange="reorderItems" as |group|}}
 ```
 
+### Changing spacing between currently dragged element and the rest of the group
+
+When user starts to drag element, other elements jump back. Works both for the `x` and `y` direction option.
+
+In `y` case: elements above current one jump up, and elements below current one - jump down.
+In `x` case: elements before current one jump to the left, and elements after current one - jump to the right.
+
+To change this property, define `spacing` on `sortable-item` (default is `0`):
+
+```hbs
+{{#sortable-item tagName="li" group=group spacing=15}}
+```
+
 ### CSS, Animation
 
 Sortable items can be in one of three states: default, dragging, dropping.

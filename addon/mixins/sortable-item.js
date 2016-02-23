@@ -89,6 +89,14 @@ export default Mixin.create({
   updateInterval: 125,
 
   /**
+    Additional spacing between active item and the rest of the elements.
+    @property spacing
+    @type Number
+    @default 0[px]
+  */
+  spacing: 0,
+
+  /**
     True if the item transitions with animation.
     @property isAnimated
     @type Boolean
