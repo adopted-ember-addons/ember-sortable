@@ -1,0 +1,8 @@
+digraph {
+  default -> waiting [label="start"]
+  waiting -> swiping [label="early move"]
+  waiting -> dragging [label="move"]
+  waiting -> clicked [label="stop"]
+  dragging -> dragging [label="move"]
+  dragging -> dropped [label="stop"]
+}
