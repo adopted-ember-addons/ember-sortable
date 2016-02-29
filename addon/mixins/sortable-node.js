@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DragStateMachine from 'ember-sortable/drag-state-machine';
-const { $, Mixin, run: { next, schedule } } = Ember;
+const { $, Mixin } = Ember;
 
 /**
  * @class SortableNode
@@ -56,17 +56,9 @@ export default Mixin.create({
    * @method _sortableUpdate
    */
   _sortableUpdate() {
-    let { state } = this._sortableStateMachine;
-    this.set('sortableState', `sortable-${state}`);
-    schedule('afterRender', this, '_sortableAfterRender');
-  },
-
-  /**
-   * @private
-   * @method _sortableAfterRender
-   */
-  _sortableAfterRender() {
     let { state, dx, dy } = this._sortableStateMachine;
+
+    this.set('sortableState', `sortable-${state}`);
 
     switch (state) {
       case 'dragging':
@@ -75,8 +67,8 @@ export default Mixin.create({
       case 'swiping':
       case 'clicking':
       case 'dropped':
-        this.$().css('transform', '');
-        next(() => this._sortableComplete());
+        this.$().css('transform', '').height();
+        this._sortableComplete();
         break;
     }
   },
@@ -94,7 +86,7 @@ export default Mixin.create({
       this.set('sortableState', null);
     };
 
-    if (willTransition(this.element) && isOffset) {
+    if (isOffset && willTransition(this.element)) {
       this.$().one('transitionend', complete);
     } else {
       complete();
