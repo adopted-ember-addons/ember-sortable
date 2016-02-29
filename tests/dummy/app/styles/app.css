@@ -162,17 +162,24 @@ tree-node {
   background: hsl(0, 0%, 90%);
   cursor: move;
   margin: 4px 0;
-  transform: translate(0, 0);
-  transition: transform .25s;
+  transform: none;
 }
 
 tree-node > tree-node { background: hsl(0, 0%, 80%); }
 tree-node > tree-node > tree-node { background: hsl(0, 0%, 70%); }
 tree-node > tree-node > tree-node > tree-node { background: hsl(0, 0%, 60%); }
 
-tree-node.sortable-dragging {
+tree-node.sortable-dragging,
+tree-node.sortable-dropping {
+  position: relative;
   box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+
+tree-node.sortable-dragging { 
   transition: transform 0s;
-  z-index: 10;
-  transform: translateZ(-1px);
+}
+
+tree-node.sortable-dropped { 
+  transition: transform .2s;
 }

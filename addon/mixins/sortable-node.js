@@ -1,7 +1,6 @@
 import Ember from 'ember';
-const { Mixin } = Ember;
-
-const THRESHOLD = 50; // ms
+import DragStateMachine from 'ember-sortable/drag-state-machine';
+const { $, Mixin, run: { next, schedule } } = Ember;
 
 /**
  * @class SortableNode
@@ -43,227 +42,97 @@ export default Mixin.create({
    * @param {jQuery.Event} event
    */
   _sortableStart({ originalEvent }) {
-    let machine = new SortableStateMachine();
+    if (this._sortableStateMachine) { return; }
 
-    machine.onUpdate = machine => this._sortableUpdate(machine);
+    this._sortableStateMachine = new DragStateMachine(() => {
+      this._sortableUpdate();
+    });
 
-    machine.start(originalEvent);
+    this._sortableStateMachine.start(originalEvent);
   },
 
   /**
    * @private
    * @method _sortableUpdate
-   * @param {SortableStateMachine} machine
    */
-  _sortableUpdate({ state, dx, dy }) {
+  _sortableUpdate() {
+    let { state } = this._sortableStateMachine;
     this.set('sortableState', `sortable-${state}`);
+    schedule('afterRender', this, '_sortableAfterRender');
+  },
+
+  /**
+   * @private
+   * @method _sortableAfterRender
+   */
+  _sortableAfterRender() {
+    let { state, dx, dy } = this._sortableStateMachine;
 
     switch (state) {
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
         break;
+      case 'swiped':
+      case 'clicked':
       case 'dropped':
         this.$().css('transform', '');
+        next(() => this._sortableComplete());
         break;
+    }
+  },
+
+  /**
+   * @private
+   * @method _sortableComplete
+   */
+  _sortableComplete() {
+    let { dx, dy } = this._sortableStateMachine;
+    let isOffset = dx > 0 || dy > 0;
+
+    let complete = () => {
+      delete this._sortableStateMachine;
+      this.set('sortableState', null);
+    };
+
+    if (willTransition(this.element) && isOffset) {
+      this.$().one('transitionend', complete);
+    } else {
+      complete();
     }
   }
 
 });
 
 /**
- * @class SortableStateMachine
- * @constructor
+ * @private
+ * @method willTransition
+ * @param {HTMLElement} el
+ * @return {Boolean}
  */
-class SortableStateMachine {
-
-  constructor() {
-    this.state = 'default';
-    this.ot = 0;
-    this.ox = 0;
-    this.oy = 0;
-    this.dx = 0;
-    this.dy = 0;
-    this.listeners = [];
-  }
-
-  /**
-   * @method start
-   * @param {UIEvent} event
-   */
-  start(event) {
-    switch (this.state) {
-      case 'default':
-        this.defaultStart(event);
-    }
-  }
-
-  /**
-   * @method defaultStart
-   * @param {UIEvent} event
-   */
-  defaultStart(event) {
-    this.state = 'waiting';
-    this.ot = Date.now();
-
-    let touch = event.changedTouches && event.changedTouches[0];
-
-    if (touch) {
-      let id = touch.identifier;
-
-      this.ox = touch.pageX;
-      this.oy = touch.pageY;
-
-      this.on('touchmove', touchbind(id, (e, t)  => this.move(e, t)));
-      this.on('touchend', touchbind(id, () => this.stop()));
-    } else {
-      this.ox = event.pageX;
-      this.oy = event.pageY;
-
-      this.on('mousemove', e => this.move(e));
-      this.on('mouseup', e => this.stop(e));
-    }
-
-    this.onUpdate(this);
-  }
-
-
-  /**
-   * @method move
-   * @param {UIEvent} event
-   * @param {Touch} [touch]
-   */
-  move(event, touch) {
-    switch (this.state) {
-      case 'waiting':
-        this.waitingMove(event, touch);
-        break;
-      case 'dragging':
-        this.draggingMove(event, touch);
-        break;
-    }
-  }
-
-  /**
-   * @method waitingMove
-   * @param {UIEvent} event
-   * @param {Touch|null} [touch]
-   */
-  waitingMove(event, touch) {
-    let isTooFast = touch && (Date.now() - this.ot < THRESHOLD);
-
-    if (isTooFast) {
-      this.state = 'swiping';
-      this.onUpdate(this);
-      this.destroy();
-    } else {
-      this.state = 'dragging';
-      this.move(event);
-    }
-  }
-
-  /**
-   * @method draggingMove
-   * @param {UIEvent} event
-   * @param {Touch} [touch]
-   */
-  draggingMove(event, touch) {
-    event.preventDefault();
-
-    this.dx = (touch || event).pageX - this.ox;
-    this.dy = (touch || event).pageY - this.oy;
-
-    this.onUpdate(this);
-  }
-
-  /**
-   * @method stop
-   */
-  stop() {
-    switch (this.state) {
-      case 'waiting':
-        this.waitingStop();
-        break;
-      case 'dragging':
-        this.draggingStop();
-        break;
-    }
-  }
-
-  /**
-   * @method waitingStop
-   */
-  waitingStop() {
-    this.state = 'clicked';
-    this.onUpdate(this);
-    this.destroy();
-  }
-
-  /**
-   * @method draggingStop
-   */
-  draggingStop() {
-    this.state = 'dropped';
-    preventNextClick();
-    this.onUpdate(this);
-    this.destroy();
-  }
-
-  /**
-   * @method on
-   * @param {String} event
-   * @param {Function} callback
-   * @return {Object}
-   */
-  on(event, callback) {
-    window.addEventListener(event, callback, true);
-
-    this.listeners.push({
-      remove() {
-        window.removeEventListener(event, callback, true);
-      }
-    });
-  }
-
-  /**
-   * @method destroy
-   */
-  destroy() {
-    this.listeners.forEach(l => l.remove());
-    delete this.onUpdate;
-  }
-
+function willTransition(el) {
+  return transitionDuration(el) > 0;
 }
 
 /**
- * @method touchbind
- * @param {Number} id
- * @param {Function} callback
- * @return {Function}
+ * @private
+ * @method transitionDuration
+ * @param {HTMLElement} el
+ * @return {Number}
  */
-function touchbind(id, callback) {
-  return event => {
-    let touch = find(event.changedTouches, t => t.identifier === id);
-    if (touch) { callback(event, touch); }
-  };
-}
+function transitionDuration(el) {
+  let value = $(el).css('transition');
+  let match = value.match(/(all|transform) ([\d\.]+)([ms]*)/);
 
-/**
- * @method find
- * @param {Array} list
- * @param {Function} callback
- * @return {Any}
- */
-function find(list, callback) {
-  return Array.prototype.find.call(list, callback);
-}
+  if (match) {
+    let magnitude = parseFloat(match[2]);
+    let unit = match[3];
 
-/**
- * @method preventNextClick
- */
-function preventNextClick() {
-  let noclick = event => {
-    event.stopPropagation();
-    window.removeEventListener('click', noclick, true);
-  };
-  window.addEventListener('click', noclick, true);
+    if (unit === 's') {
+      magnitude *= 1000;
+    }
+
+    return magnitude;
+  }
+
+  return 0;
 }
