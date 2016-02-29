@@ -3,8 +3,8 @@ digraph {
   waiting -> swiping [label="early move"]
   swiping -> destroy
   waiting -> dragging [label="move"]
-  waiting -> clicked [label="stop"]
-  clicked -> destroy
+  waiting -> clicking [label="stop"]
+  clicking -> destroy
   dragging -> dragging [label="move"]
   dragging -> dropped [label="stop"]
   dropped -> destroy

@@ -72,8 +72,8 @@ export default Mixin.create({
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
         break;
-      case 'swiped':
-      case 'clicked':
+      case 'swiping':
+      case 'clicking':
       case 'dropped':
         this.$().css('transform', '');
         next(() => this._sortableComplete());

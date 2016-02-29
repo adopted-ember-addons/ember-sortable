@@ -125,7 +125,7 @@ export default class SortableStateMachine {
    * @method waitingStop
    */
   waitingStop() {
-    this.state = 'clicked';
+    this.state = 'clicking';
     this.onUpdate(this);
     this.destroy();
   }
