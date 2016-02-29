@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import DragStateMachine from 'ember-sortable/drag-state-machine';
-const { $, Mixin } = Ember;
+const { $, Mixin, run: { scheduleOnce } } = Ember;
 
 /**
  * @class SortableNode
@@ -45,7 +45,7 @@ export default Mixin.create({
     if (this._sortableStateMachine) { return; }
 
     this._sortableStateMachine = new DragStateMachine(() => {
-      this._sortableUpdate();
+      this._sortableSync();
     });
 
     this._sortableStateMachine.start(originalEvent);
@@ -53,12 +53,22 @@ export default Mixin.create({
 
   /**
    * @private
-   * @method _sortableUpdate
+   * @method _sortableSync
    */
-  _sortableUpdate() {
-    let { state, dx, dy } = this._sortableStateMachine;
+  _sortableSync() {
+    let { state } = this._sortableStateMachine;
 
     this.set('sortableState', `sortable-${state}`);
+
+    scheduleOnce('afterRender', this, '_sortableAfterRender');
+  },
+
+  /**
+   * @private
+   * @method _sortableAfterRender
+   */
+  _sortableAfterRender() {
+    let { state, dx, dy } = this._sortableStateMachine;
 
     switch (state) {
       case 'dragging':
@@ -66,7 +76,7 @@ export default Mixin.create({
         break;
       case 'swiping':
       case 'clicking':
-      case 'dropped':
+      case 'dropping':
         this.$().css('transform', '').height();
         this._sortableComplete();
         break;
@@ -79,7 +89,7 @@ export default Mixin.create({
    */
   _sortableComplete() {
     let { dx, dy } = this._sortableStateMachine;
-    let isOffset = dx > 0 || dy > 0;
+    let isOffset = dx !== 0 || dy !== 0;
 
     let complete = () => {
       delete this._sortableStateMachine;

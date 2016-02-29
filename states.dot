@@ -6,6 +6,6 @@ digraph {
   waiting -> clicking [label="stop"]
   clicking -> destroy
   dragging -> dragging [label="move"]
-  dragging -> dropped [label="stop"]
-  dropped -> destroy
+  dragging -> dropping [label="stop"]
+  dropping -> destroy
 }

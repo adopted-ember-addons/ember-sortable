@@ -39,7 +39,7 @@ export default class SortableStateMachine {
     this.state = 'waiting';
     this.ot = Date.now();
 
-    let touch = event.changedTouches && event.changedTouches[0];
+    let touch = event.targetTouches && event.targetTouches[0];
 
     if (touch) {
       this.ox = touch.pageX;
@@ -89,7 +89,7 @@ export default class SortableStateMachine {
       this.destroy();
     } else {
       this.state = 'dragging';
-      this.move(event);
+      this.move(event, touch);
     }
   }
 
@@ -134,7 +134,7 @@ export default class SortableStateMachine {
    * @method draggingStop
    */
   draggingStop() {
-    this.state = 'dropped';
+    this.state = 'dropping';
     preventNextClick();
     this.onUpdate(this);
     this.destroy();

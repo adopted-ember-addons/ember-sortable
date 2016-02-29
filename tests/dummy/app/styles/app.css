@@ -180,6 +180,6 @@ tree-node.sortable-dragging {
   transition: transform 0s;
 }
 
-tree-node.sortable-dropped { 
+tree-node.sortable-dropping { 
   transition: transform .2s;
 }
