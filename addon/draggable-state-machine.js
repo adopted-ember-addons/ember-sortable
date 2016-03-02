@@ -1,14 +1,17 @@
+/**
+  @module ember-sortable
+*/
+
+// If the first touchmove arrives within TRESHOLD, we consider it a swipe
 const THRESHOLD = 50; // ms
 
 /**
- * @class SortableStateMachine
+  @class DraggableStateMachine
+  @constructor
+  @param {Function} onUpdate
  */
-export default class SortableStateMachine {
+export default class DraggableStateMachine {
 
-  /**
-   * @constructor
-   * @param {Function} onUpdate
-   */
   constructor(onUpdate = () => {}) {
     this.state = 'default';
     this.onUpdate = onUpdate;
@@ -21,9 +24,9 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method start
-   * @param {UIEvent} event
-   */
+    @method start
+    @param {UIEvent} event
+  */
   start(event) {
     switch (this.state) {
       case 'default':
@@ -32,9 +35,9 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method defaultStart
-   * @param {UIEvent} event
-   */
+    @method defaultStart
+    @param {UIEvent} event
+  */
   defaultStart(event) {
     this.state = 'waiting';
     this.ot = Date.now();
@@ -60,10 +63,10 @@ export default class SortableStateMachine {
 
 
   /**
-   * @method move
-   * @param {UIEvent} event
-   * @param {Touch} [touch]
-   */
+    @method move
+    @param {UIEvent} event
+    @param {Touch|null} [touch]
+  */
   move(event, touch) {
     switch (this.state) {
       case 'waiting':
@@ -76,10 +79,10 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method waitingMove
-   * @param {UIEvent} event
-   * @param {Touch|null} [touch]
-   */
+    @method waitingMove
+    @param {UIEvent} event
+    @param {Touch|null} [touch]
+  */
   waitingMove(event, touch) {
     let isTooFast = touch && (Date.now() - this.ot < THRESHOLD);
 
@@ -94,10 +97,10 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method draggingMove
-   * @param {UIEvent} event
-   * @param {Touch} [touch]
-   */
+    @method draggingMove
+    @param {UIEvent} event
+    @param {Touch|null} [touch]
+  */
   draggingMove(event, touch) {
     event.preventDefault();
 
@@ -108,8 +111,8 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method stop
-   */
+    @method stop
+  */
   stop() {
     switch (this.state) {
       case 'waiting':
@@ -122,8 +125,8 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method waitingStop
-   */
+    @method waitingStop
+  */
   waitingStop() {
     this.state = 'clicking';
     this.onUpdate(this);
@@ -131,7 +134,7 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method draggingStop
+    @method draggingStop
    */
   draggingStop() {
     this.state = 'dropping';
@@ -141,11 +144,10 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method on
-   * @param {String} event
-   * @param {Function} callback
-   * @return {Object}
-   */
+    @method on
+    @param {String} event
+    @param {Function} callback
+  */
   on(event, callback) {
     window.addEventListener(event, callback, true);
 
@@ -157,8 +159,8 @@ export default class SortableStateMachine {
   }
 
   /**
-   * @method destroy
-   */
+    @method destroy
+  */
   destroy() {
     this.listeners.forEach(l => l.remove());
 
@@ -169,11 +171,15 @@ export default class SortableStateMachine {
 }
 
 /**
- * @method touchbind
- * @param {Number} id
- * @param {Function} callback
- * @return {Function}
- */
+  Wraps the given callback such that it will only be called when the incoming
+  touch matches the original touch (by identifier).
+
+  @private
+  @method touchbind
+  @param {Touch} touch
+  @param {Function} callback
+  @return {Function}
+*/
 function touchbind(touch, callback) {
   let { identifier } = touch;
 
@@ -184,18 +190,20 @@ function touchbind(touch, callback) {
 }
 
 /**
- * @method find
- * @param {Array} list
- * @param {Function} callback
- * @return {Any}
- */
+  @private
+  @method find
+  @param {Array} list
+  @param {Function} callback
+  @return {Any}
+*/
 function find(list, callback) {
   return Array.prototype.find.call(list, callback);
 }
 
 /**
- * @method preventNextClick
- */
+  @private
+  @method preventNextClick
+*/
 function preventNextClick() {
   let noclick = event => {
     event.stopPropagation();

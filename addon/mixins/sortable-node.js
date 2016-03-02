@@ -1,18 +1,18 @@
 import Ember from 'ember';
-import DragStateMachine from 'ember-sortable/drag-state-machine';
+import DraggableStateMachine from 'ember-sortable/draggable-state-machine';
 const { $, Mixin, run: { scheduleOnce } } = Ember;
 
 /**
- * @class SortableNode
- * @constructor
- */
+  @class SortableNode
+  @constructor
+*/
 export default Mixin.create({
   classNameBindings: ['sortableState'],
 
   /**
-   * @method mouseDown
-   * @param {jQuery.Event} event
-   */
+    @method mouseDown
+    @param {jQuery.Event} event
+  */
   mouseDown(event) {
     this._super(...arguments);
 
@@ -25,9 +25,9 @@ export default Mixin.create({
   },
 
   /**
-   * @method touchStart
-   * @param {jQuery.Event} event
-   */
+    @method touchStart
+    @param {jQuery.Event} event
+  */
   touchStart(event) {
     this._super(...arguments);
 
@@ -37,14 +37,14 @@ export default Mixin.create({
   },
 
   /**
-   * @private
-   * @method _sortableStart
-   * @param {jQuery.Event} event
-   */
+    @private
+    @method _sortableStart
+    @param {jQuery.Event} event
+  */
   _sortableStart({ originalEvent }) {
     if (this._sortableStateMachine) { return; }
 
-    this._sortableStateMachine = new DragStateMachine(() => {
+    this._sortableStateMachine = new DraggableStateMachine(() => {
       this._sortableSync();
     });
 
@@ -52,21 +52,22 @@ export default Mixin.create({
   },
 
   /**
-   * @private
-   * @method _sortableSync
-   */
+    @private
+    @method _sortableSync
+  */
   _sortableSync() {
-    let { state } = this._sortableStateMachine;
+    let { state, dx, dy } = this._sortableStateMachine;
 
     this.set('sortableState', `sortable-${state}`);
+    this.$().css('transform', `translate(${dx}px, ${dy}px)`);
 
     scheduleOnce('afterRender', this, '_sortableAfterRender');
   },
 
   /**
-   * @private
-   * @method _sortableAfterRender
-   */
+    @private
+    @method _sortableAfterRender
+  */
   _sortableAfterRender() {
     let { state, dx, dy } = this._sortableStateMachine;
 
@@ -77,16 +78,16 @@ export default Mixin.create({
       case 'swiping':
       case 'clicking':
       case 'dropping':
-        this.$().css('transform', '').height();
+        this.$().css('transform', '');
         this._sortableComplete();
         break;
     }
   },
 
   /**
-   * @private
-   * @method _sortableComplete
-   */
+    @private
+    @method _sortableComplete
+  */
   _sortableComplete() {
     let { dx, dy } = this._sortableStateMachine;
     let isOffset = dx !== 0 || dy !== 0;
@@ -106,21 +107,21 @@ export default Mixin.create({
 });
 
 /**
- * @private
- * @method willTransition
- * @param {HTMLElement} el
- * @return {Boolean}
- */
+  @private
+  @method willTransition
+  @param {HTMLElement} el
+  @return {Boolean}
+*/
 function willTransition(el) {
   return transitionDuration(el) > 0;
 }
 
 /**
- * @private
- * @method transitionDuration
- * @param {HTMLElement} el
- * @return {Number}
- */
+  @private
+  @method transitionDuration
+  @param {HTMLElement} el
+  @return {Number}
+*/
 function transitionDuration(el) {
   let value = $(el).css('transition');
   let match = value.match(/(all|transform) ([\d\.]+)([ms]*)/);
