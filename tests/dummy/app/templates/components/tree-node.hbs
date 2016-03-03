@@ -1,5 +1,5 @@
 {{node.label}}
 
 {{#each node.children as |child|}}
-  {{tree-node node=child}}
+  {{tree-node node=child sortableParent=this}}
 {{/each}}

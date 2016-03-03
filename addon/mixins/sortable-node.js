@@ -12,6 +12,71 @@ export default Mixin.create({
   classNameBindings: ['sortableState'],
 
   /**
+    @property sortableParent
+    @type SortableNode|null
+    @default null
+  */
+  sortableParent: null,
+
+  /**
+    @property sortableChildren
+    @type Array
+    @default []
+  */
+  sortableChildren: null,
+
+  /**
+    @constructor
+  */
+  init() {
+    this._super(...arguments);
+
+    if (this.sortableParent) {
+      this.sortableParent.sortableChildren.push(this);
+    }
+
+    this.sortableChildren = [];
+  },
+
+  /**
+    @method willDestroy
+  */
+  willDestroy() {
+    delete this.sortableParent;
+    delete this.sortableChildren;
+  },
+
+  /**
+    @method sortableSeekUp
+    @param {SortableNode}
+  */
+  sortableSeekUp(node) {
+    if (this.sortableParent) {
+      this.sortableParent.sortableSeekUp(node);
+    } else {
+      this.sortableSeekDown(node);
+    }
+  },
+
+  /**
+    @method sortableSeekDown
+    @param {SortableNode}
+  */
+  sortableSeekDown(node) {
+    if (withinBounds(this, node)) {
+      let child = this.sortableChildren.find(child => {
+        return child !== node && withinBounds(child, node);
+      });
+
+      if (child) {
+        child.sortableSeekDown(node);
+      } else {
+        console.log(`Attempting to place ${node.node.label} within ${this.node.label}`);
+      }
+    }
+  },
+
+  /**
     @method mouseDown
     @param {jQuery.Event} event
   */
@@ -60,10 +125,9 @@ export default Mixin.create({
     @method _sortableSync
   */
   _sortableSync() {
-    let { state, dx, dy } = this._sortableStateMachine;
+    let { state } = this._sortableStateMachine;
 
     this.set('sortableState', `sortable-${state}`);
-    this.$().css('transform', `translate(${dx}px, ${dy}px)`);
 
     scheduleOnce('afterRender', this, '_sortableAfterRender');
   },
@@ -78,6 +142,10 @@ export default Mixin.create({
     switch (state) {
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
+
+        if (this.sortableParent) {
+          this.sortableParent.sortableSeekUp(this);
+        }
         break;
       case 'swiping':
       case 'clicking':
@@ -142,4 +210,20 @@ function transitionDuration(el) {
   } else {
     return 0;
   }
+}
+
+/**
+  @private
+  @method withinBounds
+  @param {SortableNode} parent
+  @param {SortableNode} child
+  @return {Boolean}
+*/
+function withinBounds(parent, child) {
+  let { left: xMin, top: yMin } = parent.$().offset();
+  let xMax = xMin + parent.$().outerWidth();
+  let yMax = yMin + parent.$().outerHeight();
+  let { left: x, top: y } = child.$().offset();
+
+  return xMin < x && x < xMax && yMin < y && y < yMax;
 }
