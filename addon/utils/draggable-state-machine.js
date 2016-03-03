@@ -21,6 +21,7 @@ export default class DraggableStateMachine {
     this.dx = 0;
     this.dy = 0;
     this.listeners = [];
+    this.isDestroyed = false;
   }
 
   /**
@@ -170,10 +171,14 @@ export default class DraggableStateMachine {
     @method destroy
   */
   destroy() {
+    if (this.isDestroyed) { return; }
+
     this.listeners.forEach(l => l.remove());
 
     delete this.onUpdate;
     delete this.listeners;
+
+    this.isDestroyed = true;
   }
 
 }
