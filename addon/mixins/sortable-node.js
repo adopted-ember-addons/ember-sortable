@@ -1,5 +1,6 @@
 import Ember from 'ember';
-import DraggableStateMachine from 'ember-sortable/utils/draggable-state-machine';
+import DraggableStateMachine from '../utils/draggable-state-machine';
+import transitionend from '../utils/transitionend';
 const { $, Mixin, run: { scheduleOnce } } = Ember;
 
 /**
@@ -98,7 +99,7 @@ export default Mixin.create({
     };
 
     if (isOffset && willTransition(this.element)) {
-      this.$().one('transitionend', complete);
+      this.$().one(transitionend, complete);
     } else {
       complete();
     }
