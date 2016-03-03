@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import DraggableStateMachine from 'ember-sortable/draggable-state-machine';
+import DraggableStateMachine from 'ember-sortable/utils/draggable-state-machine';
 const { $, Mixin, run: { scheduleOnce } } = Ember;
 
 /**
