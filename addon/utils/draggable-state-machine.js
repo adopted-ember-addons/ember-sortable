@@ -40,8 +40,8 @@ export default class DraggableStateMachine {
     @param {UIEvent} event
   */
   defaultStart(event) {
-    // This is non-ideal but we have to do it to prevent drags from selecting
-    // text at the same time.
+    // This is preventDefault non-ideal but we have to do it to prevent drags
+    // from selecting text.
     //
     // TODO: Find a workaround
     event.preventDefault();
