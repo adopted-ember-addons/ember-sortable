@@ -46,7 +46,7 @@ export default class DraggableStateMachine {
     event.preventDefault();
 
     this.state = 'waiting';
-    this.ot = Date.now();
+    this.ot = event.timeStamp;
 
     let touch = event.targetTouches && event.targetTouches[0];
 
@@ -90,7 +90,7 @@ export default class DraggableStateMachine {
     @param {Touch|null} [touch]
   */
   waitingMove(event, touch) {
-    let isTooFast = touch && (Date.now() - this.ot < THRESHOLD);
+    let isTooFast = touch && (event.timeStamp - this.ot < THRESHOLD);
 
     if (isTooFast) {
       this.state = 'swiping';
