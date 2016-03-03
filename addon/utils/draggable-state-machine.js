@@ -40,12 +40,6 @@ export default class DraggableStateMachine {
     @param {UIEvent} event
   */
   defaultStart(event) {
-    // This is preventDefault non-ideal but we have to do it to prevent drags
-    // from selecting text.
-    //
-    // TODO: Find a workaround
-    event.preventDefault();
-
     this.state = 'waiting';
     this.ot = event.timeStamp;
 
