@@ -8,6 +8,7 @@ const { $, Mixin, run: { scheduleOnce } } = Ember;
   @constructor
 */
 export default Mixin.create({
+
   classNameBindings: ['sortableState'],
 
   /**
@@ -135,12 +136,10 @@ function transitionDuration(el) {
     let magnitude = parseFloat(match[2]);
     let unit = match[3];
 
-    if (unit === 's') {
-      magnitude *= 1000;
-    }
+    if (unit === 's') { magnitude *= 1000; }
 
     return magnitude;
+  } else {
+    return 0;
   }
-
-  return 0;
 }
