@@ -39,6 +39,12 @@ export default class DraggableStateMachine {
     @param {UIEvent} event
   */
   defaultStart(event) {
+    // This is non-ideal but we have to do it to prevent drags from selecting
+    // text at the same time.
+    //
+    // TODO: Find a workaround
+    event.preventDefault();
+
     this.state = 'waiting';
     this.ot = Date.now();
 
@@ -149,11 +155,13 @@ export default class DraggableStateMachine {
     @param {Function} callback
   */
   on(event, callback) {
-    window.addEventListener(event, callback, true);
+    let capture = true;
+
+    window.addEventListener(event, callback, capture);
 
     this.listeners.push({
       remove() {
-        window.removeEventListener(event, callback, true);
+        window.removeEventListener(event, callback, capture);
       }
     });
   }
