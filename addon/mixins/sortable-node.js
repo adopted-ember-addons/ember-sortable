@@ -12,6 +12,13 @@ export default Mixin.create({
   classNameBindings: ['sortableState'],
 
   /**
+    @property model
+    @type Any
+    @default null
+  */
+  model: null,
+
+  /**
     @property sortableParent
     @type SortableNode|null
     @default null
@@ -71,7 +78,7 @@ export default Mixin.create({
       if (child) {
         child.sortableSeekDown(node);
       } else {
-        console.log(`Attempting to place ${node.node.label} within ${this.node.label}`);
+        console.log(`Attempting to place ${node.model.label} within ${this.model.label}`);
       }
     }
   },
