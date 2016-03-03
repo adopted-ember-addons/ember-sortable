@@ -123,6 +123,8 @@ function willTransition(el) {
   @return {Number}
 */
 function transitionDuration(el) {
+  $(el).height(); // force re-flow
+
   let value = $(el).css('transition');
   let match = value.match(/(all|transform) ([\d\.]+)([ms]*)/);
 
