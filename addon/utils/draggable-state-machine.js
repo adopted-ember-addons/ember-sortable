@@ -20,6 +20,8 @@ export default class DraggableStateMachine {
     this.oy = 0;
     this.dx = 0;
     this.dy = 0;
+    this.x = 0;
+    this.y = 0;
     this.listeners = [];
     this.isDestroyed = false;
   }
@@ -58,6 +60,9 @@ export default class DraggableStateMachine {
       this.on('mousemove', e => this.move(e));
       this.on('mouseup', e => this.stop(e));
     }
+
+    this.x = this.ox;
+    this.y = this.oy;
 
     this.onUpdate(this);
   }
@@ -105,8 +110,10 @@ export default class DraggableStateMachine {
   draggingMove(event, touch) {
     event.preventDefault();
 
-    this.dx = (touch || event).pageX - this.ox;
-    this.dy = (touch || event).pageY - this.oy;
+    this.x = (touch || event).pageX;
+    this.y = (touch || event).pageY;
+    this.dx = this.x - this.ox;
+    this.dy = this.y - this.oy;
 
     this.onUpdate(this);
   }

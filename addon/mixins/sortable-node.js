@@ -228,7 +228,7 @@ function transitionDuration(el) {
 */
 function withinBounds(parent, child) {
   let { top, left, bottom, right } = getBounds(parent.element);
-  let { left: x, top: y } = child.$().offset();
+  let { x, y } = getCursor(child);
 
   return left <= x && x <= right && top <= y && y <= bottom;
 }
@@ -246,4 +246,14 @@ function getBounds(element) {
   let bottom = top + $el.outerHeight();
 
   return { top, left, bottom, right };
+}
+
+/**
+  @private
+  @method getCursor
+  @param {SortableNode} node
+  @return {Object} { x, y }
+*/
+function getCursor(node) {
+  return node._sortableStateMachine;
 }
