@@ -183,3 +183,7 @@ tree-node.sortable-dragging {
 tree-node.sortable-dropping { 
   transition: transform .2s;
 }
+
+tree-node.sortable-receiving {
+  background: red;
+}

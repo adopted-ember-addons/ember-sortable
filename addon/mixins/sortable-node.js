@@ -61,8 +61,19 @@ export default Mixin.create({
     if (this.sortableParent) {
       this.sortableParent.sortableSeekUp(node);
     } else {
+      this.sortableReset();
       this.sortableSeekDown(node);
     }
+  },
+
+  /**
+    @method sortableReset
+  */
+  sortableReset() {
+    this.set('sortableState', null);
+    this.sortableChildren.forEach(child => {
+      child.sortableReset();
+    });
   },
 
   /**
@@ -78,6 +89,7 @@ export default Mixin.create({
       if (child) {
         child.sortableSeekDown(node);
       } else {
+        this.set('sortableState', 'sortable-receiving');
         console.log(`Attempting to place ${node.model.label} within ${this.model.label}`);
       }
     }
