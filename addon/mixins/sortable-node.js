@@ -54,19 +54,6 @@ export default Mixin.create({
   },
 
   /**
-    @method sortableSeekUp
-    @param {SortableNode}
-  */
-  sortableSeekUp(node) {
-    if (this.sortableParent) {
-      this.sortableParent.sortableSeekUp(node);
-    } else {
-      this.sortableReset();
-      this.sortableSeekDown(node);
-    }
-  },
-
-  /**
     @method sortableReset
   */
   sortableReset() {
@@ -77,17 +64,17 @@ export default Mixin.create({
   },
 
   /**
-    @method sortableSeekDown
+    @method sortableSeek
     @param {SortableNode}
   */
-  sortableSeekDown(node) {
+  sortableSeek(node) {
     if (withinBounds(this, node)) {
       let child = this.sortableChildren.find(child => {
         return child !== node && withinBounds(child, node);
       });
 
       if (child) {
-        child.sortableSeekDown(node);
+        child.sortableSeek(node);
       } else {
         this.set('sortableState', 'sortable-receiving');
         console.log(`Attempting to place ${node.model.label} within ${this.model.label}`);
@@ -161,10 +148,8 @@ export default Mixin.create({
     switch (state) {
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
-
-        if (this.sortableParent) {
-          this.sortableParent.sortableSeekUp(this);
-        }
+        root(this).sortableReset();
+        root(this).sortableSeek(this);
         break;
       case 'swiping':
       case 'clicking':
@@ -185,7 +170,7 @@ export default Mixin.create({
 
     let complete = () => {
       delete this._sortableStateMachine;
-      this.set('sortableState', null);
+      root(this).sortableReset();
     };
 
     if (isOffset && willTransition(this.element)) {
@@ -268,4 +253,10 @@ function getBounds(element) {
 */
 function getCursor(node) {
   return node._sortableStateMachine;
+}
+
+function root(node) {
+  let result = node;
+  while (result.sortableParent) { result = result.sortableParent; }
+  return result;
 }
