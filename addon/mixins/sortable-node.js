@@ -227,10 +227,23 @@ function transitionDuration(el) {
   @return {Boolean}
 */
 function withinBounds(parent, child) {
-  let { left: xMin, top: yMin } = parent.$().offset();
-  let xMax = xMin + parent.$().outerWidth();
-  let yMax = yMin + parent.$().outerHeight();
+  let { top, left, bottom, right } = getBounds(parent.element);
   let { left: x, top: y } = child.$().offset();
 
-  return xMin < x && x < xMax && yMin < y && y < yMax;
+  return left <= x && x <= right && top <= y && y <= bottom;
+}
+
+/**
+  @private
+  @method getBounds
+  @param {HTMLElement} element
+  @return {Object} { top, left, bottom, right }
+*/
+function getBounds(element) {
+  let $el = $(element);
+  let { left, top } = $el.offset();
+  let right = left + $el.outerWidth();
+  let bottom = top + $el.outerHeight();
+
+  return { top, left, bottom, right };
 }
