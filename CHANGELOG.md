@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.8.1 (2016-03-10)
+
+- [#87](https://github.com/jgwhite/ember-sortable/pull/90) Backfill triggerEvent in drag for Ember >= 2.5 [@jgwhite](https://github.com/jgwhite)
+
 ### 1.8.0 (2016-02-23)
 
 - [#87](https://github.com/jgwhite/ember-sortable/pull/87) Introduce `spacing` property on sortable-item [@dianafa](https://github.com/dianafa)
