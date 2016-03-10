@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import DraggableStateMachine from '../utils/draggable-state-machine';
+import willTransition from '../utils/will-transition';
 import transitionend from '../utils/transitionend';
 const { $, Mixin, run: { scheduleOnce } } = Ember;
 
@@ -12,11 +13,11 @@ export default Mixin.create({
   classNameBindings: ['sortableState'],
 
   /**
-    @property model
+    @property sortableModel
     @type Any
     @default null
   */
-  model: null,
+  sortableModel: null,
 
   /**
     @property sortableParent
@@ -49,9 +50,42 @@ export default Mixin.create({
     @method willDestroy
   */
   willDestroy() {
+    this._super(...arguments);
+
     delete this.sortableParent;
     delete this.sortableChildren;
   },
+
+  /**
+    @method touchStart
+    @param {jQuery.Event} event
+  */
+  touchStart(event) {
+    this._super(...arguments);
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._sortableStart(event);
+  },
+
+  /**
+    @method mouseDown
+    @param {jQuery.Event} event
+  */
+  mouseDown(event) {
+    this._super(...arguments);
+
+    if (event.which !== 1) { return; }
+    if (event.ctrlKey) { return; }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this._sortableStart(event);
+  },
+
+  // === Protected ===
 
   /**
     @method sortableReset
@@ -77,39 +111,12 @@ export default Mixin.create({
         child.sortableSeek(node);
       } else {
         this.set('sortableState', 'sortable-receiving');
-        console.log(`Attempting to place ${node.model.label} within ${this.model.label}`);
+        console.log(`Attempting to place ${node.sortableModel.label} within ${this.sortableModel.label}`);
       }
     }
   },
 
-  /**
-    @method mouseDown
-    @param {jQuery.Event} event
-  */
-  mouseDown(event) {
-    this._super(...arguments);
-
-    if (event.which !== 1) { return; }
-    if (event.ctrlKey) { return; }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    this._sortableStart(event);
-  },
-
-  /**
-    @method touchStart
-    @param {jQuery.Event} event
-  */
-  touchStart(event) {
-    this._super(...arguments);
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    this._sortableStart(event);
-  },
+  // === Private ===
 
   /**
     @private
@@ -148,8 +155,9 @@ export default Mixin.create({
     switch (state) {
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
-        root(this).sortableReset();
-        root(this).sortableSeek(this);
+        let root = getRoot(this);
+        root.sortableReset();
+        root.sortableSeek(this);
         break;
       case 'swiping':
       case 'clicking':
@@ -170,7 +178,7 @@ export default Mixin.create({
 
     let complete = () => {
       delete this._sortableStateMachine;
-      root(this).sortableReset();
+      getRoot(this).sortableReset();
     };
 
     if (isOffset && willTransition(this.element)) {
@@ -181,40 +189,6 @@ export default Mixin.create({
   }
 
 });
-
-/**
-  @private
-  @method willTransition
-  @param {HTMLElement} el
-  @return {Boolean}
-*/
-function willTransition(el) {
-  return transitionDuration(el) > 0;
-}
-
-/**
-  @private
-  @method transitionDuration
-  @param {HTMLElement} el
-  @return {Number}
-*/
-function transitionDuration(el) {
-  $(el).height(); // force re-flow
-
-  let value = $(el).css('transition');
-  let match = value.match(/(all|transform) ([\d\.]+)([ms]*)/);
-
-  if (match) {
-    let magnitude = parseFloat(match[2]);
-    let unit = match[3];
-
-    if (unit === 's') { magnitude *= 1000; }
-
-    return magnitude;
-  } else {
-    return 0;
-  }
-}
 
 /**
   @private
@@ -255,7 +229,13 @@ function getCursor(node) {
   return node._sortableStateMachine;
 }
 
-function root(node) {
+/**
+  @private
+  @method getRoot
+  @param {SortableNode} node
+  @return {SortableNode}
+*/
+function getRoot(node) {
   let result = node;
   while (result.sortableParent) { result = result.sortableParent; }
   return result;
