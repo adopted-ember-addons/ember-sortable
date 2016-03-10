@@ -6,6 +6,24 @@
 const THRESHOLD = 50; // ms
 
 /**
+  Usage:
+
+  ```js
+  window.onmousedown = event => {
+    let callback = () => console.log(machine.state, machine.dx, machine.dy);
+    let machine = new DraggableStateMachine(callback);
+    machine.start(event);
+  };
+  ```
+
+  Will produce console output like:
+
+  ```
+  > "waiting" 0 0
+  > "dragging" 0 10
+  > "dropping" 0 10
+  ```
+
   @class DraggableStateMachine
   @constructor
   @param {Function} onUpdate
@@ -25,6 +43,46 @@ export default class DraggableStateMachine {
     this.listeners = [];
     this.isDestroyed = false;
   }
+
+  /**
+    Current state of the gesture.
+
+    @property state
+    @type 'default' | 'waiting' | 'dragging' | 'dropping' | 'swiping' | 'clicking'
+    @default 'default'
+  */
+
+  /**
+    Horizontal position relative to the document.
+
+    @property x
+    @type Number
+    @default 0
+  */
+
+  /**
+    Vertical position relative to the document.
+
+    @property y
+    @type Number
+    @default 0
+  */
+
+  /**
+    Horizontal distance from point of contact.
+
+    @property dx
+    @type Number
+    @default 0
+  */
+
+  /**
+    Vertical distance from point of contact.
+
+    @property dy
+    @type Number
+    @default 0
+  */
 
   /**
     @method start
