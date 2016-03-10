@@ -2,7 +2,8 @@ import Ember from 'ember';
 import DraggableStateMachine from '../utils/draggable-state-machine';
 import willTransition from '../utils/will-transition';
 import transitionend from '../utils/transitionend';
-const { $, Mixin, run: { scheduleOnce } } = Ember;
+import getBounds from '../utils/get-bounds';
+const { Mixin, run: { scheduleOnce } } = Ember;
 
 /**
   @class SortableNode
@@ -171,21 +172,6 @@ function withinBounds(parent, child) {
   let { x, y } = getCursor(child);
 
   return left <= x && x <= right && top <= y && y <= bottom;
-}
-
-/**
-  @private
-  @method getBounds
-  @param {HTMLElement} element
-  @return {Object} { top, left, bottom, right }
-*/
-function getBounds(element) {
-  let $el = $(element);
-  let { left, top } = $el.offset();
-  let right = left + $el.outerWidth();
-  let bottom = top + $el.outerHeight();
-
-  return { top, left, bottom, right };
 }
 
 /**
