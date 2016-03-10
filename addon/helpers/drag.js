@@ -1,4 +1,5 @@
 import Ember from 'ember';
+const { $ } = Ember;
 
 /**
   Drags elements by an offset specified in pixels.
@@ -31,7 +32,6 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
   const {
     andThen,
     findWithAssert,
-    triggerEvent,
     wait
   } = app.testHelpers;
 
@@ -55,41 +55,48 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     let targetX = itemOffset.left + offset.dx;
     let targetY = itemOffset.top + offset.dy;
 
-    triggerEvent(item, start, {
+    triggerEvent(app, item, start, {
       pageX: itemOffset.left,
       pageY: itemOffset.top,
       which
-    }).then(() => {
-      if (callbacks.dragstart) {
-        callbacks.dragstart();
-      }
     });
 
-    triggerEvent(item, move, {
+    if (callbacks.dragstart) {
+      andThen(callbacks.dragstart);
+    }
+
+    triggerEvent(app, item, move, {
       pageX: itemOffset.left,
       pageY: itemOffset.top
-    }).then(() => {
-      if (callbacks.dragmove) {
-        callbacks.dragmove();
-      }
     });
 
-    triggerEvent(item, move, {
+    if (callbacks.dragmove) {
+      andThen(callbacks.dragmove);
+    }
+
+    triggerEvent(app, item, move, {
       pageX: targetX,
       pageY: targetY
     });
 
-    triggerEvent(item, end, {
+    triggerEvent(app, item, end, {
       pageX: targetX,
       pageY: targetY
-    }).then(() => {
-      if (callbacks.dragend) {
-        callbacks.dragend();
-      }
     });
+
+    if (callbacks.dragend) {
+      andThen(callbacks.dragend);
+    }
   });
 
   return wait();
+}
+
+function triggerEvent(app, el, type, props) {
+  return app.testHelpers.andThen(() => {
+    let event = $.Event(type, props);
+    $(el).trigger(event);
+  });
 }
 
 export default Ember.Test.registerAsyncHelper('drag', drag);
