@@ -85,37 +85,6 @@ export default Mixin.create({
     this._sortableStart(event);
   },
 
-  // === Protected ===
-
-  /**
-    @method sortableReset
-  */
-  sortableReset() {
-    this.set('sortableState', null);
-    this.sortableChildren.forEach(child => {
-      child.sortableReset();
-    });
-  },
-
-  /**
-    @method sortableSeek
-    @param {SortableNode}
-  */
-  sortableSeek(node) {
-    if (withinBounds(this, node)) {
-      let child = this.sortableChildren.find(child => {
-        return child !== node && withinBounds(child, node);
-      });
-
-      if (child) {
-        child.sortableSeek(node);
-      } else {
-        this.set('sortableState', 'sortable-receiving');
-        console.log(`Attempting to place ${node.sortableModel.label} within ${this.sortableModel.label}`);
-      }
-    }
-  },
-
   // === Private ===
 
   /**
@@ -156,8 +125,8 @@ export default Mixin.create({
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
         let root = getRoot(this);
-        root.sortableReset();
-        root.sortableSeek(this);
+        resetTree(root);
+        seek(root, this);
         break;
       case 'swiping':
       case 'clicking':
@@ -178,7 +147,7 @@ export default Mixin.create({
 
     let complete = () => {
       delete this._sortableStateMachine;
-      getRoot(this).sortableReset();
+      resetTree(getRoot(this));
     };
 
     if (isOffset && willTransition(this.element)) {
@@ -239,4 +208,33 @@ function getRoot(node) {
   let result = node;
   while (result.sortableParent) { result = result.sortableParent; }
   return result;
+}
+
+/**
+  @private
+  @method resetTree
+  @param {SortableNode} root
+*/
+function resetTree(root) {
+  root.set('sortableState', null);
+  root.sortableChildren.forEach(resetTree);
+}
+
+/**
+  @private
+  @method seek
+  @param {SortableNode} root
+*/
+function seek(root, node) {
+  if (withinBounds(root, node)) {
+    let child = root.sortableChildren.find(child => {
+      return child !== node && withinBounds(child, node);
+    });
+
+    if (child) {
+      seek(child, node);
+    } else {
+      root.set('sortableState', 'sortable-receiving');
+    }
+  }
 }
