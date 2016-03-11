@@ -30,9 +30,10 @@ const THRESHOLD = 50; // ms
  */
 export default class DraggableStateMachine {
 
-  constructor(onUpdate = () => {}) {
-    this.state = 'default';
+  constructor(onUpdate = () => {}, eventTarget = window) {
     this.onUpdate = onUpdate;
+    this.eventTarget = eventTarget;
+    this.state = 'default';
     this.ot = 0;
     this.ox = 0;
     this.oy = 0;
@@ -204,7 +205,7 @@ export default class DraggableStateMachine {
    */
   draggingStop() {
     this.state = 'dropping';
-    preventNextClick();
+    preventNextClick(this.eventTarget);
     this.onUpdate(this);
     this.destroy();
   }
@@ -217,11 +218,11 @@ export default class DraggableStateMachine {
   on(event, callback) {
     let capture = true;
 
-    window.addEventListener(event, callback, capture);
+    this.eventTarget.addEventListener(event, callback, capture);
 
     this.listeners.push({
-      remove() {
-        window.removeEventListener(event, callback, capture);
+      remove: () => {
+        this.eventTarget.removeEventListener(event, callback, capture);
       }
     });
   }
@@ -276,10 +277,11 @@ function find(list, callback) {
   @private
   @method preventNextClick
 */
-function preventNextClick() {
+function preventNextClick(eventTarget) {
   let noclick = event => {
+    event.preventDefault();
     event.stopPropagation();
-    window.removeEventListener('click', noclick, true);
+    eventTarget.removeEventListener('click', noclick, true);
   };
-  window.addEventListener('click', noclick, true);
+  eventTarget.addEventListener('click', noclick, true);
 }
