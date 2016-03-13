@@ -110,8 +110,10 @@ export default Mixin.create({
     let { state } = this._sortableStateMachine;
     let root = getRoot(this);
 
-    resetTree(root);
-    seek(root, this);
+    if (state === 'dragging') {
+      resetTree(root);
+      seek(root, this);
+    }
 
     this.set('sortableState', `sortable-${state}`);
 
