@@ -64,7 +64,6 @@ export default Mixin.create({
   touchStart(event) {
     this._super(...arguments);
 
-    event.preventDefault();
     event.stopPropagation();
 
     this._sortableStart(event);
