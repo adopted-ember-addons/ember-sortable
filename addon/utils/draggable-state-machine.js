@@ -270,7 +270,13 @@ function touchbind(touch, callback) {
   @return {Any}
 */
 function find(list, callback) {
-  return Array.prototype.find.call(list, callback);
+  for (let i = 0; i < list.length; i++) {
+    let item = list[i];
+
+    if (callback(item)) {
+      return item;
+    }
+  }
 }
 
 /**
