@@ -110,7 +110,7 @@ export default class DraggableStateMachine {
       this.ox = touch.pageX;
       this.oy = touch.pageY;
 
-      this.on('touchmove', touchbind(touch, (e, t)  => this.move(e, t)));
+      this.on('touchmove', touchbind(touch, (e, t) => this.move(e, t)));
       this.on('touchend', touchbind(touch, () => this.stop()));
     } else {
       this.ox = event.pageX;
