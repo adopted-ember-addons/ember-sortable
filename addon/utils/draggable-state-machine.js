@@ -3,7 +3,7 @@
 */
 
 // If the first touchmove arrives within TRESHOLD, we consider it a swipe
-const THRESHOLD = 50; // ms
+const THRESHOLD = 100; // ms
 
 /**
   Usage:
