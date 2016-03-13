@@ -108,6 +108,10 @@ export default Mixin.create({
   */
   _sortableSync() {
     let { state } = this._sortableStateMachine;
+    let root = getRoot(this);
+
+    resetTree(root);
+    seek(root, this);
 
     this.set('sortableState', `sortable-${state}`);
 
@@ -124,9 +128,6 @@ export default Mixin.create({
     switch (state) {
       case 'dragging':
         this.$().css('transform', `translate(${dx}px, ${dy}px)`);
-        let root = getRoot(this);
-        resetTree(root);
-        seek(root, this);
         break;
       case 'swiping':
       case 'clicking':
