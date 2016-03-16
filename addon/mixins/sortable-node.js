@@ -76,6 +76,7 @@ export default Mixin.create({
     if (event.which !== 1) { return; }
     if (event.ctrlKey) { return; }
 
+    event.preventDefault();
     event.stopPropagation();
 
     this._sortableStart(event);
