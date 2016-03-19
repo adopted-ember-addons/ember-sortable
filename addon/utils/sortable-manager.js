@@ -15,7 +15,7 @@ export default class SortableManager {
   constructor({ node, onComplete }) {
     this.node = node;
     this.onComplete = onComplete;
-    this.draggable = new DraggableStateMachine(() => this.sync());
+    this.machine = new DraggableStateMachine(() => this.sync());
   }
 
   /**
@@ -33,14 +33,14 @@ export default class SortableManager {
     @param {UIEvent} event
   */
   start(event) {
-    this.draggable.start(event);
+    this.machine.start(event);
   }
 
   /**
     @method sync
   */
   sync() {
-    let { state } = this.draggable;
+    let { state } = this.machine;
 
     this.node.set('sortableState', `sortable-${state}`);
 
@@ -52,7 +52,7 @@ export default class SortableManager {
     @method afterRender
   */
   afterRender() {
-    let { state, dx, dy } = this.draggable;
+    let { state, dx, dy } = this.machine;
 
     switch (state) {
       case 'dragging':
@@ -72,7 +72,7 @@ export default class SortableManager {
     @method complete
   */
   complete() {
-    let { dx, dy } = this.draggable;
+    let { dx, dy } = this.machine;
     let isOffset = dx !== 0 || dy !== 0;
 
     let complete = () => {
