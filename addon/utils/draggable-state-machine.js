@@ -117,7 +117,7 @@ export default class DraggableStateMachine {
       this.oy = event.pageY;
 
       this.on('mousemove', e => this.move(e));
-      this.on('mouseup', e => this.stop(e));
+      this.on('mouseup', () => this.stop());
     }
 
     this.x = this.ox;
@@ -221,7 +221,7 @@ export default class DraggableStateMachine {
     this.eventTarget.addEventListener(event, callback, capture);
 
     this.listeners.push({
-      remove: () => {
+      destroy: () => {
         this.eventTarget.removeEventListener(event, callback, capture);
       }
     });
@@ -233,7 +233,7 @@ export default class DraggableStateMachine {
   destroy() {
     if (this.isDestroyed) { return; }
 
-    this.listeners.forEach(l => l.remove());
+    this.listeners.forEach(l => l.destroy());
 
     delete this.onUpdate;
     delete this.listeners;
@@ -284,10 +284,11 @@ function find(list, callback) {
   @method preventNextClick
 */
 function preventNextClick(eventTarget) {
+  let capture = true;
   let noclick = event => {
     event.preventDefault();
     event.stopPropagation();
-    eventTarget.removeEventListener('click', noclick, true);
+    eventTarget.removeEventListener('click', noclick, capture);
   };
-  eventTarget.addEventListener('click', noclick, true);
+  eventTarget.addEventListener('click', noclick, capture);
 }
