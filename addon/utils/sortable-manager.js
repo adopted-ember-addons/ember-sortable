@@ -1,8 +1,9 @@
 import Ember from 'ember';
-const { run: { scheduleOnce } } = Ember;
+const { get, run: { scheduleOnce }, typeOf } = Ember;
 import DraggableStateMachine from './draggable-state-machine';
 import willTransition from './will-transition';
 import transitionend from './transitionend';
+import getBounds from './get-bounds';
 
 /**
   @class SortableManager
@@ -37,12 +38,19 @@ export default class SortableManager {
   }
 
   /**
+    @private
     @method sync
   */
   sync() {
     let { state } = this.machine;
 
+    this.cascade(n => n.set('sortableState', null));
     this.node.set('sortableState', `sortable-${state}`);
+
+    let receiver = this.receiver();
+    if (receiver) {
+      receiver.set('sortableState', `sortable-receiving`);
+    }
 
     scheduleOnce('afterRender', this, 'afterRender');
   }
@@ -76,7 +84,7 @@ export default class SortableManager {
     let isOffset = dx !== 0 || dy !== 0;
 
     let complete = () => {
-      this.node.set('sortableState', null);
+      this.cascade(n => n.set('sortableState', null));
       if (this.onComplete) { this.onComplete(); }
     };
 
@@ -87,4 +95,81 @@ export default class SortableManager {
     }
   }
 
+  /**
+    @private
+    @method receiver
+    @return {SortableNode}
+  */
+  receiver() {
+    return findReceiver([this.root()], this.node, this.machine);
+  }
+
+  /**
+    @private
+    @method root
+    @return {SortableNode}
+  */
+  root() {
+    let result = this.node;
+    while (result.sortableParent) { result = result.sortableParent; }
+    return result;
+  }
+
+  /**
+    Call `func` for each node in the tree.
+    @private
+    @method cascade
+    @param {Function} func
+  */
+  cascade(func) {
+    treeEach(this.root(), func);
+  }
+}
+
+/**
+  @private
+  @method findReceiver
+  @param {Array} candidates
+  @param {SortableNode} node
+  @param {DraggableStateMachine} machine
+  @return {SortableNode}
+*/
+function findReceiver(candidates, node, machine) {
+  let receiver = candidates.find(candidate => {
+    if (candidate === node) { return false; }
+    if (!withinBounds(candidate, machine)) { return false; }
+    let hook = get(candidate, 'canReceiveSortable');
+    let type = typeOf(hook);
+    if (type === 'function') { return hook.call(candidate, node); }
+    if (type === 'boolean') { return hook; }
+
+    return true;
+  });
+
+  if (receiver) {
+    return findReceiver(receiver.sortableChildren, node, machine) || receiver;
+  }
+}
+
+/**
+  @private
+  @method withinBounds
+  @param {SortableNode} node
+  @param {Object} point
+*/
+function withinBounds(node, { x, y }) {
+  let { top, left, bottom, right } = getBounds(node.element);
+  return left <= x && x <= right && top <= y && y <= bottom;
+}
+
+/**
+  Depth-first recursive tree-traversing each.
+  @private
+  @method treeEach
+  @param {SortableNode} node
+  @param {Function} func
+*/
+function treeEach(node, func) {
+  func(node);
+  node.sortableChildren.forEach(child => treeEach(child, func));
 }

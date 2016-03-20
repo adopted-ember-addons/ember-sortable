@@ -5,5 +5,9 @@ import { alias } from 'ember-computed';
 export default Component.extend(SortableNode, {
   tagName: 'tree-node',
 
-  model: alias('sortableModel')
+  model: alias('sortableModel'),
+
+  canReceiveSortable() {
+    return this.sortableModel.label.split('.').length < 3;
+  }
 });
