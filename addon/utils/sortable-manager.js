@@ -65,6 +65,7 @@ export default class SortableManager {
     switch (state) {
       case 'dragging':
         this.node.$().css('transform', `translate(${dx}px, ${dy}px)`);
+        this.arrange();
         break;
       case 'swiping':
       case 'clicking':
@@ -73,6 +74,14 @@ export default class SortableManager {
         this.complete();
         break;
     }
+  }
+
+  /**
+    @private
+    @method arrange
+  */
+  arrange() {
+    // TODO
   }
 
   /**

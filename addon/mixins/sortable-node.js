@@ -112,7 +112,7 @@ export default Mixin.create({
 
     this._sortableManager = new SortableManager({
       node: this,
-      onComplete: (receiver, position) => this.completeSorting(receiver, position)
+      onComplete: (...args) => this.completeSorting(...args)
     });
 
     this._sortableManager.start(originalEvent);
