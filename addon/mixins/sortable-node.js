@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import SortableManager from '../utils/sortable-manager';
-const { Mixin } = Ember;
+const { A, Mixin } = Ember;
 
 /**
   @class SortableNode
@@ -37,11 +37,11 @@ export default Mixin.create({
   init() {
     this._super(...arguments);
 
-    if (this.sortableParent) {
-      this.sortableParent.sortableChildren.push(this);
-    }
+    this.sortableChildren = A();
 
-    this.sortableChildren = [];
+    if (this.sortableParent) {
+      this.sortableParent.addSortableChild(this);
+    }
   },
 
   /**
@@ -50,8 +50,28 @@ export default Mixin.create({
   willDestroy() {
     this._super(...arguments);
 
-    delete this.sortableParent;
-    delete this.sortableChildren;
+    if (this.sortableParent) {
+      this.sortableParent.removeSortableChild(this);
+      delete this.sortableParent;
+    }
+  },
+
+  /**
+    @private
+    @method addSortableChild
+    @param {SortableNode} child
+  */
+  addSortableChild(child) {
+    this.sortableChildren.addObject(child);
+  },
+
+  /**
+    @private
+    @method removeSortableChild
+    @param {SortableNode} child
+  */
+  removeSortableChild(child) {
+    this.sortableChildren.removeObject(child);
   },
 
   /**
