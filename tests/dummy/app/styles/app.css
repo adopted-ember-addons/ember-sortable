@@ -172,6 +172,8 @@ tree-node {
 tree-node > tree-node { background: hsl(0, 0%, 80%); }
 tree-node > tree-node > tree-node { background: hsl(0, 0%, 70%); }
 tree-node > tree-node > tree-node > tree-node { background: hsl(0, 0%, 60%); }
+tree-node > tree-node > tree-node > tree-node > tree-node { background: hsl(0, 0%, 50%); }
+tree-node > tree-node > tree-node > tree-node > tree-node > tree-node { background: hsl(0, 0%, 40%); }
 
 tree-node.sortable-dragging,
 tree-node.sortable-dropping {

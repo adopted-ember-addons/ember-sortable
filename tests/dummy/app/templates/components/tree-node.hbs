@@ -1,5 +1,5 @@
 {{model.label}}
 
 {{#each model.children as |child|}}
-  {{tree-node model=child sortableParent=this}}
+  {{tree-node model=child sortableParent=this onMove=(action onMove)}}
 {{/each}}

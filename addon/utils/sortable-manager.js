@@ -46,10 +46,10 @@ export default class SortableManager {
 
     this.cascade(n => n.set('sortableState', null));
     this.node.set('sortableState', `sortable-${state}`);
+    this.receiver = this.findReceiver();
 
-    let receiver = this.receiver();
-    if (receiver) {
-      receiver.set('sortableState', `sortable-receiving`);
+    if (this.receiver) {
+      this.receiver.set('sortableState', `sortable-receiving`);
     }
 
     scheduleOnce('afterRender', this, 'afterRender');
@@ -85,7 +85,9 @@ export default class SortableManager {
 
     let complete = () => {
       this.cascade(n => n.set('sortableState', null));
-      if (this.onComplete) { this.onComplete(); }
+      if (this.onComplete) {
+        this.onComplete(this.receiver, 0);
+      }
     };
 
     if (isOffset && willTransition(this.node.element)) {
@@ -97,10 +99,10 @@ export default class SortableManager {
 
   /**
     @private
-    @method receiver
+    @method findReceiver
     @return {SortableNode}
   */
-  receiver() {
+  findReceiver() {
     return findReceiver([this.root()], this.node, this.machine);
   }
 
@@ -131,13 +133,13 @@ export default class SortableManager {
   @method findReceiver
   @param {Array} candidates
   @param {SortableNode} node
-  @param {DraggableStateMachine} machine
+  @param {Point} position
   @return {SortableNode}
 */
-function findReceiver(candidates, node, machine) {
+function findReceiver(candidates, node, position) {
   let receiver = candidates.find(candidate => {
     if (candidate === node) { return false; }
-    if (!withinBounds(candidate, machine)) { return false; }
+    if (!withinBounds(candidate, position)) { return false; }
     let hook = get(candidate, 'canReceiveSortable');
     let type = typeOf(hook);
     if (type === 'function') { return hook.call(candidate, node); }
@@ -147,7 +149,7 @@ function findReceiver(candidates, node, machine) {
   });
 
   if (receiver) {
-    return findReceiver(receiver.sortableChildren, node, machine) || receiver;
+    return findReceiver(receiver.sortableChildren, node, position) || receiver;
   }
 }
 

@@ -48,5 +48,16 @@ export default Route.extend({
         }]
       }]
     };
+  },
+
+  actions: {
+    moveNode(node, { oldParent, newParent, position }) {
+      let index = oldParent.children.indexOf(node);
+
+      oldParent.children.splice(index, 1);
+      newParent.children.splice(position, 0, node);
+
+      this.get('controller').notifyPropertyChange('model');
+    }
   }
 });

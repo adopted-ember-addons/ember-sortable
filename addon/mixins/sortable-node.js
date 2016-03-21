@@ -112,10 +112,20 @@ export default Mixin.create({
 
     this._sortableManager = new SortableManager({
       node: this,
-      onComplete: () => delete this._sortableManager
+      onComplete: (receiver, position) => this._sortableComplete(receiver, position)
     });
 
     this._sortableManager.start(originalEvent);
+  },
+
+  _sortableComplete(receiver, position) {
+    delete this._sortableManager;
+
+    let model = this.sortableModel;
+    let oldParent = this.sortableParent.sortableModel;
+    let newParent = receiver.sortableModel;
+
+    this.sendAction('onMove', model, { oldParent, newParent, position });
   }
 
 });
