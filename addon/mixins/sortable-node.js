@@ -57,6 +57,34 @@ export default Mixin.create({
   },
 
   /**
+    @method touchStart
+    @param {jQuery.Event} event
+  */
+  touchStart(event) {
+    this._super(...arguments);
+
+    event.stopPropagation();
+
+    this.startSorting(event);
+  },
+
+  /**
+    @method mouseDown
+    @param {jQuery.Event} event
+  */
+  mouseDown(event) {
+    this._super(...arguments);
+
+    if (event.which !== 1) { return; }
+    if (event.ctrlKey) { return; }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.startSorting(event);
+  },
+
+  /**
     @private
     @method addSortableChild
     @param {SortableNode} child
@@ -75,50 +103,28 @@ export default Mixin.create({
   },
 
   /**
-    @method touchStart
-    @param {jQuery.Event} event
-  */
-  touchStart(event) {
-    this._super(...arguments);
-
-    event.stopPropagation();
-
-    this._sortableStart(event);
-  },
-
-  /**
-    @method mouseDown
-    @param {jQuery.Event} event
-  */
-  mouseDown(event) {
-    this._super(...arguments);
-
-    if (event.which !== 1) { return; }
-    if (event.ctrlKey) { return; }
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    this._sortableStart(event);
-  },
-
-  /**
     @private
-    @method _sortableStart
+    @method startSorting
     @param {jQuery.Event} event
   */
-  _sortableStart({ originalEvent }) {
+  startSorting({ originalEvent }) {
     if (this._sortableManager) { return; }
 
     this._sortableManager = new SortableManager({
       node: this,
-      onComplete: (receiver, position) => this._sortableComplete(receiver, position)
+      onComplete: (receiver, position) => this.completeSorting(receiver, position)
     });
 
     this._sortableManager.start(originalEvent);
   },
 
-  _sortableComplete(receiver, position) {
+  /**
+    @private
+    @method completeSorting
+    @param {SortableNode} receiver
+    @param {Number} position
+  */
+  completeSorting(receiver, position) {
     delete this._sortableManager;
 
     let model = this.sortableModel;
