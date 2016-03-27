@@ -10,9 +10,9 @@ const THRESHOLD = 100; // ms
 
   ```js
   window.onmousedown = event => {
-    let callback = () => console.log(machine.state, machine.dx, machine.dy);
-    let machine = new DraggableStateMachine(callback);
-    machine.start(event);
+    let callback = () => console.log(gesture.state, gesture.dx, gesture.dy);
+    let gesture = new Gesture(callback);
+    gesture.start(event);
   };
   ```
 
@@ -24,11 +24,11 @@ const THRESHOLD = 100; // ms
   > "dropping" 0 10
   ```
 
-  @class DraggableStateMachine
+  @class Gesture
   @constructor
   @param {Function} onUpdate
  */
-export default class DraggableStateMachine {
+export default class Gesture {
 
   constructor(onUpdate = () => {}, eventTarget = window) {
     this.onUpdate = onUpdate;
@@ -168,6 +168,7 @@ export default class DraggableStateMachine {
   */
   draggingMove(event, touch) {
     event.preventDefault();
+    event.stopPropagation();
 
     this.x = (touch || event).pageX;
     this.y = (touch || event).pageY;

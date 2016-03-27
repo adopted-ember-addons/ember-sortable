@@ -1,6 +1,7 @@
 import Ember from 'ember';
-import SortableManager from '../utils/sortable-manager';
-const { A, Mixin } = Ember;
+import Manager from '../utils/manager';
+
+const { A, Mixin, computed } = Ember;
 
 /**
   @class SortableNode
@@ -8,7 +9,7 @@ const { A, Mixin } = Ember;
 */
 export default Mixin.create({
 
-  classNameBindings: ['sortableState'],
+  classNameBindings: ['sortableStateClass'],
 
   /**
     @property sortableModel
@@ -32,7 +33,26 @@ export default Mixin.create({
   sortableChildren: null,
 
   /**
-    @constructor
+    @property sortableState
+    @type null|String
+    @default null
+  */
+  sortableState: null,
+
+  /**
+    @property sortableStateClass
+    @type null|String
+  */
+  sortableStateClass: computed('sortableState', function() {
+    let state = this.get('sortableState');
+
+    if (state) {
+      return 'sortable-' + state;
+    }
+  }),
+
+  /**
+    @method init
   */
   init() {
     this._super(...arguments);
@@ -110,9 +130,10 @@ export default Mixin.create({
   startSorting({ originalEvent }) {
     if (this._sortableManager) { return; }
 
-    this._sortableManager = new SortableManager({
+    this._sortableManager = new Manager({
       node: this,
-      onComplete: (...args) => this.completeSorting(...args)
+      onComplete: (...args) => this.completeSorting(...args),
+      onCancel: (...args) => this.cancelSorting(...args)
     });
 
     this._sortableManager.start(originalEvent);
@@ -127,11 +148,21 @@ export default Mixin.create({
   completeSorting(receiver, position) {
     delete this._sortableManager;
 
+    if (!receiver) { return; }
+
     let model = this.sortableModel;
     let oldParent = this.sortableParent.sortableModel;
     let newParent = receiver.sortableModel;
 
     this.sendAction('onMove', model, { oldParent, newParent, position });
+  },
+
+  /**
+    @private
+    @method cancelSorting
+  */
+  cancelSorting() {
+    delete this._sortableManager;
   }
 
 });
