@@ -435,7 +435,7 @@ export default Mixin.create({
   /**
     @method _drop
     @private
-   */
+  */
   _drop() {
     if (!this.element) { return; }
 
@@ -455,7 +455,7 @@ export default Mixin.create({
     @private
   */
   _preventClick(element) {
-    $(element).one('click', function (e){ e.stopImmediatePropagation(); } );
+    $(element).one('click', function(e){ e.stopImmediatePropagation(); } );
   },
 
   /**
