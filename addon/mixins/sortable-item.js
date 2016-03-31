@@ -8,100 +8,100 @@ export default Mixin.create({
   classNameBindings: ['isDragging', 'isDropping'],
 
   /**
-    Group to which the item belongs.
-    @property group
-    @type SortableGroup
-    @default null
-  */
+   Group to which the item belongs.
+   @property group
+   @type SortableGroup
+   @default null
+   */
   group: null,
 
   /**
-    Model which the item represents.
-    @property model
-    @type Object
-    @default null
-  */
+   Model which the item represents.
+   @property model
+   @type Object
+   @default null
+   */
   model: null,
 
   /**
-    Selector for the element to use as handle.
-    If unset, the entire element will be used as the handle.
-    @property handle
-    @type String
-    @default null
-  */
+   Selector for the element to use as handle.
+   If unset, the entire element will be used as the handle.
+   @property handle
+   @type String
+   @default null
+   */
   handle: null,
 
   /**
-    True if the item is currently being dragged.
-    @property isDragging
-    @type Boolean
-    @default false
-  */
+   True if the item is currently being dragged.
+   @property isDragging
+   @type Boolean
+   @default false
+   */
   isDragging: false,
 
   /**
-    Action that fires when the item starts being dragged.
-    @property onDragStart
-    @type Action
-    @default null
-  */
+   Action that fires when the item starts being dragged.
+   @property onDragStart
+   @type Action
+   @default null
+   */
   onDragStart: null,
 
   /**
-    Action that fires when the item stops being dragged.
-    @property onDragStop
-    @type Action
-    @default null
-  */
+   Action that fires when the item stops being dragged.
+   @property onDragStop
+   @type Action
+   @default null
+   */
   onDragStop: null,
 
   /**
-    True if the item is currently dropping.
-    @property isDropping
-    @type Boolean
-    @default false
-  */
+   True if the item is currently dropping.
+   @property isDropping
+   @type Boolean
+   @default false
+   */
   isDropping: false,
 
   /**
-    True if the item was dropped during the interaction
-    @property wasDropped
-    @type Boolean
-    @default false
-  */
+   True if the item was dropped during the interaction
+   @property wasDropped
+   @type Boolean
+   @default false
+   */
   wasDropped: false,
 
 
   /**
-    @property isBusy
-    @type Boolean
-  */
+   @property isBusy
+   @type Boolean
+   */
   isBusy: computed.or('isDragging', 'isDropping'),
 
   /**
-    The frequency with which the group is informed
-    that an update is required.
-    @property updateInterval
-    @type Number
-    @default 125
-  */
+   The frequency with which the group is informed
+   that an update is required.
+   @property updateInterval
+   @type Number
+   @default 125
+   */
   updateInterval: 125,
 
   /**
-    Additional spacing between active item and the rest of the elements.
-    @property spacing
-    @type Number
-    @default 0[px]
-  */
+   Additional spacing between active item and the rest of the elements.
+   @property spacing
+   @type Number
+   @default 0[px]
+   */
   spacing: 0,
 
   /**
-    True if the item transitions with animation.
-    @property isAnimated
-    @type Boolean
-  */
-  isAnimated: computed(function() {
+   True if the item transitions with animation.
+   @property isAnimated
+   @type Boolean
+   */
+  isAnimated: computed(function () {
     let el = this.$();
     let property = el.css('transition-property');
 
@@ -109,11 +109,11 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    The current transition duration in milliseconds.
-    @property transitionDuration
-    @type Number
-  */
-  transitionDuration: computed(function() {
+   The current transition duration in milliseconds.
+   @property transitionDuration
+   @type Number
+   */
+  transitionDuration: computed(function () {
     let el = this.$();
     let rule = el.css('transition-duration');
     let match = rule.match(/([\d\.]+)([ms]*)/);
@@ -133,10 +133,10 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Horizontal position of the item.
-    @property x
-    @type Number
-  */
+   Horizontal position of the item.
+   @property x
+   @type Number
+   */
   x: computed({
     get() {
       if (this._x === undefined) {
@@ -155,10 +155,10 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Vertical position of the item relative to its offset parent.
-    @property y
-    @type Number
-  */
+   Vertical position of the item relative to its offset parent.
+   @property y
+   @type Number
+   */
   y: computed({
     get() {
       if (this._y === undefined) {
@@ -176,11 +176,11 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Width of the item.
-    @property height
-    @type Number
-  */
-  width: computed(function() {
+   Width of the item.
+   @property height
+   @type Number
+   */
+  width: computed(function () {
     let el = this.$();
     let width = el.outerWidth(true);
 
@@ -190,11 +190,11 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Height of the item including margins.
-    @property height
-    @type Number
-  */
-  height: computed(function() {
+   Height of the item including margins.
+   @property height
+   @type Number
+   */
+  height: computed(function () {
     let el = this.$();
     let height = el.outerHeight();
 
@@ -207,8 +207,8 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    @method didInsertElement
-  */
+   @method didInsertElement
+   */
   didInsertElement() {
     this._super();
     // scheduled to prevent deprecation warning:
@@ -217,8 +217,8 @@ export default Mixin.create({
   },
 
   /**
-    @method willDestroyElement
-  */
+   @method willDestroyElement
+   */
   willDestroyElement() {
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
@@ -226,39 +226,47 @@ export default Mixin.create({
   },
 
   /**
-    @method mouseDown
-  */
+   @method mouseDown
+   */
   mouseDown(event) {
-    if (event.which !== 1) { return; }
-    if (event.ctrlKey) { return; }
+    if (event.which !== 1) {
+      return;
+    }
+    if (event.ctrlKey) {
+      return;
+    }
 
     this._primeDrag(event);
   },
 
   /**
-    @method touchStart
-  */
+   @method touchStart
+   */
   touchStart(event) {
     this._primeDrag(event);
   },
 
   /**
-    @method freeze
-  */
+   @method freeze
+   */
   freeze() {
     let el = this.$();
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     el.css({ transition: 'none' });
     el.height(); // Force-apply styles
   },
 
   /**
-    @method reset
-  */
+   @method reset
+   */
   reset() {
     let el = this.$();
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     delete this._y;
     delete this._x;
@@ -268,20 +276,22 @@ export default Mixin.create({
   },
 
   /**
-    @method thaw
-  */
+   @method thaw
+   */
   thaw() {
     let el = this.$();
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     el.css({ transition: '' });
     el.height(); // Force-apply styles
   },
 
   /**
-    @method _primeDrag
-    @private
-  */
+   @method _primeDrag
+   @private
+   */
   _primeDrag(event) {
     let handle = this.get('handle');
 
@@ -303,11 +313,13 @@ export default Mixin.create({
   },
 
   /**
-    @method _startDrag
-    @private
-  */
+   @method _startDrag
+   @private
+   */
   _startDrag(event) {
-    if (this.get('isBusy')) { return; }
+    if (this.get('isBusy')) {
+      return;
+    }
 
     let drag = this._makeDragHandler(event);
 
@@ -329,51 +341,42 @@ export default Mixin.create({
   },
 
   /**
-    @method _makeDragHandler
-    @param {Event} startEvent
-    @return {Function}
-    @private
-  */
+   @method _makeDragHandler
+   @param {Event} startEvent
+   @return {Function}
+   @private
+   */
   _makeDragHandler(startEvent) {
-    const groupDirection = this.get('group.direction');
-    let dragOrigin;
-    let elementOrigin;
-    let scrollOrigin;
+    let XdragOrigin, YdragOrigin;
+    let XelementOrigin, YelementOrigin;
+    let XscrollOrigin, YscrollOrigin;
     let parentElement = $(this.element.parentNode);
 
-    if (groupDirection === 'x') {
-      dragOrigin = getX(startEvent);
-      elementOrigin = this.get('x');
-      scrollOrigin = parentElement.offset().left;
+    XdragOrigin = getX(startEvent);
+    XelementOrigin = this.get('x');
+    XscrollOrigin = parentElement.offset().left;
 
-      return event => {
-        let dx = getX(event) - dragOrigin;
-        let scrollX = parentElement.offset().left;
-        let x = elementOrigin + dx + (scrollOrigin - scrollX);
+    YdragOrigin = getY(startEvent);
+    YelementOrigin = this.get('y');
+    YscrollOrigin = parentElement.offset().top;
 
-        this._drag(x);
-      };
-    }
+    return event => {
+      let dx = getX(event) - XdragOrigin;
+      let scrollX = parentElement.offset().left;
+      let x = XelementOrigin + dx + (XscrollOrigin - scrollX);
 
-    if (groupDirection === 'y') {
-      dragOrigin = getY(startEvent);
-      elementOrigin = this.get('y');
-      scrollOrigin = parentElement.offset().top;
+      let dy = getY(event) - YdragOrigin;
+      let scrollY = parentElement.offset().top;
+      let y = YelementOrigin + dy + (YscrollOrigin - scrollY);
 
-      return event => {
-        let dy = getY(event) - dragOrigin;
-        let scrollY = parentElement.offset().top;
-        let y = elementOrigin + dy + (scrollOrigin - scrollY);
-
-        this._drag(y);
-      };
-    }
+      this._drag({ x, y });
+    };
   },
 
   /**
-    @method _tellGroup
-    @private
-  */
+   @method _tellGroup
+   @private
+   */
   _tellGroup(method, ...args) {
     let group = this.get('group');
 
@@ -383,64 +386,74 @@ export default Mixin.create({
   },
 
   /**
-    @method _scheduleApplyPosition
-    @private
-  */
+   @method _scheduleApplyPosition
+   @private
+   */
   _scheduleApplyPosition() {
     run.scheduleOnce('render', this, '_applyPosition');
   },
 
   /**
-    @method _applyPosition
-    @private
-  */
+   @method _applyPosition
+   @private
+   */
   _applyPosition() {
-    if (!this.element) { return; }
-
-    const groupDirection = this.get('group.direction');
-
-    if (groupDirection === 'x') {
-      let x = this.get('x');
-      let dx = x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
-
-      this.$().css({
-        transform: `translateX(${dx}px)`
-      });
+    if (!this.element) {
+      return;
     }
-    if (groupDirection === 'y') {
-      let y = this.get('y');
-      let dy = y - this.element.offsetTop;
 
-      this.$().css({
-        transform: `translateY(${dy}px)`
-      });
+    let x = this.get('x');
+    let dx = x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
+
+    let y = this.get('y');
+    let dy = y - this.element.offsetTop;
+
+    this.$().css({
+      transform: `translateX(${dx}px) translateY(${dy}px)`
+    });
+
+  },
+
+  _hasX(direction) {
+    if (direction === 'x' || direction === 'xy') {
+      return true;
     }
+    return false;
+  },
+
+  _hasY(direction) {
+    if (direction == 'y' || direction == 'xy') {
+      return true;
+    }
+    return false;
   },
 
   /**
-    @method _drag
-    @private
-  */
+   @method _drag
+   @private
+   */
   _drag(dimension) {
     let updateInterval = this.get('updateInterval');
     const groupDirection = this.get('group.direction');
 
-    if (groupDirection === 'x') {
-      this.set('x', dimension);
+    if (this._hasX(groupDirection)) {
+      this.set('x', dimension.x);
     }
-    if (groupDirection === 'y') {
-      this.set('y', dimension);
+    if (this._hasY(groupDirection)) {
+      this.set('y', dimension.y);
     }
 
     run.throttle(this, '_tellGroup', 'update', updateInterval);
   },
 
   /**
-    @method _drop
-    @private
-  */
+   @method _drop
+   @private
+   */
   _drop() {
-    if (!this.element) { return; }
+    if (!this.element) {
+      return;
+    }
 
     this._preventClick(this.element);
 
@@ -454,18 +467,20 @@ export default Mixin.create({
   },
 
   /**
-    @method _preventClick
-    @private
-  */
+   @method _preventClick
+   @private
+   */
   _preventClick(element) {
-    $(element).one('click', function(e){ e.stopImmediatePropagation(); } );
+    $(element).one('click', function (e) {
+      e.stopImmediatePropagation();
+    });
   },
 
   /**
-    @method _waitForTransition
-    @private
-    @return Promise
-  */
+   @method _waitForTransition
+   @private
+   @return Promise
+   */
   _waitForTransition() {
     return new Promise(resolve => {
       run.next(() => {
@@ -481,9 +496,9 @@ export default Mixin.create({
   },
 
   /**
-    @method _complete
-    @private
-  */
+   @method _complete
+   @private
+   */
   _complete() {
     this.sendAction('onDragStop', this.get('model'));
     this.set('isDropping', false);
@@ -493,12 +508,12 @@ export default Mixin.create({
 });
 
 /**
-  Gets the y offset for a given event.
-  Work for touch and mouse events.
-  @method getY
-  @return {Number}
-  @private
-*/
+ Gets the y offset for a given event.
+ Work for touch and mouse events.
+ @method getY
+ @return {Number}
+ @private
+ */
 function getY(event) {
   let originalEvent = event.originalEvent;
   let touches = originalEvent && originalEvent.changedTouches;
@@ -512,11 +527,11 @@ function getY(event) {
 }
 
 /**
-  Gets the x offset for a given event.
-  @method getX
-  @return {Number}
-  @private
-*/
+ Gets the x offset for a given event.
+ @method getX
+ @return {Number}
+ @private
+ */
 function getX(event) {
   let originalEvent = event.originalEvent;
   let touches = originalEvent && originalEvent.changedTouches;
@@ -530,13 +545,13 @@ function getX(event) {
 }
 
 /**
-  Gets a numeric border-spacing values for a given element.
+ Gets a numeric border-spacing values for a given element.
 
-  @method getBorderSpacing
-  @param {Element} element
-  @return {Object}
-  @private
-*/
+ @method getBorderSpacing
+ @param {Element} element
+ @return {Object}
+ @private
+ */
 function getBorderSpacing(el) {
   el = $(el);
 
