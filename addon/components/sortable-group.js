@@ -9,31 +9,31 @@ export default Component.extend({
   layout: layout,
 
   /**
-   @property direction
-   @type string
-   @default y
-   */
+    @property direction
+    @type string
+    @default y
+  */
   direction: 'y',
 
   /**
-   @property model
-   @type Any
-   @default null
-   */
+    @property model
+    @type Any
+    @default null
+  */
   model: NO_MODEL,
 
   /**
-   @property items
-   @type Ember.NativeArray
-   */
+    @property items
+    @type Ember.NativeArray
+  */
   items: computed(() => a()),
 
   /**
-   Position for the first item.
-   If spacing is present, first item's position will have to change as well.
-   @property itemPosition
-   @type Number
-   */
+    Position for the first item.
+    If spacing is present, first item's position will have to change as well.
+    @property itemPosition
+    @type Number
+  */
   itemPosition: computed(function () {
     let direction = this.get('direction');
 
