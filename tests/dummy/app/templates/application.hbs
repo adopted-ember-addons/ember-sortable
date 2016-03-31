@@ -1,135 +1,118 @@
 <article class="demo">
-    <header>
-        <h2>Ember Sortable</h2>
-    </header>
+  <header>
+    <h2>Ember Sortable</h2>
+  </header>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
 
-    <main>
-        <section class="grid-demo">
-            <h3>Grid</h3>
+  <main>
+    <section class="grid-demo">
+      <h3>Grid</h3>
 
-            <div class="container">
-              {{#sortable-group class="row" direction="xy" onChange="update" as |group|}}
-                {{#each model.items as |item|}}
-                  {{#sortable-item title=item class="col-xs-4" model=item group=group}}
-                    {{item}}
-                  {{/sortable-item}}
-                {{/each}}
-              {{/sortable-group}}
-            </div>
-        </section>
+      {{#sortable-group direction="xy" class="row" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item class="col-xs-4" model=item group=group}}
+            {{item}}
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
 
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 
-        <section class="vertical-demo">
-            <h3>Vertical</h3>
 
-          {{#sortable-group tagName="ol" onChange="update" as |group|}}
-            {{#each model.items as |item|}}
-              {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
-                {{item}}
-                  <span class="handle" data-item="{{item}}">
+    <section class="vertical-demo">
+      <h3>Vertical</h3>
+
+      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+            {{item}}
+            <span class="handle" data-item="{{item}}">
               <span>&vArr;</span>
             </span>
-              {{/sortable-item}}
-            {{/each}}
-          {{/sortable-group}}
-        </section>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
 
-        <section class="horizontal-demo">
-            <h3>Horizontal</h3>
+    <section class="horizontal-demo">
+      <h3>Horizontal</h3>
 
-          {{#sortable-group tagName="ol" direction="x" onChange="update" as |group|}}
-            {{#each model.items as |item|}}
-              {{#sortable-item tagName="li" model=item group=group}}
-                {{item-presenter item=item}}
-              {{/sortable-item}}
-            {{/each}}
-          {{/sortable-group}}
+      {{#sortable-group tagName="ol" direction="x" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group}}
+            {{item-presenter item=item}}
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
 
-        </section>
+    </section>
 
-        <section class="table-demo">
-            <h3>Table</h3>
+    <section class="table-demo">
+      <h3>Table</h3>
 
-            <table>
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>Item</th>
-                </tr>
-                </thead>
-              {{#sortable-group tagName="tbody" onChange="update" as |group|}}
-                {{#each model.items as |item|}}
-                  {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
-                      <td><span class="handle" data-item="{{item}}">&vArr;</span></td>
-                      <td>{{item}}</td>
-                  {{/sortable-item}}
-                {{/each}}
-              {{/sortable-group}}
-            </table>
-        </section>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Item</th>
+          </tr>
+        </thead>
+        {{#sortable-group tagName="tbody" onChange="update" as |group|}}
+          {{#each model.items as |item|}}
+            {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
+              <td><span class="handle" data-item="{{item}}">&vArr;</span></td>
+              <td>{{item}}</td>
+            {{/sortable-item}}
+          {{/each}}
+        {{/sortable-group}}
+      </table>
+    </section>
 
-        <section class="vertical-spacing-demo">
-            <h3>Vertical with 15px spacing</h3>
+    <section class="vertical-spacing-demo">
+      <h3>Vertical with 15px spacing</h3>
 
-          {{#sortable-group tagName="ol" onChange="update" as |group|}}
-            {{#each model.items as |item|}}
-              {{#sortable-item tagName="li" model=item group=group spacing=15}}
-                {{item}}
-                  <span class="handle" data-item="{{item}}">
+      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group spacing=15}}
+            {{item}}
+            <span class="handle" data-item="{{item}}">
             </span>
-              {{/sortable-item}}
-            {{/each}}
-          {{/sortable-group}}
-        </section>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
 
-        <section class="scrollable-demo">
-            <h3>Scrollable</h3>
+    <section class="scrollable-demo">
+      <h3>Scrollable</h3>
 
-            <div class="sortable-container">
-              {{#sortable-group tagName="ol" onChange="update" as |group|}}
-                {{#each model.items as |item|}}
-                  {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
-                    {{item}}
-                      <span class="handle" data-item="{{item}}">
+      <div class="sortable-container">
+        {{#sortable-group tagName="ol" onChange="update" as |group|}}
+          {{#each model.items as |item|}}
+            {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+              {{item}}
+              <span class="handle" data-item="{{item}}">
                 <span>&vArr;</span>
               </span>
-                  {{/sortable-item}}
-                {{/each}}
-              {{/sortable-group}}
-            </div>
-        </section>
+            {{/sortable-item}}
+          {{/each}}
+        {{/sortable-group}}
+      </div>
+    </section>
 
-      {{#if model.dragged}}
-          <p>Just dragged {{model.dragged}}</p>
-      {{/if}}
-    </main>
+    {{#if model.dragged}}
+      <p>Just dragged {{model.dragged}}</p>
+    {{/if}}
+  </main>
 
-    <footer>
-        <p>
-            <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
-        </p>
-    </footer>
+  <footer>
+    <p>
+      <a href="https://github.com/jgwhite/ember-sortable">View on GitHub</a>
+    </p>
+  </footer>
 </article>

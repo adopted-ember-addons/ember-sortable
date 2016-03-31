@@ -34,16 +34,16 @@ export default Component.extend({
     @property itemPosition
     @type Number
   */
-  itemPosition: computed(function () {
+  itemPosition: computed(function() {
     let direction = this.get('direction');
 
     return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
   }).volatile(),
 
   /**
-   @property sortedItems
-   @type Array
-   */
+    @property sortedItems
+    @type Array
+  */
   sortedItems: computed(function () {
     return this.get('items').sort((a, b) => {
       return a.get('y') - b.get('y') || a.get('x') - b.get('x');
@@ -51,38 +51,38 @@ export default Component.extend({
   }).volatile(),
 
   /**
-   Register an item with this group.
-   @method registerItem
-   @param {SortableItem} [item]
-   */
+    Register an item with this group.
+    @method registerItem
+    @param {SortableItem} [item]
+  */
   registerItem(item) {
     this.get('items').addObject(item);
   },
 
   /**
-   De-register an item with this group.
-   @method deregisterItem
-   @param {SortableItem} [item]
-   */
+    De-register an item with this group.
+    @method deregisterItem
+    @param {SortableItem} [item]
+  */
   deregisterItem(item) {
     this.get('items').removeObject(item);
   },
 
   /**
-   Prepare for sorting.
-   Main purpose is to stash the current itemPosition so
-   we don’t incur expensive re-layouts.
-   @method prepare
-   */
+    Prepare for sorting.
+    Main purpose is to stash the current itemPosition so
+    we don’t incur expensive re-layouts.
+    @method prepare
+  */
   prepare() {
     this._itemPositionX = this.get('sortedItems.firstObject.x') - this.get('sortedItems.firstObject.spacing');
     this._itemPositionY = this.get('sortedItems.firstObject.y') - this.get('sortedItems.firstObject.spacing');
   },
 
   /**
-   Update item positions (relatively to the first element position).
-   @method update
-   */
+    Update item positions (relatively to the first element position).
+    @method update
+  */
   update() {
     let sortedItems = this.get('sortedItems');
     // Position of the first element
@@ -118,22 +118,22 @@ export default Component.extend({
       }
 
       if (this._hasX(direction)) {
-        if (index > 0 && 0 === index % 3) {
+        if (direction === 'xy' && index > 0 && 0 === index % 3) {
           positionX = startX;
         } else {
           positionX += get(item, 'width');
         }
       }
 
-      if (this._hasY(direction) && index > 0 && 0 === index % 3) {
+      if (this._hasY(direction) && (index > 0 && 0 === index % 3)) {
         positionY += get(item, 'height');
       }
     });
   },
 
   /**
-   @method commit
-   */
+    @method commit
+  */
   commit() {
     let items = this.get('sortedItems');
     let groupModel = this.get('model');
