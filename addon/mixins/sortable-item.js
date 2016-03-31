@@ -217,8 +217,8 @@ export default Mixin.create({
   },
 
   /**
-   @method willDestroyElement
-   */
+    @method willDestroyElement
+  */
   willDestroyElement() {
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
@@ -229,12 +229,8 @@ export default Mixin.create({
     @method mouseDown
   */
   mouseDown(event) {
-    if (event.which !== 1) {
-      return;
-    }
-    if (event.ctrlKey) {
-      return;
-    }
+    if (event.which !== 1) { return; }
+    if (event.ctrlKey) { return; }
 
     this._primeDrag(event);
   },
@@ -251,9 +247,7 @@ export default Mixin.create({
   */
   freeze() {
     let el = this.$();
-    if (!el) {
-      return;
-    }
+    if (!el) { return; }
 
     el.css({ transition: 'none' });
     el.height(); // Force-apply styles
@@ -264,9 +258,7 @@ export default Mixin.create({
   */
   reset() {
     let el = this.$();
-    if (!el) {
-      return;
-    }
+    if (!el) { return; }
 
     delete this._y;
     delete this._x;
@@ -280,9 +272,7 @@ export default Mixin.create({
   */
   thaw() {
     let el = this.$();
-    if (!el) {
-      return;
-    }
+    if (!el) { return; }
 
     el.css({ transition: '' });
     el.height(); // Force-apply styles
@@ -317,9 +307,7 @@ export default Mixin.create({
     @private
   */
   _startDrag(event) {
-    if (this.get('isBusy')) {
-      return;
-    }
+    if (this.get('isBusy')) { return; }
 
     let drag = this._makeDragHandler(event);
 
@@ -398,9 +386,7 @@ export default Mixin.create({
     @private
   */
   _applyPosition() {
-    if (!this.element) {
-      return;
-    }
+    if (!this.element) { return; }
 
     let x = this.get('x');
     let dx = x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
@@ -451,9 +437,7 @@ export default Mixin.create({
     @private
    */
   _drop() {
-    if (!this.element) {
-      return;
-    }
+    if (!this.element) { return; }
 
     this._preventClick(this.element);
 
@@ -471,9 +455,7 @@ export default Mixin.create({
     @private
   */
   _preventClick(element) {
-    $(element).one('click', function (e) {
-      e.stopImmediatePropagation();
-    });
+    $(element).one('click', function (e){ e.stopImmediatePropagation(); } );
   },
 
   /**
