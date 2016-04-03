@@ -1,4 +1,5 @@
 import Gesture from './gesture';
+import Arrangement from './arrangement';
 import willTransition from './will-transition';
 import transitionend from './transitionend';
 import Ember from 'ember';
@@ -19,6 +20,7 @@ export default class Manager {
     this.onComplete = onComplete || function() {};
     this.onCancel = onCancel || function() {};
     this.gesture = new Gesture(() => this.update());
+    this.arrangement = new Arrangement(this.root);
   }
 
   start(event) {
@@ -41,19 +43,31 @@ export default class Manager {
   }
 
   drag() {
-    let { dx, dy } = this.gesture;
-
     this.node.set('sortableState', 'dragging');
-    this.node.$().css('transform', `translate(${dx}px, ${dy}px)`);
+
+    this.arrangement.moveNode(this.node, this.gesture);
+
+    schedule('afterRender', this, 'renderDrag');
   }
 
   drop() {
     this.node.set('sortableState', 'dropping');
+
     schedule('afterRender', this, 'renderDrop');
   }
 
+  renderDrag() {
+    let { dx, dy } = this.gesture;
+    let { element: { style } } = this.node;
+
+    this.arrangement.render();
+
+    style.transform = `translate(${dx}px, ${dy}px)`;
+  }
+
   renderDrop() {
-    this.node.$().css('transform', '');
+    this.arrangement.clear();
+    this.node.element.style.transform = '';
 
     if (this.willTransition()) {
       this.node.$().one(transitionend, () => this.completeDrop());

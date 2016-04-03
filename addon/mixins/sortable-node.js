@@ -58,10 +58,14 @@ export default Mixin.create({
     this._super(...arguments);
 
     this.sortableChildren = A();
+  },
 
-    if (this.sortableParent) {
-      this.sortableParent.addSortableChild(this);
-    }
+  /**
+    @method didReceiveAttrs
+  */
+  didReceiveAttrs() {
+    this.sortableDetach();
+    this.sortableAttach();
   },
 
   /**
@@ -70,10 +74,7 @@ export default Mixin.create({
   willDestroy() {
     this._super(...arguments);
 
-    if (this.sortableParent) {
-      this.sortableParent.removeSortableChild(this);
-      delete this.sortableParent;
-    }
+    this.sortableDetach();
   },
 
   /**
@@ -121,6 +122,29 @@ export default Mixin.create({
   removeSortableChild(child) {
     this.sortableChildren.removeObject(child);
   },
+
+  /**
+    @private
+    @method sortableAttach
+  */
+  sortableAttach() {
+    let parent = this.get('sortableParent');
+    if (!parent) { return; }
+    parent.addSortableChild(this);
+    this._sortableParent = parent;
+  },
+
+  /**
+    @private
+    @method sortableDetach
+  */
+  sortableDetach() {
+    let parent = this._sortableParent;
+    if (!parent) { return; }
+    parent.removeSortableChild(this);
+    this._sortableParent = null;
+  },
+
 
   /**
     @private
