@@ -67,7 +67,6 @@ export default class Manager {
 
   renderDrop() {
     this.arrangement.clear();
-    this.node.element.style.transform = '';
 
     if (this.willTransition()) {
       this.node.$().one(transitionend, () => this.completeDrop());
@@ -78,7 +77,8 @@ export default class Manager {
 
   completeDrop() {
     this.walk(n => n.set('sortableState', null));
-    this.onComplete(this.root, 0);
+    let { parent, position } = this.arrangement.metaFor(this.node);
+    this.onComplete(parent, position);
   }
 
   cancel() {
