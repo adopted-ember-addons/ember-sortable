@@ -96,3 +96,14 @@ test('clear', function(assert) {
   assert.equal(height, '');
   assert.equal(transform, '');
 });
+
+test('covers', function(assert) {
+  let { slot } = this;
+
+  assert.equal(slot.covers({ x: 9,   y: 20  }), false);
+  assert.equal(slot.covers({ x: 10,  y: 19  }), false);
+  assert.equal(slot.covers({ x: 10,  y: 20  }), true);
+  assert.equal(slot.covers({ x: 120, y: 240 }), true);
+  assert.equal(slot.covers({ x: 121, y: 240 }), false);
+  assert.equal(slot.covers({ x: 120, y: 241 }), false);
+});

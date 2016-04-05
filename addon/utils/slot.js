@@ -128,4 +128,14 @@ export default class Slot {
     node.$().css({ width: '', height: '', transform: '' });
   }
 
+  /**
+    @method covers
+    @param {Object} point
+  */
+  covers({ x, y }) {
+    let { top, left, bottom, right } = this.bounds;
+
+    return left <= x && x <= right && top <= y && y <= bottom;
+  }
+
 }
