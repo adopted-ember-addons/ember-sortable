@@ -1,6 +1,9 @@
 import identify from './identify';
+import Ember from 'ember';
 
-/*&
+const { get } = Ember;
+
+/**
   @class Slot
   @constructor
   @param {SortableNode} node
@@ -136,6 +139,20 @@ export default class Slot {
     let { top, left, bottom, right } = this.bounds;
 
     return left <= x && x <= right && top <= y && y <= bottom;
+  }
+
+  /**
+    @method canReceiveNode
+    @param {SortableNode} node
+  */
+  canReceiveNode(node) {
+    let hook = get(this.node, 'canReceiveSortable');
+    let type = typeof hook;
+
+    if (type === 'undefined') { hook = true; }
+    if (type === 'function') { hook = this.node.canReceiveSortable(node); }
+
+    return !!hook;
   }
 
 }

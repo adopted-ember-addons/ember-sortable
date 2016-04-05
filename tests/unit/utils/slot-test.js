@@ -107,3 +107,28 @@ test('covers', function(assert) {
   assert.equal(slot.covers({ x: 121, y: 240 }), false);
   assert.equal(slot.covers({ x: 120, y: 241 }), false);
 });
+
+test('canReceiveNode (undefined)', function(assert) {
+  let { slot } = this;
+  let other = {};
+
+  assert.equal(slot.canReceiveNode(other), true);
+});
+
+test('canReceiveNode (property)', function(assert) {
+  let { slot, node } = this;
+  let other = {};
+
+  node.canReceiveSortable = false;
+
+  assert.equal(slot.canReceiveNode(other), false);
+});
+
+test('canReceiveNode (method)', function(assert) {
+  let { slot, node } = this;
+  let other = {};
+
+  node.canReceiveSortable = () => false;
+
+  assert.equal(slot.canReceiveNode(other), false);
+});
