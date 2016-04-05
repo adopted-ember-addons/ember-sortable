@@ -17,8 +17,16 @@ export default class Arrangement {
     let id = identify(node);
     let path = this.paths[id];
     let slot = this.slotForPath(path);
-    let offset = slot.outerHeight;
+    let oldParentPath = path.slice(0, -1);
+    let oldParent = this.slotForPath(oldParentPath);
+    let oldPosition = path[path.length - 1];
     let { parent, position } = this.findHome(slot, point);
+
+    if (!parent) { return; }
+
+    if (oldParent === parent && oldPosition === position) { return; }
+
+    let offset = slot.outerHeight;
     let siblings = parent.children;
 
     this.detachNode(node);
@@ -52,7 +60,7 @@ export default class Arrangement {
 
   findHome(slot, point) {
     let parent = findParent([this.root], slot, point);
-    let position = findPosition(parent.children, point);
+    let position = parent && findPosition(parent.children, point);
 
     return { parent, position };
   }

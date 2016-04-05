@@ -44,13 +44,15 @@ export default class Manager {
 
     this.arrangement.moveNode(this.node, this.gesture);
 
-    requestAnimationFrame(() => this.renderDrag());
+    cancelAnimationFrame(this._afr);
+    this._afr = requestAnimationFrame(() => this.renderDrag());
   }
 
   drop() {
     this.node.set('sortableState', 'dropping');
 
-    requestAnimationFrame(() => this.renderDrop());
+    cancelAnimationFrame(this._afr);
+    this._afr = requestAnimationFrame(() => this.renderDrop());
   }
 
   renderDrag() {
