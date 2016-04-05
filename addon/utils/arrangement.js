@@ -5,19 +5,56 @@ export default class Arrangement {
 
   constructor(rootNode) {
     this.root = new Slot(rootNode);
-    this.indexPaths();
+    this.reindex();
   }
 
-  indexPaths() {
+  reindex() {
     this.paths = {};
     this.walkTree(({ id }, path) => this.paths[id] = path);
   }
 
   moveNode(node, point) {
-    let slot = this.removeNode(node);
-    if (slot) {
-      this.addSlotAtPoint(slot, point);
-    }
+    let id = identify(node);
+    let path = this.paths[id];
+    let slot = this.slotForPath(path);
+    let offset = slot.outerHeight;
+    let { parent, position } = this.findHome(slot, point);
+    let siblings = parent.children;
+
+    this.detachNode(node);
+
+    siblings.splice(position, 0, slot);
+    this.reindex();
+
+    let parentPath = this.paths[parent.id];
+    let tail = siblings.slice(position);
+
+    tail.forEach(s => s.translateBy(0, offset));
+    this.walkPath(parentPath, s => s.resizeBy(0, offset));
+  }
+
+  detachNode(node) {
+    let id = identify(node);
+    let path = this.paths[id];
+    let parentPath = path.slice(0, -1);
+    let index = path[path.length - 1];
+    let slot = this.slotForPath(path);
+    let parent = this.slotForPath(parentPath);
+    let offset = -slot.outerHeight;
+    let tail = parent.children.slice(index + 1);
+
+    parent.children.splice(index, 1);
+    this.reindex();
+
+    tail.forEach(s => s.translateBy(0, offset));
+    this.walkPath(parentPath, s => s.resizeBy(0, offset));
+  }
+
+  findHome(slot, point) {
+    let parent = findParent([this.root], slot, point);
+    let position = findPosition(parent.children, point);
+
+    return { parent, position };
   }
 
   render() {
@@ -28,71 +65,9 @@ export default class Arrangement {
     this.walkTree(slow => slow.clear());
   }
 
-  removeNode(node) {
-    let id = identify(node);
-    let path = this.paths[id];
-
-    if (!path) { return; }
-
-    let index = path[path.length - 1];
-    let parentPath = path.slice(0, -1);
-    let slot = this.slotForPath(path);
-    let parent = this.slotForPath(parentPath);
-    let affectedSiblings = parent.children.slice(index);
-
-    let offset = -slot.outerHeight;
-
-    parent.children.splice(index, 1);
-    this.indexPaths();
-
-    affectedSiblings.forEach(s => s.shiftBy(offset));
-    this.walkPath(parentPath, s => s.resizeBy(offset));
-
-    return slot;
-  }
-
-  addSlotAtPoint(slot, point) {
-    let { x, y } = point;
-
-    let within = slot => {
-      let { top, left, bottom, right } = slot.rect;
-      return left <= x && x <= right && top <= y && y <= bottom;
-    };
-
-    let find = candidates => {
-      let candidate = candidates.find(within);
-
-      if (candidate) {
-        return find(candidate.children) || candidate;
-      }
-    };
-
-    let findIndex = slots => {
-      for (let i = slots.length - 1; i >= 0; i--) {
-        let { y } = newSiblings[i];
-        if (top <= y) { return i; }
-      }
-
-      return 0;
-    };
-
-    let newParent = find([this.root]);
-    let newSiblings = newParent.children;
-    let newIndex = findIndex(newSiblings);
-    let parentPath = this.paths[newParent.id];
-    let offset = slot.outerHeight;
-
-    newSiblings.splice(newIndex, 0, slot);
-
-    this.walkPath(parentPath, s => s.resizeBy(offset));
-    newSiblings.slice(newIndex + 1).forEach(s => s.shiftBy(offset));
-
-    this.indexPaths();
-  }
-
   slotForPath(path) {
     return path.reduce(
-      (result, index) => result.children[index],
+      ({ children }, index) => children[index],
       { children: [this.root] }
     );
   }
@@ -129,4 +104,30 @@ function walk(slot, func, path = [0]) {
   slot.children.forEach((child, index) => {
     walk(child, func, path.concat(index));
   });
+}
+
+function findParent(candidates, slot, point) {
+  let candidate = candidates.find(c => {
+    return c.covers(point) && c.canReceiveNode(slot.node);
+  });
+
+  if (!candidate) { return; }
+
+  let sx = slot.ox + point.dx;
+  let cx = candidate.x;
+  let dx = sx - cx;
+  let threshold = 8;
+  let shouldDescend = dx >= threshold;
+  let descend = () => findParent(candidate.children, slot, point);
+
+  return (shouldDescend && descend()) || candidate;
+}
+
+function findPosition(slots, point) {
+  for (let i = slots.length - 1; i >= 0; i--) {
+    let found = slots[i].y <= point.y;
+    if (found) { return i; }
+  }
+
+  return 0;
 }

@@ -2,9 +2,6 @@ import Gesture from './gesture';
 import Arrangement from './arrangement';
 import willTransition from './will-transition';
 import transitionend from './transitionend';
-import Ember from 'ember';
-
-const { run: { schedule } } = Ember;
 
 /**
   @class Manager
@@ -47,13 +44,13 @@ export default class Manager {
 
     this.arrangement.moveNode(this.node, this.gesture);
 
-    schedule('afterRender', this, 'renderDrag');
+    requestAnimationFrame(() => this.renderDrag());
   }
 
   drop() {
     this.node.set('sortableState', 'dropping');
 
-    schedule('afterRender', this, 'renderDrop');
+    requestAnimationFrame(() => this.renderDrop());
   }
 
   renderDrag() {

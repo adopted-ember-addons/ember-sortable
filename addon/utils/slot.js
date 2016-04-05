@@ -146,6 +146,8 @@ export default class Slot {
     @param {SortableNode} node
   */
   canReceiveNode(node) {
+    if (node === this.node) { return false; }
+
     let hook = get(this.node, 'canReceiveSortable');
     let type = typeof hook;
 
