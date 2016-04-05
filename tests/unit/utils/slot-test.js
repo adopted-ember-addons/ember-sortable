@@ -3,12 +3,9 @@ import { module, test } from 'qunit';
 
 class FakeNode {
   constructor(element) {
+    this.elementId = 'fake-node';
     this.element = element;
     this.sortableChildren = [];
-  }
-
-  get elementId() {
-    return 'fake-node';
   }
 
   $() {
@@ -90,6 +87,7 @@ test('render', function(assert) {
 test('clear', function(assert) {
   let { slot, element } = this;
 
+  slot.render();
   slot.clear();
 
   let { width, height, transform } = element.style;
