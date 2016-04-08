@@ -58,6 +58,9 @@ export default class Slot {
   get width() {
     return this.ow + this.dw;
   }
+  set width(value) {
+    this.dw = value - this.ow;
+  }
 
   /**
     @property height
@@ -65,6 +68,9 @@ export default class Slot {
   */
   get height() {
     return this.oh + this.dh;
+  }
+  set height(value) {
+    this.dh = value - this.oh;
   }
 
   /**

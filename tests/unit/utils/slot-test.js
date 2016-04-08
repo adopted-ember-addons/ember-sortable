@@ -150,3 +150,21 @@ test('set y', function(assert) {
   assert.equal(slot.y, 30);
   assert.equal(slot.dy, 10);
 });
+
+test('set width', function(assert) {
+  let { slot } = this;
+
+  slot.width = 200;
+
+  assert.equal(slot.width, 200);
+  assert.equal(slot.dw, 100);
+});
+
+test('set height', function(assert) {
+  let { slot } = this;
+
+  slot.height = 300;
+
+  assert.equal(slot.height, 300);
+  assert.equal(slot.dh, 100);
+});
