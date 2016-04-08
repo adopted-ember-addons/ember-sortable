@@ -132,3 +132,21 @@ test('canReceiveNode (method)', function(assert) {
 
   assert.equal(slot.canReceiveNode(other), false);
 });
+
+test('set x', function(assert) {
+  let { slot } = this;
+
+  slot.x = 20;
+
+  assert.equal(slot.x, 20);
+  assert.equal(slot.dx, 10);
+});
+
+test('set y', function(assert) {
+  let { slot } = this;
+
+  slot.y = 30;
+
+  assert.equal(slot.y, 30);
+  assert.equal(slot.dy, 10);
+});

@@ -36,6 +36,9 @@ export default class Slot {
   get x() {
     return this.ox + this.dx;
   }
+  set x(value) {
+    this.dx = value - this.ox;
+  }
 
   /**
     @property y
@@ -43,6 +46,9 @@ export default class Slot {
   */
   get y() {
     return this.oy + this.dy;
+  }
+  set y(value) {
+    this.dy = value - this.oy;
   }
 
   /**
