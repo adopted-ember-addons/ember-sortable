@@ -1,4 +1,5 @@
 import identify from './identify';
+import getMargins from './get-margins';
 import Ember from 'ember';
 
 const { get } = Ember;
@@ -100,6 +101,14 @@ export default class Slot {
     let right = left + this.outerWidth;
 
     return { top, left, bottom, right };
+  }
+
+  /**
+    @property margins
+    @type { top: number, left: number, bottom: number, right: number }
+  */
+  get margins() {
+    return getMargins(this.node.element);
   }
 
   /**
