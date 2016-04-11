@@ -25,8 +25,9 @@ export default class Arrangement {
     if (!parent) { return; }
 
     if (oldParent === parent && oldPosition === position) { return; }
+    if (oldParent === parent && oldPosition < position) { position -= 1; }
 
-    let offset = slot.outerHeight;
+    let offset = slot.outerHeight + slot.margins.bottom;
     let siblings = parent.children;
 
     this.detachNode(node);
@@ -34,11 +35,18 @@ export default class Arrangement {
     siblings.splice(position, 0, slot);
     this.reindex();
 
+    let prevSibling = siblings[position - 1];
     let parentPath = this.paths[parent.id];
     let tail = siblings.slice(position);
 
     tail.forEach(s => s.translateBy(0, offset));
     this.walkPath(parentPath, s => s.resizeBy(0, offset));
+
+    if (prevSibling) {
+      slot.y = prevSibling.bounds.bottom + Math.max(prevSibling.margins.bottom, slot.margins.top);
+    } else {
+      slot.y = parent.y;
+    }
   }
 
   detachNode(node) {
@@ -48,7 +56,7 @@ export default class Arrangement {
     let index = path[path.length - 1];
     let slot = this.slotForPath(path);
     let parent = this.slotForPath(parentPath);
-    let offset = -slot.outerHeight;
+    let offset = -(slot.outerHeight + slot.margins.bottom);
     let tail = parent.children.slice(index + 1);
 
     parent.children.splice(index, 1);
@@ -60,7 +68,8 @@ export default class Arrangement {
 
   findHome(slot, point) {
     let parent = findParent([this.root], slot, point);
-    let position = parent && findPosition(parent.children, point);
+    let slotPoint = { y: slot.oy + point.dy };
+    let position = parent && findPosition(parent.children, slotPoint);
 
     return { parent, position };
   }
@@ -70,7 +79,15 @@ export default class Arrangement {
   }
 
   clear() {
-    this.walkTree(slow => slow.clear());
+    this.walkTree(slot => slot.clear());
+  }
+
+  freeze() {
+    this.walkTree(slot => slot.freeze());
+  }
+
+  thaw() {
+    this.walkTree(slot => slot.thaw());
   }
 
   slotForPath(path) {
@@ -91,6 +108,14 @@ export default class Arrangement {
       cursor = cursor.children[index];
       func(cursor);
     });
+  }
+
+  slotForNode(node) {
+    let id = identify(node);
+    let path = this.paths[id];
+    let result = this.slotForPath(path);
+
+    return result;
   }
 
   metaFor(node) {
@@ -119,23 +144,23 @@ function findParent(candidates, slot, point) {
     return c.covers(point) && c.canReceiveNode(slot.node);
   });
 
-  if (!candidate) { return; }
+  if (candidate) {
+    let sx = slot.ox + point.dx;
+    let cx = candidate.x;
+    let dx = sx - cx;
+    let threshold = 8;
+    let shouldDescend = dx >= threshold;
+    let child = shouldDescend && findParent(candidate.children, slot, point);
 
-  let sx = slot.ox + point.dx;
-  let cx = candidate.x;
-  let dx = sx - cx;
-  let threshold = 8;
-  let shouldDescend = dx >= threshold;
-  let descend = () => findParent(candidate.children, slot, point);
-
-  return (shouldDescend && descend()) || candidate;
+    return child || candidate;
+  } else {
+    return null;
+  }
 }
 
 function findPosition(slots, point) {
-  for (let i = slots.length - 1; i >= 0; i--) {
-    let found = slots[i].y <= point.y;
-    if (found) { return i; }
-  }
+  let all = slots.concat(point).sort((a, b) => a.y - b.y);
+  let result = all.indexOf(point);
 
-  return 0;
+  return result;
 }

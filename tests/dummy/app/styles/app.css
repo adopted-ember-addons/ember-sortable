@@ -167,7 +167,7 @@ tree-node {
   cursor: move;
   margin: 4px 0;
   transform: none;
-  transition: transform .2s;
+  transition: all .2s;
 }
 
 tree-node > tree-node { background: hsl(0, 0%, 80%); }
@@ -183,7 +183,7 @@ tree-node.sortable-dropping {
   z-index: 2;
 }
 
-tree-node.sortable-dragging { 
+tree-node.sortable-dragging {
   transition: all 0s;
 }
 

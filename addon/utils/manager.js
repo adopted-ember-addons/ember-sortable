@@ -2,6 +2,9 @@ import Gesture from './gesture';
 import Arrangement from './arrangement';
 import willTransition from './will-transition';
 import transitionend from './transitionend';
+import Ember from 'ember';
+
+const { run: { schedule } } = Ember;
 
 /**
   @class Manager
@@ -41,18 +44,17 @@ export default class Manager {
 
   drag() {
     this.node.set('sortableState', 'dragging');
-
     this.arrangement.moveNode(this.node, this.gesture);
-
-    cancelAnimationFrame(this._afr);
-    this._afr = requestAnimationFrame(() => this.renderDrag());
+    this.schedule(() => this.renderDrag());
   }
 
   drop() {
     this.node.set('sortableState', 'dropping');
+    this.schedule(() => this.renderDrop());
+  }
 
-    cancelAnimationFrame(this._afr);
-    this._afr = requestAnimationFrame(() => this.renderDrop());
+  schedule(func) {
+    schedule('afterRender', func);
   }
 
   renderDrag() {
@@ -65,7 +67,7 @@ export default class Manager {
   }
 
   renderDrop() {
-    this.arrangement.clear();
+    this.arrangement.render();
 
     if (this.willTransition()) {
       this.node.$().one(transitionend, () => this.completeDrop());
@@ -75,9 +77,16 @@ export default class Manager {
   }
 
   completeDrop() {
-    this.walk(n => n.set('sortableState', null));
     let { parent, position } = this.arrangement.metaFor(this.node);
-    this.onComplete(parent, position);
+    this.walk(n => n.set('sortableState', null));
+    this.arrangement.freeze();
+    requestAnimationFrame(() => {
+      this.onComplete(parent, position);
+      schedule('afterRender', () => {
+        this.arrangement.clear();
+        this.arrangement.thaw();
+      });
+    });
   }
 
   cancel() {
@@ -89,8 +98,8 @@ export default class Manager {
   }
 
   willTransition() {
-    let { dx, dy } = this.gesture;
-    let isOffset = dx !== 0 || dy !== 0;
+    let { dx, dy } = this.arrangement.slotForNode(this.node);
+    let isOffset = dx !== this.gesture.dx || dy !== this.gesture.dy;
 
     return isOffset && willTransition(this.node.element);
   }

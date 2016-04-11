@@ -139,6 +139,8 @@ export default class Slot {
     let { node, width, height, dx, dy } = this;
     let transform = `translate(${dx}px, ${dy}px)`;
 
+    if (node.isDestroyed || node.isDestroying) { return; }
+
     node.$().css({ width, height, transform });
   }
 
@@ -149,7 +151,28 @@ export default class Slot {
   clear() {
     let { node } = this;
 
-    node.$().css({ width: '', height: '', transform: '' });
+    if (node.isDestroyed || node.isDestroying) { return; }
+
+    node.$().css({ width: '', height: '', transform: '' }).height();
+  }
+
+  /**
+    @method freeze
+  */
+  freeze() {
+    let { node } = this;
+
+    if (node.isDestroyed || node.isDestroying) { return; }
+
+    node.$().css('transition', 'none').height();
+  }
+
+  thaw() {
+    let { node } = this;
+
+    if (node.isDestroyed || node.isDestroying) { return; }
+
+    node.$().css('transition', '').height();
   }
 
   /**
