@@ -44,10 +44,10 @@
         </thead>
         {{#sortable-group tagName="tbody" onChange="update" as |group|}}
           {{#each model.items as |item|}}
-            {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
+            {{#sortable-item-ie-fix tagName="tr" model=item group=group handle=".handle"}}
               <td><span class="handle" data-item="{{item}}">&vArr;</span></td>
               <td>{{item}}</td>
-            {{/sortable-item}}
+            {{/sortable-item-ie-fix}}
           {{/each}}
         {{/sortable-group}}
       </table>
