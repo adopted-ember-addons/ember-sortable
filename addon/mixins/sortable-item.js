@@ -102,6 +102,8 @@ export default Mixin.create({
     @type Boolean
   */
   isAnimated: computed(function() {
+    if (!this.element || !this.$()) { return; }
+
     let el = this.$();
     let property = el.css('transition-property');
 
@@ -395,7 +397,7 @@ export default Mixin.create({
     @private
   */
   _applyPosition() {
-    if (!this.element) { return; }
+    if (!this.element || !this.$()) { return; }
 
     const groupDirection = this.get('group.direction');
 
@@ -440,7 +442,7 @@ export default Mixin.create({
     @private
   */
   _drop() {
-    if (!this.element) { return; }
+    if (!this.element || !this.$()) { return; }
 
     this._preventClick(this.element);
 
