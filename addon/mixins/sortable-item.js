@@ -8,6 +8,19 @@ export default Mixin.create({
   classNameBindings: ['isDragging', 'isDropping'],
 
   /**
+    @property isTransformable
+    @type Ember.Service
+  */
+  isTransformable: Ember.inject.service('sortable-is-transformable'),
+
+  /**
+    @property transformableElement
+    @type Boolean
+    @default null
+  */
+  transformableElement: null,
+
+  /**
     Group to which the item belongs.
     @property group
     @type SortableGroup
@@ -211,12 +224,16 @@ export default Mixin.create({
   /**
     @method didInsertElement
   */
-  didInsertElement() {
+	didInsertElement() {
     this._super();
+
+    // check if the element is transformable (this fixes issue #94)
+		this.set('transformableElement', this.get('isTransformable').check(this.$().css('display')));
+
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
-  },
+	},
 
   /**
     @method willDestroyElement
@@ -248,6 +265,15 @@ export default Mixin.create({
     @method freeze
   */
   freeze() {
+    let transformableElement = this.get('transformableElement');
+		if (!transformableElement) {
+			let cells = this.$('td');
+			if (!cells) { return; }
+
+			cells.css({ transition: 'none' });
+			cells.height(); // Force-apply styles
+		}
+
     let el = this.$();
     if (!el) { return; }
 
@@ -259,6 +285,15 @@ export default Mixin.create({
     @method reset
   */
   reset() {
+    let transformableElement = this.get('transformableElement');
+		if (!transformableElement) {
+			let cells = this.$('td');
+			if (!cells) { return; }
+
+			cells.css({ transform: '' });
+			cells.height(); // Force-apply styles
+		}
+
     let el = this.$();
     if (!el) { return; }
 
@@ -273,6 +308,15 @@ export default Mixin.create({
     @method thaw
   */
   thaw() {
+    let transformableElement = this.get('transformableElement');
+		if (!transformableElement) {
+			let cells = this.$('td');
+			if (!cells) { return; }
+
+			cells.css({ transition: '' });
+			cells.height(); // Force-apply styles
+		}
+
     let el = this.$();
     if (!el) { return; }
 
@@ -400,6 +444,33 @@ export default Mixin.create({
     if (!this.element || !this.$()) { return; }
 
     const groupDirection = this.get('group.direction');
+
+    let transformableElement =  this.get('transformableElement');
+		if (!transformableElement) {
+			let el = this.$();
+			if (!el) { return; }
+
+			let cells = this.$('td');
+			if (!cells) { return; }
+
+			if (groupDirection === 'x') {
+				let x = this.get('x');
+				let dx = x - el.prop('offsetLeft') + parseFloat(el.css('margin-left'));
+
+				cells.css({
+					transform: `translateX(${dx}px)`
+				});
+			}
+
+			if (groupDirection === 'y') {
+				let y = this.get('y');
+				let dy = y - el.prop('offsetTop');
+
+				cells.css({
+					transform: `translateY(${dy}px)`
+				});
+			}
+		}
 
     if (groupDirection === 'x') {
       let x = this.get('x');
