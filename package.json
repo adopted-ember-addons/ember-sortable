@@ -1,6 +1,6 @@
 {
   "name": "ember-sortable",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Sortable UI primitives for Ember.",
   "directories": {
     "doc": "doc",

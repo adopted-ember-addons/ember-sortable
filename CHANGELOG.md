@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.8.2 (2016-08-05)
+
+- [#100](https://github.com/jgwhite/ember-sortable/pull/100) Fix for dragging outside of ember-modal-dialog boundaries [@davelowensohn](https://github.com/davelowensohn)
+
 ### 1.8.1 (2016-03-10)
 
 - [#87](https://github.com/jgwhite/ember-sortable/pull/90) Backfill triggerEvent in drag for Ember >= 2.5 [@jgwhite](https://github.com/jgwhite)
