@@ -334,6 +334,13 @@ export default Mixin.create({
     this._scrollOnEdges(drag);
   },
 
+  /**
+    The maximum scroll speed when dragging element.
+    @property maxScrollSpeed
+    @default 20
+   */
+  maxScrollSpeed: 20,
+
   _scrollOnEdges(drag) {
     let groupDirection = this.get('group.direction');
     let $element = this.$();
@@ -382,8 +389,8 @@ export default Mixin.create({
       }
 
       if (delta !== 0) {
-        // clamp between -15px and 15px
-        delta = Math.min(Math.max(delta, -15), 15);
+        let speed = this.get('maxScrollSpeed');
+        delta = Math.min(Math.max(delta, -1 * speed), speed);
 
         scrollContainer[scrollKey](scroll + delta);
         if (this._event) {
