@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import computed from 'ember-new-computed';
+import scrollParent from '../system/scroll-parent';
+import ScrollContainer from '../system/scroll-container';
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
@@ -328,6 +330,74 @@ export default Mixin.create({
     this._tellGroup('prepare');
     this.set('isDragging', true);
     this.sendAction('onDragStart', this.get('model'));
+
+    this._scrollOnEdges(drag);
+  },
+
+  _scrollOnEdges(drag) {
+    let groupDirection = this.get('group.direction');
+    let $element = this.$();
+    let scrollContainer = new ScrollContainer(scrollParent($element)[0]);
+    let itemContainer = {
+      width: $element.width(),
+      height: $element.height(),
+      get left() {
+        return $element.offset().left;
+      },
+      get right() {
+        return this.left + this.width;
+      },
+      get top() {
+        return $element.offset().top;
+      },
+      get bottom() {
+        return this.top + this.height;
+      }
+    };
+
+    let leadingEdgeKey, trailingEdgeKey, scrollKey;
+    if (groupDirection === 'x') {
+      leadingEdgeKey = 'left';
+      trailingEdgeKey = 'right';
+      scrollKey = 'scrollLeft';
+    } else {
+      leadingEdgeKey = 'top';
+      trailingEdgeKey = 'bottom';
+      scrollKey = 'scrollTop';
+    }
+
+    // Set a trigger padding that will start scrolling
+    // the box when the item reaches within padding pixels
+    // of the edge of the scroll container.
+    let checkScrollBounds = () => {
+      let leadingEdge = itemContainer[leadingEdgeKey];
+      let trailingEdge = itemContainer[trailingEdgeKey];
+      let scroll = scrollContainer[scrollKey]();
+
+      let delta = 0;
+      if (trailingEdge >= scrollContainer[trailingEdgeKey]) {
+        delta = trailingEdge - scrollContainer[trailingEdgeKey];
+      } else if (leadingEdge <= scrollContainer[leadingEdgeKey]) {
+        delta = leadingEdge - scrollContainer[leadingEdgeKey];
+      }
+
+      if (delta !== 0) {
+        // clamp between -15px and 15px
+        delta = Math.min(Math.max(delta, -15), 15);
+
+        scrollContainer[scrollKey](scroll + delta);
+        if (this._event) {
+          run(() => drag(this._event));
+        }
+      }
+      if (this.get('isDragging')) {
+        requestAnimationFrame(checkScrollBounds);
+      }
+    };
+
+    if (!Ember.testing) {
+      requestAnimationFrame(checkScrollBounds);
+    }
   },
 
   /**
@@ -353,6 +423,7 @@ export default Mixin.create({
         let scrollX = parentElement.offset().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
+        this._event = event;
         this._drag(x);
       };
     }
@@ -367,6 +438,7 @@ export default Mixin.create({
         let scrollY = parentElement.offset().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
+        this._event = event;
         this._drag(y);
       };
     }
