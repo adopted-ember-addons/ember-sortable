@@ -362,16 +362,26 @@ export default Mixin.create({
       }
     };
 
-    let leadingEdgeKey, trailingEdgeKey, scrollKey;
+    let leadingEdgeKey, trailingEdgeKey, scrollKey, pageKey;
     if (groupDirection === 'x') {
       leadingEdgeKey = 'left';
       trailingEdgeKey = 'right';
       scrollKey = 'scrollLeft';
+      pageKey = 'pageX';
     } else {
       leadingEdgeKey = 'top';
       trailingEdgeKey = 'bottom';
       scrollKey = 'scrollTop';
+      pageKey = 'pageY';
     }
+
+    let createFakeEvent = () => {
+      if (this._pageX == null && this._pageY == null) { return; }
+      return {
+        pageX: this._pageX,
+        pageY: this._pageY
+      };
+    };
 
     // Set a trigger padding that will start scrolling
     // the box when the item reaches within padding pixels
@@ -392,9 +402,14 @@ export default Mixin.create({
         let speed = this.get('maxScrollSpeed');
         delta = Math.min(Math.max(delta, -1 * speed), speed);
 
-        scrollContainer[scrollKey](scroll + delta);
-        if (this._event) {
-          run(() => drag(this._event));
+        delta = scrollContainer[scrollKey](scroll + delta) - scroll;
+
+        let event = createFakeEvent();
+        if (event) {
+          if (scrollContainer.isWindow) {
+            event[pageKey] += delta;
+          }
+          run(() => drag(event));
         }
       }
       if (this.get('isDragging')) {
@@ -426,11 +441,11 @@ export default Mixin.create({
       scrollOrigin = parentElement.offset().left;
 
       return event => {
-        let dx = getX(event) - dragOrigin;
+        this._pageX = getX(event);
+        let dx = this._pageX - dragOrigin;
         let scrollX = parentElement.offset().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
-        this._event = event;
         this._drag(x);
       };
     }
@@ -441,11 +456,11 @@ export default Mixin.create({
       scrollOrigin = parentElement.offset().top;
 
       return event => {
-        let dy = getY(event) - dragOrigin;
+        this._pageY = getY(event);
+        let dy = this._pageY - dragOrigin;
         let scrollY = parentElement.offset().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
-        this._event = event;
         this._drag(y);
       };
     }
