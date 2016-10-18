@@ -2,28 +2,40 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   /**
+    Lookup table which stores results of past tests for faster lookup,
+    after the first computation,
     @property _isTransformableLookup
     @private
   */
   _isTransformableLookup: {
-    'table-row': null,
-    'table-cell': null,
-    'table-row-group': null,
-    'table-caption': null,
-    'table-header-group': null,
-    'table-footer-group': null
+    'tr': null,
+    'td': null,
+    'tbody': null,
+    'caption': null,
+    'thead': null,
+    'tfoot': null
   },
 
   /**
+    Check if the selector in questions is a transformable element
+    in the current browser.
     @method check
   */
-  check(displayType) {
-    // if the scenario has already been calculated,
-    // then just return its value
-    if (_isTransformableLookup[displayType.toLowerCase()] !== null) {
-      return _isTransformableLookup[displayType.toLowerCase()];
+  check(selector) {
+    // if selector is null, default to true in order 
+    // to maintain backwards compatability
+    if (selector === null) {
+      return true;
     }
 
+    // if the scenario has already been calculated,
+    // then just return its value
+    let normalizedSelector = selector.toLowerCase();
+    if (this.get(`_isTransformableLookup.${normalizedSelector}`) !== null) {
+      console.log('lookup hit');
+      return this.get(`_isTransformableLookup.${normalizedSelector}`);
+    }
+    console.log('lookup miss');
     const scenarios = [
       { display: 'table-row', selector: 'tr' },
       { display: 'table-cell', selector: 'td' },
@@ -61,7 +73,7 @@ export default Ember.Service.extend({
     for (let i = 0; i < scenarios.length; ++i) {
       let scenario = scenarios[i];
 
-      if (displayType.toLowerCase() === scenario.display) {
+      if (normalizedSelector === scenario.selector) {
         /* Test Transformability */
         let element = testTable.find(scenario.selector).first(),
           initial = element[0].getBoundingClientRect().top,
@@ -75,8 +87,11 @@ export default Ember.Service.extend({
       }
     }
 
-    // remove the test table
+    // remove the test table now that calculations are done
     testTable.remove();
+
+    // save result of the calculation in the lookup table for future uses
+    this.set('_isTransformableLookup', pass);
 
     return pass;
   }

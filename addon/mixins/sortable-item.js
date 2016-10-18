@@ -8,19 +8,6 @@ export default Mixin.create({
   classNameBindings: ['isDragging', 'isDropping'],
 
   /**
-    @property isTransformable
-    @type Ember.Service
-  */
-  isTransformable: Ember.inject.service('sortable-is-transformable'),
-
-  /**
-    @property transformableElement
-    @type Boolean
-    @default null
-  */
-  transformableElement: null,
-
-  /**
     Group to which the item belongs.
     @property group
     @type SortableGroup
@@ -227,9 +214,6 @@ export default Mixin.create({
 	didInsertElement() {
     this._super();
 
-    // check if the element is transformable (this fixes issue #94)
-		this.set('transformableElement', this.get('isTransformable').check(this.$().css('display')));
-
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
@@ -265,8 +249,8 @@ export default Mixin.create({
     @method freeze
   */
   freeze() {
-    let transformableElement = this.get('transformableElement');
-		if (!transformableElement) {
+    let isTransformableElement = this.get('group.isItemTransformable');
+		if (!isTransformableElement) {
 			let cells = this.$('td');
 			if (!cells) { return; }
 
@@ -285,8 +269,8 @@ export default Mixin.create({
     @method reset
   */
   reset() {
-    let transformableElement = this.get('transformableElement');
-		if (!transformableElement) {
+    let isTransformableElement = this.get('group.isItemTransformable');
+		if (!isTransformableElement) {
 			let cells = this.$('td');
 			if (!cells) { return; }
 
@@ -308,8 +292,8 @@ export default Mixin.create({
     @method thaw
   */
   thaw() {
-    let transformableElement = this.get('transformableElement');
-		if (!transformableElement) {
+    let isTransformableElement = this.get('group.isItemTransformable');
+		if (!isTransformableElement) {
 			let cells = this.$('td');
 			if (!cells) { return; }
 
@@ -445,8 +429,8 @@ export default Mixin.create({
 
     const groupDirection = this.get('group.direction');
 
-    let transformableElement =  this.get('transformableElement');
-		if (!transformableElement) {
+    let isTransformableElement =  this.get('group.isItemTransformable');
+		if (!isTransformableElement) {
 			let el = this.$();
 			if (!el) { return; }
 
