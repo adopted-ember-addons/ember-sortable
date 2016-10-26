@@ -9,6 +9,13 @@ export default Component.extend({
   layout: layout,
 
   /**
+    @property isTransformableService
+    @type Ember.Service
+  */
+  isTransformableService: Ember.inject.service('sortable-is-transformable'),
+
+
+  /**
     @property direction
     @type string
     @default y
@@ -27,6 +34,16 @@ export default Component.extend({
     @type Ember.NativeArray
   */
   items: computed(() => a()),
+
+  /**
+    The type of element which an item int the group will be.
+    @property itemTagName
+    @type String
+  */
+  itemTagName: null,
+
+
+  isItemTransformable: null,
 
   /**
     Position for the first item.
@@ -52,11 +69,27 @@ export default Component.extend({
   }).volatile(),
 
   /**
+    @method didReceiveAttrs
+  */
+  didReceiveAttrs({newAttrs}) {
+    this._super();
+
+    if (newAttrs.hasOwnProperty('itemTagName')) {
+      // check if the element is transformable (this fixes issue #94)
+      this.set('isItemTransformable', this.get('isTransformableService').check(this.get('itemTagName')));
+    }
+  },
+
+
+  /**
     Register an item with this group.
     @method registerItem
     @param {SortableItem} [item]
   */
   registerItem(item) {
+    if (this.get('itemTagName') === null) {
+      this.set('itemTagName', item.get('tagName'));
+    }
     this.get('items').addObject(item);
   },
 

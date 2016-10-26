@@ -193,6 +193,19 @@ No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “d
 
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
+### Internet Explorer and Edge Specific Mixin
+The mixin `sortable-item-ie-fix.js` can be used to address the Internet Explorer and Microsoft Edge issue discussed in [issue #94](https://github.com/jgwhite/ember-sortable/issues/94). To use it, create your own component which extends the `sortable-item` component, and then pass it the IE/Edge fix mixin.
+
+```js
+import SortableItem from 'ember-sortable/components/sortable-item';
+import SortableItemMixinIE from 'ember-sortable/mixins/sortable-item-ie-fix';
+
+export default SortableItem.extend(SortableItemMixinIE, {
+});
+
+```
+
+
 ## Testing
 
 `ember-sortable` exposes some acceptance test helpers:
