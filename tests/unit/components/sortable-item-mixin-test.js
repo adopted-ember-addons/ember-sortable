@@ -1,11 +1,9 @@
 import Ember from 'ember';
-import SortableItemMixin from 'ember-sortable/mixins/sortable-item';
-import { module, test } from 'qunit';
-const { Component, run } = Ember;
+import { moduleForComponent, test } from 'ember-qunit';
+const { run } = Ember;
 
 const MockEvent = { originalEvent: null };
 const MockModel = { name: 'Mock Model' };
-const MockComponent = Component.extend(SortableItemMixin);
 const MockGroup = Ember.Object.extend({
   direction: 'y',
   registerItem(item) {
@@ -24,12 +22,16 @@ const MockGroup = Ember.Object.extend({
 let group;
 let subject;
 
-module('mixin:sortable-item', {
+moduleForComponent('sortable-item-mixin', {
+  unit: true,
+  needs: [],
+
   beforeEach() {
     run(() => {
       group = MockGroup.create();
-      subject = MockComponent.create({ group });
-      subject.appendTo('#ember-testing');
+      subject = this.subject();
+      subject.set('group', group);
+      this.render();
     });
   },
 
