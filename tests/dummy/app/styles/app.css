@@ -160,3 +160,7 @@
   background: rgba(127, 0, 0, .5);
   color: pink;
 }
+
+#ember-testing {
+  transform: none !important
+}
