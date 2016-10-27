@@ -1,5 +1,14 @@
 # ember-sortable changelog
 
+### 1.9.0 (2016-10-27)
+
+- [#106](https://github.com/jgwhite/ember-sortable/pull/106) Fix test-helpers in ember-cli-qunit 3.0 [@omghax](https://github.com/omghax)
+- [#104](https://github.com/jgwhite/ember-sortable/pull/104) Autoscroll while dragging sortable-items [@tim-evans](https://github.com/tim-evans)
+- [#112](https://github.com/jgwhite/ember-sortable/pull/112) Remove event listeners on willDestroyElement [@tim-evans](https://github.com/tim-evans)
+- [#107](https://github.com/jgwhite/ember-sortable/pull/107) Upgrade to ember-cli 2.9.1 [@jgwhite](https://github.com/jgwhite)
+- [#111](https://github.com/jgwhite/ember-sortable/pull/111) Fix mixin unit tests [@acburdine](https://github.com/acburdine)
+- [#102](https://github.com/jgwhite/ember-sortable/pull/102) Ember 2.7 update [@jgwhite](https://github.com/jgwhite)
+
 ### 1.8.2 (2016-08-05)
 
 - [#100](https://github.com/jgwhite/ember-sortable/pull/100) Fix for dragging outside of ember-modal-dialog boundaries [@davelowensohn](https://github.com/davelowensohn)
