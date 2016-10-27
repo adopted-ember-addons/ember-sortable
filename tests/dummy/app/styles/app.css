@@ -81,6 +81,11 @@
   background: #A9E2F3;
 }
 
+.horizontal-demo {
+  overflow: auto;
+  white-space: nowrap;
+}
+
 .horizontal-demo .sortable-item {
   display: inline-block;
   position: relative;
