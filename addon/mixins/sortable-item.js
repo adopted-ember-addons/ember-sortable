@@ -227,6 +227,10 @@ export default Mixin.create({
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
+
+    // remove event listeners that may still be attached
+    $(window).off('mousemove touchmove', this._startDragListener);
+    $(window).off('click mouseup touchend', this._cancelStartDragListener);
   },
 
   /**
@@ -296,14 +300,14 @@ export default Mixin.create({
     event.preventDefault();
     event.stopPropagation();
 
-    let startDragListener = event => this._startDrag(event);
+    this._startDragListener = event => this._startDrag(event);
 
-    function cancelStartDragListener() {
-      $(window).off('mousemove touchmove', startDragListener);
-    }
+    this._cancelStartDragListener = () => {
+      $(window).off('mousemove touchmove', this._startDragListener);
+    };
 
-    $(window).one('mousemove touchmove', startDragListener);
-    $(window).one('click mouseup touchend', cancelStartDragListener);
+    $(window).one('mousemove touchmove', this._startDragListener);
+    $(window).one('click mouseup touchend', this._cancelStartDragListener);
   },
 
   /**
