@@ -52,8 +52,11 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     let item = findWithAssert(itemSelector);
     let itemOffset = item.offset();
     let offset = offsetFn();
-    let targetX = itemOffset.left + offset.dx;
-    let targetY = itemOffset.top + offset.dy;
+    let itemElement = item.get(0);
+    let rect = itemElement.getBoundingClientRect();
+    let scale = itemElement.clientHeight / (rect.bottom - rect.top);
+    let targetX = itemOffset.left + offset.dx * scale;
+    let targetY = itemOffset.top + offset.dy * scale;
 
     triggerEvent(app, item, start, {
       pageX: itemOffset.left,
