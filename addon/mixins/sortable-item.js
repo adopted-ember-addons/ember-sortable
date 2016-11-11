@@ -3,6 +3,7 @@ import computed from 'ember-new-computed';
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
 import {invokeAction} from 'ember-invoke-action';
+import { throttle } from 'ember-runloop';
 
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
@@ -320,17 +321,18 @@ export default Mixin.create({
     if (this.get('isBusy')) { return; }
 
     let drag = this._makeDragHandler(event);
+    let dragThrottled = ev => throttle(this, drag, ev, 50, false);
 
     let drop = () => {
       $(window)
-        .off('mousemove touchmove', drag)
+        .off('mousemove touchmove', dragThrottled)
         .off('click mouseup touchend', drop);
 
       this._drop();
     };
 
     $(window)
-      .on('mousemove touchmove', drag)
+      .on('mousemove touchmove', dragThrottled)
       .on('click mouseup touchend', drop);
 
     this._tellGroup('prepare');
