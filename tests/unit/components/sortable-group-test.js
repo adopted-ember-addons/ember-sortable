@@ -361,3 +361,10 @@ test('draggedModel', function(assert) {
     component.commit();
   });
 });
+
+test('renders data-test-selector', function(assert) {
+  let component = this.subject();
+
+  assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
+  'support data-test-selector attribute binging');
+});
