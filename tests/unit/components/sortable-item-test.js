@@ -20,3 +20,10 @@ test('it renders', function(assert) {
   this.render();
   assert.equal(component._state, 'inDOM');
 });
+
+test('renders data-test-selector', function(assert) {
+  let component = this.subject();
+
+  assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
+    'support data-test-selector attribute binding');
+});

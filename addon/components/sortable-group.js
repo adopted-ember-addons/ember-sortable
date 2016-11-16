@@ -10,6 +10,8 @@ const NO_MODEL = {};
 export default Component.extend({
   layout: layout,
 
+  attributeBindings: ['data-test-selector'],
+
   /**
     @property direction
     @type string

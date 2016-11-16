@@ -12,6 +12,8 @@ export default Mixin.create({
   classNames: ['sortable-item'],
   classNameBindings: ['isDragging', 'isDropping'],
 
+  attributeBindings: ['data-test-selector'],
+
   /**
     Group to which the item belongs.
     @property group
