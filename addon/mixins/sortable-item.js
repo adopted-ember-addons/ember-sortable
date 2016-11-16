@@ -321,7 +321,7 @@ export default Mixin.create({
     if (this.get('isBusy')) { return; }
 
     let drag = this._makeDragHandler(event);
-    let dragThrottled = ev => throttle(this, drag, ev, 50, false);
+    let dragThrottled = ev => throttle(this, drag, ev, 16, false);
 
     let drop = () => {
       $(window)
