@@ -1,3 +1,1 @@
-import sortableGroup from 'ember-sortable/components/sortable-group';
-
-export default sortableGroup;
+export {default} from 'ember-sortable/components/sortable-group';

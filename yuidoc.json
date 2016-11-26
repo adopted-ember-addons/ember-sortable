@@ -1,0 +1,24 @@
+{
+  "name": "Ember Sortable",
+  "description": "",
+  "url": "https://github.com/jgwhite/ember-sortable",
+  "options": {
+    "enabledEnvironments": ["production"],
+    "paths": ["addon", "test-support"],
+    "external": {
+      "data": [{
+        "base": "http://emberjs.com/api/",
+        "json": "http://builds.emberjs.com/tags/v2.9.1/ember-docs.json"
+      }]
+    },
+    "themedir": "node_modules/yuidoc-ember-theme",
+    "helpers": ["node_modules/yuidoc-ember-theme/helpers/helpers.js"],
+    "exclude": "vendor",
+    "outdir": "docs",
+    "linkNatives": true,
+    "quiet": true,
+    "parseOnly": false,
+    "lint": false,
+    "nocode": false
+  }
+}
