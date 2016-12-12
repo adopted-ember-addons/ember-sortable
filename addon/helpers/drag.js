@@ -2,30 +2,29 @@ import Ember from 'ember';
 const { $ } = Ember;
 
 /**
-  Drags elements by an offset specified in pixels.
+ * Drags elements by an offset specified in pixels.
+ * Example:
+ *
 
-  Examples
+```js
+drag(
+  'mouse',
+  '.some-list li[data-item=uno]',
+  function() {
+    return { dy: 50, dx: 20 };
+  }
+);
+```
 
-      drag(
-        'mouse',
-        '.some-list li[data-item=uno]',
-        function() {
-          return { dy: 50, dx: 20 };
-        }
-      );
-
-  @method drag
-  @param {'mouse'|'touch'} [mode]
-    event mode
-  @param {String} [itemSelector]
-    selector for the element to drag
-  @param {Function} [offsetFn]
-    function returning the offset by which to drag
-  @param {Object} [callbacks]
-    callbacks that are fired at the different stages of the interaction
-  @return {Promise}
-*/
-
+ * @method drag
+ * @param {Ember.Application} app
+ * @param {'mouse'|'touch'} mode event mode
+ * @param {String} itemSelector selector for the element to drag
+ * @param {Function} offsetFn function returning the offset by which to drag
+ * @param {Object} callbacks callbacks that are fired at the different stages of the interaction
+ *
+ * @return {Promise}
+ */
 export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
   let start, move, end, which;
 

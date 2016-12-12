@@ -1,13 +1,20 @@
 import Ember from 'ember';
 import computed from 'ember-new-computed';
+import {invokeAction} from 'ember-invoke-action';
+import {throttle} from 'ember-runloop';
+
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
-import {invokeAction} from 'ember-invoke-action';
-import { throttle } from 'ember-runloop';
+import {getX, getY, getBorderSpacing} from '../system/utils';
 
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
+/**
+ * @module ember-sortable
+ * @class SortableItemMixin
+ * @extends Ember.Mixin
+ */
 export default Mixin.create({
   classNames: ['sortable-item'],
   classNameBindings: ['isDragging', 'isDropping'],
@@ -15,99 +22,111 @@ export default Mixin.create({
   attributeBindings: ['data-test-selector'],
 
   /**
-    Group to which the item belongs.
-    @property group
-    @type SortableGroup
-    @default null
-  */
+   * Group to which the item belongs.
+   *
+   * @property group
+   * @type SortableGroup
+   * @default null
+   * @public
+   */
   group: null,
 
   /**
-    Model which the item represents.
-    @property model
-    @type Object
-    @default null
-  */
+   * Model which the item represents.
+   *
+   * @property model
+   * @type Any
+   * @default null
+   * @public
+   */
   model: null,
 
   /**
-    Selector for the element to use as handle.
-    If unset, the entire element will be used as the handle.
-    @property handle
-    @type String
-    @default null
-  */
+   * Selector for the element to use as handle.
+   * If not set, the entire element will be used as the handle.
+   *
+   * @property handle
+   * @type String
+   * @default null
+   */
   handle: null,
 
   /**
-    True if the item is currently being dragged.
-    @property isDragging
-    @type Boolean
-    @default false
-  */
+   * True if the item is currently being dragged.
+   *
+   * @property isDragging
+   * @type Boolean
+   * @default false
+   * @protected
+   */
   isDragging: false,
 
   /**
-    Action that fires when the item starts being dragged.
-    @property onDragStart
-    @type Action
-    @default null
-  */
-  onDragStart: null,
-
-  /**
-    Action that fires when the item stops being dragged.
-    @property onDragStop
-    @type Action
-    @default null
-  */
-  onDragStop: null,
-
-  /**
-    True if the item is currently dropping.
-    @property isDropping
-    @type Boolean
-    @default false
-  */
+   * True if the item is currently dropping.
+   *
+   * @property isDropping
+   * @type Boolean
+   * @default false
+   * @protected
+   */
   isDropping: false,
 
   /**
-    True if the item was dropped during the interaction
-    @property wasDropped
-    @type Boolean
-    @default false
-  */
+   * True if the item was dropped during the interaction
+   *
+   * @property wasDropped
+   * @type Boolean
+   * @default false
+   * @protected
+   */
   wasDropped: false,
 
-
   /**
-    @property isBusy
-    @type Boolean
-  */
+   * @property isBusy
+   * @type Boolean
+   * @protected
+   */
   isBusy: computed.or('isDragging', 'isDropping'),
 
   /**
-    The frequency with which the group is informed
-    that an update is required.
-    @property updateInterval
-    @type Number
-    @default 125
-  */
+   * The frequency with which the group is informed
+   * that an update is required.
+   *
+   * @property updateInterval
+   * @type Number
+   * @default 125
+   * @public
+   */
   updateInterval: 125,
 
   /**
-    Additional spacing between active item and the rest of the elements.
-    @property spacing
-    @type Number
-    @default 0[px]
-  */
+   * Additional spacing between active item and the rest of the elements.
+   * Spacing is in pixels
+   *
+   * @property spacing
+   * @type Number
+   * @default 0
+   * @public
+   */
   spacing: 0,
 
   /**
-    True if the item transitions with animation.
-    @property isAnimated
-    @type Boolean
-  */
+   * The maximum scroll speed when dragging element.
+   *
+   * @property maxScrollSpeed
+   * @type Number
+   * @default 20
+   * @public
+   */
+  maxScrollSpeed: 20,
+
+  /**
+   * True if the item transitions with animation.
+   *
+   * @property isAnimated
+   * @type Boolean
+   * @protected
+   */
   isAnimated: computed(function() {
     if (!this.element || !this.$()) { return; }
 
@@ -118,10 +137,12 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    The current transition duration in milliseconds.
-    @property transitionDuration
-    @type Number
-  */
+   * The current transition duration in milliseconds.
+   *
+   * @property transitionDuration
+   * @type Number
+   * @protected
+   */
   transitionDuration: computed(function() {
     let el = this.$();
     let rule = el.css('transition-duration');
@@ -142,10 +163,12 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Horizontal position of the item.
-    @property x
-    @type Number
-  */
+   * Horizontal position of the item
+   *
+   * @property x
+   * @type Number
+   * @protected
+   */
   x: computed({
     get() {
       if (this._x === undefined) {
@@ -164,10 +187,12 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Vertical position of the item relative to its offset parent.
-    @property y
-    @type Number
-  */
+   * Vertical position of the item relative to its offset parent.
+   *
+   * @property y
+   * @type Number
+   * @protected
+   */
   y: computed({
     get() {
       if (this._y === undefined) {
@@ -185,10 +210,12 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Width of the item.
-    @property height
-    @type Number
-  */
+   * Width of the item.
+   *
+   * @property width
+   * @type Number
+   * @protected
+   */
   width: computed(function() {
     let el = this.$();
     let width = el.outerWidth(true);
@@ -199,10 +226,12 @@ export default Mixin.create({
   }).volatile(),
 
   /**
-    Height of the item including margins.
-    @property height
-    @type Number
-  */
+   * Height of the item including margins.
+   *
+   * @property height
+   * @type Number
+   * @protected
+   */
   height: computed(function() {
     let el = this.$();
     let height = el.outerHeight();
@@ -215,9 +244,26 @@ export default Mixin.create({
     return height;
   }).volatile(),
 
+  /* Events */
+
   /**
-    @method didInsertElement
-  */
+   * Action that fires when the item starts being dragged.
+   *
+   * @event onDragStart
+   * @param {Any} model Model defined for this item
+   * @public
+   */
+
+  /**
+   * Action that fires when the item stops being dragged.
+   *
+   * @event onDragStop
+   * @param {Any} model Model defined for this item
+   * @public
+   */
+
+  /* Ember Component hooks */
+
   didInsertElement() {
     this._super();
     // scheduled to prevent deprecation warning:
@@ -225,9 +271,6 @@ export default Mixin.create({
     run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
   },
 
-  /**
-    @method willDestroyElement
-  */
   willDestroyElement() {
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
@@ -238,9 +281,6 @@ export default Mixin.create({
     $(window).off('click mouseup touchend', this._cancelStartDragListener);
   },
 
-  /**
-    @method mouseDown
-  */
   mouseDown(event) {
     if (event.which !== 1) { return; }
     if (event.ctrlKey) { return; }
@@ -248,16 +288,16 @@ export default Mixin.create({
     this._primeDrag(event);
   },
 
-  /**
-    @method touchStart
-  */
   touchStart(event) {
     this._primeDrag(event);
   },
 
   /**
-    @method freeze
-  */
+   * Freeze any potential transitions
+   *
+   * @method freeze
+   * @public
+   */
   freeze() {
     let el = this.$();
     if (!el) { return; }
@@ -267,8 +307,11 @@ export default Mixin.create({
   },
 
   /**
-    @method reset
-  */
+   * Reset positioning of object
+   *
+   * @method reset
+   * @public
+   */
   reset() {
     let el = this.$();
     if (!el) { return; }
@@ -281,8 +324,11 @@ export default Mixin.create({
   },
 
   /**
-    @method thaw
-  */
+   * Make transitions allowed again.
+   *
+   * @method thaw
+   * @public
+   */
   thaw() {
     let el = this.$();
     if (!el) { return; }
@@ -292,9 +338,12 @@ export default Mixin.create({
   },
 
   /**
-    @method _primeDrag
-    @private
-  */
+   * Setup event listeners for drag and drop
+   *
+   * @method _primeDrag
+   * @param {Event} event JS Event object
+   * @private
+   */
   _primeDrag(event) {
     let handle = this.get('handle');
 
@@ -316,9 +365,12 @@ export default Mixin.create({
   },
 
   /**
-    @method _startDrag
-    @private
-  */
+   * Start dragging & setup more event listeners
+   *
+   * @method _startDrag
+   * @param {Event} event JS Event object
+   * @private
+   */
   _startDrag(event) {
     if (this.get('isBusy')) { return; }
 
@@ -339,18 +391,19 @@ export default Mixin.create({
 
     this._tellGroup('prepare');
     this.set('isDragging', true);
+
     invokeAction(this, 'onDragStart', this.get('model'));
 
     this._scrollOnEdges(drag);
   },
 
   /**
-    The maximum scroll speed when dragging element.
-    @property maxScrollSpeed
-    @default 20
+   * Handles scrolling on item drag
+   *
+   * @method _scrollOnEdges
+   * @param {Function} drag Drag handler function
+   * @private
    */
-  maxScrollSpeed: 20,
-
   _scrollOnEdges(drag) {
     let groupDirection = this.get('group.direction');
     let $element = this.$();
@@ -373,6 +426,7 @@ export default Mixin.create({
     };
 
     let leadingEdgeKey, trailingEdgeKey, scrollKey, pageKey;
+
     if (groupDirection === 'x') {
       leadingEdgeKey = 'left';
       trailingEdgeKey = 'right';
@@ -433,11 +487,13 @@ export default Mixin.create({
   },
 
   /**
-    @method _makeDragHandler
-    @param {Event} startEvent
-    @return {Function}
-    @private
-  */
+   * Create drag handler for an event
+   *
+   * @method _makeDragHandler
+   * @param {Event} startEvent
+   * @return {Function} Drag handler function
+   * @private
+   */
   _makeDragHandler(startEvent) {
     const groupDirection = this.get('group.direction');
     let dragOrigin;
@@ -477,9 +533,13 @@ export default Mixin.create({
   },
 
   /**
-    @method _tellGroup
-    @private
-  */
+   * Convenience function used to call a method on the group
+   *
+   * @method _tellGroup
+   * @param {String} method Method name to call
+   * @param {Any} [...args] Arguments to pass to the method
+   * @private
+   */
   _tellGroup(method, ...args) {
     let group = this.get('group');
 
@@ -489,17 +549,21 @@ export default Mixin.create({
   },
 
   /**
-    @method _scheduleApplyPosition
-    @private
-  */
+   * Schedule position application
+   *
+   * @method _scheduleApplyPosition
+   * @private
+   */
   _scheduleApplyPosition() {
     run.scheduleOnce('render', this, '_applyPosition');
   },
 
   /**
-    @method _applyPosition
-    @private
-  */
+   * Set transform position of the item
+   *
+   * @method _applyPosition
+   * @private
+   */
   _applyPosition() {
     if (!this.element || !this.$()) { return; }
 
@@ -524,9 +588,12 @@ export default Mixin.create({
   },
 
   /**
-    @method _drag
-    @private
-  */
+   * Handle setting of things on item drag
+   *
+   * @method _drag
+   * @param {Number} dimension Value to set for x or y
+   * @private
+   */
   _drag(dimension) {
     let updateInterval = this.get('updateInterval');
     const groupDirection = this.get('group.direction');
@@ -542,9 +609,11 @@ export default Mixin.create({
   },
 
   /**
-    @method _drop
-    @private
-  */
+   * Handle cleanup on item drop
+   *
+   * @method _drop
+   * @private
+   */
   _drop() {
     if (!this.element || !this.$()) { return; }
 
@@ -560,18 +629,24 @@ export default Mixin.create({
   },
 
   /**
-    @method _preventClick
-    @private
-  */
+   * Prevent clicking on an element
+   *
+   * @method _preventClick
+   * @param {String|Element} element to prevent the click on
+   * @private
+   */
   _preventClick(element) {
     $(element).one('click', function(e){ e.stopImmediatePropagation(); } );
   },
 
   /**
-    @method _waitForTransition
-    @private
-    @return Promise
-  */
+   * Returns a promise that resolves when the transition duration
+   * has occurred.
+   *
+   * @method _waitForTransition
+   * @return Promise
+   * @private
+   */
   _waitForTransition() {
     return new Promise(resolve => {
       run.next(() => {
@@ -587,9 +662,12 @@ export default Mixin.create({
   },
 
   /**
-    @method _complete
-    @private
-  */
+   * Final method called on cleanup. Commits the result of the
+   * drag & drop to the group
+   *
+   * @method _complete
+   * @private
+   */
   _complete() {
     invokeAction(this, 'onDragStop', this.get('model'));
     this.set('isDropping', false);
@@ -597,60 +675,3 @@ export default Mixin.create({
     this._tellGroup('commit');
   }
 });
-
-/**
-  Gets the y offset for a given event.
-  Work for touch and mouse events.
-  @method getY
-  @return {Number}
-  @private
-*/
-function getY(event) {
-  let originalEvent = event.originalEvent;
-  let touches = originalEvent && originalEvent.changedTouches;
-  let touch = touches && touches[0];
-
-  if (touch) {
-    return touch.screenY;
-  } else {
-    return event.pageY;
-  }
-}
-
-/**
-  Gets the x offset for a given event.
-  @method getX
-  @return {Number}
-  @private
-*/
-function getX(event) {
-  let originalEvent = event.originalEvent;
-  let touches = originalEvent && originalEvent.changedTouches;
-  let touch = touches && touches[0];
-
-  if (touch) {
-    return touch.screenX;
-  } else {
-    return event.pageX;
-  }
-}
-
-/**
-  Gets a numeric border-spacing values for a given element.
-
-  @method getBorderSpacing
-  @param {Element} element
-  @return {Object}
-  @private
-*/
-function getBorderSpacing(el) {
-  el = $(el);
-
-  let css = el.css('border-spacing'); // '0px 0px'
-  let [horizontal, vertical] = css.split(' ');
-
-  return {
-    horizontal: parseFloat(horizontal),
-    vertical: parseFloat(vertical)
-  };
-}
