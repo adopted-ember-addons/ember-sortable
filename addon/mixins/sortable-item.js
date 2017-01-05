@@ -101,6 +101,16 @@ export default Mixin.create({
   spacing: 0,
 
   /**
+   * How many pixes the element needs to be moved to be considered dragged
+   *
+   * @property draggingThreshold
+   * @type Number
+   * @default 15
+   * @public
+   */
+  draggingThreshold: 15,
+
+  /**
     True if the item transitions with animation.
     @property isAnimated
     @type Boolean
@@ -452,7 +462,9 @@ export default Mixin.create({
         let scrollX = parentElement.offset().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
-        this._drag(x);
+        if(Math.abs(dragOrigin - this._pageX) >= draggingThreshold) {
+          this._drag(x);
+        }
       };
     }
 
@@ -467,7 +479,9 @@ export default Mixin.create({
         let scrollY = parentElement.offset().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
-        this._drag(y);
+        if(Math.abs(dragOrigin - this._pageY) >= draggingThreshold) {
+          this._drag(y);
+        }
       };
     }
   },
