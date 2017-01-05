@@ -446,6 +446,7 @@ export default Mixin.create({
   */
   _makeDragHandler(startEvent) {
     const groupDirection = this.get('group.direction');
+    const draggingThreshold = this.get('draggingThreshold');
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
