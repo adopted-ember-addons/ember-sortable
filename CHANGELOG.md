@@ -1,5 +1,11 @@
 # ember-sortable changelog
 
+### 1.9.1 (2016-11-28)
+
+- [#119](https://github.com/jgwhite/ember-sortable/pull/119) use document as the scroll parent if the body is the scroll parent [@tim-evans](https://github.com/tim-evans)
+- [#120](https://github.com/jgwhite/ember-sortable/pull/120) add support for 'data-test-selector' attribute [@cspanring](https://github.com/cspanring)
+- [#114](https://github.com/jgwhite/ember-sortable/pull/114) replace sendAction with ember-invoke-action [@acburdine](https://github.com/acburdine)
+
 ### 1.9.0 (2016-10-27)
 
 - [#106](https://github.com/jgwhite/ember-sortable/pull/106) Fix test-helpers in ember-cli-qunit 3.0 [@omghax](https://github.com/omghax)

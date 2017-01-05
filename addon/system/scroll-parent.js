@@ -13,7 +13,8 @@ export default function ($element) {
     return /(auto|scroll)/.test(overflow + overflowX + overflowY);
   }).eq(0);
 
-  if ($scrollParent.length === 0) {
+  if ($scrollParent.length === 0 ||
+      $scrollParent[0] === document.body) {
     $scrollParent = $(document);
   }
   return position === 'fixed' || $scrollParent;
