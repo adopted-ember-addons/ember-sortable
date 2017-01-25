@@ -121,7 +121,7 @@ export default Mixin.create({
   maxScrollSpeed: 20,
   
   /**
-   * How many pixes the element needs to be moved to be considered dragged
+   * How many pixels the element needs to be moved to be considered dragged
    *
    * @property draggingThreshold
    * @type Number
