@@ -269,6 +269,11 @@ export default Mixin.create({
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
+
+    // Instead of using `event.preventDefault()` in the 'primeDrag' event,
+    // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
+    let element = this.get('handle') ? this.$(this.get('handle')) : this.$();
+    element.css({ 'touch-action': 'none' });
   },
 
   willDestroyElement() {
@@ -350,9 +355,6 @@ export default Mixin.create({
     if (handle && !$(event.target).closest(handle).length) {
       return;
     }
-
-    event.preventDefault();
-    event.stopPropagation();
 
     this._startDragListener = event => this._startDrag(event);
 
