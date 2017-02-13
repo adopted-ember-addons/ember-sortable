@@ -307,6 +307,9 @@ export default Mixin.create({
       return;
     }
 
+    event.preventDefault();
+    event.stopPropagation();
+
     this._startDragListener = event => this._startDrag(event);
 
     this._cancelStartDragListener = () => {
