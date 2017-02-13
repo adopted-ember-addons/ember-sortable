@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.9.3 (2017-02-12)
+
+- return preventDefault calls to touch event [@acburdine](https://github.com/acburdine)
+
 ### 1.9.2 (2017-02-12)
 
 - [#131](https://github.com/jgwhite/ember-sortable/pull/131) prevent touch-actions on element or handle using css [@acburdine](https://github.com/acburdine)
