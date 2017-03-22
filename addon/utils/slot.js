@@ -153,7 +153,7 @@ export default class Slot {
 
     if (node.isDestroyed || node.isDestroying) { return; }
 
-    node.$().css({ width: '', height: '', transform: '' }).height();
+    node.$().css({ width: '', height: '', transform: '' });
   }
 
   /**
@@ -164,7 +164,7 @@ export default class Slot {
 
     if (node.isDestroyed || node.isDestroying) { return; }
 
-    node.$().css('transition', 'none').height();
+    node.$().css('transition', 'none');
   }
 
   thaw() {
@@ -172,7 +172,7 @@ export default class Slot {
 
     if (node.isDestroyed || node.isDestroying) { return; }
 
-    node.$().css('transition', '').height();
+    node.$().css('transition', '');
   }
 
   /**
