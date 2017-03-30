@@ -612,7 +612,11 @@ export default Mixin.create({
     @private
   */
   _preventClick(element) {
-    $(element).one(elementClickAction, function(e){ e.stopImmediatePropagation(); } );
+    $(element).one(elementClickAction, function(e){ 
+      e.stopPropagation();
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    } );
   },
 
   /**
