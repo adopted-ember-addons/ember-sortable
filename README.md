@@ -108,6 +108,16 @@ To change this property, define `spacing` on `sortable-item` (default is `0`):
 {{#sortable-item tagName="li" group=group spacing=15}}
 ```
 
+### Changing the drag tolerance
+
+`distance` attribute changes the tolerance, in pixels, for when sorting should start.
+If specified, sorting will not start until after mouse is dragged beyond distance.
+Can be used to allow for clicks on elements within a handle.
+
+```hbs
+{{#sortable-item group=group distance=30}}
+```
+
 ### CSS, Animation
 
 Sortable items can be in one of three states: default, dragging, dropping.
