@@ -131,6 +131,16 @@ export default Mixin.create({
    * @public
    */
   maxScrollSpeed: 20,
+  
+  /**
+   * How many pixels the element needs to be moved to be considered dragged
+   *
+   * @property draggingThreshold
+   * @type Number
+   * @default 15
+   * @public
+   */
+  draggingThreshold: 15,
 
   /**
    * True if the item transitions with animation.
@@ -529,6 +539,7 @@ export default Mixin.create({
    */
   _makeDragHandler(startEvent) {
     const groupDirection = this.get('group.direction');
+    const draggingThreshold = this.get('draggingThreshold');
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
@@ -545,7 +556,9 @@ export default Mixin.create({
         let scrollX = parentElement.offset().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
-        this._drag(x);
+        if(Math.abs(dragOrigin - this._pageX) >= draggingThreshold) {
+          this._drag(x);
+        }
       };
     }
 
@@ -560,7 +573,9 @@ export default Mixin.create({
         let scrollY = parentElement.offset().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
-        this._drag(y);
+        if(Math.abs(dragOrigin - this._pageY) >= draggingThreshold) {
+          this._drag(y);
+        }
       };
     }
   },
