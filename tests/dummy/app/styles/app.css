@@ -67,7 +67,7 @@
   color: pink;
 }
 
-.vertical-spacing-demo .sortable-item {
+.vertical-spacing-demo .sortable-item, .vertical-distance-demo .sortable-item {
   display: block;
   position: relative;
   background: #58D3F7;
@@ -77,7 +77,7 @@
   text-align: center;
 }
 
-.vertical-spacing-demo .sortable-item.is-dragging {
+.vertical-spacing-demo .sortable-item.is-dragging, .vertical-distance-demo .sortable-item.is-dragging {
   background: #A9E2F3;
 }
 
