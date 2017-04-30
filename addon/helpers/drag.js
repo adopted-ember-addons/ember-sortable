@@ -54,6 +54,8 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     let itemElement = item.get(0);
     let rect = itemElement.getBoundingClientRect();
     let scale = itemElement.clientHeight / (rect.bottom - rect.top);
+    let halfwayX = itemOffset.left + (offset.dx * scale) / 2;
+    let halfwayY = itemOffset.top + (offset.dy * scale) / 2;
     let targetX = itemOffset.left + offset.dx * scale;
     let targetY = itemOffset.top + offset.dy * scale;
 
@@ -75,6 +77,11 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     if (callbacks.dragmove) {
       andThen(callbacks.dragmove);
     }
+
+    triggerEvent(app, item, move, {
+      pageX: halfwayX,
+      pageY: halfwayY
+    });
 
     triggerEvent(app, item, move, {
       pageX: targetX,

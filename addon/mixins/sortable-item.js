@@ -7,7 +7,7 @@ import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
 import {getX, getY, getBorderSpacing} from '../system/utils';
 
-const { Mixin, $, run } = Ember;
+const { Mixin, $, run, run: { bind } } = Ember;
 const { Promise } = Ember.RSVP;
 
 /**
@@ -50,6 +50,18 @@ export default Mixin.create({
    * @default null
    */
   handle: null,
+
+  /**
+   * Tolerance, in pixels, for when sorting should start.
+   * If specified, sorting will not start until after mouse
+   * is dragged beyond distance. Can be used to allow for clicks
+   * on elements within a handle.
+   *
+   * @property distance
+   * @type Integer
+   * @default 0
+   */
+  distance: 0,
 
   /**
    * True if the item is currently being dragged.
@@ -349,21 +361,40 @@ export default Mixin.create({
    * @param {Event} event JS Event object
    * @private
    */
-  _primeDrag(event) {
+  _primeDrag(startEvent) {
     let handle = this.get('handle');
 
-    if (handle && !$(event.target).closest(handle).length) {
+    if (handle && !$(startEvent.target).closest(handle).length) {
       return;
     }
 
-    this._startDragListener = event => this._startDrag(event);
+    this._prepareDragListener = bind(this, this._prepareDrag, startEvent);
 
     this._cancelStartDragListener = () => {
-      $(window).off('mousemove touchmove', this._startDragListener);
+      $(window).off('mousemove touchmove', this._prepareDragListener);
     };
 
-    $(window).one('mousemove touchmove', this._startDragListener);
+    $(window).on('mousemove touchmove', this._prepareDragListener);
     $(window).one('click mouseup touchend', this._cancelStartDragListener);
+  },
+
+  /**
+   * Prepares for the drag event
+   *
+   * @method _prepareDrag
+   * @param {Event} event JS Event object
+   * @param {Event} event JS Event object
+   * @private
+   */
+  _prepareDrag(startEvent, event) {
+    let distance = this.get('distance');
+    let dx = Math.abs(getX(startEvent) - getX(event));
+    let dy = Math.abs(getY(startEvent) - getY(event));
+
+    if (distance <= dx || distance <= dy) {
+      $(window).off('mousemove touchmove', this._prepareDragListener);
+      this._startDrag(startEvent);
+    }
   },
 
   /**

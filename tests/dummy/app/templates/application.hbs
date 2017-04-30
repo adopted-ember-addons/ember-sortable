@@ -67,6 +67,20 @@
       {{/sortable-group}}
     </section>
 
+    <section class="vertical-distance-demo">
+      <h3>Vertical with distance set to 15</h3>
+
+      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group distance=15}}
+            {{item}}
+            <span class="handle" data-item="{{item}}">
+            </span>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
+
     <section class="scrollable-demo">
       <h3>Scrollable</h3>
 
