@@ -405,7 +405,9 @@ export default Mixin.create({
     let scrollContainer = new ScrollContainer(scrollParent($element)[0]);
     let itemContainer = {
       width: $element.width(),
-      height: $element.height(),
+      get height() {
+        return $element.height();
+      },
       get left() {
         return $element.offset().left;
       },
