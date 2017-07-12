@@ -1,5 +1,18 @@
 # ember-sortable changelog
 
+### 1.9.4 (2017-07-11)
+
+- add `distance` attribute to specify after what distance sorting should start [@mupkoo](https://github.com/mupkoo)
+
+### 1.9.3 (2017-02-12)
+
+- return preventDefault calls to touch event [@acburdine](https://github.com/acburdine)
+
+### 1.9.2 (2017-02-12)
+
+- [#131](https://github.com/jgwhite/ember-sortable/pull/131) prevent touch-actions on element or handle using css [@acburdine](https://github.com/acburdine)
+- [#118](https://github.com/jgwhite/ember-sortable/pull/118) improve performance of dragging by throttling drag event using ember run [@estshy](https://github.com/estshy)
+
 ### 1.9.1 (2016-11-28)
 
 - [#119](https://github.com/jgwhite/ember-sortable/pull/119) use document as the scroll parent if the body is the scroll parent [@tim-evans](https://github.com/tim-evans)
