@@ -628,19 +628,21 @@ export default Mixin.create({
    * @private
    */
   _drag(dimension) {
-    if(!Ember.get(this, 'isDestroyed') && !Ember.get(this, 'isDestroying')){
-      let updateInterval = this.get('updateInterval');
-      const groupDirection = this.get('group.direction');
-
-      if (groupDirection === 'x') {
-        this.set('x', dimension);
-      }
-      if (groupDirection === 'y') {
-        this.set('y', dimension);
-      }
-
-      run.throttle(this, '_tellGroup', 'update', updateInterval);
+    if(Ember.get(this, 'isDestroyed') || Ember.get(this, 'isDestroying')){
+      return;
     }
+    
+    let updateInterval = this.get('updateInterval');
+    const groupDirection = this.get('group.direction');
+
+    if (groupDirection === 'x') {
+      this.set('x', dimension);
+    }
+    if (groupDirection === 'y') {
+      this.set('y', dimension);
+    }
+
+    run.throttle(this, '_tellGroup', 'update', updateInterval);
   },
 
   /**
@@ -704,11 +706,13 @@ export default Mixin.create({
    * @private
    */
   _complete() {
-    if(!Ember.get(this, 'isDestroyed') && !Ember.get(this, 'isDestroying')){
-      invokeAction(this, 'onDragStop', this.get('model'));
-      this.set('isDropping', false);
-      this.set('wasDropped', true);
-      this._tellGroup('commit');
+    if(Ember.get(this, 'isDestroyed') || Ember.get(this, 'isDestroying')){
+      return;
     }
+    
+    invokeAction(this, 'onDragStop', this.get('model'));
+    this.set('isDropping', false);
+    this.set('wasDropped', true);
+    this._tellGroup('commit');
   }
 });
