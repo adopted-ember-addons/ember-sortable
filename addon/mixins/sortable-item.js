@@ -628,7 +628,7 @@ export default Mixin.create({
    * @private
    */
   _drag(dimension) {
-    if(Ember.get(this, 'isDestroyed') || Ember.get(this, 'isDestroying')){
+    if(this.get('isDestroyed') || this.get('isDestroying')){
       return;
     }
     
@@ -706,7 +706,7 @@ export default Mixin.create({
    * @private
    */
   _complete() {
-    if(Ember.get(this, 'isDestroyed') || Ember.get(this, 'isDestroying')){
+    if(this.get('isDestroyed') || this.get('isDestroying')){
       return;
     }
     
