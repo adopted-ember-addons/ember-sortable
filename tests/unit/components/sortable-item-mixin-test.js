@@ -58,6 +58,19 @@ test('isAnimated', function(assert) {
   assert.equal(subject.get('isAnimated'), false);
 });
 
+test('isDragging is disabled when destroyed', function(assert) {
+  assert.expect(3);
+
+  run(() => {
+    subject.set('model', MockModel);
+    assert.equal(subject.get('isDragging'), false);
+    subject._startDrag(MockEvent);
+    assert.equal(subject.get('isDragging'), true);
+    subject.destroy();
+    assert.equal(subject.get('isDragging'), false);
+  });
+});
+
 test('transitionDuration', function(assert) {
   subject.$().css({ transition: 'all .25s' });
   assert.equal(subject.get('transitionDuration'), 250);

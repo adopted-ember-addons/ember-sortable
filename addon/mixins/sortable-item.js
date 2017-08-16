@@ -259,6 +259,8 @@ export default Mixin.create({
     // remove event listeners that may still be attached
     $(window).off(dragActions, this._startDragListener);
     $(window).off(endActions, this._cancelStartDragListener);
+    this.set('isDragging', false);
+    this.set('isDropping', false);
   },
 
   /**
