@@ -8,9 +8,9 @@ import { throttle } from 'ember-runloop';
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
-const dragActions = 'mousemove touchmove';
-const elementClickAction = 'click';
-const endActions = 'click mouseup touchend';
+const dragActions = 'mousemove.emberSortable touchmove.emberSortable';
+const elementClickAction = 'click.emberSortable';
+const endActions = 'click.emberSortable mouseup.emberSortable touchend.emberSortable';
 
 export default Mixin.create({
   classNames: ['sortable-item'],
