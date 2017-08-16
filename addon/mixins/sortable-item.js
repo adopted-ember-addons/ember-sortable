@@ -8,6 +8,10 @@ import { throttle } from 'ember-runloop';
 const { Mixin, $, run } = Ember;
 const { Promise } = Ember.RSVP;
 
+const dragActions = 'mousemove touchmove';
+const elementClickAction = 'click';
+const endActions = 'click mouseup touchend';
+
 export default Mixin.create({
   classNames: ['sortable-item'],
   classNameBindings: ['isDragging', 'isDropping'],
@@ -253,8 +257,8 @@ export default Mixin.create({
     run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
 
     // remove event listeners that may still be attached
-    $(window).off('mousemove touchmove', this._startDragListener);
-    $(window).off('click mouseup touchend', this._cancelStartDragListener);
+    $(window).off(dragActions, this._startDragListener);
+    $(window).off(endActions, this._cancelStartDragListener);
   },
 
   /**
@@ -330,11 +334,11 @@ export default Mixin.create({
     this._prepareDragListener = run.bind(this, this._prepareDrag, startEvent);
 
     this._cancelStartDragListener = () => {
-      $(window).off('mousemove touchmove', this._prepareDragListener);
+      $(window).off(dragActions, this._prepareDragListener);
     };
 
-    $(window).on('mousemove touchmove', this._prepareDragListener);
-    $(window).one('click mouseup touchend', this._cancelStartDragListener);
+    $(window).on(dragActions, this._prepareDragListener);
+    $(window).one(endActions, this._cancelStartDragListener);
   },
 
   /**
@@ -351,7 +355,7 @@ export default Mixin.create({
     let dy = Math.abs(getY(startEvent) - getY(event));
 
     if (distance <= dx || distance <= dy) {
-      $(window).off('mousemove touchmove', this._prepareDragListener);
+      $(window).off(dragActions, this._prepareDragListener);
       this._startDrag(startEvent);
     }
   },
@@ -371,15 +375,15 @@ export default Mixin.create({
 
     let drop = () => {
       $(window)
-        .off('mousemove touchmove', dragThrottled)
-        .off('click mouseup touchend', drop);
+        .off(dragActions, dragThrottled)
+        .off(endActions, drop);
 
       this._drop();
     };
 
     $(window)
-      .on('mousemove touchmove', dragThrottled)
-      .on('click mouseup touchend', drop);
+      .on(dragActions, dragThrottled)
+      .on(endActions, drop);
 
     this._tellGroup('prepare');
     this.set('isDragging', true);
@@ -608,7 +612,7 @@ export default Mixin.create({
     @private
   */
   _preventClick(element) {
-    $(element).one('click', function(e){ e.stopImmediatePropagation(); } );
+    $(element).one(elementClickAction, function(e){ e.stopImmediatePropagation(); } );
   },
 
   /**
