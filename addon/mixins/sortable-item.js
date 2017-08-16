@@ -234,6 +234,13 @@ export default Mixin.create({
   }).volatile(),
 
   /**
+    @private
+    Allows host instance to use the `group` property for something else with
+    minimal overriding.
+  */
+  _direction: computed.readOnly('group.direction'),
+
+  /**
     @method didInsertElement
   */
   didInsertElement() {
@@ -402,7 +409,7 @@ export default Mixin.create({
   maxScrollSpeed: 20,
 
   _scrollOnEdges(drag) {
-    let groupDirection = this.get('group.direction');
+    let groupDirection = this.get('_direction');
     let $element = this.$();
     let scrollContainer = new ScrollContainer(scrollParent($element)[0]);
     let itemContainer = {
@@ -491,7 +498,7 @@ export default Mixin.create({
     @private
   */
   _makeDragHandler(startEvent) {
-    const groupDirection = this.get('group.direction');
+    const groupDirection = this.get('_direction');
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
@@ -555,7 +562,7 @@ export default Mixin.create({
   _applyPosition() {
     if (!this.element || !this.$()) { return; }
 
-    const groupDirection = this.get('group.direction');
+    const groupDirection = this.get('_direction');
 
     if (groupDirection === 'x') {
       let x = this.get('x');
@@ -581,7 +588,7 @@ export default Mixin.create({
   */
   _drag(dimension) {
     let updateInterval = this.get('updateInterval');
-    const groupDirection = this.get('group.direction');
+    const groupDirection = this.get('_direction');
 
     if (groupDirection === 'x') {
       this.set('x', dimension);
