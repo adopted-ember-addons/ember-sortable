@@ -628,6 +628,10 @@ export default Mixin.create({
    * @private
    */
   _drag(dimension) {
+    if(this.get('isDestroyed') || this.get('isDestroying')){
+      return;
+    }
+    
     let updateInterval = this.get('updateInterval');
     const groupDirection = this.get('group.direction');
 
@@ -702,6 +706,10 @@ export default Mixin.create({
    * @private
    */
   _complete() {
+    if(this.get('isDestroyed') || this.get('isDestroying')){
+      return;
+    }
+    
     invokeAction(this, 'onDragStop', this.get('model'));
     this.set('isDropping', false);
     this.set('wasDropped', true);
