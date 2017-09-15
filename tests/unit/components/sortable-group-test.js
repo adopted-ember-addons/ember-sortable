@@ -3,7 +3,7 @@ import {
   test
 } from 'ember-qunit';
 import Ember from 'ember';
-const { run } = Ember;
+const { run, A:a } = Ember;
 
 moduleForComponent('sortable-group', { unit: true });
 
@@ -15,16 +15,16 @@ test('items', function(assert) {
 });
 
 test('sortedItems', function(assert) {
-  let items = [{ y: 30 }, { y: 10 }, { y: 20 }];
+  let items = a([{ index: 2 }, { index: 0 }, { index: 1 }]);
   let component = this.subject({ items });
-  let expected = [{ y: 10 }, { y: 20 }, { y: 30 }];
+  let expected = [{ index: 0 }, { index: 1 }, { index: 2 }];
 
   assert.deepEqual(component.get('sortedItems'), expected,
-    'expected sortedItems to sort on y');
+    'expected sortedItems to sort on index');
 });
 
 test('[de]registerItem', function(assert) {
-  let item = 'foo';
+  let item = {};
   let component = this.subject();
 
   component.registerItem(item);
@@ -39,7 +39,7 @@ test('[de]registerItem', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  let items = a([{
     y: 10,
     height: 15,
     spacing: 0
@@ -52,7 +52,7 @@ test('update', function(assert) {
     height: 20,
     spacing: 0,
     isDragging: true
-  }];
+  }]);
   let component = this.subject({ items });
 
   this.render();
@@ -60,18 +60,23 @@ test('update', function(assert) {
   component.update();
 
   let expected = [{
-    y: 25,
     height: 15,
-    spacing: 0
-  }, {
-    y: 40,
-    height: 10,
-    spacing: 0
-  }, {
-    y: 5,
-    height: 20,
+    index: 1,
     spacing: 0,
-    isDragging: true
+    y: 10
+  },
+  {
+    height: 10,
+    index: 2,
+    spacing: 0,
+    y: 25
+  },
+  {
+    height: 20,
+    index: 0,
+    isDragging: true,
+    spacing: 0,
+    y: 5
   }];
 
 
@@ -80,24 +85,28 @@ test('update', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  let items = a([{
     y: 15,
+    index: 0,
     height: 15,
     spacing: 10
   }, {
     y: 20,
+    index: 1,
     height: 10,
     spacing: 10
   }, {
     y: 35,
+    index: 2,
     height: 25,
     spacing: 10,
     isDragging: true
   }, {
     y: 45,
+    index: 3,
     height: 20,
     spacing: 10
-  }];
+  }]);
 
   let component = this.subject({ items });
 
@@ -107,19 +116,23 @@ test('update', function(assert) {
 
   let expected = [{
     y: 5,
+    index: 0,
     height: 15,
     spacing: 10
   }, {
     y: 20,
+    index: 1,
     height: 10,
     spacing: 10
   }, {
     y: 35,
+    index: 2,
     height: 25,
     spacing: 10,
     isDragging: true
   }, {
     y: 55,
+    index: 3,
     height: 20,
     spacing: 10,
   }];
@@ -129,24 +142,28 @@ test('update', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  let items = a([{
     y: 15,
+    index: 0,
     height: 15,
     spacing: 8
   }, {
     y: 20,
+    index: 1,
     height: 10,
     spacing: 9
   }, {
     y: 35,
+    index: 2,
     height: 25,
     spacing: 10,
     isDragging: true
   }, {
     y: 45,
+    index: 3,
     height: 20,
     spacing: 11
-  }];
+  }]);
 
   let component = this.subject({ items });
 
@@ -156,19 +173,23 @@ test('update', function(assert) {
 
   let expected = [{
     y: 7,
+    index: 0,
     height: 15,
     spacing: 8
   }, {
     y: 22,
+    index: 1,
     height: 10,
     spacing: 9
   }, {
     y: 35,
+    index: 2,
     height: 25,
     spacing: 10,
     isDragging: true
   }, {
     y: 57,
+    index: 3,
     height: 20,
     spacing: 11,
   }];
@@ -178,24 +199,28 @@ test('update', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  let items = a([{
     x: 15,
+    index: 0,
     width: 15,
     spacing: 10
   }, {
     x: 20,
+    index: 1,
     width: 10,
     spacing: 10
   }, {
     x: 35,
+    index: 2,
     width: 25,
     spacing: 10,
     isDragging: true
   }, {
     x: 45,
+    index: 3,
     width: 20,
     spacing: 10
-  }];
+  }]);
 
   let component = this.subject({
     items,
@@ -208,19 +233,23 @@ test('update', function(assert) {
 
   let expected = [{
     x: 5,
+    index: 0,
     width: 15,
     spacing: 10
   }, {
     x: 20,
+    index: 1,
     width: 10,
     spacing: 10
   }, {
     x: 35,
+    index: 2,
     width: 25,
     spacing: 10,
     isDragging: true
   }, {
     x: 55,
+    index: 3,
     width: 20,
     spacing: 10,
   }];
@@ -230,16 +259,16 @@ test('update', function(assert) {
 });
 
 test('commit without specified group model', function(assert) {
-  let items = [{
-    y: 20,
+  let items = a([{
+    index: 1,
     model: 'bar'
   }, {
-    y: 30,
+    index: 2,
     model: 'baz'
   }, {
-    y: 10,
+    index: 0,
     model: 'foo'
-  }];
+  }]);
 
   let targetObject = Ember.Object.create({
     reorder(newOrder) {
@@ -261,16 +290,16 @@ test('commit without specified group model', function(assert) {
 });
 
 test('commit with specified group model', function(assert) {
-  let items = [{
-    y: 20,
+  let items = a([{
+    index: 1,
     model: 'bar'
   }, {
-    y: 30,
+    index: 2,
     model: 'baz'
   }, {
-    y: 10,
+    index: 0,
     model: 'foo'
-  }];
+  }]);
 
   let model = {
     items: items
@@ -297,7 +326,7 @@ test('commit with specified group model', function(assert) {
 });
 
 test('commit with missmatched group model', function(assert) {
-  let items = [{
+  let items = a([{
     y: 20,
     model: 'bar'
   }, {
@@ -306,7 +335,7 @@ test('commit with missmatched group model', function(assert) {
   }, {
     y: 10,
     model: 'foo'
-  }];
+  }]);
   let model = null;
   let targetObject = Ember.Object.create({
     reorder(model, newOrder) {
@@ -333,7 +362,7 @@ test('commit with missmatched group model', function(assert) {
 test('draggedModel', function(assert) {
   assert.expect(1);
 
-  let items = [{
+  let items = a([{
     y: 1,
     model: 'One',
   }, {
@@ -343,7 +372,7 @@ test('draggedModel', function(assert) {
   }, {
     y: 3,
     model: 'Three'
-  }];
+  }]);
 
   let targetObject = {
     action(models, draggedModel) {

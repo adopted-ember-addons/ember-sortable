@@ -2,6 +2,7 @@ import Ember from 'ember';
 import layout from '../templates/components/sortable-group';
 import computed from 'ember-computed';
 import {invokeAction} from 'ember-invoke-action';
+import setIndexies from '../utils/set-indexies';
 
 const { A, Component, get, set, run } = Ember;
 const a = A;
@@ -61,18 +62,21 @@ export default Component.extend({
   }).volatile(),
 
   /**
+   * @property _itemsSorting
+   * @type Array
+   * @private
+   */
+  _itemsSorting: [ 'index' ],
+
+  /**
    * List of items sorted by direction.
    *
    * @property sortedItems
    * @type Array
    * @public
    */
-  sortedItems: computed(function() {
-    let items = a(this.get('items'));
-    let direction = this.get('direction');
+  sortedItems: computed.sort('items', '_itemsSorting').volatile(),
 
-    return items.sortBy(direction);
-  }).volatile(),
 
   /**
    * Register an item with this group.
@@ -97,6 +101,14 @@ export default Component.extend({
   },
 
   /**
+   * @method _initialOrdering
+   * @private
+   */
+  _initialOrdering: Ember.on('didInsertElement', function() {
+    run.next( ()=> setIndexies( this.get('items') ) );
+  }),
+
+  /**
    * Prepare for sorting.
    * Main purpose is to stash the current itemPosition so
    * we don’t incur expensive re-layouts.
@@ -109,7 +121,7 @@ export default Component.extend({
   },
 
   /**
-   * Update item positions (relative to the first element position).
+   * Update item positions (relative to the first element position) according to current x/y value
    *
    * @method update
    * @public
@@ -118,6 +130,7 @@ export default Component.extend({
     let sortedItems = this.get('sortedItems');
     // Position of the first element
     let position = this._itemPosition;
+    let direction = this.get('direction');
 
     // Just in case we haven’t called prepare first.
     if (position === undefined) {
@@ -126,7 +139,6 @@ export default Component.extend({
 
     sortedItems.forEach(item => {
       let dimension;
-      let direction = this.get('direction');
 
       if (!get(item, 'isDragging')) {
         set(item, direction, position);
@@ -146,7 +158,10 @@ export default Component.extend({
 
       position += get(item, dimension);
     });
+
+    setIndexies( sortedItems.sortBy(direction) );
   },
+
 
   /**
    * Commit the state of dragged items

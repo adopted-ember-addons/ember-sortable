@@ -256,6 +256,21 @@ export default Mixin.create({
     return height;
   }).volatile(),
 
+  /**
+   * Hash with actions to {{yield}}.
+   *
+   * @property
+   * @type Object
+   * @protected
+   */
+  _actionsHash: computed(function() {
+    return {
+      moveUp:  this._move.bind(this, -1),
+      moveDown:  this._move.bind(this, +1),
+    };
+  }),
+
+
   /* Events */
 
   /**
@@ -631,7 +646,7 @@ export default Mixin.create({
     if(this.get('isDestroyed') || this.get('isDestroying')){
       return;
     }
-    
+
     let updateInterval = this.get('updateInterval');
     const groupDirection = this.get('group.direction');
 
@@ -709,10 +724,36 @@ export default Mixin.create({
     if(this.get('isDestroyed') || this.get('isDestroying')){
       return;
     }
-    
+
     invokeAction(this, 'onDragStop', this.get('model'));
     this.set('isDropping', false);
     this.set('wasDropped', true);
     this._tellGroup('commit');
-  }
+  },
+
+  /**
+   * Method used to move item one step up or down
+   *
+   * @method _move
+   * @param {Number|Direction} one for moving down (or right) -1 for opposite
+   * @private
+   */
+  _move(delta){
+    let sortedItems = this.get('group.sortedItems');
+    let thisIndex = sortedItems.indexOf(this);
+
+    if (thisIndex === 0 && delta < 0) {
+      return;
+    }
+
+    if(thisIndex === (sortedItems.length - 1) && delta > 0 ) {
+      return;
+    }
+
+    const swapItem = sortedItems[thisIndex + delta];
+    swapItem.set('index', swapItem.get('index') - delta);
+    this.set('index', this.get('index') + delta);
+
+    this._tellGroup('commit');
+  },
 });

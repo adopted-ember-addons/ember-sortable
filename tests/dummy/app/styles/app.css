@@ -43,23 +43,27 @@
 }
 
 
-.vertical-demo .sortable-item {
+.vertical-demo .sortable-item,
+.buttons-demo .sortable-item {
   display: block;
   position: relative;
   background: pink;
   margin: 4px 0;
 }
 
-.vertical-demo .sortable-item.is-dragging {
+.vertical-demo .sortable-item.is-dragging,
+.buttons-demo .sortable-item.is-dragging {
   background: red;
 }
 
-.vertical-demo .sortable-item.is-dropping {
+.vertical-demo .sortable-item.is-dropping,
+.buttons-demo .sortable-item.is-dropping {
   background: #f66;
   z-index: 10;
 }
 
-.vertical-demo .sortable-item .handle {
+.vertical-demo .sortable-item .handle,
+.buttons-demo .sortable-item .handle {
   display: block;
   position: absolute;
   top: 0; right: 0; bottom: 0;
@@ -159,6 +163,23 @@
   top: 0; right: 0; bottom: 0;
   background: rgba(127, 0, 0, .5);
   color: pink;
+}
+
+.move-button {
+  font-size: inherit;
+  height:100%;
+}
+
+.buttons-demo.with-buttons .sortable-item {
+  display: flex;
+}
+
+.buttons-demo.with-buttons .item {
+  flex-grow:1;
+}
+
+.buttons-demo.with-buttons .handle {
+  position:static;
 }
 
 #ember-testing {

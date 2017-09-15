@@ -199,6 +199,42 @@ test('reordering with touch events', function(assert) {
   });
 });
 
+test('reordering with buttons', function(assert) {
+  visit('/');
+
+  andThen(() => {
+    assert.equal(buttonsContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+  });
+
+  click('.buttons-demo button.down:first');
+
+  andThen(() => {
+    assert.equal(buttonsContents(), 'Dos Uno Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+  });
+
+  click('.buttons-demo button.up:first');
+
+  andThen(() => {
+    assert.equal(buttonsContents(), 'Dos Uno Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+  });
+
+  click('.buttons-demo button.up:last');
+
+  andThen(() => {
+    assert.equal(buttonsContents(), 'Dos Uno Tres Cinco Cuatro');
+    assert.equal(horizontalContents(), 'Dos Uno Tres Cinco Cuatro');
+  });
+
+
+});
+
+function buttonsContents() {
+  return contents('.buttons-demo ol');
+}
+
 function verticalContents() {
   return contents('.vertical-demo ol');
 }
@@ -218,7 +254,7 @@ function scrollableContents() {
 function contents(selector) {
   return find(selector)
     .text()
-    .replace(/⇕/g, '')
+    .replace(/[⇕↑↓]/g, '')
     .replace(/\s+/g, ' ')
     .replace(/^\s+/, '')
     .replace(/\s+$/, '');

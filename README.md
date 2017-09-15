@@ -108,6 +108,23 @@ To change this property, define `spacing` on `sortable-item` (default is `0`):
 {{#sortable-item tagName="li" group=group spacing=15}}
 ```
 
+### Adding up/down buttons 
+
+`{{sortable-item}}` yields hash with two actions: `moveUp` and `moveDown`. Here is how you can use them:
+
+```hbs
+{{#sortable-group onChange="reorderItems" as |group|}}
+  {{#each model.items as |item|}}
+    {{#sortable-item tagName="li" model=item group=group handle=".handle" as |sortItem|}}
+      {{item.name}}
+      <button onclick={{sortItem.moveUp}}>&uarr;</button>
+      <button onclick={{sortItem.moveDown}}>&darr;</button>
+      <span class="handle">&varr;</span>
+    {{/sortable-item}}
+  {{/each}}
+{{/sortable-group}}
+```
+
 ### Changing the drag tolerance
 
 `distance` attribute changes the tolerance, in pixels, for when sorting should start.

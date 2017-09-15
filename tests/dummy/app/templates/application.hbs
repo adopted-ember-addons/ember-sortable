@@ -29,7 +29,25 @@
           {{/sortable-item}}
         {{/each}}
       {{/sortable-group}}
+    </section>
 
+    <section class="buttons-demo with-buttons">
+      <h3>With buttons</h3>
+
+      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#each model.items as |item|}}
+          {{#sortable-item tagName="li" model=item group=group handle=".handle" as |sortItem|}}
+            <span class="item">
+              {{item}}
+            </span>
+            <button class="move-button up" onclick={{sortItem.moveUp}}>&uarr;</button>
+            <button class="move-button down" onclick={{sortItem.moveDown}}>&darr;</button>
+            <span class="handle" data-item="{{item}}">
+              <span>&vArr;</span>
+            </span>
+          {{/sortable-item}}
+        {{/each}}
+      {{/sortable-group}}
     </section>
 
     <section class="table-demo">
