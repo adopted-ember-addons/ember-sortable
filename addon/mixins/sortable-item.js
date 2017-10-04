@@ -580,6 +580,9 @@ export default Mixin.create({
     @private
   */
   _drag(dimension) {
+    if(!this.get("isDragging")) {
+      return;
+    }
     let updateInterval = this.get('updateInterval');
     const groupDirection = this.get('group.direction');
 
