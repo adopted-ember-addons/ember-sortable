@@ -203,6 +203,19 @@ No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “d
 
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
+### Accessibility
+
+`sortable-item`s can receive a `tabindex` which allows them to be focused.  Use this to enable keyboard sorting for accessibility.
+
+```hbs
+{{#each myItems as |item idx| }}
+  {{#sortable-item tabindex=0 keyUp=(action 'keyUp' idx) tagName="li" model=item group=group handle=".handle"}}
+    {{item.name}}
+    <span class="handle">&varr;</span>
+  {{/sortable-item}}
+{{/each}}
+```
+
 ## Testing
 
 `ember-sortable` exposes some acceptance test helpers:

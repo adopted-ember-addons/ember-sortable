@@ -16,7 +16,7 @@ export default Mixin.create({
   classNames: ['sortable-item'],
   classNameBindings: ['isDragging', 'isDropping'],
 
-  attributeBindings: ['data-test-selector'],
+  attributeBindings: ['data-test-selector', 'tabindex'],
 
   /**
     Group to which the item belongs.
