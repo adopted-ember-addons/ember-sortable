@@ -1,5 +1,17 @@
 # ember-sortable changelog
 
+### 1.10.0 (2017-10-19)
+
+- [#157](https://github.com/jgwhite/ember-sortable/pull/157) Add tabindex attribute binding [@hjdivad](https://github.com/hjdivad)
+- [#156](https://github.com/jgwhite/ember-sortable/pull/156) fix for issue with transforms being left after drop [@shidel-dev](https://github.com/shidel-dev)
+- [#151](https://github.com/jgwhite/ember-sortable/pull/151) Alias sortable direction to group [@feedbackfruits](https://github.com/feedbackfruits)
+- [#150](https://github.com/jgwhite/ember-sortable/pull/150) Disable isDragging when element is destroyed [@nbibler](https://github.com/nbibler)
+- [#140](https://github.com/jgwhite/ember-sortable/pull/140) make `_scrollOnEdges()` get `itemContainer` height dinamically [@marlosin](https://github.com/marlosin)
+
+### 1.9.4 (2017-07-12)
+
+- [#137](https://github.com/jgwhite/ember-sortable/pull/137) Add distance attribute to specify after what distance sorting should start [@mupkoo](https://github.com/mupkoo)
+
 ### 1.9.3 (2017-02-12)
 
 - return preventDefault calls to touch event [@acburdine](https://github.com/acburdine)
