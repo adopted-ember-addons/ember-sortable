@@ -1,9 +1,7 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
 import $ from 'jquery';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-
-const { run } = Ember;
 
 moduleForComponent('sortable-group', 'Integration | Component | sortable group', {
   integration: true

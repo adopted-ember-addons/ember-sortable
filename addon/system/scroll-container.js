@@ -1,5 +1,4 @@
-import Ember from 'ember';
-const { $ } = Ember;
+import $ from 'jquery';
 
 export default class ScrollContainer {
   constructor(element) {

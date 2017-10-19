@@ -1,9 +1,11 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import Component from '@ember/component';
+import { set, get } from '@ember/object';
+import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
 import computed from 'ember-new-computed';
-import {invokeAction} from 'ember-invoke-action';
+import { invokeAction } from 'ember-invoke-action';
 
-const { A, Component, get, set, run } = Ember;
 const a = A;
 const NO_MODEL = {};
 
