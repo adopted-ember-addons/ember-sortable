@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { registerAsyncHelper } from '@ember/test';
 
 /**
   In tests, the dummy app is rendered at half size.
@@ -53,4 +53,4 @@ export function reorder(app, mode, itemSelector, ...resultSelectors) {
   return wait();
 }
 
-export default Ember.Test.registerAsyncHelper('reorder', reorder);
+export default registerAsyncHelper('reorder', reorder);
