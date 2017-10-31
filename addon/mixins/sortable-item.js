@@ -1,12 +1,13 @@
+import { Promise } from 'rsvp';
+import Mixin from '@ember/object/mixin';
+import $ from 'jquery';
+import { run } from '@ember/runloop';
 import Ember from 'ember';
 import computed from 'ember-new-computed';
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
-import {invokeAction} from 'ember-invoke-action';
+import { invokeAction } from 'ember-invoke-action';
 import { throttle } from 'ember-runloop';
-
-const { Mixin, $, run } = Ember;
-const { Promise } = Ember.RSVP;
 
 const dragActions = 'mousemove.emberSortable touchmove.emberSortable';
 const elementClickAction = 'click.emberSortable';
@@ -143,7 +144,7 @@ export default Mixin.create({
   transitionDuration: computed(function() {
     let el = this.$();
     let rule = el.css('transition-duration');
-    let match = rule.match(/([\d\.]+)([ms]*)/);
+    let match = rule.match(/([\d.]+)([ms]*)/);
 
     if (match) {
       let value = parseFloat(match[1]);
@@ -626,7 +627,7 @@ export default Mixin.create({
     @private
   */
   _preventClick(element) {
-    $(element).one(elementClickAction, function(e){ 
+    $(element).one(elementClickAction, function(e){
       e.stopPropagation();
       e.preventDefault();
       e.stopImmediatePropagation();
