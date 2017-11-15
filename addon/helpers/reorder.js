@@ -5,7 +5,7 @@ import Ember from 'ember';
   To avoid rounding errors, we must therefore double
   the overshoot.
 */
-const OVERSHOOT = 2;
+const OVERSHOOT = 1.05;
 
 /**
   Reorders elements to the specified state.
@@ -43,8 +43,8 @@ export function reorder(app, mode, itemSelector, ...resultSelectors) {
       let items = findWithAssert(itemSelector);
       let element = items.filter(selector);
       let targetElement = items.eq(targetIndex);
-      let dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
-      let dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
+      let dx = targetElement.offset().left - OVERSHOOT * element.offset().left;
+      let dy = targetElement.offset().top - OVERSHOOT * element.offset().top;
 
       drag(mode, element, () => { return { dx: dx, dy: dy }; });
     });
