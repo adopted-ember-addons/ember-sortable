@@ -266,6 +266,7 @@ export default Mixin.create({
     // remove event listeners that may still be attached
     $(window).off(dragActions, this._startDragListener);
     $(window).off(endActions, this._cancelStartDragListener);
+    $(this.element).off(elementClickAction, this._preventClickHandler);
     this.set('isDragging', false);
     this.set('isDropping', false);
   },
@@ -626,11 +627,17 @@ export default Mixin.create({
     @private
   */
   _preventClick(element) {
-    $(element).one(elementClickAction, function(e){ 
-      e.stopPropagation();
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    } );
+    $(element).one(elementClickAction, this._preventClickHandler);
+  },
+
+  /**
+    @method _preventClickHandler
+    @private
+  */
+  _preventClickHandler(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    e.stopImmediatePropagation();
   },
 
   /**
