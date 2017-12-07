@@ -611,7 +611,7 @@ export default Mixin.create({
   _drop() {
     if (!this.element || !this.$()) { return; }
 
-    this._preventClick(this.element);
+    this._preventClick();
 
     this.set('isDragging', false);
     this.set('isDropping', true);
@@ -626,8 +626,8 @@ export default Mixin.create({
     @method _preventClick
     @private
   */
-  _preventClick(element) {
-    $(element).one(elementClickAction, this._preventClickHandler);
+  _preventClick() {
+    $(this.element).one(elementClickAction, this._preventClickHandler);
   },
 
   /**
