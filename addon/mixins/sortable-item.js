@@ -576,9 +576,15 @@ export default Mixin.create({
       let y = this.get('y');
       let dy = y - this.element.offsetTop;
 
-      this.$().css({
-        transform: `translateY(${dy}px)`
-      });
+		if (this.get('isDragging')) {
+			this.$().css({
+			  transform: `translateY(${dy}px) translateZ(1em)`
+			});
+		} else {
+			this.$().css({
+				transform: `translateY(${dy}px)`
+			});
+		}
     }
   },
 
