@@ -1,5 +1,5 @@
-import Ember from 'ember';
-const { $ } = Ember;
+import { registerAsyncHelper } from '@ember/test';
+import $ from 'jquery';
 
 /**
   Drags elements by an offset specified in pixels.
@@ -109,4 +109,4 @@ function triggerEvent(app, el, type, props) {
   });
 }
 
-export default Ember.Test.registerAsyncHelper('drag', drag);
+export default registerAsyncHelper('drag', drag);

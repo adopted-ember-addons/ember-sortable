@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
-const { run } = Ember;
+import $ from 'jquery';
 
 const MockEvent = { originalEvent: null };
 const MockModel = { name: 'Mock Model' };
-const MockGroup = Ember.Object.extend({
+const MockGroup = EmberObject.extend({
   direction: 'y',
   registerItem(item) {
     this.item = item;
