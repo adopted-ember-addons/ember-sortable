@@ -29,12 +29,12 @@ test('[de]registerItem', function(assert) {
 
   component.registerItem(item);
 
-  assert.ok(component.get('items').contains(item),
+  assert.ok(component.get('items').includes(item),
     'expected registerItem to add item to items');
 
   component.deregisterItem(item);
 
-  assert.ok(!component.get('items').contains(item),
+  assert.ok(!component.get('items').includes(item),
     'expected registerItem to remove item from items');
 });
 
