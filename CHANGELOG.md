@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.11.0 (2018-01-26)
+
+- [#168](https://github.com/jgwhite/ember-sortable/pull/168) ember-cli-update to 2.18 [@Dhaulagiri](https://github.com/Dhaulagiri)
+
 ### 1.10.0 (2017-10-19)
 
 - [#157](https://github.com/jgwhite/ember-sortable/pull/157) Add tabindex attribute binding [@hjdivad](https://github.com/hjdivad)
