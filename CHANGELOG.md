@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.11.1 (2018-02-20)
+
+- [#162](https://github.com/jgwhite/ember-sortable/pull/162) Remove jquery event listener from component element [@jackson-dean](https://github.com/jackson-dean)
+
 ### 1.11.0 (2018-01-26)
 
 - [#168](https://github.com/jgwhite/ember-sortable/pull/168) ember-cli-update to 2.18 [@Dhaulagiri](https://github.com/Dhaulagiri)
