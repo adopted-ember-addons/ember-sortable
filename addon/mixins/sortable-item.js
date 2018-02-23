@@ -3,7 +3,7 @@ import Mixin from '@ember/object/mixin';
 import $ from 'jquery';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
-import computed from 'ember-new-computed';
+import { computed } from '@ember/object';
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
 import { invokeAction } from 'ember-invoke-action';
