@@ -1,5 +1,12 @@
 # ember-sortable changelog
 
+### 1.11.2 (2018-02-23)
+
+- [#172](https://github.com/jgwhite/ember-sortable/pull/172) Fix deprecation warnings for targetObject [@nlfurniss](https://github.com/nlfurniss)
+- [#174](https://github.com/jgwhite/ember-sortable/pull/174) use yarn in tests too! [@Dhaulagiri](https://github.com/Dhaulagiri)
+- [#175](https://github.com/jgwhite/ember-sortable/pull/175) remove ember-new-computed [@Dhaulagiri](https://github.com/Dhaulagiri)
+- [#176](https://github.com/jgwhite/ember-sortable/pull/176) ember-cli-htmlbars 2.0.3 [@Dhaulagiri](https://github.com/Dhaulagiri)
+
 ### 1.11.1 (2018-02-20)
 
 - [#162](https://github.com/jgwhite/ember-sortable/pull/162) Remove jquery event listener from component element [@jackson-dean](https://github.com/jackson-dean)
