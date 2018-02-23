@@ -1,29 +1,25 @@
-import {
-  moduleForComponent,
-  test
-} from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
-moduleForComponent('sortable-item', {
-  unit: true
-  // Specify the other units that are required for this test
-  // needs: ['component:foo', 'helper:bar']
-});
+module('sortable-item', function(hooks) {
+  setupTest(hooks);
 
-test('it renders', function(assert) {
-  assert.expect(2);
+  test('it renders', function(assert) {
+    assert.expect(2);
 
-  // Creates the component instance
-  var component = this.subject();
-  assert.equal(component._state, 'preRender');
+    // Creates the component instance
+    var component = this.owner.factoryFor('component:sortable-item').create();
+    assert.equal(component._state, 'preRender');
 
-  // Renders the component to the page
-  this.render();
-  assert.equal(component._state, 'inDOM');
-});
+    // Renders the component to the page
+    this.render();
+    assert.equal(component._state, 'inDOM');
+  });
 
-test('renders data-test-selector', function(assert) {
-  let component = this.subject();
+  test('renders data-test-selector', function(assert) {
+    let component = this.owner.factoryFor('component:sortable-item').create();
 
-  assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
-    'support data-test-selector attribute binding');
+    assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
+      'support data-test-selector attribute binding');
+  });
 });
