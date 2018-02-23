@@ -3,7 +3,7 @@ import Component from '@ember/component';
 import { set, get } from '@ember/object';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
-import computed from 'ember-new-computed';
+import { computed } from '@ember/object';
 import { invokeAction } from 'ember-invoke-action';
 
 const a = A;
