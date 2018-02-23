@@ -1,5 +1,5 @@
 import { find, visit } from '@ember/test-helpers';
-import { module, test, only } from 'qunit';
+import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 //import { drag, reorder } from 'ember-sortable/test-support'; // FIXME: How should these be imported?
 import drag from 'ember-sortable/helpers/drag';
@@ -8,7 +8,7 @@ import reorder from 'ember-sortable/helpers/reorder';
 module('Acceptance | smoke', function(hooks) {
   setupApplicationTest(hooks);
 
-  only('reordering with mouse events', async function(assert) {
+  test('reordering with mouse events', async function(assert) {
     await visit('/');
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
