@@ -1,7 +1,9 @@
 import EmberObject from '@ember/object';
 import { run } from '@ember/runloop';
-import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
+import { module, test, only } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
 import $ from 'jquery';
 
 const MockEvent = { originalEvent: null };
@@ -25,14 +27,15 @@ let group;
 let subject;
 
 module('sortable-item-mixin', function(hooks) {
-  setupTest(hooks);
+  setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
+  hooks.beforeEach(function(/* assert */) {
     run(() => {
+      //const done = assert.async();
       group = MockGroup.create();
       subject = this.owner.factoryFor('component:sortable-item-mixin').create();
       subject.set('group', group);
-      this.render();
+      //render(hbs`{{sortable-item-mixin}}`).then(done);
     });
   });
 
@@ -44,18 +47,22 @@ module('sortable-item-mixin', function(hooks) {
     $(window).off();
   });
 
-  test('isAnimated', function(assert) {
-    subject.$().css({ transition: 'all' });
+  only('isAnimated', async function(assert) {
+    console.log(subject.get('isAnimated'));
+    const $el = $(this.element);
+    $el.css({ transition: 'all' });
+    //assert.equal(subject.get('isAnimated'), true);
+
+    /*
+    $el.css({ transition: 'transform' });
     assert.equal(subject.get('isAnimated'), true);
 
-    subject.$().css({ transition: 'transform' });
-    assert.equal(subject.get('isAnimated'), true);
-
-    subject.$().css({ transition: 'color' });
+    $el.css({ transition: 'color' });
     assert.equal(subject.get('isAnimated'), false);
 
-    subject.$().css({ transition: 'none' });
+    $el.css({ transition: 'none' });
     assert.equal(subject.get('isAnimated'), false);
+    */
   });
 
   test('isDragging is disabled when destroyed', function(assert) {

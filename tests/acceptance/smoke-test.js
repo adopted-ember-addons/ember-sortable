@@ -1,16 +1,12 @@
 import { find, visit } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
-import startApp from '../../tests/helpers/start-app';
+import { setupApplicationTest } from 'ember-qunit';
+// FIXME: Import these helpers properly
+import drag from 'ember-sortable/helpers/drag';
+import reorder from 'ember-sortable/helpers/reorder';
 
 module('Acceptance | smoke', function(hooks) {
-  hooks.beforeEach(function() {
-    this.application = startApp();
-  });
-
-  hooks.afterEach(function() {
-    run(this.application, 'destroy');
-  });
+  setupApplicationTest(hooks);
 
   test('reordering with mouse events', async function(assert) {
     await visit('/');
@@ -116,7 +112,7 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
-    reorder(
+    await reorder(
       'touch',
       '.vertical-demo .handle',
       '[data-item=Cinco]',

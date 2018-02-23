@@ -1,24 +1,19 @@
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
+import hbs from 'htmlbars-inline-precompile';
 
 module('sortable-item', function(hooks) {
-  setupTest(hooks);
+  setupRenderingTest(hooks);
 
-  test('it renders', function(assert) {
-    assert.expect(2);
-
-    // Creates the component instance
-    var component = this.owner.factoryFor('component:sortable-item').create();
-    assert.equal(component._state, 'preRender');
-
-    // Renders the component to the page
-    this.render();
-    assert.equal(component._state, 'inDOM');
+  test('it renders', async function(assert) {
+    assert.expect(1);
+    await render(hbs`{{sortable-item}}`);
+    assert.ok(this.element.querySelector('.sortable-item'), "Should have sortable-item class from mixin");
   });
 
   test('renders data-test-selector', function(assert) {
-    let component = this.owner.factoryFor('component:sortable-item').create();
-
+    const component = this.owner.factoryFor('component:sortable-item').create();
     assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
       'support data-test-selector attribute binding');
   });

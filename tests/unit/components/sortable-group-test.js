@@ -1,10 +1,11 @@
 import EmberObject from '@ember/object';
 import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
-import { setupTest } from 'ember-qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
 
 module('sortable-group', function(hooks) {
-  setupTest(hooks);
+  setupRenderingTest(hooks);
 
   test('items', function(assert) {
     let component = this.owner.factoryFor('component:sortable-group').create();
@@ -54,7 +55,7 @@ module('sortable-group', function(hooks) {
     }];
     let component = this.owner.factoryFor('component:sortable-group').create({ items });
 
-    this.render();
+    this.render(hbs`{{sortable-group}}`);
 
     component.update();
 
@@ -100,7 +101,7 @@ module('sortable-group', function(hooks) {
 
     let component = this.owner.factoryFor('component:sortable-group').create({ items });
 
-    this.render();
+    this.render(hbs`{{sortable-group}}`);
 
     component.update();
 
@@ -149,7 +150,7 @@ module('sortable-group', function(hooks) {
 
     let component = this.owner.factoryFor('component:sortable-group').create({ items });
 
-    this.render();
+    this.render(hbs`{{sortable-group}}`);
 
     component.update();
 
@@ -201,7 +202,7 @@ module('sortable-group', function(hooks) {
       direction: 'x'
     });
 
-    this.render();
+    this.render(hbs`{{sortable-group}}`);
 
     component.update();
 

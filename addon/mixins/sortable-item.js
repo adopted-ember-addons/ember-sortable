@@ -128,11 +128,11 @@ export default Mixin.create({
     @type Boolean
   */
   isAnimated: computed(function() {
+    console.log('Computing isAnimated', this.isVisible, this.layout);
     if (!this.element || !this.$()) { return; }
 
     let el = this.$();
     let property = el.css('transition-property');
-
     return /all|transform/.test(property);
   }).volatile(),
 
