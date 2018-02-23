@@ -241,14 +241,14 @@ test('commit without specified group model', function(assert) {
     model: 'foo'
   }];
 
-  let targetObject = EmberObject.create({
+  let target = EmberObject.create({
     reorder(newOrder) {
       this.newOrder = newOrder;
     }
   });
   let component = this.subject({
     items,
-    targetObject,
+    target,
     onChange: 'reorder'
   });
 
@@ -256,7 +256,7 @@ test('commit without specified group model', function(assert) {
     component.commit();
   });
 
-  assert.deepEqual(targetObject.newOrder, ['foo', 'bar', 'baz'],
+  assert.deepEqual(target.newOrder, ['foo', 'bar', 'baz'],
     'expected target to receive models in order');
 });
 
@@ -275,16 +275,16 @@ test('commit with specified group model', function(assert) {
   let model = {
     items: items
   };
-  let targetObject = EmberObject.create({
+  let target = EmberObject.create({
     reorder(model, newOrder) {
       model.newOrder = newOrder;
-      targetObject.newModel = model;
+      target.newModel = model;
     }
   });
   let component = this.subject({
     model,
     items,
-    targetObject,
+    target,
     onChange: 'reorder'
   });
 
@@ -292,7 +292,7 @@ test('commit with specified group model', function(assert) {
     component.commit();
   });
 
-  assert.deepEqual(targetObject.newModel.newOrder, ['foo', 'bar', 'baz'],
+  assert.deepEqual(target.newModel.newOrder, ['foo', 'bar', 'baz'],
     'expected target to receive models in order');
 });
 
@@ -308,17 +308,17 @@ test('commit with missmatched group model', function(assert) {
     model: 'foo'
   }];
   let model = null;
-  let targetObject = EmberObject.create({
+  let target = EmberObject.create({
     reorder(model, newOrder) {
       if (typeof newOrder !== 'undefined') {
-        targetObject.correctActionFired = true;
+        target.correctActionFired = true;
       }
     }
   });
   let component = this.subject({
     model,
     items,
-    targetObject,
+    target,
     onChange: 'reorder'
   });
 
@@ -326,7 +326,7 @@ test('commit with missmatched group model', function(assert) {
     component.commit();
   });
 
-  assert.equal(targetObject.correctActionFired, true,
+  assert.equal(target.correctActionFired, true,
     'expected reorder() to receive two params');
 });
 
@@ -345,7 +345,7 @@ test('draggedModel', function(assert) {
     model: 'Three'
   }];
 
-  let targetObject = {
+  let target = {
     action(models, draggedModel) {
       assert.equal(draggedModel, 'Two');
     }
@@ -353,7 +353,7 @@ test('draggedModel', function(assert) {
 
   let component = this.subject({
     items,
-    targetObject,
+    target,
     onChange: 'action'
   });
 

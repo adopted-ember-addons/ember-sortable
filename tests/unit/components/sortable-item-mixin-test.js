@@ -165,7 +165,7 @@ test('deregisters itself when removed', function(assert) {
 test('dragStart fires an action if provided', function(assert) {
   assert.expect(1);
 
-  const targetObject = {
+  const target = {
     action(passedModel) {
       assert.equal(passedModel, MockModel);
     }
@@ -173,7 +173,7 @@ test('dragStart fires an action if provided', function(assert) {
 
   run(() => {
     subject.set('model', MockModel);
-    subject.set('targetObject', targetObject);
+    subject.set('target', target);
     subject.set('onDragStart', 'action');
     subject._startDrag(MockEvent);
   });
@@ -182,7 +182,7 @@ test('dragStart fires an action if provided', function(assert) {
 test('dragStop fires an action if provided', function(assert) {
   assert.expect(1);
 
-  const targetObject = {
+  const target = {
     action(passedModel) {
       assert.equal(passedModel, MockModel);
     }
@@ -190,7 +190,7 @@ test('dragStop fires an action if provided', function(assert) {
 
   run(() => {
     subject.set('model', MockModel);
-    subject.set('targetObject', targetObject);
+    subject.set('target', target);
     subject.set('onDragStop', 'action');
     subject._complete();
   });
