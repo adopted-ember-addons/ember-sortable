@@ -1,8 +1,8 @@
 import EmberObject from '@ember/object';
 import { run } from '@ember/runloop';
-import { module, test, only } from 'qunit';
+import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, clearRender } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import $ from 'jquery';
 
@@ -26,34 +26,37 @@ const MockGroup = EmberObject.extend({
 let group;
 let subject;
 
+import Component from '@ember/component';
+import SortableItemMixin from 'ember-sortable/mixins/sortable-item';
+const DummySortableMixinComponent = Component.extend(SortableItemMixin, {
+  didInsertElement() {
+    this._super(...arguments);
+    subject = this;
+  }
+});
+
 module('sortable-item-mixin', function(hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function(/* assert */) {
-    run(() => {
-      //const done = assert.async();
-      group = MockGroup.create();
-      subject = this.owner.factoryFor('component:sortable-item-mixin').create();
-      subject.set('group', group);
-      //render(hbs`{{sortable-item-mixin}}`).then(done);
-    });
+  hooks.beforeEach(function(assert) {
+    const done = assert.async();
+    this.owner.register('component:dummy-component', DummySortableMixinComponent);
+    group = MockGroup.create();
+    this.set('group', group);
+    render(hbs`{{dummy-component group=group}}`).then(done);
   });
 
   hooks.afterEach(function() {
-    run(() => {
-      subject.destroy();
-    });
     // Otherwise we end up with dangling event handlers.
-    $(window).off();
+    // TODO: Why? We aren't binding any here so it seems like we shouldn't
+    //$(window).off();
   });
 
-  only('isAnimated', async function(assert) {
-    console.log(subject.get('isAnimated'));
-    const $el = $(this.element);
+  test('isAnimated', function(assert) {
+    const $el = $(subject.element);
     $el.css({ transition: 'all' });
-    //assert.equal(subject.get('isAnimated'), true);
+    assert.equal(subject.get('isAnimated'), true);
 
-    /*
     $el.css({ transition: 'transform' });
     assert.equal(subject.get('isAnimated'), true);
 
@@ -62,20 +65,17 @@ module('sortable-item-mixin', function(hooks) {
 
     $el.css({ transition: 'none' });
     assert.equal(subject.get('isAnimated'), false);
-    */
   });
 
-  test('isDragging is disabled when destroyed', function(assert) {
+  test('isDragging is disabled when destroyed', async function(assert) {
     assert.expect(3);
 
-    run(() => {
-      subject.set('model', MockModel);
-      assert.equal(subject.get('isDragging'), false);
-      subject._startDrag(MockEvent);
-      assert.equal(subject.get('isDragging'), true);
-      subject.destroy();
-      assert.equal(subject.get('isDragging'), false);
-    });
+    subject.set('model', MockModel);
+    assert.equal(subject.get('isDragging'), false);
+    subject._startDrag(MockEvent);
+    assert.equal(subject.get('isDragging'), true);
+    await clearRender();
+    assert.equal(subject.get('isDragging'), false);
   });
 
   test('transitionDuration', function(assert) {
@@ -110,7 +110,7 @@ module('sortable-item-mixin', function(hooks) {
       subject.set('y', 50);
     });
 
-    let transform = getTransform(subject.element);
+    const transform = getTransform(subject.element);
 
     assert.equal(transform, 'translateY(50px)',
       'expected transform to be set');
@@ -125,7 +125,7 @@ module('sortable-item-mixin', function(hooks) {
       subject.set('x', 50);
     });
 
-    let transform = getTransform(subject.element);
+    const transform = getTransform(subject.element);
 
     assert.equal(transform, 'translateX(50px)',
       'expected transform to be set to translateX');
@@ -160,12 +160,9 @@ module('sortable-item-mixin', function(hooks) {
       'expected to be registered with group');
   });
 
-  test('deregisters itself when removed', function(assert) {
-    run(() => {
-      subject.destroy();
-    });
-    assert.equal(group.item, undefined,
-      'expected to be deregistered with group');
+  test('deregisters itself when removed', async function(assert) {
+    await clearRender();
+    assert.equal(group.item, undefined, 'expected to be deregistered with group');
   });
 
   test('dragStart fires an action if provided', function(assert) {
@@ -177,12 +174,12 @@ module('sortable-item-mixin', function(hooks) {
       }
     };
 
-    run(() => {
+    //run(() => {
       subject.set('model', MockModel);
       subject.set('target', target);
       subject.set('onDragStart', 'action');
       subject._startDrag(MockEvent);
-    });
+    //});
   });
 
   test('dragStop fires an action if provided', function(assert) {
@@ -194,12 +191,12 @@ module('sortable-item-mixin', function(hooks) {
       }
     };
 
-    run(() => {
+    //run(() => {
       subject.set('model', MockModel);
       subject.set('target', target);
       subject.set('onDragStop', 'action');
       subject._complete();
-    });
+    //});
   });
 
   function getTransform(element) {

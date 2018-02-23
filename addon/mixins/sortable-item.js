@@ -128,7 +128,6 @@ export default Mixin.create({
     @type Boolean
   */
   isAnimated: computed(function() {
-    console.log('Computing isAnimated', this.isVisible, this.layout);
     if (!this.element || !this.$()) { return; }
 
     let el = this.$();
@@ -245,7 +244,7 @@ export default Mixin.create({
     @method didInsertElement
   */
   didInsertElement() {
-    this._super();
+    this._super(...arguments);
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
@@ -260,16 +259,16 @@ export default Mixin.create({
     @method willDestroyElement
   */
   willDestroyElement() {
-    // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
-
     // remove event listeners that may still be attached
     $(window).off(dragActions, this._startDragListener);
     $(window).off(endActions, this._cancelStartDragListener);
     $(this.element).off(elementClickAction, this._preventClickHandler);
-    this.set('isDragging', false);
-    this.set('isDropping', false);
+
+    run(() => {
+      this.set('isDropping', false);
+      this.set('isDragging', false);
+    });
+    this._super(...arguments);
   },
 
   /**
