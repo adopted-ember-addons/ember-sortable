@@ -1,7 +1,6 @@
 import EmberObject from '@ember/object';
 import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
-import $ from 'jquery';
 
 const MockEvent = { originalEvent: null };
 const MockModel = { name: 'Mock Model' };
@@ -41,7 +40,7 @@ moduleForComponent('sortable-item-mixin', {
       subject.destroy();
     });
     // Otherwise we end up with dangling event handlers.
-    $(window).off();
+    // window.removeEventListener();
   }
 });
 

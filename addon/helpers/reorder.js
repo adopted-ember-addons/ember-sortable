@@ -1,4 +1,6 @@
 import { registerAsyncHelper } from '@ember/test';
+import { findAll } from "@ember/test-helpers";
+import { drag } from 'ember-sortable/helpers/drag';
 
 /**
   In tests, the dummy app is rendered at half size.
@@ -30,27 +32,25 @@ const OVERSHOOT = 2;
   @return {Promise}
 */
 
-export function reorder(app, mode, itemSelector, ...resultSelectors) {
-  const {
-    andThen,
-    drag,
-    findWithAssert,
-    wait
-  } = app.testHelpers;
-
-  resultSelectors.forEach((selector, targetIndex) => {
-    andThen(() => {
-      let items = findWithAssert(itemSelector);
-      let element = items.filter(selector);
-      let targetElement = items.eq(targetIndex);
-      let dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
-      let dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
-
-      drag(mode, element, () => { return { dx: dx, dy: dy }; });
-    });
-  });
-
-  return wait();
+export async function reorder(mode, itemSelector, ...resultSelectors) {
+  for (let targetIndex = 0;  targetIndex < resultSelectors.length; targetIndex++) {
+    const selector = resultSelectors[targetIndex];
+    let items = findAll(itemSelector);
+    let element;
+    if(selector.startsWith(':contains')) {
+      element = items.filter(item => {
+        const text = selector.replace(':contains(', '').replace(')', '');
+        return RegExp(text).test(item.textContent);
+      })[0];
+    } else {
+      element = findAll(`${itemSelector}${selector}`)[0];
+    }
+    let targetElement = items[targetIndex];
+    
+    let dx = targetElement.getBoundingClientRect().left - OVERSHOOT - element.getBoundingClientRect().left;
+    let dy = targetElement.getBoundingClientRect().top - OVERSHOOT - element.getBoundingClientRect().top;
+    await drag(mode, element, () => { return { dx: dx, dy: dy }; });
+  }
 }
 
 export default registerAsyncHelper('reorder', reorder);

@@ -1,3 +1,4 @@
+/*
 import Application from '../../app';
 import config from '../../config/environment';
 import { merge } from '@ember/polyfills';
@@ -15,3 +16,13 @@ export default function startApp(attrs) {
     return application;
   });
 }
+*/
+
+import Application from '../app';
+import config from '../config/environment';
+import { setApplication } from '@ember/test-helpers';
+import { start } from 'ember-qunit';
+
+setApplication(Application.create(config.APP));
+
+start();

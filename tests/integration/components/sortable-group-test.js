@@ -1,5 +1,4 @@
 import { run } from '@ember/runloop';
-import $ from 'jquery';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -16,18 +15,18 @@ test('distance attribute prevents the drag before the specified value', function
     {{/sortable-group}}
   `);
 
-  let item = $('#dummy-sortable-item');
-  let itemOffset = item.offset();
+  let item = document.getElementById('dummy-sortable-item');
+  let itemOffset = item.getBoundingClientRect();
 
   triggerEvent(item, 'mousedown', { pageX: itemOffset.left, pageY: itemOffset.top, which: 1 });
   triggerEvent(item, 'mousemove', { pageX: itemOffset.left, pageY: itemOffset.top, which: 1 });
   triggerEvent(item, 'mousemove', { pageX: itemOffset.left, pageY: itemOffset.top + 5, which: 1 });
 
-  assert.notOk(item.hasClass('is-dragging'), 'does not start dragging if the drag distance is less than the passed one');
+  assert.notOk(item.classList.includes('is-dragging'), 'does not start dragging if the drag distance is less than the passed one');
 
   triggerEvent(item, 'mousemove', { pageX: itemOffset.left, pageY: itemOffset.top + 20, which: 1 });
 
-  assert.ok(item.hasClass('is-dragging'), 'starts dragging if the drag distance is more than the passed one');
+  assert.ok(item.classList.includes('is-dragging'), 'starts dragging if the drag distance is more than the passed one');
 });
 
 test('sortable-items have tabindexes for accessibility', function (assert) {
@@ -39,14 +38,14 @@ test('sortable-items have tabindexes for accessibility', function (assert) {
     {{/sortable-group}}
   `);
 
-  let item = this.$('#dummy-sortable-item');
+  let item = this.element.getElementById('dummy-sortable-item');
 
-  assert.equal(item.attr('tabindex'), 0, 'sortable-items have tabindexes');
+  assert.equal(item.getAttribute('tabindex'), 0, 'sortable-items have tabindexes');
 });
 
 function triggerEvent(el, type, props) {
   run(() => {
-    let event = $.Event(type, props);
-    $(el).trigger(event);
+    let event = new CustomEvent(type, props);
+    el.dispatch(event);
   });
 }

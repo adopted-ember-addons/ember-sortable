@@ -1,6 +1,5 @@
 import { registerAsyncHelper } from '@ember/test';
-import $ from 'jquery';
-
+import { find, settled, triggerEvent } from '@ember/test-helpers';
 /**
   Drags elements by an offset specified in pixels.
 
@@ -26,14 +25,8 @@ import $ from 'jquery';
   @return {Promise}
 */
 
-export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
+export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   let start, move, end, which;
-
-  const {
-    andThen,
-    findWithAssert,
-    wait
-  } = app.testHelpers;
 
   if (mode === 'mouse') {
     start = 'mousedown';
@@ -48,65 +41,56 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     throw new Error(`Unsupported mode: '${mode}'`);
   }
 
-  andThen(() => {
-    let item = findWithAssert(itemSelector);
-    let itemOffset = item.offset();
-    let offset = offsetFn();
-    let itemElement = item.get(0);
-    let rect = itemElement.getBoundingClientRect();
-    let scale = itemElement.clientHeight / (rect.bottom - rect.top);
-    let halfwayX = itemOffset.left + (offset.dx * scale) / 2;
-    let halfwayY = itemOffset.top + (offset.dy * scale) / 2;
-    let targetX = itemOffset.left + offset.dx * scale;
-    let targetY = itemOffset.top + offset.dy * scale;
+  await settled();
 
-    triggerEvent(app, item, start, {
-      pageX: itemOffset.left,
-      pageY: itemOffset.top,
-      which
-    });
+  let item = find(itemSelector);
+  let itemOffset = item.getBoundingClientRect();
+  let offset = offsetFn();
+  let itemElement = item;
+  let rect = itemElement.getBoundingClientRect();
+  let scale = itemElement.clientHeight / (rect.bottom - rect.top);
+  let halfwayX = itemOffset.left + (offset.dx * scale) / 2;
+  let halfwayY = itemOffset.top + (offset.dy * scale) / 2;
+  let targetX = itemOffset.left + offset.dx * scale;
+  let targetY = itemOffset.top + offset.dy * scale;
 
-    if (callbacks.dragstart) {
-      andThen(callbacks.dragstart);
-    }
-
-    triggerEvent(app, item, move, {
-      pageX: itemOffset.left,
-      pageY: itemOffset.top
-    });
-
-    if (callbacks.dragmove) {
-      andThen(callbacks.dragmove);
-    }
-
-    triggerEvent(app, item, move, {
-      pageX: halfwayX,
-      pageY: halfwayY
-    });
-
-    triggerEvent(app, item, move, {
-      pageX: targetX,
-      pageY: targetY
-    });
-
-    triggerEvent(app, item, end, {
-      pageX: targetX,
-      pageY: targetY
-    });
-
-    if (callbacks.dragend) {
-      andThen(callbacks.dragend);
-    }
+  await triggerEvent(item, start, {
+    pageX: itemOffset.left,
+    pageY: itemOffset.top,
+    which
   });
 
-  return wait();
-}
+  if (callbacks.dragstart) {
+    callbacks.dragstart();
+  }
 
-function triggerEvent(app, el, type, props) {
-  return app.testHelpers.andThen(() => {
-    let event = $.Event(type, props);
-    $(el).trigger(event);
+  await triggerEvent(item, move, {
+    pageX: itemOffset.left,
+    pageY: itemOffset.top
   });
+
+  if (callbacks.dragmove) {
+    callbacks.dragmove();
+  }
+
+  await triggerEvent(item, move, {
+    pageX: halfwayX,
+    pageY: halfwayY
+  });
+
+  await triggerEvent(item, move, {
+    pageX: targetX,
+    pageY: targetY
+  });
+
+  await triggerEvent(item, end, {
+    pageX: targetX,
+    pageY: targetY
+  });
+
+  if (callbacks.dragend) {
+    callbacks.dragend();
+  }
 }
 
 export default registerAsyncHelper('drag', drag);

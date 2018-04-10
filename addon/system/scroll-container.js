@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 export default class ScrollContainer {
   constructor(element) {
     this.element = element;
@@ -7,16 +5,16 @@ export default class ScrollContainer {
     if (this.isWindow) {
       this.top = this.scrollTop();
       this.left = this.scrollLeft();
-      this.width = $(window).width();
-      this.height = $(window).height();
-      this.scrollWidth = this.$().width();
-      this.scrollHeight = this.$().height();
+      this.width = window.offsetWidth;
+      this.height = window.offsetHeight;
+      this.scrollWidth = this.selector().offsetWidth;
+      this.scrollHeight = this.selector().offsetHeight;
     } else {
-      let { top, left } = this.$().offset();
+      let { top, left } = element.getBoundingClientRect();
       this.top = top;
       this.left = left;
-      this.width = this.$().width();
-      this.height = this.$().height();
+      this.width = this.selector().offsetWidth;
+      this.height = this.selector().offsetHeight;
       this.scrollWidth = element.scrollWidth;
       this.scrollHeight = element.scrollHeight;
     }
@@ -35,33 +33,33 @@ export default class ScrollContainer {
   scrollTop(value) {
     if (value) {
       value = Math.max(0, Math.min(this.maxScrollTop, value));
-      this.$().scrollTop(value);
+      window.scrollTop = value;
       if (this.isWindow) {
         this.top = value;
       }
       return value;
     }
-    return this.$().scrollTop();
+    return this.selector().scrollTop;
   }
 
   scrollLeft(value) {
     if (value) {
       value = Math.max(0, Math.min(this.maxScrollLeft, value));
-      this.$().scrollLeft(value);
+      this.selector().scrollLeft = value;
       if (this.isWindow) {
         this.left = value;
       }
       return value;
     }
-    return this.$().scrollLeft();
+    return this.selector().scrollLeft;
   }
 
-  $(selector) {
+  selector(selector) {
     let element = this.element;
     if (selector) {
-      return $(element).find(selector);
+      return element.querySelectorAll(selector);
     } else {
-      return $(element);
+      return element;
     }
   }
 }
