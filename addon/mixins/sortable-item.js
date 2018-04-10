@@ -1,6 +1,5 @@
 import { Promise } from 'rsvp';
 import Mixin from '@ember/object/mixin';
-import $ from 'jquery';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import { computed } from '@ember/object';
@@ -9,9 +8,12 @@ import ScrollContainer from '../system/scroll-container';
 import { invokeAction } from 'ember-invoke-action';
 import { throttle } from '@ember/runloop';
 
-const dragActions = 'mousemove.emberSortable touchmove.emberSortable';
-const elementClickAction = 'click.emberSortable';
-const endActions = 'click.emberSortable mouseup.emberSortable touchend.emberSortable';
+// const dragActions = 'mousemove.emberSortable touchmove.emberSortable';
+const dragActions = ['mousemove', 'touchmove'];
+// const elementClickAction = 'click.emberSortable';
+const elementClickAction = 'click';
+// const endActions = 'click.emberSortable mouseup.emberSortable touchend.emberSortable';
+const endActions = ['click', 'mouseup', 'touchend'];
 
 export default Mixin.create({
   classNames: ['sortable-item'],
@@ -128,10 +130,10 @@ export default Mixin.create({
     @type Boolean
   */
   isAnimated: computed(function() {
-    if (!this.element || !this.$()) { return; }
+    if (!this.element) { return; }
 
-    let el = this.$();
-    let property = el.css('transition-property');
+    let el = this.element;
+    let property = getComputedStyle(el)['transition-property'];
 
     return /all|transform/.test(property);
   }).volatile(),
@@ -142,8 +144,8 @@ export default Mixin.create({
     @type Number
   */
   transitionDuration: computed(function() {
-    let el = this.$();
-    let rule = el.css('transition-duration');
+    let el = this.element;
+    let rule = getComputedStyle(el)['transition-duration'];
     let match = rule.match(/([\d.]+)([ms]*)/);
 
     if (match) {
@@ -168,7 +170,7 @@ export default Mixin.create({
   x: computed({
     get() {
       if (this._x === undefined) {
-        let marginLeft = parseFloat(this.$().css('margin-left'));
+        let marginLeft = parseFloat(getComputedStyle(this.element)['margin-left']);
         this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
       }
 
@@ -209,9 +211,14 @@ export default Mixin.create({
     @type Number
   */
   width: computed(function() {
-    let el = this.$();
-    let width = el.outerWidth(true);
+    let el = this.element;
 
+    // calculate el width with margins
+    let width = el.offsetWidth;
+    const style = getComputedStyle(el);
+    width += parseInt(style.marginLeft) + parseInt(style.marginRight);
+
+    // append border space
     width += getBorderSpacing(el).horizontal;
 
     return width;
@@ -223,12 +230,14 @@ export default Mixin.create({
     @type Number
   */
   height: computed(function() {
-    let el = this.$();
-    let height = el.outerHeight();
+    let el = this.element;
 
-    let marginBottom = parseFloat(el.css('margin-bottom'));
-    height += marginBottom;
+    // calculate el height with margin-bottom
+    let height = el.offsetHeight;
+    const style = getComputedStyle(el);
+    height += parseInt(style.marginBottom);
 
+    // append border space
     height += getBorderSpacing(el).vertical;
 
     return height;
@@ -252,8 +261,10 @@ export default Mixin.create({
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    let element = this.get('handle') ? this.$(this.get('handle')) : this.$();
-    element.css({ 'touch-action': 'none' });
+    const componentEl = this.element;
+    const handle = this.get('handle');
+    const element = handle ? componentEl.querySelectorAll(handle)[0] : componentEl;
+    element.style.touchAction = 'none';
   },
 
   /**
@@ -265,9 +276,9 @@ export default Mixin.create({
     run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
 
     // remove event listeners that may still be attached
-    $(window).off(dragActions, this._startDragListener);
-    $(window).off(endActions, this._cancelStartDragListener);
-    $(this.element).off(elementClickAction, this._preventClickHandler);
+    removeEventListeners(window, dragActions, this._startDragListener);
+    removeEventListeners(window, endActions, this._cancelStartDragListener);
+    this.element.removeEventListener(elementClickAction, this._preventClickHandler);
     this.set('isDragging', false);
     this.set('isDropping', false);
   },
@@ -278,7 +289,6 @@ export default Mixin.create({
   mouseDown(event) {
     if (event.which !== 1) { return; }
     if (event.ctrlKey) { return; }
-
     this._primeDrag(event);
   },
 
@@ -293,36 +303,38 @@ export default Mixin.create({
     @method freeze
   */
   freeze() {
-    let el = this.$();
+    let el = this.element;
     if (!el) { return; }
-
-    el.css({ transition: 'none' });
-    el.height(); // Force-apply styles
+    el.style.transition = 'none';
+    // TODO is this necessary and is there a vanilla-js equiv
+    // el.height(); // Force-apply styles
   },
 
   /**
     @method reset
   */
   reset() {
-    let el = this.$();
+    let el = this.element;
     if (!el) { return; }
 
     delete this._y;
     delete this._x;
 
-    el.css({ transform: '' });
-    el.height(); // Force-apply styles
+    el.style.transform = '';
+    // TODO is this necessary and is there a vanilla-js equiv
+    // el.height(); // Force-apply styles
   },
 
   /**
     @method thaw
   */
   thaw() {
-    let el = this.$();
+    let el = this.element;
     if (!el) { return; }
 
-    el.css({ transition: '' });
-    el.height(); // Force-apply styles
+    el.style.transition = 'none';
+    // TODO is this necessary and is there a vanilla-js equiv
+    // el.height(); // Force-apply styles
   },
 
   /**
@@ -333,9 +345,14 @@ export default Mixin.create({
    * @private
    */
   _primeDrag(startEvent) {
-    let handle = this.get('handle');
+    // Ensure 'startEvent' is a pure JS.Event,
+    // and not jQuery.
+    if(startEvent.originalEvent instanceof Event) {
+      startEvent = startEvent.originalEvent;
+    }
 
-    if (handle && !$(startEvent.target).closest(handle).length) {
+    let handle = this.get('handle');
+    if (handle && !startEvent.target.closest(handle)) {
       return;
     }
 
@@ -344,12 +361,14 @@ export default Mixin.create({
 
     this._prepareDragListener = run.bind(this, this._prepareDrag, startEvent);
 
-    this._cancelStartDragListener = () => {
-      $(window).off(dragActions, this._prepareDragListener);
-    };
+    addEventListeners(window, dragActions, this._prepareDragListener);
 
-    $(window).on(dragActions, this._prepareDragListener);
-    $(window).one(endActions, this._cancelStartDragListener);
+    // one-time event
+    const cancelPostDrag = () => {
+      removeEventListeners(window, dragActions, this._prepareDragListener);
+      removeEventListeners(window, endActions, cancelPostDrag);
+    }
+    addEventListeners(window, endActions, cancelPostDrag);
   },
 
   /**
@@ -364,9 +383,8 @@ export default Mixin.create({
     let distance = this.get('distance');
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
-
     if (distance <= dx || distance <= dy) {
-      $(window).off(dragActions, this._prepareDragListener);
+      removeEventListeners(window, dragActions, this._prepareDragListener);
       this._startDrag(startEvent);
     }
   },
@@ -385,16 +403,14 @@ export default Mixin.create({
     let dragThrottled = ev => throttle(this, drag, ev, 16, false);
 
     let drop = () => {
-      $(window)
-        .off(dragActions, dragThrottled)
-        .off(endActions, drop);
+      removeEventListeners(window, dragActions, dragThrottled);
+      removeEventListeners(window, endActions, drop);
 
       this._drop();
     };
 
-    $(window)
-      .on(dragActions, dragThrottled)
-      .on(endActions, drop);
+    addEventListeners(window, dragActions, dragThrottled);
+    addEventListeners(window, endActions, drop);
 
     this._tellGroup('prepare');
     this.set('isDragging', true);
@@ -412,21 +428,21 @@ export default Mixin.create({
 
   _scrollOnEdges(drag) {
     let groupDirection = this.get('_direction');
-    let $element = this.$();
-    let scrollContainer = new ScrollContainer(scrollParent($element)[0]);
+    let element = this.element;
+    let scrollContainer = new ScrollContainer(scrollParent(element));
     let itemContainer = {
-      width: $element.width(),
+      width: element.offsetWidth,
       get height() {
-        return $element.height();
+        return element.offsetHeight;
       },
       get left() {
-        return $element.offset().left;
+        return element.getBoundingClientRect().left;
       },
       get right() {
         return this.left + this.width;
       },
       get top() {
-        return $element.offset().top;
+        return element.getBoundingClientRect().top;
       },
       get bottom() {
         return this.top + this.height;
@@ -504,17 +520,17 @@ export default Mixin.create({
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
-    let parentElement = $(this.element.parentNode);
+    let parentElement = this.element.parentNode;
 
     if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
       elementOrigin = this.get('x');
-      scrollOrigin = parentElement.offset().left;
+      scrollOrigin = parentElement.getBoundingClientRect().left;
 
       return event => {
         this._pageX = getX(event);
         let dx = this._pageX - dragOrigin;
-        let scrollX = parentElement.offset().left;
+        let scrollX = parentElement.getBoundingClientRect().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
         this._drag(x);
@@ -524,12 +540,12 @@ export default Mixin.create({
     if (groupDirection === 'y') {
       dragOrigin = getY(startEvent);
       elementOrigin = this.get('y');
-      scrollOrigin = parentElement.offset().top;
+      scrollOrigin = parentElement.getBoundingClientRect().top;
 
       return event => {
         this._pageY = getY(event);
         let dy = this._pageY - dragOrigin;
-        let scrollY = parentElement.offset().top;
+        let scrollY = parentElement.getBoundingClientRect().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
         this._drag(y);
@@ -562,25 +578,21 @@ export default Mixin.create({
     @private
   */
   _applyPosition() {
-    if (!this.element || !this.$()) { return; }
+    if (!this.element) { return; }
 
     const groupDirection = this.get('_direction');
 
     if (groupDirection === 'x') {
       let x = this.get('x');
-      let dx = x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
+      let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element)['margin-left']);
 
-      this.$().css({
-        transform: `translateX(${dx}px)`
-      });
+      this.element.style.transform = `translateX(${dx}px)`;
     }
     if (groupDirection === 'y') {
       let y = this.get('y');
       let dy = y - this.element.offsetTop;
 
-      this.$().css({
-        transform: `translateY(${dy}px)`
-      });
+      this.element.style.transform = `translateY(${dy}px`;
     }
   },
 
@@ -610,7 +622,7 @@ export default Mixin.create({
     @private
   */
   _drop() {
-    if (!this.element || !this.$()) { return; }
+    if (!this.element) { return; }
 
     this._preventClick();
 
@@ -628,7 +640,12 @@ export default Mixin.create({
     @private
   */
   _preventClick() {
-    $(this.element).one(elementClickAction, this._preventClickHandler);
+    const preventClickAndRemoveListener = event => {
+      this._preventClickHandler(event);
+      event.target.removeEventListener(event.type, preventClickAndRemoveListener);
+    };
+
+    this.element.addEventListener(elementClickAction, preventClickAndRemoveListener);
   },
 
   /**
@@ -680,7 +697,9 @@ export default Mixin.create({
   @private
 */
 function getY(event) {
-  let originalEvent = event.originalEvent;
+  // Ensure pure JS.Event object, and not jQuery
+  const originalEvent = event.originalEvent || event;
+
   let touches = originalEvent && originalEvent.changedTouches;
   let touch = touches && touches[0];
 
@@ -698,7 +717,9 @@ function getY(event) {
   @private
 */
 function getX(event) {
-  let originalEvent = event.originalEvent;
+  // Ensure pure JS.Event object, and not jQuery
+  const originalEvent = event.originalEvent || event;
+
   let touches = originalEvent && originalEvent.changedTouches;
   let touch = touches && touches[0];
 
@@ -718,13 +739,33 @@ function getX(event) {
   @private
 */
 function getBorderSpacing(el) {
-  el = $(el);
+  el = el instanceof Element ? el : document.querySelectorAll(el)[0];
 
-  let css = el.css('border-spacing'); // '0px 0px'
+  let css = getComputedStyle(el)['borderSpacing']; // '0px 0px'
   let [horizontal, vertical] = css.split(' ');
 
   return {
     horizontal: parseFloat(horizontal),
     vertical: parseFloat(vertical)
   };
+}
+
+/**
+  jQuery equivalent of .on()
+  Adds multiple listeners for
+  each event type, for the given
+  handler.
+*/
+function addEventListeners(el, events, handler) {
+  events.forEach(event => el.addEventListener(event, handler))
+}
+
+/**
+  jQuery equivalent of .off()
+  Remove multiple listeners for
+  each event type, for the given
+  handler.
+*/
+function removeEventListeners(el, events, handler) {
+  events.forEach(event => el.removeEventListener(event, handler))
 }
