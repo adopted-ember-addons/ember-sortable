@@ -216,6 +216,23 @@ Each item takes a `model` property. This should be fairly self-explanatory but i
 {{/each}}
 ```
 
+```js
+actions: {
+  keyUp(index, evt) {
+    switch(evt.key) {
+      case "ArrowDown":
+        // move item at `index` back one
+        break;
+      case "ArrowUp":
+        // move item at `index` forward one
+        break;
+      default:
+        return;
+    }
+  }
+}
+```
+
 ## Testing
 
 `ember-sortable` exposes some acceptance test helpers:
