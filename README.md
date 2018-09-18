@@ -16,9 +16,17 @@ Sortable UI primitives for Ember.
 Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
+=======
+my-addon
+==============================================================================
 
-## Installation
+[Short description of the addon.]
+>>>>>>> 70d6b9e... message
 
+Installation
+------------------------------------------------------------------------------
+
+<<<<<<< HEAD
 ```sh
 $ ember install ember-sortable
 ```
