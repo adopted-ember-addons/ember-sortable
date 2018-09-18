@@ -1,3 +1,4 @@
+import { or, readOnly } from '@ember/object/computed';
 import { Promise } from 'rsvp';
 import Mixin from '@ember/object/mixin';
 import $ from 'jquery';
@@ -102,7 +103,7 @@ export default Mixin.create({
     @property isBusy
     @type Boolean
   */
-  isBusy: computed.or('isDragging', 'isDropping'),
+  isBusy: or('isDragging', 'isDropping'),
 
   /**
     The frequency with which the group is informed
@@ -238,7 +239,7 @@ export default Mixin.create({
     Allows host instance to use the `group` property for something else with
     minimal overriding.
   */
-  _direction: computed.readOnly('group.direction'),
+  _direction: readOnly('group.direction'),
 
   /**
     @method didInsertElement
