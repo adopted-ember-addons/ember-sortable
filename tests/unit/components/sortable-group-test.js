@@ -54,9 +54,7 @@ module('sortable-group', function(hooks) {
     }];
     let component = this.owner.factoryFor('component:sortable-group').create({ items });
 
-    this.render();
-
-    component.update();
+    run(() => component.update())
 
     let expected = [{
       y: 25,
@@ -99,8 +97,6 @@ module('sortable-group', function(hooks) {
     }];
 
     let component = this.owner.factoryFor('component:sortable-group').create({ items });
-
-    this.render();
 
     component.update();
 
@@ -148,8 +144,6 @@ module('sortable-group', function(hooks) {
     }];
 
     let component = this.owner.factoryFor('component:sortable-group').create({ items });
-
-    this.render();
 
     component.update();
 
@@ -200,8 +194,6 @@ module('sortable-group', function(hooks) {
       items,
       direction: 'x'
     });
-
-    this.render();
 
     component.update();
 
