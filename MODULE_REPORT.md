@@ -3,7 +3,7 @@
 
 **Global**: `Ember.testing`
 
-**Location**: `addon/mixins/sortable-item.js` at line 491
+**Location**: `addon/mixins/sortable-item.js` at line 492
 
 ```js
     };

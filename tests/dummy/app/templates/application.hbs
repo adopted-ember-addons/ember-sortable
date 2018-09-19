@@ -11,7 +11,7 @@
         {{#each model.items as |item|}}
           {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
             {{item}}
-            <span class="handle" data-item="{{item}}">
+            <span class="handle" data-item={{item}}>
               <span>&vArr;</span>
             </span>
           {{/sortable-item}}
@@ -42,14 +42,16 @@
             <th>Item</th>
           </tr>
         </thead>
-        {{#sortable-group tagName="tbody" onChange="update" as |group|}}
-          {{#each model.items as |item|}}
-            {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
-              <td><span class="handle" data-item="{{item}}">&vArr;</span></td>
-              <td>{{item}}</td>
-            {{/sortable-item}}
-          {{/each}}
-        {{/sortable-group}}
+        <tbody>
+          {{#sortable-group tagName="tbody" onChange="update" as |group|}}
+            {{#each model.items as |item|}}
+              {{#sortable-item tagName="tr" model=item group=group handle=".handle"}}
+                <td><span class="handle" data-item={{item}}>&vArr;</span></td>
+                <td>{{item}}</td>
+              {{/sortable-item}}
+            {{/each}}
+          {{/sortable-group}}
+        </tbody>
       </table>
     </section>
 
@@ -60,7 +62,7 @@
         {{#each model.items as |item|}}
           {{#sortable-item tagName="li" model=item group=group spacing=15}}
             {{item}}
-            <span class="handle" data-item="{{item}}">
+            <span class="handle" data-item={{item}}>
             </span>
           {{/sortable-item}}
         {{/each}}
@@ -74,7 +76,7 @@
         {{#each model.items as |item|}}
           {{#sortable-item tagName="li" model=item group=group distance=15}}
             {{item}}
-            <span class="handle" data-item="{{item}}">
+            <span class="handle" data-item={{item}}>
             </span>
           {{/sortable-item}}
         {{/each}}
@@ -89,7 +91,7 @@
           {{#each model.items as |item|}}
             {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
               {{item}}
-              <span class="handle" data-item="{{item}}">
+              <span class="handle" data-item={{item}}>
                 <span>&vArr;</span>
               </span>
             {{/sortable-item}}

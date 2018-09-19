@@ -1,26 +1,20 @@
 import { find, visit } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
+import { reorder, drag } from 'ember-sortable/helpers'
 import { module, test } from 'qunit';
-import startApp from '../../tests/helpers/start-app';
+import { setupApplicationTest } from 'ember-qunit'
 
 module('Acceptance | smoke', function(hooks) {
-  hooks.beforeEach(function() {
-    this.application = startApp();
-  });
-
-  hooks.afterEach(function() {
-    run(this.application, 'destroy');
-  });
+  setupApplicationTest(hooks)
 
   test('reordering with mouse events', async function(assert) {
     await visit('/');
 
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
-
-    reorder(
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco','vertical demo pre');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco','vertical demo pre');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco','vertical demo pre');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco','vertical demo pre');
+    //
+    await await reorder(
       'mouse',
       '.vertical-demo .handle',
       '[data-item=Cinco]',
@@ -29,13 +23,13 @@ module('Acceptance | smoke', function(hooks) {
       '[data-item=Dos]',
       '[data-item=Uno]'
     );
+    //
+    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
+    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
+    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
 
-    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
-
-    reorder(
+    await reorder(
       'mouse',
       '.horizontal-demo li',
       ':contains(Cuatro)',
@@ -45,12 +39,12 @@ module('Acceptance | smoke', function(hooks) {
       ':contains(Tres)'
     );
 
-    assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
+    assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres','horizontal demo post');
+    assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres','horizontal demo post');
+    assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres','horizontal demo post');
+    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres','horizontal demo post');
 
-    reorder(
+    await reorder(
       'mouse',
       '.table-demo .handle',
       '[data-item=Uno]',
@@ -60,39 +54,41 @@ module('Acceptance | smoke', function(hooks) {
       '[data-item=Cinco]'
     );
 
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco','table demo post');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco','table demo post');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco','table demo post');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco','table demo post');
 
     let itemHeight = () => {
-      let item = findWithAssert('.scrollable-demo .sortable-item');
-      return item.outerHeight() + parseInt(item.css('margin-top'));
+      let item = find('.scrollable-demo .sortable-item');
+      assert.ok(item, 'could not find item')
+      const itemStyle = item.currentStyle || window.getComputedStyle(item)
+      return item.offsetHeight + parseInt(itemStyle.marginTop, 10);
     };
 
-    drag(
+    await drag(
       'mouse',
       '.scrollable-demo .handle[data-item=Uno]',
       () => {
-        return { dy: itemHeight() + 1 };
+        return { dy: itemHeight() * 3 };
       },
       {
-        dragend: function() {
-          findWithAssert('.scrollable-demo .sortable-container').scrollTop(0);
+        dragend: async function() {
+          find('.scrollable-demo .sortable-container').scrollTop(0);
         },
 
-        dragmove: function() {
-          findWithAssert('.scrollable-demo .sortable-container').scrollTop(itemHeight());
+        dragmove: async function() {
+          find('.scrollable-demo .sortable-container').scrollTop(itemHeight());
         }
       }
     );
 
-    assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Dos Tres Uno Cuatro Cinco');
+    assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco','drag demo post');
+    assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco','drag demo post');
+    assert.equal(tableContents(), 'Dos Tres Uno Cuatro Cinco','drag demo post');
+    assert.equal(scrollableContents(), 'Dos Tres Uno Cuatro Cinco','drag demo post');
 
-    reorder(
+    await reorder(
       'mouse',
       '.vertical-distance-demo li',
       ':contains("Tres")',
@@ -102,21 +98,21 @@ module('Acceptance | smoke', function(hooks) {
       ':contains("Cinco")'
     );
 
-    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
+    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco','vertical-distance post');
+    assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco','vertical-distance post');
+    assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco','vertical-distance post');
+    assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco','vertical-distance post');
   });
 
   test('reordering with touch events', async function(assert) {
     await visit('/');
 
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco','init');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco','init');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco','init');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco','init');
 
-    reorder(
+    await reorder(
       'touch',
       '.vertical-demo .handle',
       '[data-item=Cinco]',
@@ -126,12 +122,12 @@ module('Acceptance | smoke', function(hooks) {
       '[data-item=Uno]'
     );
 
-    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
+    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
+    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno','vertical demo post');
 
-    reorder(
+    await reorder(
       'touch',
       '.horizontal-demo li',
       ':contains(Cuatro)',
@@ -146,7 +142,7 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
     assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
 
-    reorder(
+    await reorder(
       'touch',
       '.table-demo .handle',
       '[data-item=Uno]',
@@ -161,7 +157,7 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
-    reorder(
+    await reorder(
       'touch',
       '.vertical-distance-demo li',
       ':contains("Tres")',
