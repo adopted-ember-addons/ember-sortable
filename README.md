@@ -28,7 +28,7 @@ $ ember install ember-sortable
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-{{#sortable-group tagName="ul" onChange="reorderItems" as |group|}}
+{{#sortable-group tagName="ul" onChange=(action "reorderItems") as |group|}}
   {{#each model.items as |item|}}
     {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
       {{item.name}}
@@ -64,7 +64,7 @@ with that group model as the first argument:
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-{{#sortable-group tagName="ul" model=model onChange="reorderItems" as |group|}}
+{{#sortable-group tagName="ul" model=model onChange=(action "reorderItems") as |group|}}
   {{#each model.items as |item|}}
     {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
       {{item.name}}
@@ -91,7 +91,7 @@ export default Ember.Route.extend({
 To change sort direction, define `direction` on `sortable-group` (default is `y`):
 
 ```hbs
-{{#sortable-group direction="x" onChange="reorderItems" as |group|}}
+{{#sortable-group direction="x" onChange=(action "reorderItems") as |group|}}
 ```
 
 ### Changing spacing between currently dragged element and the rest of the group
@@ -189,7 +189,14 @@ export default Ember.Route.extend({
 ```
 
 ```hbs
-  {{#sortable-item onDragStart="dragStarted" onDragStop="dragStopped" tagName="li" model=item group=group handle=".handle"}}
+  {{#sortable-item
+    onDragStart=(action "dragStarted")
+    onDragStop=(action "dragStopped")
+    tagName="li"
+    model=item
+    group=group
+    handle=".handle"
+  }}
     {{item.name}}
     <span class="handle">&varr;</span>
   {{/sortable-item}}
