@@ -28,7 +28,6 @@ let group;
 let subject;
 
 module('sortable-item-mixin', function(hooks) {
-  // setupTest(hooks);
   setupRenderingTest(hooks);
 
   hooks.beforeEach(async function() {
@@ -45,12 +44,10 @@ module('sortable-item-mixin', function(hooks) {
       this.set('group', group)
       this.set('rendered', true)
       await render(hbs`{{#if rendered}}{{test-mock group=group}}{{/if}}`)
-      // run(() => subject.set('group', group))
     });
   });
 
   test('isAnimated', async function(assert) {
-    // console.log({isAnimated: subject.get(('isAnimated'))})
     subject.$().css({ transition: 'all' });
     assert.equal(subject.get('isAnimated'), true);
 
