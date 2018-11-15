@@ -2,14 +2,14 @@
 
 [![npm version](https://badge.fury.io/js/ember-sortable.svg)](http://badge.fury.io/js/ember-sortable)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
-[![Build Status](https://travis-ci.org/jgwhite/ember-sortable.svg?branch=master)](https://travis-ci.org/jgwhite/ember-sortable)
+[![Build Status](https://travis-ci.org/heroku/ember-sortable.svg?branch=master)](https://travis-ci.org/heroku/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
 
 Sortable UI primitives for Ember.
 
-![ember-sortable in action](https://raw.githubusercontent.com/jgwhite/ember-sortable/master/demo.gif)
+![ember-sortable in action](/demo.gif)
 
-[Check out the demo](http://jgwhite.co.uk/ember-sortable/demo)
+[Check out the demo](https://heroku.github.io/ember-sortable/demo/)
 
 ## Requirements
 
@@ -239,7 +239,7 @@ import './ember-sortable/test-helpers';
 ### Setup
 
 ```sh
-$ git clone git@github.com:jgwhite/ember-sortable
+$ git clone git@github.com:heroku/ember-sortable
 $ cd ember-sortable
 $ ember install
 ```
