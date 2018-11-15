@@ -70,7 +70,7 @@ module('Acceptance | smoke', function(hooks) {
       'mouse',
       '.scrollable-demo .handle[data-item=Uno]',
       () => {
-        return { dy: itemHeight() * 3 };
+        return { dy: itemHeight() * 3, dx: 0 };
       },
       {
         dragend: async function() {
