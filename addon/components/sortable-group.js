@@ -4,7 +4,6 @@ import { set, get } from '@ember/object';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
 import { computed } from '@ember/object';
-import { invokeAction } from 'ember-invoke-action';
 
 const a = A;
 const NO_MODEL = {};
@@ -155,9 +154,9 @@ export default Component.extend({
     });
 
     if (groupModel !== NO_MODEL) {
-      invokeAction(this, 'onChange', groupModel, itemModels, draggedModel);
+      this.sendAction('onChange', groupModel, itemModels, draggedModel);
     } else {
-      invokeAction(this, 'onChange', itemModels, draggedModel);
+      this.sendAction('onChange', itemModels, draggedModel);
     }
   }
 });
