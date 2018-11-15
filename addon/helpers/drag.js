@@ -87,11 +87,7 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
     await callbacks.dragend
   }
 
-  return settled()
+  return await settled();
 }
-
-// async function triggerEvent(el, type, props) {
-// /
-// }
 
 export default drag;
