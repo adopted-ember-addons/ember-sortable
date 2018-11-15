@@ -12,7 +12,7 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "https://github.com/jgwhite/ember-sortable",
+  "repository": "https://github.com/heroku/ember-sortable",
   "scripts": {
     "build": "ember build",
     "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
@@ -49,6 +49,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "http://jgwhite.co.uk/ember-sortable/demo/"
+    "demoURL": "https://heroku.github.io/ember-sortable/demo/"
   }
 }
