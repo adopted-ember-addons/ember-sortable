@@ -14,7 +14,7 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco','vertical demo pre');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco','vertical demo pre');
     //
-    await await reorder(
+    await reorder(
       'mouse',
       '.vertical-demo .handle',
       '[data-item=Cinco]',
