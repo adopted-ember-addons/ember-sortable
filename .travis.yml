@@ -30,9 +30,9 @@ jobs:
     - stage: "Tests"
       name: "Tests"
       script:
-        - npm run lint:hbs
-        - npm run lint:js
-        - npm test
+        - yarn run lint:hbs
+        - yarn run lint:js
+        - yarn test
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
