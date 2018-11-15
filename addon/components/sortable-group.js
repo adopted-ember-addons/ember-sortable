@@ -54,7 +54,7 @@ export default Component.extend({
     let items = a(this.get('items'));
     let direction = this.get('direction');
 
-    return items.sortBy(direction);
+    return a(items.sortBy(direction));
   }).volatile(),
 
   /**
