@@ -1,4 +1,4 @@
-import $ from "jquery";
+import $ from 'jquery';
 import { triggerEvent, settled } from '@ember/test-helpers'
 import { assert } from '@ember/debug'
 
@@ -30,15 +30,15 @@ import { assert } from '@ember/debug'
 export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   let start, move, end, which;
 
-  if (mode === "mouse") {
-    start = "mousedown";
-    move = "mousemove";
-    end = "mouseup";
+  if (mode === 'mouse') {
+    start = 'mousedown';
+    move = 'mousemove';
+    end = 'mouseup';
     which = 1;
-  } else if (mode === "touch") {
-    start = "touchstart";
-    move = "touchmove";
-    end = "touchend";
+  } else if (mode === 'touch') {
+    start = 'touchstart';
+    move = 'touchmove';
+    end = 'touchend';
   } else {
     throw new Error(`Unsupported mode: '${mode}'`);
   }

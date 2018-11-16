@@ -1,24 +1,24 @@
-import { or, readOnly } from "@ember/object/computed";
-import { Promise } from "rsvp";
-import Mixin from "@ember/object/mixin";
-import $ from "jquery";
-import { run } from "@ember/runloop";
-import Ember from "ember";
-import { computed } from "@ember/object";
-import scrollParent from "../system/scroll-parent";
-import ScrollContainer from "../system/scroll-container";
-import { throttle } from "@ember/runloop";
+import { or, readOnly } from '@ember/object/computed';
+import { Promise } from 'rsvp';
+import Mixin from '@ember/object/mixin';
+import $ from 'jquery';
+import { run } from '@ember/runloop';
+import Ember from 'ember';
+import { computed } from '@ember/object';
+import scrollParent from '../system/scroll-parent';
+import ScrollContainer from '../system/scroll-container';
+import { throttle } from '@ember/runloop';
 
-const dragActions = "mousemove.emberSortable touchmove.emberSortable";
-const elementClickAction = "click.emberSortable";
+const dragActions = 'mousemove.emberSortable touchmove.emberSortable';
+const elementClickAction = 'click.emberSortable';
 const endActions =
-  "click.emberSortable mouseup.emberSortable touchend.emberSortable";
+  'click.emberSortable mouseup.emberSortable touchend.emberSortable';
 
 export default Mixin.create({
-  classNames: ["sortable-item"],
-  classNameBindings: ["isDragging", "isDropping"],
+  classNames: ['sortable-item'],
+  classNameBindings: ['isDragging', 'isDropping'],
 
-  attributeBindings: ["data-test-selector", "tabindex"],
+  attributeBindings: ['data-test-selector', 'tabindex'],
 
   /**
     Group to which the item belongs.
@@ -103,7 +103,7 @@ export default Mixin.create({
     @property isBusy
     @type Boolean
   */
-  isBusy: or("isDragging", "isDropping"),
+  isBusy: or('isDragging', 'isDropping'),
 
   /**
     The frequency with which the group is informed
@@ -133,7 +133,7 @@ export default Mixin.create({
     }
 
     let el = this.$();
-    let property = el.css("transition-property");
+    let property = el.css('transition-property');
 
     return /all|transform/.test(property);
   }).volatile(),
@@ -145,14 +145,14 @@ export default Mixin.create({
   */
   transitionDuration: computed(function() {
     let el = this.$();
-    let rule = el.css("transition-duration");
+    let rule = el.css('transition-duration');
     let match = rule.match(/([\d.]+)([ms]*)/);
 
     if (match) {
       let value = parseFloat(match[1]);
       let unit = match[2];
 
-      if (unit === "s") {
+      if (unit === 's') {
         value = value * 1000;
       }
 
@@ -170,7 +170,7 @@ export default Mixin.create({
   x: computed({
     get() {
       if (this._x === undefined) {
-        let marginLeft = parseFloat(this.$().css("margin-left"));
+        let marginLeft = parseFloat(this.$().css('margin-left'));
         this._x =
           this.element.scrollLeft + this.element.offsetLeft - marginLeft;
       }
@@ -229,7 +229,7 @@ export default Mixin.create({
     let el = this.$();
     let height = el.outerHeight();
 
-    let marginBottom = parseFloat(el.css("margin-bottom"));
+    let marginBottom = parseFloat(el.css('margin-bottom'));
     height += marginBottom;
 
     height += getBorderSpacing(el).vertical;
@@ -242,7 +242,7 @@ export default Mixin.create({
     Allows host instance to use the `group` property for something else with
     minimal overriding.
   */
-  _direction: readOnly("group.direction"),
+  _direction: readOnly('group.direction'),
 
   /**
     @method didInsertElement
@@ -250,13 +250,13 @@ export default Mixin.create({
   didInsertElement() {
     this._super();
     // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
+    // 'never change properties on components, services or models during didInsertElement because it causes significant performance degradation'
+    run.schedule('afterRender', this, '_tellGroup', 'registerItem', this);
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    let element = this.get("handle") ? this.$(this.get("handle")) : this.$();
-    element.css({ "touch-action": "none" });
+    let element = this.get('handle') ? this.$(this.get('handle')) : this.$();
+    element.css({ 'touch-action': 'none' });
   },
 
   /**
@@ -264,15 +264,15 @@ export default Mixin.create({
   */
   willDestroyElement() {
     // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
+    // 'never change properties on components, services or models during didInsertElement because it causes significant performance degradation'
+    run.schedule('afterRender', this, '_tellGroup', 'deregisterItem', this);
 
     // remove event listeners that may still be attached
     $(window).off(dragActions, this._startDragListener);
     $(window).off(endActions, this._cancelStartDragListener);
     $(this.element).off(elementClickAction, this._preventClickHandler);
-    this.set("isDragging", false);
-    this.set("isDropping", false);
+    this.set('isDragging', false);
+    this.set('isDropping', false);
   },
 
   /**
@@ -305,7 +305,7 @@ export default Mixin.create({
       return;
     }
 
-    el.css({ transition: "none" });
+    el.css({ transition: 'none' });
     el.height(); // Force-apply styles
   },
 
@@ -321,7 +321,7 @@ export default Mixin.create({
     delete this._y;
     delete this._x;
 
-    el.css({ transform: "" });
+    el.css({ transform: '' });
     el.height(); // Force-apply styles
   },
 
@@ -334,7 +334,7 @@ export default Mixin.create({
       return;
     }
 
-    el.css({ transition: "" });
+    el.css({ transition: '' });
     el.height(); // Force-apply styles
   },
 
@@ -346,7 +346,7 @@ export default Mixin.create({
    * @private
    */
   _primeDrag(startEvent) {
-    let handle = this.get("handle");
+    let handle = this.get('handle');
 
     if (handle && !$(startEvent.target).closest(handle).length) {
       return;
@@ -374,7 +374,7 @@ export default Mixin.create({
    * @private
    */
   _prepareDrag(startEvent, event) {
-    let distance = this.get("distance");
+    let distance = this.get('distance');
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
 
@@ -392,7 +392,7 @@ export default Mixin.create({
    * @private
    */
   _startDrag(event) {
-    if (this.get("isBusy")) {
+    if (this.get('isBusy')) {
       return;
     }
 
@@ -425,7 +425,7 @@ export default Mixin.create({
   maxScrollSpeed: 20,
 
   _scrollOnEdges(drag) {
-    let groupDirection = this.get("_direction");
+    let groupDirection = this.get('_direction');
     let $element = this.$();
     let scrollContainer = new ScrollContainer(scrollParent($element)[0]);
     let itemContainer = {
@@ -448,16 +448,16 @@ export default Mixin.create({
     };
 
     let leadingEdgeKey, trailingEdgeKey, scrollKey, pageKey;
-    if (groupDirection === "x") {
-      leadingEdgeKey = "left";
-      trailingEdgeKey = "right";
-      scrollKey = "scrollLeft";
-      pageKey = "pageX";
+    if (groupDirection === 'x') {
+      leadingEdgeKey = 'left';
+      trailingEdgeKey = 'right';
+      scrollKey = 'scrollLeft';
+      pageKey = 'pageX';
     } else {
-      leadingEdgeKey = "top";
-      trailingEdgeKey = "bottom";
-      scrollKey = "scrollTop";
-      pageKey = "pageY";
+      leadingEdgeKey = 'top';
+      trailingEdgeKey = 'bottom';
+      scrollKey = 'scrollTop';
+      pageKey = 'pageY';
     }
 
     let createFakeEvent = () => {
@@ -486,7 +486,7 @@ export default Mixin.create({
       }
 
       if (delta !== 0) {
-        let speed = this.get("maxScrollSpeed");
+        let speed = this.get('maxScrollSpeed');
         delta = Math.min(Math.max(delta, -1 * speed), speed);
 
         delta = scrollContainer[scrollKey](scroll + delta) - scroll;
@@ -499,7 +499,7 @@ export default Mixin.create({
           run(() => drag(event));
         }
       }
-      if (this.get("isDragging")) {
+      if (this.get('isDragging')) {
         requestAnimationFrame(checkScrollBounds);
       }
     };
@@ -516,15 +516,15 @@ export default Mixin.create({
     @private
   */
   _makeDragHandler(startEvent) {
-    const groupDirection = this.get("_direction");
+    const groupDirection = this.get('_direction');
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
     let parentElement = $(this.element.parentNode);
 
-    if (groupDirection === "x") {
+    if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
-      elementOrigin = this.get("x");
+      elementOrigin = this.get('x');
       scrollOrigin = parentElement.offset().left;
 
       return event => {
@@ -537,9 +537,9 @@ export default Mixin.create({
       };
     }
 
-    if (groupDirection === "y") {
+    if (groupDirection === 'y') {
       dragOrigin = getY(startEvent);
-      elementOrigin = this.get("y");
+      elementOrigin = this.get('y');
       scrollOrigin = parentElement.offset().top;
 
       return event => {
@@ -558,7 +558,7 @@ export default Mixin.create({
     @private
   */
   _tellGroup(method, ...args) {
-    let group = this.get("group");
+    let group = this.get('group');
 
     if (group) {
       group[method](...args);
@@ -570,7 +570,7 @@ export default Mixin.create({
     @private
   */
   _scheduleApplyPosition() {
-    run.scheduleOnce("render", this, "_applyPosition");
+    run.scheduleOnce('render', this, '_applyPosition');
   },
 
   /**
@@ -582,19 +582,19 @@ export default Mixin.create({
       return;
     }
 
-    const groupDirection = this.get("_direction");
+    const groupDirection = this.get('_direction');
 
-    if (groupDirection === "x") {
-      let x = this.get("x");
+    if (groupDirection === 'x') {
+      let x = this.get('x');
       let dx =
-        x - this.element.offsetLeft + parseFloat(this.$().css("margin-left"));
+        x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
 
       this.$().css({
         transform: `translateX(${dx}px)`
       });
     }
-    if (groupDirection === "y") {
-      let y = this.get("y");
+    if (groupDirection === 'y') {
+      let y = this.get('y');
       let dy = y - this.element.offsetTop;
 
       this.$().css({
@@ -608,20 +608,20 @@ export default Mixin.create({
     @private
   */
   _drag(dimension) {
-    if (!this.get("isDragging")) {
+    if (!this.get('isDragging')) {
       return;
     }
-    let updateInterval = this.get("updateInterval");
-    const groupDirection = this.get("_direction");
+    let updateInterval = this.get('updateInterval');
+    const groupDirection = this.get('_direction');
 
-    if (groupDirection === "x") {
-      this.set("x", dimension);
+    if (groupDirection === 'x') {
+      this.set('x', dimension);
     }
-    if (groupDirection === "y") {
-      this.set("y", dimension);
+    if (groupDirection === 'y') {
+      this.set('y', dimension);
     }
 
-    run.throttle(this, "_tellGroup", "update", updateInterval);
+    run.throttle(this, '_tellGroup', 'update', updateInterval);
   },
 
   /**
@@ -635,12 +635,12 @@ export default Mixin.create({
 
     this._preventClick();
 
-    this.set("isDragging", false);
-    this.set("isDropping", true);
+    this.set('isDragging', false);
+    this.set('isDropping', true);
 
-    this._tellGroup("update");
+    this._tellGroup('update');
 
-    this._waitForTransition().then(run.bind(this, "_complete"));
+    this._waitForTransition().then(run.bind(this, '_complete'));
   },
 
   /**
@@ -671,8 +671,8 @@ export default Mixin.create({
       run.next(() => {
         let duration = 0;
 
-        if (this.get("isAnimated")) {
-          duration = this.get("transitionDuration");
+        if (this.get('isAnimated')) {
+          duration = this.get('transitionDuration');
         }
 
         run.later(this, resolve, duration);
@@ -740,8 +740,8 @@ function getX(event) {
 function getBorderSpacing(el) {
   el = $(el);
 
-  let css = el.css("border-spacing"); // '0px 0px'
-  let [horizontal, vertical] = css.split(" ");
+  let css = el.css('border-spacing'); // '0px 0px'
+  let [horizontal, vertical] = css.split(' ');
 
   return {
     horizontal: parseFloat(horizontal),
