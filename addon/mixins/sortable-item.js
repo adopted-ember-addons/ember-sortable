@@ -1,3 +1,4 @@
+import { or, readOnly } from '@ember/object/computed';
 import { Promise } from 'rsvp';
 import Mixin from '@ember/object/mixin';
 import $ from 'jquery';
@@ -10,7 +11,8 @@ import { throttle } from '@ember/runloop';
 
 const dragActions = 'mousemove.emberSortable touchmove.emberSortable';
 const elementClickAction = 'click.emberSortable';
-const endActions = 'click.emberSortable mouseup.emberSortable touchend.emberSortable';
+const endActions =
+  'click.emberSortable mouseup.emberSortable touchend.emberSortable';
 
 export default Mixin.create({
   classNames: ['sortable-item'],
@@ -97,12 +99,11 @@ export default Mixin.create({
   */
   wasDropped: false,
 
-
   /**
     @property isBusy
     @type Boolean
   */
-  isBusy: computed.or('isDragging', 'isDropping'),
+  isBusy: or('isDragging', 'isDropping'),
 
   /**
     The frequency with which the group is informed
@@ -127,7 +128,9 @@ export default Mixin.create({
     @type Boolean
   */
   isAnimated: computed(function() {
-    if (!this.element || !this.$()) { return; }
+    if (!this.element || !this.$()) {
+      return;
+    }
 
     let el = this.$();
     let property = el.css('transition-property');
@@ -168,7 +171,8 @@ export default Mixin.create({
     get() {
       if (this._x === undefined) {
         let marginLeft = parseFloat(this.$().css('margin-left'));
-        this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
+        this._x =
+          this.element.scrollLeft + this.element.offsetLeft - marginLeft;
       }
 
       return this._x;
@@ -178,7 +182,7 @@ export default Mixin.create({
         this._x = value;
         this._scheduleApplyPosition();
       }
-    },
+    }
   }).volatile(),
 
   /**
@@ -238,7 +242,7 @@ export default Mixin.create({
     Allows host instance to use the `group` property for something else with
     minimal overriding.
   */
-  _direction: computed.readOnly('group.direction'),
+  _direction: readOnly('group.direction'),
 
   /**
     @method didInsertElement
@@ -246,8 +250,8 @@ export default Mixin.create({
   didInsertElement() {
     this._super();
     // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
+    // 'never change properties on components, services or models during didInsertElement because it causes significant performance degradation'
+    run.schedule('afterRender', this, '_tellGroup', 'registerItem', this);
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
@@ -260,8 +264,8 @@ export default Mixin.create({
   */
   willDestroyElement() {
     // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
+    // 'never change properties on components, services or models during didInsertElement because it causes significant performance degradation'
+    run.schedule('afterRender', this, '_tellGroup', 'deregisterItem', this);
 
     // remove event listeners that may still be attached
     $(window).off(dragActions, this._startDragListener);
@@ -275,8 +279,12 @@ export default Mixin.create({
     @method mouseDown
   */
   mouseDown(event) {
-    if (event.which !== 1) { return; }
-    if (event.ctrlKey) { return; }
+    if (event.which !== 1) {
+      return;
+    }
+    if (event.ctrlKey) {
+      return;
+    }
 
     this._primeDrag(event);
   },
@@ -293,7 +301,9 @@ export default Mixin.create({
   */
   freeze() {
     let el = this.$();
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     el.css({ transition: 'none' });
     el.height(); // Force-apply styles
@@ -304,7 +314,9 @@ export default Mixin.create({
   */
   reset() {
     let el = this.$();
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     delete this._y;
     delete this._x;
@@ -318,7 +330,9 @@ export default Mixin.create({
   */
   thaw() {
     let el = this.$();
-    if (!el) { return; }
+    if (!el) {
+      return;
+    }
 
     el.css({ transition: '' });
     el.height(); // Force-apply styles
@@ -378,7 +392,9 @@ export default Mixin.create({
    * @private
    */
   _startDrag(event) {
-    if (this.get('isBusy')) { return; }
+    if (this.get('isBusy')) {
+      return;
+    }
 
     let drag = this._makeDragHandler(event);
     let dragThrottled = ev => throttle(this, drag, ev, 16, false);
@@ -445,7 +461,9 @@ export default Mixin.create({
     }
 
     let createFakeEvent = () => {
-      if (this._pageX == null && this._pageY == null) { return; }
+      if (this._pageX == null && this._pageY == null) {
+        return;
+      }
       return {
         pageX: this._pageX,
         pageY: this._pageY
@@ -560,13 +578,16 @@ export default Mixin.create({
     @private
   */
   _applyPosition() {
-    if (!this.element || !this.$()) { return; }
+    if (!this.element || !this.$()) {
+      return;
+    }
 
     const groupDirection = this.get('_direction');
 
     if (groupDirection === 'x') {
       let x = this.get('x');
-      let dx = x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
+      let dx =
+        x - this.element.offsetLeft + parseFloat(this.$().css('margin-left'));
 
       this.$().css({
         transform: `translateX(${dx}px)`
@@ -587,7 +608,7 @@ export default Mixin.create({
     @private
   */
   _drag(dimension) {
-    if(!this.get("isDragging")) {
+    if (!this.get('isDragging')) {
       return;
     }
     let updateInterval = this.get('updateInterval');
@@ -608,7 +629,9 @@ export default Mixin.create({
     @private
   */
   _drop() {
-    if (!this.element || !this.$()) { return; }
+    if (!this.element || !this.$()) {
+      return;
+    }
 
     this._preventClick();
 
@@ -617,8 +640,7 @@ export default Mixin.create({
 
     this._tellGroup('update');
 
-    this._waitForTransition()
-      .then(run.bind(this, '_complete'));
+    this._waitForTransition().then(run.bind(this, '_complete'));
   },
 
   /**
