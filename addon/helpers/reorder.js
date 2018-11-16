@@ -1,7 +1,5 @@
-import { settled } from "@ember/test-helpers";
-import { defer, resolve } from "rsvp";
-import drag from "./drag";
-import $ from "jquery";
+import { registerAsyncHelper } from '@ember/test';
+
 /**
   In tests, the dummy app is rendered at half size.
   To avoid rounding errors, we must therefore double
@@ -32,50 +30,27 @@ const OVERSHOOT = 2;
   @return {Promise}
 */
 
-const promiseMap = (arr, iteratee) => {
-  const deferred = defer();
-  const res = [];
-  let pos = 0;
-  const runIteratee = () => {
+export function reorder(app, mode, itemSelector, ...resultSelectors) {
+  const {
+    andThen,
+    drag,
+    findWithAssert,
+    wait
+  } = app.testHelpers;
 
-    if (!arr.length) {
-      return resolve()
-    }
+  resultSelectors.forEach((selector, targetIndex) => {
+    andThen(() => {
+      let items = findWithAssert(itemSelector);
+      let element = items.filter(selector);
+      let targetElement = items.eq(targetIndex);
+      let dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
+      let dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
 
-    let item = arr.splice(0, 1)[0];
-    return iteratee(item, pos).then(result => {
-      res.push(result);
-      pos++;
-      if (arr.length) {
-        return runIteratee();
-      }
-    });
-  };
-
-  return runIteratee().then(
-    () => {
-      deferred.resolve(res);
-    },
-    err => {
-      deferred.reject(err);
-    }
-  );
-};
-
-export async function reorder(mode, itemSelector, ...resultSelectors) {
-  // await settled()
-
-  await promiseMap(resultSelectors, async (selector, targetIndex) => {
-    await settled();
-    let items = $(itemSelector);
-    let element = $(`${itemSelector}${selector}`);
-    let targetElement = items.eq(targetIndex);
-    let dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
-    let dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
-    await drag(mode, element, () => {
-      return { dx, dy };
+      drag(mode, element, () => { return { dx: dx, dy: dy }; });
     });
   });
+
+  return wait();
 }
 
-export default reorder;
+export default registerAsyncHelper('reorder', reorder);

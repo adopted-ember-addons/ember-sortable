@@ -41,8 +41,8 @@ export default Component.extend({
   */
   itemPosition: computed(function() {
     let direction = this.get('direction');
-    const firstObject = this.get('sortedItems').objectAt(0)
-    return get(firstObject, direction) - get(firstObject, 'spacing');
+
+    return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
   }).volatile(),
 
   /**
@@ -52,6 +52,7 @@ export default Component.extend({
   sortedItems: computed(function() {
     let items = a(this.get('items'));
     let direction = this.get('direction');
+
     return a(items.sortBy(direction));
   }).volatile(),
 
@@ -89,7 +90,6 @@ export default Component.extend({
   */
   update() {
     let sortedItems = this.get('sortedItems');
-
     // Position of the first element
     let position = this._itemPosition;
 
