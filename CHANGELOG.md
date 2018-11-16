@@ -1,5 +1,16 @@
 # ember-sortable changelog
 
+### 1.12.0 (2018-11-16)
+
+- [#189](https://github.com/heroku/ember-sortable/pull/189) Fix travis node version [@acburdine](https://github.com/acburdine)
+- [#188](https://github.com/heroku/ember-sortable/pull/188) Don't break if A extensions are not enabled [@btecu](https://github.com/btecu)
+- [#190](https://github.com/heroku/ember-sortable/pull/190) set rootURL for tests [@jmar910](https://github.com/jmar910)
+- [#206](https://github.com/heroku/ember-sortable/pull/206) Ember 3.5 [@jmar910](https://github.com/jmar910)
+- [#200](https://github.com/heroku/ember-sortable/pull/200) Update links to use new owner [@raulb](https://github.com/raulb)
+- [#203](https://github.com/heroku/ember-sortable/pull/203) Remove ember-invoke-action [@raulb](https://github.com/raulb)
+- [#182](https://github.com/heroku/ember-sortable/pull/182) Updated README to include js example for accessibility [@alanwguo](https://github.com/alanwguo)
+- [#185](https://github.com/heroku/ember-sortable/pull/185) docs: use action helper in more examples [@knownasilya](https://github.com/knownasilya)
+
 ### 1.11.2 (2018-02-23)
 
 - [#172](https://github.com/jgwhite/ember-sortable/pull/172) Fix deprecation warnings for targetObject [@nlfurniss](https://github.com/nlfurniss)
