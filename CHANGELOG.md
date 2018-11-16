@@ -1,5 +1,9 @@
 # ember-sortable changelog
 
+### 1.12.1 (2018-11-16)
+
+- [#209](https://github.com/heroku/ember-sortable/pull/209) Revert "Ember 3.5"
+
 ### 1.12.0 (2018-11-16)
 
 - [#189](https://github.com/heroku/ember-sortable/pull/189) Fix travis node version [@acburdine](https://github.com/acburdine)
