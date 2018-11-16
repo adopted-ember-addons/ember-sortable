@@ -17,8 +17,7 @@ Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
 
-Installation
-------------------------------------------------------------------------------
+## Installation
 
 ```sh
 $ ember install ember-sortable
