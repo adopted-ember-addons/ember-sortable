@@ -1,5 +1,5 @@
 import { registerAsyncHelper } from '@ember/test';
-import $ from 'jquery';
+import { triggerEvent } from '@ember/test-helpers';
 
 /**
   Drags elements by an offset specified in pixels.
@@ -60,38 +60,48 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     let targetX = itemOffset.left + offset.dx * scale;
     let targetY = itemOffset.top + offset.dy * scale;
 
-    triggerEvent(app, item, start, {
-      pageX: itemOffset.left,
-      pageY: itemOffset.top,
-      which
+    andThen(() => {
+      triggerEvent(itemElement, start, {
+        clientX: itemOffset.left,
+        clientY: itemOffset.top,
+        which
+      });
     });
 
     if (callbacks.dragstart) {
       andThen(callbacks.dragstart);
     }
 
-    triggerEvent(app, item, move, {
-      pageX: itemOffset.left,
-      pageY: itemOffset.top
+    andThen(() => {
+      triggerEvent(itemElement, move, {
+        clientX: itemOffset.left,
+        clientY: itemOffset.top
+      });
     });
 
     if (callbacks.dragmove) {
       andThen(callbacks.dragmove);
     }
 
-    triggerEvent(app, item, move, {
-      pageX: halfwayX,
-      pageY: halfwayY
+    andThen(() => {
+      triggerEvent(itemElement, move, {
+        clientX: halfwayX,
+        clientY: halfwayY
+      });
     });
 
-    triggerEvent(app, item, move, {
-      pageX: targetX,
-      pageY: targetY
+    andThen(() => {
+      triggerEvent(itemElement, move, {
+        clientX: targetX,
+        clientY: targetY
+      });
     });
 
-    triggerEvent(app, item, end, {
-      pageX: targetX,
-      pageY: targetY
+    andThen(() => {
+      triggerEvent(itemElement, end, {
+        clientX: targetX,
+        clientY: targetY
+      });
     });
 
     if (callbacks.dragend) {
@@ -100,13 +110,6 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
   });
 
   return wait();
-}
-
-function triggerEvent(app, el, type, props) {
-  return app.testHelpers.andThen(() => {
-    let event = $.Event(type, props);
-    $(el).trigger(event);
-  });
 }
 
 export default registerAsyncHelper('drag', drag);

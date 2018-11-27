@@ -78,11 +78,16 @@ test('reordering with mouse events', function(assert) {
     return item.outerHeight() + parseInt(item.css('margin-top'));
   };
 
+  let itemWidth = () => {
+    let item = findWithAssert('.scrollable-demo .sortable-item');
+    return item.outerWidth() + parseInt(item.css('margin-left'));
+  };
+
   drag(
     'mouse',
     '.scrollable-demo .handle[data-item=Uno]',
     () => {
-      return { dy: itemHeight() + 1 };
+      return { dy: itemHeight() + 1, dx: itemWidth() + 1 };
     },
     {
       dragend: function() {
