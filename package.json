@@ -41,6 +41,7 @@
     "ember-source": "~2.18.0",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^5.2.1",
+    "lerna-changelog": "^0.8.2",
     "loader.js": "^4.2.3"
   },
   "engines": {
