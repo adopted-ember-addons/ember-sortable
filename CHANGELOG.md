@@ -1,5 +1,18 @@
 # ember-sortable changelog
 
+## 1.12.2 (2018-12-06)
+
+#### :rocket: Enhancement
+* [#212](https://github.com/heroku/ember-sortable/pull/212) Replace jQuery with vanilla JS ([@nlfurniss](https://github.com/nlfurniss))
+
+#### :house: Internal
+* [#214](https://github.com/heroku/ember-sortable/pull/214) add lerna changelog for generating changelogs ([@fivetanley](https://github.com/fivetanley))
+
+#### Committers: 3
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
+- Todd Evanoff ([@tevanoff](https://github.com/tevanoff))
+
 ### 1.12.1 (2018-11-16)
 
 - [#209](https://github.com/heroku/ember-sortable/pull/209) Revert "Ember 3.5"
