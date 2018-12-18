@@ -393,7 +393,7 @@ export default Mixin.create({
 
     let drop = () => {
       dragActions.forEach(event => window.removeEventListener(event, dragThrottled));
-      endActions.forEach(event => window.releaseEvents(event, drop));
+      endActions.forEach(event => window.removeEventListener(event, drop));
 
       this._drop();
     };
