@@ -628,9 +628,9 @@ export default Mixin.create({
     @private
   */
   _preventClick() {
-    const selfCancellingCallback = () => {
+    const selfCancellingCallback = (event) => {
       this.element.removeEventListener(elementClickAction, selfCancellingCallback);
-      this._preventClickHandler();
+      this._preventClickHandler(event);
     };
 
     this.element.addEventListener(elementClickAction, selfCancellingCallback);
