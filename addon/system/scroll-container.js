@@ -7,8 +7,8 @@ export default class ScrollContainer {
       this.left = this.scrollLeft();
       this.width = document.documentElement.clientWidth;
       this.height = document.documentElement.clientHeight;
-      this.scrollWidth = getComputedStyle(this.element).width;
-      this.scrollHeight = getComputedStyle(this.element).height;
+      this.scrollWidth =  document.documentElement.clientWidth;
+      this.scrollHeight = document.documentElement.clientHeight;
     } else {
       let { top, left } = this.element.getBoundingClientRect();
       this.top = top;
