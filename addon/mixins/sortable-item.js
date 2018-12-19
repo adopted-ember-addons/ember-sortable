@@ -1,5 +1,6 @@
-import { Promise } from 'rsvp';
 import Mixin from '@ember/object/mixin';
+import { DEBUG } from '@glimmer/env';
+import { Promise, defer } from 'rsvp';
 import { run } from '@ember/runloop';
 import Ember from 'ember';
 import { computed } from '@ember/object';
@@ -612,15 +613,15 @@ export default Mixin.create({
   _drop() {
     if (!this.element) { return; }
 
+    let transitionPromise = this._waitForTransition();
+
     this._preventClick();
 
     this.set('isDragging', false);
     this.set('isDropping', true);
 
     this._tellGroup('update');
-
-    this._waitForTransition()
-      .then(run.bind(this, '_complete'));
+    transitionPromise.then(() => this._complete())
   },
 
   /**
@@ -652,17 +653,32 @@ export default Mixin.create({
     @return Promise
   */
   _waitForTransition() {
-    return new Promise(resolve => {
-      run.next(() => {
-        let duration = 0;
+    if (DEBUG) {
+      // emit event for tests to start waiting for the transition to end
+      document.dispatchEvent(new Event('ember-sortable-drop-start'));
+    }
 
-        if (this.get('isAnimated')) {
-          duration = this.get('transitionDuration');
-        }
+    let transitionPromise;
 
-        run.later(this, resolve, duration);
+    if (this.get('isAnimated')) {
+      const deferred = defer();
+      this.element.addEventListener('transitionend', deferred.resolve);
+      transitionPromise = deferred.promise.finally(() => {
+        this.element.removeEventListener('transitionend', deferred.resolve);
       });
-    });
+    } else {
+      const duration = this.get('isAnimated') ? this.get('transitionDuration') : 200;
+      transitionPromise = new Promise((resolve) => run.later(resolve, duration));
+    }
+
+    if (DEBUG) {
+      transitionPromise = transitionPromise.finally(() => {
+        // emit event for tests to stop waiting
+        document.dispatchEvent(new Event('ember-sortable-drop-stop'));
+      });
+    }
+
+    return transitionPromise;
   },
 
   /**

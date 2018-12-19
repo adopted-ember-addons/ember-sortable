@@ -54,11 +54,18 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     let offset = offsetFn();
     let itemElement = item.get(0);
     let rect = itemElement.getBoundingClientRect();
-    let scale = itemElement.clientHeight / (rect.bottom - rect.top);
+    // firefox gives some elements, like <svg>, a clientHeight of 0.
+    // we can try to grab it off the parent instead to have a better
+    // guess at what the scale is.
+    // https://bugzilla.mozilla.org/show_bug.cgi?id=874811#c14
+    // https://stackoverflow.com/a/13647345
+    // https://stackoverflow.com/a/5042051
+    let clientHeight = (itemElement.clientHeight || item.offsetHeight) || itemElement.parentNode.offsetHeight;
+    let scale = clientHeight / (rect.bottom - rect.top);
     let halfwayX = itemOffset.left + (offset.dx * scale) / 2;
     let halfwayY = itemOffset.top + (offset.dy * scale) / 2;
-    let targetX = itemOffset.left + offset.dx * scale;
-    let targetY = itemOffset.top + offset.dy * scale;
+    let targetX = itemOffset.left + (offset.dx * scale);
+    let targetY = itemOffset.top + (offset.dy * scale);
 
     andThen(() => {
       triggerEvent(itemElement, start, {

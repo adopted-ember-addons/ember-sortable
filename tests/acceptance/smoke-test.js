@@ -74,8 +74,9 @@ test('reordering with mouse events', function(assert) {
   });
 
   let itemHeight = () => {
-    let item = findWithAssert('.scrollable-demo .sortable-item');
-    return item.outerHeight() + parseInt(item.css('margin-top'));
+    let item = findWithAssert('.scrollable-demo .sortable-item')[0];
+    const itemStyle = item.currentStyle || window.getComputedStyle(item);
+    return item.offsetHeight + parseInt(itemStyle.marginTop);
   };
 
   let itemWidth = () => {
@@ -87,7 +88,7 @@ test('reordering with mouse events', function(assert) {
     'mouse',
     '.scrollable-demo .handle[data-item=Uno]',
     () => {
-      return { dy: itemHeight() + 1, dx: itemWidth() + 1 };
+      return { dy: itemHeight() + 1, dx: itemWidth() };
     },
     {
       dragend: function() {
