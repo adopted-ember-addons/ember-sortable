@@ -1,5 +1,16 @@
 # ember-sortable changelog
 
+## 1.12.3 (2018-12-19)
+
+#### :bug: Bug Fix
+* [#216](https://github.com/heroku/ember-sortable/pull/216) Fix incorrect ScrollContainer dimension calcs ([@nlfurniss](https://github.com/nlfurniss))
+* [#220](https://github.com/heroku/ember-sortable/pull/220) replace window.releaseEvents with window.removeEventListener ([@fonkgoku](https://github.com/fonkgoku))
+* [#221](https://github.com/heroku/ember-sortable/pull/221) Pass event to _preventClickHandler ([@fonkgoku](https://github.com/fonkgoku))
+
+#### Committers: 2
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Paul Csapak ([@fonkgoku](https://github.com/fonkgoku))
+
 ## 1.12.2 (2018-12-06)
 
 #### :rocket: Enhancement
