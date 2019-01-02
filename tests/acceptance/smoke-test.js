@@ -79,16 +79,13 @@ test('reordering with mouse events', function(assert) {
     return item.offsetHeight + parseInt(itemStyle.marginTop);
   };
 
-  let itemWidth = () => {
-    let item = findWithAssert('.scrollable-demo .sortable-item');
-    return item.outerWidth() + parseInt(item.css('margin-left'));
-  };
-
   drag(
     'mouse',
     '.scrollable-demo .handle[data-item=Uno]',
     () => {
-      return { dy: itemHeight() + 1, dx: itemWidth() };
+      // leaving undefined dx so that we test that dx is set to zero by default
+      // otherwise an error will be thrown by the browser when trying to drag.
+      return { dy: itemHeight() + 1, dx: undefined };
     },
     {
       dragend: function() {
