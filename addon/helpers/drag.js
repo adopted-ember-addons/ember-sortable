@@ -60,12 +60,14 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     // https://bugzilla.mozilla.org/show_bug.cgi?id=874811#c14
     // https://stackoverflow.com/a/13647345
     // https://stackoverflow.com/a/5042051
+    let dx = offset.dx || 0;
+    let dy = offset.dy || 0;
     let clientHeight = (itemElement.clientHeight || item.offsetHeight) || itemElement.parentNode.offsetHeight;
     let scale = clientHeight / (rect.bottom - rect.top);
-    let halfwayX = itemOffset.left + (offset.dx * scale) / 2;
-    let halfwayY = itemOffset.top + (offset.dy * scale) / 2;
-    let targetX = itemOffset.left + (offset.dx * scale);
-    let targetY = itemOffset.top + (offset.dy * scale);
+    let halfwayX = itemOffset.left + (dx * scale) / 2;
+    let halfwayY = itemOffset.top + (dy * scale) / 2;
+    let targetX = itemOffset.left + (dx * scale);
+    let targetY = itemOffset.top + (dy * scale);
 
     andThen(() => {
       triggerEvent(itemElement, start, {
