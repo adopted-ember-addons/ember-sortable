@@ -1,5 +1,15 @@
 # ember-sortable changelog
 
+## 1.12.4 (2019-01-03)
+
+#### :bug: Bug Fix
+* [#224](https://github.com/heroku/ember-sortable/pull/224) [bugfix] default `dx` and `dy` to 0 for drag helper ([@fivetanley](https://github.com/fivetanley))
+* [#223](https://github.com/heroku/ember-sortable/pull/223) fixes for Firefox ([@fivetanley](https://github.com/fivetanley))
+
+#### Committers: 1
+- Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
+Done in 1.21s.
+
 ## 1.12.3 (2018-12-19)
 
 #### :bug: Bug Fix
