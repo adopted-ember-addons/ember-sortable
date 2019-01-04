@@ -62,7 +62,7 @@ export function drag(app, mode, itemSelector, offsetFn, callbacks = {}) {
     // https://stackoverflow.com/a/5042051
     let dx = offset.dx || 0;
     let dy = offset.dy || 0;
-    let clientHeight = (itemElement.clientHeight || item.offsetHeight) || itemElement.parentNode.offsetHeight;
+    let clientHeight = itemElement.clientHeight || itemElement.offsetHeight || itemElement.parentNode.offsetHeight;
     let scale = clientHeight / (rect.bottom - rect.top);
     let halfwayX = itemOffset.left + (dx * scale) / 2;
     let halfwayY = itemOffset.top + (dy * scale) / 2;
