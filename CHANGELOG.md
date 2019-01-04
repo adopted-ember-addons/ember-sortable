@@ -8,7 +8,6 @@
 
 #### Committers: 1
 - Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
-Done in 1.21s.
 
 ## 1.12.3 (2018-12-19)
 
