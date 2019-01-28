@@ -15,9 +15,11 @@
   "repository": "https://github.com/heroku/ember-sortable",
   "scripts": {
     "build": "ember build",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "lint:hbs": "ember-template-lint .",
+    "lint:js": "eslint .",
     "start": "ember serve",
-    "test": "ember try:each"
+    "test": "ember test",
+    "test:all": "ember try:each"
   },
   "dependencies": {
     "@ember/jquery": "^0.6.0",
