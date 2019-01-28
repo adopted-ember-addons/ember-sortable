@@ -2918,11 +2918,13 @@ ember-cli-broccoli-sane-watcher@^2.0.4:
     rsvp "^3.0.18"
     sane "^1.1.1"
 
-ember-cli-dependency-checker@^2.0.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-dependency-checker/-/ember-cli-dependency-checker-2.1.0.tgz#9d66286a7c778e94733eaf21320d129c4fd0dd64"
+ember-cli-dependency-checker@^3.0.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-dependency-checker/-/ember-cli-dependency-checker-3.1.0.tgz#b39c6b537a1457d77892edf5ddcfa025cd1401e2"
+  integrity sha512-Y/V2senOyIjQnZohYeZeXs59rWHI2m8KRF9IesMv1ypLRSc/h/QS6UX51wAyaZnxcgU6ljFXpqL5x38UxM3XzA==
   dependencies:
-    chalk "^1.1.3"
+    chalk "^2.3.0"
+    find-yarn-workspace-root "^1.1.0"
     is-git-url "^1.0.0"
     resolve "^1.5.0"
     semver "^5.3.0"
@@ -3892,6 +3894,14 @@ find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
+find-yarn-workspace-root@^1.1.0:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/find-yarn-workspace-root/-/find-yarn-workspace-root-1.2.1.tgz#40eb8e6e7c2502ddfaa2577c176f221422f860db"
+  integrity sha512-dVtfb0WuQG+8Ag2uWkbG79hOUzEsRrhBzgfn86g2sJPkzmcpGdghbNTfUKGTxymFrY/tLIodDzLoW9nOJ4FY8Q==
+  dependencies:
+    fs-extra "^4.0.3"
+    micromatch "^3.1.4"
+
 findup-sync@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/findup-sync/-/findup-sync-2.0.0.tgz#9326b1488c22d1a6088650a86901b2d9a90a2cbc"
@@ -4029,7 +4039,7 @@ fs-extra@^2.0.0:
     graceful-fs "^4.1.2"
     jsonfile "^2.1.0"
 
-fs-extra@^4.0.0:
+fs-extra@^4.0.0, fs-extra@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-4.0.3.tgz#0d852122e5bc5beb453fb028e9c0c9bf36340c94"
   dependencies:
