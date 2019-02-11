@@ -255,7 +255,7 @@ export default Mixin.create({
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    let element = this.get('handle') ? document.querySelector(this.get('handle')) : this.element;
+    let element = this.get('handle') ? this.element.querySelector(this.get('handle')) : this.element;
     if (element) {
       element.style['touch-action'] = 'none';
     }
