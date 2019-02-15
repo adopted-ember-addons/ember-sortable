@@ -1,5 +1,17 @@
 # ember-sortable changelog
 
+## 1.12.5 (2019-02-15)
+
+#### :bug: Bug Fix
+* [#229](https://github.com/heroku/ember-sortable/pull/229) inline `touch-action:none` not being properly applied ([@froskos](https://github.com/froskos))
+
+#### :house: Internal
+* [#228](https://github.com/heroku/ember-sortable/pull/228) Upgrade to 3.7.x family ([@jgwhite](https://github.com/jgwhite))
+
+#### Committers: 2
+- Jamie White ([@jgwhite](https://github.com/jgwhite))
+- [@froskos](https://github.com/froskos)
+
 ## 1.12.4 (2019-01-03)
 
 #### :bug: Bug Fix
