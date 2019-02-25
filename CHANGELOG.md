@@ -1,5 +1,13 @@
 # ember-sortable changelog
 
+## 1.12.6 (2019-02-25)
+
+#### :bug: Bug Fix
+* [#236](https://github.com/heroku/ember-sortable/pull/236) getX and getY methods do provide now for non-wrapped events too (fixe… ([@froskos](https://github.com/froskos))
+
+#### Committers: 1
+- [@froskos](https://github.com/froskos)
+
 ## 1.12.5 (2019-02-15)
 
 #### :bug: Bug Fix
