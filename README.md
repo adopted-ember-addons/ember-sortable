@@ -32,10 +32,10 @@ $ ember install ember-sortable
 
 {{#sortable-group tagName="ul" onChange=(action "reorderItems") as |group|}}
   {{#each model.items as |item|}}
-    {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+    {{#group.item tagName="li" model=item handle=".handle"}}
       {{item.name}}
       <span class="handle">&varr;</span>
-    {{/sortable-item}}
+    {{/group.item}}
   {{/each}}
 {{/sortable-group}}
 ```
@@ -68,10 +68,10 @@ with that group model as the first argument:
 
 {{#sortable-group tagName="ul" model=model onChange=(action "reorderItems") as |group|}}
   {{#each model.items as |item|}}
-    {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+    {{#group.item tagName="li" model=item handle=".handle"}}
       {{item.name}}
       <span class="handle">&varr;</span>
-    {{/sortable-item}}
+    {{/group.item}}
   {{/each}}
 {{/sortable-group}}
 ```
@@ -106,7 +106,7 @@ In `x` case: elements before current one jump to the left, and elements after cu
 To change this property, define `spacing` on `sortable-item` (default is `0`):
 
 ```hbs
-{{#sortable-item tagName="li" group=group spacing=15}}
+{{#group.item tagName="li" spacing=15}}
 ```
 
 ### Changing the drag tolerance
@@ -116,7 +116,7 @@ If specified, sorting will not start until after mouse is dragged beyond distanc
 Can be used to allow for clicks on elements within a handle.
 
 ```hbs
-{{#sortable-item group=group distance=30}}
+{{#group.item distance=30}}
 ```
 
 ### CSS, Animation
@@ -191,17 +191,17 @@ export default Ember.Route.extend({
 ```
 
 ```hbs
-  {{#sortable-item
+  {{#group.item
     onDragStart=(action "dragStarted")
     onDragStop=(action "dragStopped")
     tagName="li"
     model=item
-    group=group
+   
     handle=".handle"
   }}
     {{item.name}}
     <span class="handle">&varr;</span>
-  {{/sortable-item}}
+  {{/group.item}}
 ```
 
 ### Data down, actions up
@@ -218,10 +218,10 @@ Each item takes a `model` property. This should be fairly self-explanatory but i
 
 ```hbs
 {{#each myItems as |item idx| }}
-  {{#sortable-item tabindex=0 keyUp=(action 'keyUp' idx) tagName="li" model=item group=group handle=".handle"}}
+  {{#group.item tabindex=0 keyUp=(action 'keyUp' idx) tagName="li" model=item handle=".handle"}}
     {{item.name}}
     <span class="handle">&varr;</span>
-  {{/sortable-item}}
+  {{/group.item}}
 {{/each}}
 ```
 

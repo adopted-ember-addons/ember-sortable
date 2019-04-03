@@ -9,16 +9,14 @@ module.exports = {
     'Chrome'
   ],
   browser_args: {
-    Chrome: {
-      mode: 'ci',
-      args: [
+    Chrome: [
+      // mode: 'ci',
         '--disable-gpu',
         '--headless',
         '--no-sandbox',
         '--remote-debugging-port=0',
         '--window-size=1440,900'
-      ]
-    },
+    ],
     Firefox: {
       mode: 'ci',
       args: [
