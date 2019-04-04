@@ -1,5 +1,13 @@
 # ember-sortable changelog
 
+## 1.13.0 (2019-04-04)
+
+#### :rocket: Enhancement
+* [#238](https://github.com/heroku/ember-sortable/pull/238) {{sortable-item}} as сlosure component ([@H1D](https://github.com/H1D))
+
+#### Committers: 1
+- Artem Suschev ([@H1D](https://github.com/H1D))
+
 ## 1.12.6 (2019-02-25)
 
 #### :bug: Bug Fix
