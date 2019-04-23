@@ -395,7 +395,9 @@ export default Mixin.create({
       dragActions.forEach(event => window.removeEventListener(event, dragThrottled));
       endActions.forEach(event => window.removeEventListener(event, drop));
 
-      this._drop();
+      run(() => {
+        this._drop();
+      });
     };
 
     dragActions.forEach(event => window.addEventListener(event, dragThrottled));
