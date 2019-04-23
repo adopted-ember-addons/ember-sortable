@@ -270,7 +270,7 @@ export default Mixin.create({
     run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
 
     // remove event listeners that may still be attached
-    dragActions.forEach(event => window.removeEventListener(event, this._startDragListener));
+    dragActions.forEach(event => window.removeEventListener(event, this._prepareDragListener));
     endActions.forEach(event => window.removeEventListener(event, this._cancelStartDragListener));
     this.element.removeEventListener(elementClickAction, this._preventClickHandler);
     this.set('isDragging', false);
