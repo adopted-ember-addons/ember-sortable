@@ -1,12 +1,11 @@
 import Mixin from '@ember/object/mixin';
 import { DEBUG } from '@glimmer/env';
 import { Promise, defer } from 'rsvp';
-import { run } from '@ember/runloop';
 import Ember from 'ember';
 import { computed } from '@ember/object';
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
-import { throttle } from '@ember/runloop';
+import { run, throttle } from '@ember/runloop';
 
 const dragActions = ['mousemove', 'touchmove'];
 const elementClickAction = 'click';
@@ -603,7 +602,7 @@ export default Mixin.create({
       this.set('y', dimension);
     }
 
-    run.throttle(this, '_tellGroup', 'update', updateInterval);
+    throttle(this, '_tellGroup', 'update', updateInterval);
   },
 
   /**
