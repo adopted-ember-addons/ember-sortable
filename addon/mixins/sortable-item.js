@@ -323,7 +323,7 @@ export default Mixin.create({
     let el = this.element;
     if (!el) { return; }
 
-    el.style.transform = '';
+    el.style.transition = '';
   },
 
   /**
