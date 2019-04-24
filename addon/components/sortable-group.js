@@ -33,17 +33,10 @@ export default Component.extend({
   */
   items: computed(() => a()),
 
-  /**
-    Position for the first item.
-    If spacing is present, first item's position will have to change as well.
-    @property itemPosition
-    @type Number
-  */
-  itemPosition: computed(function() {
-    let direction = this.get('direction');
-
-    return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
-  }).volatile(),
+  init(...args) {
+    this._super(...args);
+    this._firstItemPosition = null;
+  },
 
   /**
     @property sortedItems
@@ -76,12 +69,14 @@ export default Component.extend({
 
   /**
     Prepare for sorting.
-    Main purpose is to stash the current itemPosition so
+    Main purpose is to stash the current first item position so
     we don’t incur expensive re-layouts.
     @method prepare
   */
   prepare() {
-    this._itemPosition = this.get('itemPosition');
+    let items = this.get('sortedItems');
+    let direction = this.get('direction');
+    this._firstItemPosition = calculateFirstItemPosition(items, direction);
   },
 
   /**
@@ -90,17 +85,17 @@ export default Component.extend({
   */
   update() {
     let sortedItems = this.get('sortedItems');
+    let direction = this.get('direction');
     // Position of the first element
-    let position = this._itemPosition;
+    let position = this._firstItemPosition;
 
     // Just in case we haven’t called prepare first.
     if (position === undefined) {
-      position = this.get('itemPosition');
+      position = calculateFirstItemPosition(sortedItems, direction);
     }
 
     sortedItems.forEach(item => {
       let dimension;
-      let direction = this.get('direction');
 
       if (!get(item, 'isDragging')) {
         set(item, direction, position);
@@ -137,7 +132,7 @@ export default Component.extend({
       draggedModel = get(draggedItem, 'model');
     }
 
-    delete this._itemPosition;
+    this._firstItemPosition = null;
 
     run.schedule('render', () => {
       items.invoke('freeze');
@@ -160,3 +155,8 @@ export default Component.extend({
     }
   }
 });
+
+function calculateFirstItemPosition(items, direction) {
+  let firstItem = items.objectAt(0);
+  return firstItem.get(direction) - firstItem.get('spacing');
+}
