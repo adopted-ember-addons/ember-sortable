@@ -1,5 +1,16 @@
 # ember-sortable changelog
 
+## 1.12.7 (2019-04-24)
+
+#### :bug: Bug Fix
+* [#227](https://github.com/heroku/ember-sortable/pull/227) Tweak clientHeight calculation in drag helper ([@jgwhite](https://github.com/jgwhite))
+* [#244](https://github.com/heroku/ember-sortable/pull/244) Fix subtle bug in sortable-item#thaw ([@jgwhite](https://github.com/jgwhite))
+* [#242](https://github.com/heroku/ember-sortable/pull/242) Runloop tweaks ([@mixonic](https://github.com/mixonic))
+
+#### Committers: 2
+- Jamie White ([@jgwhite](https://github.com/jgwhite))
+- Matthew Beale ([@mixonic](https://github.com/mixonic))
+
 ## 1.12.6 (2019-02-25)
 
 #### :bug: Bug Fix
