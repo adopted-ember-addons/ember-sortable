@@ -1,12 +1,11 @@
 import Mixin from '@ember/object/mixin';
 import { DEBUG } from '@glimmer/env';
 import { Promise, defer } from 'rsvp';
-import { run } from '@ember/runloop';
 import Ember from 'ember';
 import { computed } from '@ember/object';
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
-import { throttle } from '@ember/runloop';
+import { run, throttle } from '@ember/runloop';
 
 const dragActions = ['mousemove', 'touchmove'];
 const elementClickAction = 'click';
@@ -270,7 +269,7 @@ export default Mixin.create({
     run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
 
     // remove event listeners that may still be attached
-    dragActions.forEach(event => window.removeEventListener(event, this._startDragListener));
+    dragActions.forEach(event => window.removeEventListener(event, this._prepareDragListener));
     endActions.forEach(event => window.removeEventListener(event, this._cancelStartDragListener));
     this.element.removeEventListener(elementClickAction, this._preventClickHandler);
     this.set('isDragging', false);
@@ -396,7 +395,9 @@ export default Mixin.create({
       dragActions.forEach(event => window.removeEventListener(event, dragThrottled));
       endActions.forEach(event => window.removeEventListener(event, drop));
 
-      this._drop();
+      run(() => {
+        this._drop();
+      });
     };
 
     dragActions.forEach(event => window.addEventListener(event, dragThrottled));
@@ -603,7 +604,7 @@ export default Mixin.create({
       this.set('y', dimension);
     }
 
-    run.throttle(this, '_tellGroup', 'update', updateInterval);
+    throttle(this, '_tellGroup', 'update', updateInterval);
   },
 
   /**
