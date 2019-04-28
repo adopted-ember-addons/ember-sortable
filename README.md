@@ -4,6 +4,7 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Build Status](https://travis-ci.org/heroku/ember-sortable.svg?branch=master)](https://travis-ci.org/heroku/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
+[![Ember Version](https://img.shields.io/badge/ember-2.4%2B-brightgreen.svg)](https://www.emberjs.com/)
 
 Sortable UI primitives for Ember.
 
@@ -17,11 +18,18 @@ Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
 
+Using ember prior to v2.4? Then you may use [1.x](https://github.com/heroku/ember-sortable/tags) version of this addon.
+
 ## Installation
 
 ```sh
 $ ember install ember-sortable
 ```
+
+## Migrating from 1.x?
+
+Please read [MIGRATION.md](MIGRATION.md)
+
 
 ## Usage
 
