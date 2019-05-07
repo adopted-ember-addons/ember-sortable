@@ -17,6 +17,8 @@ Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
 
+As of version 1.12.2 `ember-sortable` depends on `Element.closest`, which is [unsupported in all versions of Internet Explorer](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Browser_compatibility). A polyfill is available - both [on MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill), and [as a package](https://github.com/jonathantneal/closest).
+
 ## Installation
 
 ```sh
