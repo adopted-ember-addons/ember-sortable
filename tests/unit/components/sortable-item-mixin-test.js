@@ -3,7 +3,7 @@ import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
 import $ from 'jquery';
 
-const MockEvent = { originalEvent: null };
+const MockEvent = { };
 const MockModel = { name: 'Mock Model' };
 const MockGroup = EmberObject.extend({
   direction: 'y',
@@ -174,7 +174,7 @@ test('dragStart fires an action if provided', function(assert) {
   run(() => {
     subject.set('model', MockModel);
     subject.set('target', target);
-    subject.set('onDragStart', 'action');
+    subject.set('onDragStart', target.action.bind(target));
     subject._startDrag(MockEvent);
   });
 });
@@ -191,7 +191,7 @@ test('dragStop fires an action if provided', function(assert) {
   run(() => {
     subject.set('model', MockModel);
     subject.set('target', target);
-    subject.set('onDragStop', 'action');
+    subject.set('onDragStop', target.action.bind(target));
     subject._complete();
   });
 });

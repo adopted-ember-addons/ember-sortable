@@ -14,14 +14,16 @@ export default Component.extend({
   attributeBindings: ['data-test-selector'],
 
   /**
-   * Called when order of items has been changed
-   *
-    @event onChange
+    Called when order of items has been changed
+
+    @property onChange
+    @type Action
     @param object group model (omitted if not set)
     @param array item models in their new order
     @param object item model just dragged
+    @default null
   */
-  onChange: ()=>{},
+  onChange: () => { },
 
   /**
     @property direction
