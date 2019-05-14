@@ -7,7 +7,7 @@
     <section class="vertical-demo">
       <h3>Vertical</h3>
 
-      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+      {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
         {{#each model.items as |item|}}
           {{#group.item tagName="li" model=item handle=".handle"}}
             {{item}}
@@ -22,7 +22,7 @@
     <section class="horizontal-demo">
       <h3>Horizontal</h3>
 
-      {{#sortable-group tagName="ol" direction="x" onChange="update" as |group|}}
+      {{#sortable-group tagName="ol" direction="x" onChange=(action "update") as |group|}}
         {{#each model.items as |item|}}
           {{#group.item tagName="li" model=item}}
             {{item-presenter item=item}}
@@ -43,7 +43,7 @@
             <th>Item</th>
           </tr>
         </thead>
-        {{#sortable-group tagName="tbody" onChange="update" as |group|}}
+        {{#sortable-group tagName="tbody" onChange=(action "update") as |group|}}
           {{#each model.items as |item|}}
             {{#group.item tagName="tr" model=item handle=".handle"}}
               <td><span class="handle" data-item={{item}}>&vArr;</span></td>
@@ -57,7 +57,7 @@
     <section class="vertical-spacing-demo">
       <h3>Vertical with 15px spacing</h3>
 
-      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+      {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
         {{#each model.items as |item|}}
           {{#group.item tagName="li" model=item spacing=15}}
             {{item}}
@@ -71,7 +71,7 @@
     <section class="vertical-distance-demo">
       <h3>Vertical with distance set to 15</h3>
 
-      {{#sortable-group tagName="ol" onChange="update" as |group|}}
+      {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
         {{#each model.items as |item|}}
           {{#group.item tagName="li" model=item distance=15}}
             {{item}}
@@ -86,7 +86,7 @@
       <h3>Scrollable</h3>
 
       <div class="sortable-container">
-        {{#sortable-group tagName="ol" onChange="update" as |group|}}
+        {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
           {{#each model.items as |item|}}
             {{#group.item tagName="li" model=item handle=".handle"}}
               {{item}}

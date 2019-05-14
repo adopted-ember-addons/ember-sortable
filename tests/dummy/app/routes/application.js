@@ -8,10 +8,4 @@ export default Route.extend({
     };
   },
 
-  actions: {
-    update(newOrder, draggedModel) {
-      this.set('currentModel.items', a(newOrder));
-      this.set('currentModel.dragged', draggedModel);
-    }
-  }
 });

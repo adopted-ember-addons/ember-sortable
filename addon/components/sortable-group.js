@@ -14,6 +14,16 @@ export default Component.extend({
   attributeBindings: ['data-test-selector'],
 
   /**
+   * Called when order of items has been changed
+   *
+    @event onChange
+    @param object group model (omitted if not set)
+    @param array item models in their new order
+    @param object item model just dragged
+  */
+  onChange: ()=>{},
+
+  /**
     @property direction
     @type string
     @default y
@@ -154,9 +164,9 @@ export default Component.extend({
     });
 
     if (groupModel !== NO_MODEL) {
-      this.sendAction('onChange', groupModel, itemModels, draggedModel);
+      this.onChange(groupModel, itemModels, draggedModel);
     } else {
-      this.sendAction('onChange', itemModels, draggedModel);
+      this.onChange(itemModels, draggedModel);
     }
   }
 });
