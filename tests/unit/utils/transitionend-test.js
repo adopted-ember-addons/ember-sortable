@@ -1,7 +1,6 @@
+import { typeOf } from '@ember/utils';
 import transitionend from 'ember-sortable/utils/transitionend';
 import { module, test } from 'qunit';
-import Ember from 'ember';
-const { typeOf } = Ember;
 
 module('transitionend');
 

@@ -1,5 +1,41 @@
 # ember-sortable changelog
 
+### 1.11.2 (2018-02-23)
+
+- [#172](https://github.com/jgwhite/ember-sortable/pull/172) Fix deprecation warnings for targetObject [@nlfurniss](https://github.com/nlfurniss)
+- [#174](https://github.com/jgwhite/ember-sortable/pull/174) use yarn in tests too! [@Dhaulagiri](https://github.com/Dhaulagiri)
+- [#175](https://github.com/jgwhite/ember-sortable/pull/175) remove ember-new-computed [@Dhaulagiri](https://github.com/Dhaulagiri)
+- [#176](https://github.com/jgwhite/ember-sortable/pull/176) ember-cli-htmlbars 2.0.3 [@Dhaulagiri](https://github.com/Dhaulagiri)
+
+### 1.11.1 (2018-02-20)
+
+- [#162](https://github.com/jgwhite/ember-sortable/pull/162) Remove jquery event listener from component element [@jackson-dean](https://github.com/jackson-dean)
+
+### 1.11.0 (2018-01-26)
+
+- [#168](https://github.com/jgwhite/ember-sortable/pull/168) ember-cli-update to 2.18 [@Dhaulagiri](https://github.com/Dhaulagiri)
+
+### 1.10.0 (2017-10-19)
+
+- [#157](https://github.com/jgwhite/ember-sortable/pull/157) Add tabindex attribute binding [@hjdivad](https://github.com/hjdivad)
+- [#156](https://github.com/jgwhite/ember-sortable/pull/156) fix for issue with transforms being left after drop [@shidel-dev](https://github.com/shidel-dev)
+- [#151](https://github.com/jgwhite/ember-sortable/pull/151) Alias sortable direction to group [@feedbackfruits](https://github.com/feedbackfruits)
+- [#150](https://github.com/jgwhite/ember-sortable/pull/150) Disable isDragging when element is destroyed [@nbibler](https://github.com/nbibler)
+- [#140](https://github.com/jgwhite/ember-sortable/pull/140) make `_scrollOnEdges()` get `itemContainer` height dinamically [@marlosin](https://github.com/marlosin)
+
+### 1.9.4 (2017-07-12)
+
+- [#137](https://github.com/jgwhite/ember-sortable/pull/137) Add distance attribute to specify after what distance sorting should start [@mupkoo](https://github.com/mupkoo)
+
+### 1.9.3 (2017-02-12)
+
+- return preventDefault calls to touch event [@acburdine](https://github.com/acburdine)
+
+### 1.9.2 (2017-02-12)
+
+- [#131](https://github.com/jgwhite/ember-sortable/pull/131) prevent touch-actions on element or handle using css [@acburdine](https://github.com/acburdine)
+- [#118](https://github.com/jgwhite/ember-sortable/pull/118) improve performance of dragging by throttling drag event using ember run [@estshy](https://github.com/estshy)
+
 ### 1.9.1 (2016-11-28)
 
 - [#119](https://github.com/jgwhite/ember-sortable/pull/119) use document as the scroll parent if the body is the scroll parent [@tim-evans](https://github.com/tim-evans)

@@ -3,7 +3,7 @@ demo:
 	@echo "===> Checking out gh-pages"
 	@echo ""
 	git checkout gh-pages
-	git reset --hard master
+	git reset --hard 1.x
 	@echo ""
 	@echo "===> Building demo"
 	@echo ""
@@ -20,5 +20,5 @@ demo:
 	@echo ""
 	@echo "===> Cleaning up"
 	@echo ""
-	git checkout master
+	git checkout 1.x
 	rm -rf demo

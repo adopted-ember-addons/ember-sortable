@@ -1,59 +1,45 @@
-import Ember from 'ember';
+import { A } from '@ember/array';
+import Component from '@ember/component';
+import { set, get } from '@ember/object';
+import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
-import computed from 'ember-computed';
-import {invokeAction} from 'ember-invoke-action';
+import { computed } from '@ember/object';
+import { invokeAction } from 'ember-invoke-action';
 
-const { A, Component, get, set, run } = Ember;
 const a = A;
 const NO_MODEL = {};
 
-/**
- * @module ember-sortable
- * @class SortableGroup
- * @extends Ember.Component
- */
 export default Component.extend({
   layout: layout,
 
   attributeBindings: ['data-test-selector'],
 
   /**
-   * Direction this group can be sorted in. Can be either 'y' or 'x'
-   *
-   * @property direction
-   * @type string
-   * @default y
-   * @public
-   */
+    @property direction
+    @type string
+    @default y
+  */
   direction: 'y',
 
   /**
-   * Optional "group model" to set. If this property is set,
-   * it will be passed in as the first argument to the
-   * {{#crossLink "SortableGroup/onChange:property"}}onChange action{{/crossLink}}
-   *
-   * @property model
-   * @type Any
-   * @default null
-   * @public
-   */
+    @property model
+    @type Any
+    @default null
+  */
   model: NO_MODEL,
 
   /**
-   * @type Ember.NativeArray
-   * @property items
-   * @public
-   */
+    @property items
+    @type Ember.NativeArray
+  */
   items: computed(() => a()),
 
   /**
-   * Position for the first item.
-   * If spacing is present, first item's position will have to change as well.
-   *
-   * @property itemPosition
-   * @type Number
-   * @public
-   */
+    Position for the first item.
+    If spacing is present, first item's position will have to change as well.
+    @property itemPosition
+    @type Number
+  */
   itemPosition: computed(function() {
     let direction = this.get('direction');
 
@@ -61,12 +47,9 @@ export default Component.extend({
   }).volatile(),
 
   /**
-   * List of items sorted by direction.
-   *
-   * @property sortedItems
-   * @type Array
-   * @public
-   */
+    @property sortedItems
+    @type Array
+  */
   sortedItems: computed(function() {
     let items = a(this.get('items'));
     let direction = this.get('direction');
@@ -75,45 +58,37 @@ export default Component.extend({
   }).volatile(),
 
   /**
-   * Register an item with this group.
-   *
-   * @method registerItem
-   * @param {SortableItem} item
-   * @public
-   */
+    Register an item with this group.
+    @method registerItem
+    @param {SortableItem} [item]
+  */
   registerItem(item) {
     this.get('items').addObject(item);
   },
 
   /**
-   * De-register an item with this group.
-   *
-   * @method deregisterItem
-   * @param {SortableItem} item
-   * @public
-   */
+    De-register an item with this group.
+    @method deregisterItem
+    @param {SortableItem} [item]
+  */
   deregisterItem(item) {
     this.get('items').removeObject(item);
   },
 
   /**
-   * Prepare for sorting.
-   * Main purpose is to stash the current itemPosition so
-   * we don’t incur expensive re-layouts.
-   *
-   * @method prepare
-   * @public
-   */
+    Prepare for sorting.
+    Main purpose is to stash the current itemPosition so
+    we don’t incur expensive re-layouts.
+    @method prepare
+  */
   prepare() {
     this._itemPosition = this.get('itemPosition');
   },
 
   /**
-   * Update item positions (relative to the first element position).
-   *
-   * @method update
-   * @public
-   */
+    Update item positions (relatively to the first element position).
+    @method update
+  */
   update() {
     let sortedItems = this.get('sortedItems');
     // Position of the first element
@@ -149,11 +124,8 @@ export default Component.extend({
   },
 
   /**
-   * Commit the state of dragged items
-   *
-   * @method commit
-   * @public
-   */
+    @method commit
+  */
   commit() {
     let items = this.get('sortedItems');
     let groupModel = this.get('model');
@@ -188,12 +160,4 @@ export default Component.extend({
       invokeAction(this, 'onChange', itemModels, draggedModel);
     }
   }
-
-  /**
-   * String name or action function to call whenever the sort order changes.
-   *
-   * @event onChange
-   * @type Action|String
-   * @public
-   */
 });

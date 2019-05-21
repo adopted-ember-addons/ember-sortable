@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
-const { run } = Ember;
 
 const MockEvent = { originalEvent: null };
 const MockModel = { name: 'Mock Model' };
-const MockGroup = Ember.Object.extend({
+const MockGroup = EmberObject.extend({
   direction: 'y',
   registerItem(item) {
     this.item = item;
@@ -40,7 +40,7 @@ moduleForComponent('sortable-item-mixin', {
       subject.destroy();
     });
     // Otherwise we end up with dangling event handlers.
-    $(window).off();
+    // window.removeEventListener();
   }
 });
 
@@ -56,6 +56,19 @@ test('isAnimated', function(assert) {
 
   subject.$().css({ transition: 'none' });
   assert.equal(subject.get('isAnimated'), false);
+});
+
+test('isDragging is disabled when destroyed', function(assert) {
+  assert.expect(3);
+
+  run(() => {
+    subject.set('model', MockModel);
+    assert.equal(subject.get('isDragging'), false);
+    subject._startDrag(MockEvent);
+    assert.equal(subject.get('isDragging'), true);
+    subject.destroy();
+    assert.equal(subject.get('isDragging'), false);
+  });
 });
 
 test('transitionDuration', function(assert) {
@@ -151,7 +164,7 @@ test('deregisters itself when removed', function(assert) {
 test('dragStart fires an action if provided', function(assert) {
   assert.expect(1);
 
-  const targetObject = {
+  const target = {
     action(passedModel) {
       assert.equal(passedModel, MockModel);
     }
@@ -159,7 +172,7 @@ test('dragStart fires an action if provided', function(assert) {
 
   run(() => {
     subject.set('model', MockModel);
-    subject.set('targetObject', targetObject);
+    subject.set('target', target);
     subject.set('onDragStart', 'action');
     subject._startDrag(MockEvent);
   });
@@ -168,7 +181,7 @@ test('dragStart fires an action if provided', function(assert) {
 test('dragStop fires an action if provided', function(assert) {
   assert.expect(1);
 
-  const targetObject = {
+  const target = {
     action(passedModel) {
       assert.equal(passedModel, MockModel);
     }
@@ -176,7 +189,7 @@ test('dragStop fires an action if provided', function(assert) {
 
   run(() => {
     subject.set('model', MockModel);
-    subject.set('targetObject', targetObject);
+    subject.set('target', target);
     subject.set('onDragStop', 'action');
     subject._complete();
   });

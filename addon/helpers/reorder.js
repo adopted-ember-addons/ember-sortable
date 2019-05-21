@@ -1,6 +1,8 @@
-import Ember from 'ember';
+import { registerAsyncHelper } from '@ember/test';
+import { findAll } from "@ember/test-helpers";
+import { drag } from 'ember-sortable/helpers/drag';
 
-/*
+/**
   In tests, the dummy app is rendered at half size.
   To avoid rounding errors, we must therefore double
   the overshoot.
@@ -8,48 +10,47 @@ import Ember from 'ember';
 const OVERSHOOT = 2;
 
 /**
- * Reorders elements to the specified state.
- *
- * Example:
+  Reorders elements to the specified state.
 
-```js
-reorder(
-  'mouse',
-  '.some-list li',
-  '[data-id="66278893"]',
-  '[data-id="66278894"]',
-  '[data-id="66278892"]'
-);
-```
- * @method reorder
- * @public
- * @param {Ember.Application} app
- * @param {'mouse'|'touch'} mode event mode
- * @param {String} itemSelector selector for all items
- * @param {String} [...resultSelectors] selectors for the resultant order
- * @return {Promise}
- */
-export function reorder(app, mode, itemSelector, ...resultSelectors) {
-  const {
-    andThen,
-    drag,
-    findWithAssert,
-    wait
-  } = app.testHelpers;
+  Examples
 
-  resultSelectors.forEach((selector, targetIndex) => {
-    andThen(() => {
-      let items = findWithAssert(itemSelector);
-      let element = items.filter(selector);
-      let targetElement = items.eq(targetIndex);
-      let dx = targetElement.offset().left - OVERSHOOT - element.offset().left;
-      let dy = targetElement.offset().top - OVERSHOOT - element.offset().top;
+      reorder(
+        'mouse',
+        '.some-list li',
+        '[data-id="66278893"]',
+        '[data-id="66278894"]',
+        '[data-id="66278892"]'
+      );
 
-      drag(mode, element, () => { return { dx: dx, dy: dy }; });
-    });
-  });
+  @method reorder
+  @param {'mouse'|'touch'} [mode]
+    event mode
+  @param {String} [itemSelector]
+    selector for all items
+  @param {...String} [resultSelectors]
+    selectors for the resultant order
+  @return {Promise}
+*/
 
-  return wait();
+export async function reorder(mode, itemSelector, ...resultSelectors) {
+  for (let targetIndex = 0;  targetIndex < resultSelectors.length; targetIndex++) {
+    const selector = resultSelectors[targetIndex];
+    let items = findAll(itemSelector);
+    let element;
+    if(selector.startsWith(':contains')) {
+      element = items.filter(item => {
+        const text = selector.replace(':contains(', '').replace(')', '');
+        return RegExp(text).test(item.textContent);
+      })[0];
+    } else {
+      element = findAll(`${itemSelector}${selector}`)[0];
+    }
+    let targetElement = items[targetIndex];
+    
+    let dx = targetElement.getBoundingClientRect().left - OVERSHOOT - element.getBoundingClientRect().left;
+    let dy = targetElement.getBoundingClientRect().top - OVERSHOOT - element.getBoundingClientRect().top;
+    await drag(mode, element, () => { return { dx: dx, dy: dy }; });
+  }
 }
 
-export default Ember.Test.registerAsyncHelper('reorder', reorder);
+export default registerAsyncHelper('reorder', reorder);

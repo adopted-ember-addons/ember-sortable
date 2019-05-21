@@ -4,7 +4,6 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Build Status](https://travis-ci.org/jgwhite/ember-sortable.svg?branch=master)](https://travis-ci.org/jgwhite/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
-![Ember Version](https://embadge.io/v1/badge.svg?start=1.13.0)
 
 Sortable UI primitives for Ember.
 
@@ -203,6 +202,19 @@ No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “d
 `sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property.
 
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
+
+### Accessibility
+
+`sortable-item`s can receive a `tabindex` which allows them to be focused.  Use this to enable keyboard sorting for accessibility.
+
+```hbs
+{{#each myItems as |item idx| }}
+  {{#sortable-item tabindex=0 keyUp=(action 'keyUp' idx) tagName="li" model=item group=group handle=".handle"}}
+    {{item.name}}
+    <span class="handle">&varr;</span>
+  {{/sortable-item}}
+{{/each}}
+```
 
 ## Testing
 
