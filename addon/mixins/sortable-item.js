@@ -538,6 +538,11 @@ export default Mixin.create({
   
         const scaleX = this.element.getBoundingClientRect().width / this.element.offsetWidth;
         dx = (dx / (100 * scaleX) * 100); 
+
+        if (Ember.testing === true) {
+          dx = this._pageX - dragOrigin;
+        }
+        
         let scrollX = parentElement.getBoundingClientRect().left;
         let x = (elementOrigin + dx + (scrollOrigin - scrollX))
 
