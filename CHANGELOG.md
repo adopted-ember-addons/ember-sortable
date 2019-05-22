@@ -1,5 +1,19 @@
 # ember-sortable changelog
 
+## 1.12.8 (2019-05-22)
+
+#### :bug: Bug Fix
+* [#249](https://github.com/heroku/ember-sortable/pull/249) move @ember/jquery to devDependency ([@fran-worley](https://github.com/fran-worley))
+* [#251](https://github.com/heroku/ember-sortable/pull/251) Add warning to polyfill `Element.closest()` ([@samhogg](https://github.com/samhogg))
+
+#### :house: Internal
+* [#245](https://github.com/heroku/ember-sortable/pull/245) Add Ember 2.8, 2.12 to testing. Test Node 8. ([@mixonic](https://github.com/mixonic))
+
+#### Committers: 3
+- Fran Worley ([@fran-worley](https://github.com/fran-worley))
+- Matthew Beale ([@mixonic](https://github.com/mixonic))
+- Sam Hogg ([@samhogg](https://github.com/samhogg))
+
 ## 1.12.7 (2019-04-24)
 
 #### :bug: Bug Fix
