@@ -177,7 +177,11 @@ export default Mixin.create({
       return this._x;
     },
     set(_, value) {
-      if (value !== this._x) {
+    /**
+      Check if the difference is bigger than 5, otherwise the other
+      draggableItems will move.
+    */
+      if (value !== this._x && Math.abs(value - this._x) >= 5) {
         this._x = value;
         this._scheduleApplyPosition();
       }
@@ -211,10 +215,10 @@ export default Mixin.create({
     @type Number
   */
   width: computed(function() {
-     let el = this.element;
+    let el = this.element;
 
     // calculate el width with margins
-     let width = el.offsetWidth;
+    let width = el.offsetWidth;
     const style = getComputedStyle(el);
     width += parseInt(style.marginLeft) + parseInt(style.marginRight);
 
@@ -383,7 +387,7 @@ export default Mixin.create({
     let distance = this.get('distance');
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
-    if (distance  <= dx || distance <= dy) {
+    if (distance <= dx || distance <= dy) {
       removeEventListeners(window, dragActions, this._prepareDragListener);
       this._startDrag(startEvent);
     }
@@ -474,15 +478,11 @@ export default Mixin.create({
     // the box when the item reaches within padding pixels
     // of the edge of the scroll container.
     let checkScrollBounds = () => {
-    
       let leadingEdge = itemContainer[leadingEdgeKey];
       let trailingEdge = itemContainer[trailingEdgeKey];
-  
-    
       let scroll = scrollContainer[scrollKey]();
 
       let delta = 0;
-    
       if (trailingEdge >= scrollContainer[trailingEdgeKey]) {
         delta = trailingEdge - scrollContainer[trailingEdgeKey];
       } else if (leadingEdge <= scrollContainer[leadingEdgeKey]) {
@@ -530,12 +530,11 @@ export default Mixin.create({
       dragOrigin = getX(startEvent);
       elementOrigin = this.get('x');
       scrollOrigin = parentElement.getBoundingClientRect().left;
-
-
+      
       return event => {
         this._pageX = getX(event);
         let dx = this._pageX - dragOrigin;
-  
+      
         const scaleX = this.element.getBoundingClientRect().width / this.element.offsetWidth;
         dx = (dx / (100 * scaleX) * 100); 
 
@@ -545,7 +544,7 @@ export default Mixin.create({
         
         let scrollX = parentElement.getBoundingClientRect().left;
         let x = (elementOrigin + dx + (scrollOrigin - scrollX))
-
+       
         this._drag(x);
       };
     }
@@ -596,14 +595,15 @@ export default Mixin.create({
     const groupDirection = this.get('_direction');
 
     if (groupDirection === 'x') {
-      let dx = this.get('x') - this.element.offsetLeft + parseFloat(getComputedStyle(this.element)['margin-left']);
+      let x = this.get('x');
 
+      let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element)['margin-left']);
       this.element.style.transform = `translateX(${dx}px)`;
     }
     if (groupDirection === 'y') {
       let y = this.get('y');
       let dy = y - this.element.offsetTop;
-   
+      
       this.element.style.transform = `translateY(${dy}px`;
     }
   },
@@ -620,7 +620,6 @@ export default Mixin.create({
     const groupDirection = this.get('_direction');
 
     if (groupDirection === 'x') {
-      // dimension = (dimension/(100*0.6))*100;
       this.set('x', dimension);
     }
     if (groupDirection === 'y') {
@@ -739,7 +738,7 @@ function getX(event) {
   if (touch) {
     return touch.screenX;
   } else {
-    return event.pageX
+    return event.pageX;
   }
 }
 
