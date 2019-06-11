@@ -1,5 +1,13 @@
 # ember-sortable changelog
 
+## 1.12.9 (2019-06-11)
+
+#### :rocket: Enhancement
+* [#259](https://github.com/heroku/ember-sortable/pull/259) Expect native events instead of jQuery wrapped events ([@stephencattaneo](https://github.com/stephencattaneo))
+
+#### Committers: 1
+- [@stephencattaneo](https://github.com/stephencattaneo)
+
 ## 1.12.8 (2019-05-22)
 
 #### :bug: Bug Fix
