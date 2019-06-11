@@ -702,8 +702,7 @@ export default Mixin.create({
   @private
 */
 function getY(event) {
-  let originalEvent = event.originalEvent;
-  let touches = originalEvent? originalEvent.changedTouches : event.changedTouches;
+  let touches = event.changedTouches;
   let touch = touches && touches[0];
 
   if (touch) {
@@ -720,8 +719,7 @@ function getY(event) {
   @private
 */
 function getX(event) {
-  let originalEvent = event.originalEvent;
-  let touches = originalEvent? originalEvent.changedTouches : event.changedTouches;
+  let touches = event.changedTouches;
   let touch = touches && touches[0];
 
   if (touch) {
