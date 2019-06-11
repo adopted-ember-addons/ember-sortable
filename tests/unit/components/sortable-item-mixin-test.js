@@ -3,7 +3,7 @@ import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
 import $ from 'jquery';
 
-const MockEvent = { originalEvent: null };
+const MockEvent = { };
 const MockModel = { name: 'Mock Model' };
 const MockGroup = EmberObject.extend({
   direction: 'y',
