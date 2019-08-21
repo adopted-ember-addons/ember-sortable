@@ -13,6 +13,10 @@ Sortable UI primitives for Ember.
 
 ## Requirements
 
+* Ember.js v3.4 or above
+* Ember CLI v2.13 or above
+* Node.js v8 or above
+
 Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
@@ -242,8 +246,6 @@ actions: {
 }
 ```
 
-## Testing
-
 `ember-sortable` exposes some acceptance test helpers:
 
 * [`drag`][drag]: Drags elements by an offset specified in pixels.
@@ -259,6 +261,10 @@ To include them in your application, import then in your `start-app.js`:
 
 import './ember-sortable/test-helpers';
 ```
+
+## Contributing
+
+See the [Contributing](CONTRIBUTING.md) guide for details.
 
 ## Developing
 
