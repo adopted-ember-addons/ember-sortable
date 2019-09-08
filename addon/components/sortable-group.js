@@ -3,6 +3,7 @@ import Component from '@ember/component';
 import { set, get, computed } from '@ember/object';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
+
 const a = A;
 const NO_MODEL = {};
 
