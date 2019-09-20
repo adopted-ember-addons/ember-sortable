@@ -708,7 +708,7 @@ function getY(event) {
   if (touch) {
     return touch.screenY;
   } else {
-    return event.clientY;
+    return event.clientY || event.pageY;
   }
 }
 
@@ -725,7 +725,7 @@ function getX(event) {
   if (touch) {
     return touch.screenX;
   } else {
-    return event.clientX;
+    return event.clientX || event.pageX;
   }
 }
 
