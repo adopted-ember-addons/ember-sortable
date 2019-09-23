@@ -125,21 +125,21 @@ export default Mixin.create({
     @property isAnimated
     @type Boolean
   */
-  isAnimated: computed(function() {
+  get isAnimated() {
     if (!this.element) { return; }
 
     let el = this.element;
     let property = getComputedStyle(el).transitionProperty;
 
     return /all|transform/.test(property);
-  }).volatile(),
+  },
 
   /**
     The current transition duration in milliseconds.
     @property transitionDuration
     @type Number
   */
-  transitionDuration: computed(function() {
+  get transitionDuration() {
     let el = this.element;
     let rule = getComputedStyle(el).transitionDuration;
     let match = rule.match(/([\d.]+)([ms]*)/);
@@ -156,57 +156,55 @@ export default Mixin.create({
     }
 
     return 0;
-  }).volatile(),
+  },
 
   /**
     Horizontal position of the item.
     @property x
     @type Number
   */
-  x: computed({
-    get() {
-      if (this._x === undefined) {
-        let marginLeft = parseFloat(getComputedStyle(this.element).marginLeft);
-        this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
-      }
+  get x() {
+    if (this._x === undefined) {
+      let marginLeft = parseFloat(getComputedStyle(this.element).marginLeft);
+      this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
+    }
 
-      return this._x;
-    },
-    set(_, value) {
-      if (value !== this._x) {
-        this._x = value;
-        this._scheduleApplyPosition();
-      }
-    },
-  }).volatile(),
+    return this._x;
+  },
+
+  set x(value) {
+    if (value !== this._x) {
+      this._x = value;
+      this._scheduleApplyPosition();
+    }
+  },
 
   /**
     Vertical position of the item relative to its offset parent.
     @property y
     @type Number
   */
-  y: computed({
-    get() {
-      if (this._y === undefined) {
-        this._y = this.element.offsetTop;
-      }
-
-      return this._y;
-    },
-    set(key, value) {
-      if (value !== this._y) {
-        this._y = value;
-        this._scheduleApplyPosition();
-      }
+  get y() {
+    if (this._y === undefined) {
+      this._y = this.element.offsetTop;
     }
-  }).volatile(),
+
+    return this._y;
+  },
+
+    set y(value) {
+    if (value !== this._y) {
+      this._y = value;
+      this._scheduleApplyPosition();
+    }
+  },
 
   /**
     Width of the item.
     @property height
     @type Number
   */
-  width: computed(function() {
+  get width() {
     let el = this.element;
     let width = el.offsetWidth;
     let elStyles = getComputedStyle(el);
@@ -217,14 +215,14 @@ export default Mixin.create({
     width += getBorderSpacing(el).horizontal;
 
     return width;
-  }).volatile(),
+  },
 
   /**
     Height of the item including margins.
     @property height
     @type Number
   */
-  height: computed(function() {
+  get height() {
     let el = this.element;
     let height = el.offsetHeight;
 
@@ -234,7 +232,7 @@ export default Mixin.create({
     height += getBorderSpacing(el).vertical;
 
     return height;
-  }).volatile(),
+  },
 
   /**
     @private
