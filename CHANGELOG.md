@@ -1,5 +1,20 @@
 # ember-sortable changelog
 
+## 1.12.10 (2019-09-24)
+
+#### :bug: Bug Fix
+* [#275](https://github.com/heroku/ember-sortable/pull/275) [BUGFIX] fixes bug when sorting to the beginning of list ([@ryanholte](https://github.com/ryanholte))
+
+#### :house: Internal
+* [#268](https://github.com/heroku/ember-sortable/pull/268) Bump mixin-deep from 1.3.0 to 1.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#267](https://github.com/heroku/ember-sortable/pull/267) Bump eslint-utils from 1.3.1 to 1.4.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#258](https://github.com/heroku/ember-sortable/pull/258) First pass at upgrading to new QUnit syntax ([@nlfurniss](https://github.com/nlfurniss))
+
+#### Committers: 2
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- Ryan Holte ([@ryanholte](https://github.com/ryanholte))
+- [@dependabot](https://github.com/apps/dependabot)
+
 ## 1.12.9 (2019-06-11)
 
 #### :rocket: Enhancement
