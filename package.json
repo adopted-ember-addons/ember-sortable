@@ -12,7 +12,7 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "https://github.com/heroku/ember-sortable",
+  "repository": "https://github.com/adopted-ember-addons/ember-sortable",
   "scripts": {
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
@@ -57,6 +57,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "https://heroku.github.io/ember-sortable/demo/"
+    "demoURL": "https://adopted-ember-addons.github.io/ember-sortable/demo/"
   }
 }
