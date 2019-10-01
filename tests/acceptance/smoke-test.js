@@ -1,3 +1,4 @@
+import { find, visit } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
 import { module, test } from 'qunit';
 import startApp from '../../tests/helpers/start-app';
@@ -12,15 +13,13 @@ module('Acceptance | smoke', {
   }
 });
 
-test('reordering with mouse events', function(assert) {
-  visit('/');
+test('reordering with mouse events', async function(assert) {
+  await visit('/');
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
   reorder(
     'mouse',
@@ -32,12 +31,10 @@ test('reordering with mouse events', function(assert) {
     '[data-item=Uno]'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
-  });
+  assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
+  assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
+  assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+  assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
 
   reorder(
     'mouse',
@@ -49,12 +46,10 @@ test('reordering with mouse events', function(assert) {
     ':contains(Tres)'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
-  });
+  assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
+  assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
+  assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
+  assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
 
   reorder(
     'mouse',
@@ -66,12 +61,10 @@ test('reordering with mouse events', function(assert) {
     '[data-item=Cinco]'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
   let itemHeight = () => {
     let item = findWithAssert('.scrollable-demo .sortable-item')[0];
@@ -98,12 +91,10 @@ test('reordering with mouse events', function(assert) {
     }
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Dos Tres Uno Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco');
+  assert.equal(tableContents(), 'Dos Tres Uno Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Dos Tres Uno Cuatro Cinco');
 
   reorder(
     'mouse',
@@ -115,23 +106,19 @@ test('reordering with mouse events', function(assert) {
     ':contains("Cinco")'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
+  assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
 });
 
-test('reordering with touch events', function(assert) {
-  visit('/');
+test('reordering with touch events', async function(assert) {
+  await visit('/');
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
   reorder(
     'touch',
@@ -143,12 +130,10 @@ test('reordering with touch events', function(assert) {
     '[data-item=Uno]'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
-    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
-  });
+  assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
+  assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
+  assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+  assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
 
   reorder(
     'touch',
@@ -160,12 +145,10 @@ test('reordering with touch events', function(assert) {
     ':contains(Tres)'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
-  });
+  assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
+  assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
+  assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
+  assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
 
   reorder(
     'touch',
@@ -177,12 +160,10 @@ test('reordering with touch events', function(assert) {
     '[data-item=Cinco]'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
   reorder(
     'touch',
@@ -194,12 +175,10 @@ test('reordering with touch events', function(assert) {
     ':contains("Cinco")'
   );
 
-  andThen(() => {
-    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
-  });
+  assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
+  assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
+  assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
+  assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
 });
 
 function verticalContents() {
@@ -219,8 +198,7 @@ function scrollableContents() {
 }
 
 function contents(selector) {
-  return find(selector)
-    .text()
+  return find(selector).textContent
     .replace(/⇕/g, '')
     .replace(/\s+/g, ' ')
     .replace(/^\s+/, '')
