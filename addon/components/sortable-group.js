@@ -1,15 +1,13 @@
 import { A } from '@ember/array';
 import Component from '@ember/component';
-import { set, get } from '@ember/object';
+import { set, get, computed } from '@ember/object';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
-import { computed } from '@ember/object';
-
 const a = A;
 const NO_MODEL = {};
 
 export default Component.extend({
-  layout: layout,
+  layout,
 
   attributeBindings: ['data-test-selector'],
 
