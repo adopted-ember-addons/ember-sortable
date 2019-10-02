@@ -23,5 +23,5 @@
 /bower.json.ember-try
 /package.json.ember-try
 
-# vscode
-jsconfig.json
+# Editor
+/jsconfig.json
