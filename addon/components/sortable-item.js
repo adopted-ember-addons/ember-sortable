@@ -10,6 +10,7 @@ import layout from '../templates/components/sortable-item';
 import { getBorderSpacing } from '../utils/css-calculation';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { getX, getY } from '../utils/coordinate';
+import closestPolyfill from '../utils/polyfill/closest';
 
 export default Component.extend({
   layout,
@@ -243,6 +244,12 @@ export default Component.extend({
     minimal overriding.
   */
   _direction: computed.readOnly('group.direction'),
+
+  init() {
+    this._super();
+
+    closestPolyfill(window);
+  },
 
   /**
     @method didInsertElement
