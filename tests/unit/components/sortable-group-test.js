@@ -249,7 +249,7 @@ test('commit without specified group model', function(assert) {
   let component = this.subject({
     items,
     target,
-    onChange: 'reorder'
+    onChange: target.reorder.bind(target)
   });
 
   run(() => {
@@ -285,7 +285,7 @@ test('commit with specified group model', function(assert) {
     model,
     items,
     target,
-    onChange: 'reorder'
+    onChange: target.reorder.bind(target)
   });
 
   run(() => {
@@ -319,7 +319,7 @@ test('commit with missmatched group model', function(assert) {
     model,
     items,
     target,
-    onChange: 'reorder'
+    onChange: target.reorder.bind(target)
   });
 
   run(() => {
@@ -354,7 +354,7 @@ test('draggedModel', function(assert) {
   let component = this.subject({
     items,
     target,
-    onChange: 'action'
+    onChange: target.action.bind(target)
   });
 
   run(() => {

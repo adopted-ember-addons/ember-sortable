@@ -70,17 +70,19 @@ export default Component.extend({
     Action that fires when the item starts being dragged.
     @property onDragStart
     @type Action
+    @param object item model
     @default null
   */
-  onDragStart: null,
+  onDragStart: function() {},
 
   /**
     Action that fires when the item stops being dragged.
     @property onDragStop
     @type Action
+    @param object item model
     @default null
   */
-  onDragStop: null,
+  onDragStop: function() {},
 
   /**
     True if the item is currently dropping.
@@ -416,7 +418,7 @@ export default Component.extend({
 
     this._tellGroup('prepare');
     this.set('isDragging', true);
-    this.sendAction('onDragStart', this.get('model'));
+    this.onDragStart(this.get('model'));
     this._scrollOnEdges(drag);
   },
 
@@ -696,7 +698,7 @@ export default Component.extend({
     @private
   */
   _complete() {
-    this.sendAction('onDragStop', this.get('model'));
+    this.onDragStop(this.get('model'));
     this.set('isDropping', false);
     this.set('wasDropped', true);
     this._tellGroup('commit');
