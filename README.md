@@ -5,11 +5,16 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Build Status](https://travis-ci.org/adopted-ember-addons/ember-sortable.svg?branch=master)](https://travis-ci.org/adopted-ember-addons/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
+
 Sortable UI primitives for Ember.
 
 ![ember-sortable in action](/demo.gif)
 
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
+
+## Releases ##
+We're actively working on the next exciting `2.0.0` release. The `master` branch will contain all the up-to-date development
+Please refer to the [Migration RFC](V2_MIGRATION_RFC.md) for more information.
 
 ## Requirements
 
