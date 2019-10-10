@@ -10,6 +10,7 @@ import layout from '../templates/components/sortable-item';
 import { getBorderSpacing } from '../utils/css-calculation';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { getX, getY } from '../utils/coordinate';
+import { registerWaiter } from '@ember/test';
 
 export default Component.extend({
   layout,
@@ -237,6 +238,8 @@ export default Component.extend({
     return height;
   }).volatile(),
 
+  pendingWaiters: 0,
+
   /**
     @private
     Allows host instance to use the `group` property for something else with
@@ -244,6 +247,13 @@ export default Component.extend({
   */
   _direction: computed.readOnly('group.direction'),
 
+  init() {
+    this._super(...arguments);
+
+    registerWaiter(() => {
+      return this.get('pendingWaiters') === 0;
+    });
+  },
   /**
     @method didInsertElement
   */
@@ -656,8 +666,7 @@ export default Component.extend({
   */
   _waitForTransition() {
     if (DEBUG) {
-      // emit event for tests to start waiting for the transition to end
-      document.dispatchEvent(new Event('ember-sortable-drop-start'));
+      this._incrementWaiters();
     }
 
     let transitionPromise;
@@ -675,8 +684,7 @@ export default Component.extend({
 
     if (DEBUG) {
       transitionPromise = transitionPromise.finally(() => {
-        // emit event for tests to stop waiting
-        document.dispatchEvent(new Event('ember-sortable-drop-stop'));
+        this._decrementWaiters();
       });
     }
 
@@ -692,5 +700,15 @@ export default Component.extend({
     this.set('isDropping', false);
     this.set('wasDropped', true);
     this._tellGroup('commit');
+  },
+
+  _incrementWaiters() {
+    const pendingWaiters = this.get('pendingWaiters');
+    this.set('pendingWaiters', pendingWaiters + 1);
+  },
+
+  _decrementWaiters() {
+    const pendingWaiters = this.get('pendingWaiters');
+    this.set('pendingWaiters', pendingWaiters - 1);
   }
 });
