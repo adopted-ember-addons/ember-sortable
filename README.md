@@ -37,10 +37,10 @@ $ ember install ember-sortable
 
 {{#sortable-group tagName="ul" onChange=(action "reorderItems") as |group|}}
   {{#each model.items as |item|}}
-    {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+    {{#group.item tagName="li" model=item group=group handle=".handle"}}
       {{item.name}}
       <span class="handle">&varr;</span>
-    {{/sortable-item}}
+    {{/group.item}}
   {{/each}}
 {{/sortable-group}}
 ```
@@ -73,10 +73,10 @@ with that group model as the first argument:
 
 {{#sortable-group tagName="ul" model=model onChange=(action "reorderItems") as |group|}}
   {{#each model.items as |item|}}
-    {{#sortable-item tagName="li" model=item group=group handle=".handle"}}
+    {{#group.item tagName="li" model=item group=group handle=".handle"}}
       {{item.name}}
       <span class="handle">&varr;</span>
-    {{/sortable-item}}
+    {{/group.item}}
   {{/each}}
 {{/sortable-group}}
 ```

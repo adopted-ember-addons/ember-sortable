@@ -10,7 +10,9 @@ import layout from '../templates/components/sortable-item';
 import { getBorderSpacing } from '../utils/css-calculation';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { getX, getY } from '../utils/coordinate';
-import { registerWaiter } from '@ember/test';
+import { buildWaiter } from 'ember-test-waiters';
+
+const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
 export default Component.extend({
   layout,
@@ -240,8 +242,6 @@ export default Component.extend({
     return height;
   }).volatile(),
 
-  pendingWaiters: 0,
-
   /**
     @private
     Allows host instance to use the `group` property for something else with
@@ -252,9 +252,6 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    registerWaiter(() => {
-      return this.get('pendingWaiters') === 0;
-    });
   },
   /**
     @method didInsertElement
@@ -667,8 +664,10 @@ export default Component.extend({
     @return Promise
   */
   _waitForTransition() {
+    let waiterToken;
+
     if (DEBUG) {
-      this._incrementWaiters();
+      waiterToken = sortableItemWaiter.beginAsync();
     }
 
     let transitionPromise;
@@ -686,7 +685,7 @@ export default Component.extend({
 
     if (DEBUG) {
       transitionPromise = transitionPromise.finally(() => {
-        this._decrementWaiters();
+        sortableItemWaiter.endAsync(waiterToken);
       });
     }
 
@@ -703,14 +702,4 @@ export default Component.extend({
     this.set('wasDropped', true);
     this._tellGroup('commit');
   },
-
-  _incrementWaiters() {
-    const pendingWaiters = this.get('pendingWaiters');
-    this.set('pendingWaiters', pendingWaiters + 1);
-  },
-
-  _decrementWaiters() {
-    const pendingWaiters = this.get('pendingWaiters');
-    this.set('pendingWaiters', pendingWaiters - 1);
-  }
 });
