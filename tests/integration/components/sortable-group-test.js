@@ -9,9 +9,9 @@ module('Integration | Component | sortable group', function(hooks) {
   test('distance attribute prevents the drag before the specified value', async function(assert) {
     await render(hbs`
       {{#sortable-group as |group|}}
-        {{#sortable-item distance=15 model=1 group=group id="dummy-sortable-item"}}
+        {{#group.item distance=15 model=1 id="dummy-sortable-item"}}
           {{item}}
-        {{/sortable-item}}
+        {{/group.item}}
       {{/sortable-group}}
     `);
 
@@ -32,9 +32,9 @@ module('Integration | Component | sortable group', function(hooks) {
   test('sortable-items have tabindexes for accessibility', async function(assert) {
     await render(hbs`
       {{#sortable-group as |group|}}
-        {{#sortable-item tabindex=0 model=1 id="dummy-sortable-item"}}
+        {{#group.item tabindex=0 model=1 id="dummy-sortable-item"}}
           sort me
-        {{/sortable-item}}
+        {{/group.item}}
       {{/sortable-group}}
     `);
 
