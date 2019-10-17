@@ -39,12 +39,16 @@ export default Component.extend({
 
   /**
     Selector for the element to use as handle.
-    If unset, the entire element will be used as the handle.
+    1. By default, we will hook it the yielded sortable-handle.
+    2. If you don't use the sortable-handle, the entire element will be used as the handle.
+    3. In very rare situations, if you want to use a handle, but not the sortable-handle,
+       you can override this class with your own handle's selector. This behavior will be
+       synonymous with v1
     @property handle
     @type String
-    @default null
+    @default "[data-sortable-handle]"
   */
-  handle: null,
+  handle: "[data-sortable-handle]",
 
   /**
    * Tolerance, in pixels, for when sorting should start.
@@ -251,7 +255,6 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-
   },
   /**
     @method didInsertElement
@@ -264,10 +267,15 @@ export default Component.extend({
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    let element = this.get('handle') ? this.element.querySelector(this.get('handle')) : this.element;
-    if (element) {
-      element.style['touch-action'] = 'none';
+    let handleElement = this.element.querySelector(this.get('handle'));
+
+    if (!handleElement) {
+      // Handle does not exist, so we set it null here.
+      this.set('handle', null);
+      handleElement = this.element;
     }
+
+    handleElement.style['touch-action'] = 'none';
   },
 
   /**

@@ -65,7 +65,7 @@ module('Acceptance | smoke', function(hooks) {
       return item.offsetHeight + parseInt(itemStyle.marginTop);
     };
 
-    await drag('mouse', '[data-test-scrollable-demo-handle] > .handle', () => { return {dy: itemHeight() * 2 + 1, dx: undefined}});
+    await drag('mouse', '[data-test-scrollable-demo-handle] .handle', () => { return {dy: itemHeight() * 2 + 1, dx: undefined}});
 
     assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco');
     assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco');
