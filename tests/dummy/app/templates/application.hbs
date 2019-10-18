@@ -7,12 +7,12 @@
     <section class="vertical-demo">
       <h3>Vertical</h3>
 
-      {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
-        {{#each model.items as |item|}}
-          {{#group.item data-test-vertical-demo-item tagName="li" model=item handle=".handle" as |groupItem|}}
+      {{#sortable-group data-test-vertical-demo-group tagName="ol" onChange=(action "update") model=model.items as |group|}}
+        {{#each group.model as |item|}}
+          {{#group.item data-test-vertical-demo-item tagName="li" model=item  as |groupItem|}}
             {{item}}
-            {{#groupItem.handle}}
-              <span data-test-vertical-demo-handle class="handle" data-item={{item}}>
+            {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
+              <span data-item={{item}}>
                 <span>&vArr;</span>
               </span>
             {{/groupItem.handle}}
@@ -24,9 +24,9 @@
     <section class="horizontal-demo">
       <h3>Horizontal</h3>
 
-      {{#sortable-group tagName="ol" direction="x" onChange=(action "update") as |group|}}
-        {{#each model.items as |item|}}
-          {{#group.item data-test-horizontal-demo-handle tagName="li" model=item}}
+      {{#sortable-group data-test-horizontal-demo-group tagName="ol" direction="x" onChange=(action "update") model=model.items as |group|}}
+        {{#each group.model as |item|}}
+          {{#group.item data-test-horizontal-demo-handle tabindex="0" tagName="li" model=item}}
             {{item-presenter item=item}}
           {{/group.item}}
         {{/each}}
@@ -45,11 +45,11 @@
             <th>Item</th>
           </tr>
         </thead>
-        {{#sortable-group tagName="tbody" onChange=(action "update") as |group|}}
-          {{#each model.items as |item|}}
+        {{#sortable-group tagName="tbody" onChange=(action "update") model=model.items as |group|}}
+          {{#each group.model as |item|}}
             {{#group.item data-test-table-demo-item tagName="tr" model=item handle=".handle" as |groupItem|}}
-              {{#groupItem.handle}}
-                <td><span data-test-table-demo-handle class="handle" data-item={{item}}>&vArr;</span></td>
+              {{#groupItem.handle class="handle"}}
+                <td><span data-test-table-demo-handle data-item={{item}}>&vArr;</span></td>
                 <td>{{item}}</td>
               {{/groupItem.handle}}
             {{/group.item}}
@@ -61,8 +61,8 @@
     <section class="vertical-spacing-demo">
       <h3>Vertical with 15px spacing</h3>
 
-      {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
-        {{#each model.items as |item|}}
+      {{#sortable-group tagName="ol" onChange=(action "update") model=model.items as |group|}}
+        {{#each group.model as |item|}}
           {{#group.item tagName="li" model=item spacing=15}}
             {{item}}
             <span data-test-vertical-spacing-demo-handle data-item={{item}}>
@@ -75,8 +75,8 @@
     <section class="vertical-distance-demo">
       <h3>Vertical with distance set to 15</h3>
 
-      {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
-        {{#each model.items as |item|}}
+      {{#sortable-group tagName="ol" onChange=(action "update") model=model.items as |group|}}
+        {{#each group.model as |item|}}
           {{#group.item data-test-vertical-distance-demo-handle tagName="li" model=item distance=15}}
             {{item}}
             <span data-item={{item}}>
@@ -90,8 +90,8 @@
       <h3>Scrollable</h3>
 
       <div class="sortable-container">
-        {{#sortable-group tagName="ol" onChange=(action "update") as |group|}}
-          {{#each model.items as |item|}}
+        {{#sortable-group tagName="ol" onChange=(action "update") model=model.items as |group|}}
+          {{#each group.model as |item|}}
             {{#group.item data-test-scrollable-demo-handle tagName="li" model=item as |groupItem|}}
               {{item}}
               {{#groupItem.handle}}

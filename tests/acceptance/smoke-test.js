@@ -1,8 +1,10 @@
 import { module, test } from 'qunit';
-import { visit, find, findAll } from '@ember/test-helpers';
+import { visit, find, findAll, triggerKeyEvent, focus, blur } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { drag }  from '../ember-sortable/helpers/drag';
 import { reorder } from '../ember-sortable/helpers/reorder';
+import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "../ember-sortable/utils/keyboard";
+import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
 module('Acceptance | smoke', function(hooks) {
   setupApplicationTest(hooks);
@@ -159,6 +161,338 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
+  });
+
+  module('[A11y] Reordering with keyboard events', function() {
+    test('A11yAudit', async function(assert) {
+      assert.expect(1);
+
+      await visit("/");
+      await a11yAudit();
+      assert.ok(true, 'no a11y errors found!');
+    });
+
+    test('Keyboard selection is activated on ENTER', async function(assert) {
+      assert.expect(3);
+
+      await visit("/");
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('role', 'application');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('tabindex', '-1');
+      assert.dom('[data-test-vertical-demo-group]').isFocused();
+    });
+
+    test('Keyboard selection is activated on SPACE', async function(assert) {
+      assert.expect(3);
+
+      await visit("/");
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('role', 'application');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('tabindex', '-1');
+      assert.dom('[data-test-vertical-demo-group]').isFocused();
+    });
+
+    test('Keyboard selection is cancelled on ESC', async function(assert) {
+      assert.expect(3);
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ESCAPE_KEY_CODE
+      );
+
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasNoAttribute('role');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasNoAttribute('tabindex');
+      assert.dom('[data-test-vertical-demo-group]').isNotFocused();
+    });
+
+    test('Keyboard selection is cancelled on losing focus', async function(assert) {
+      assert.expect(3);
+
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+
+      await blur('[data-test-vertical-demo-group]');
+
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasNoAttribute('role');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasNoAttribute('tabindex');
+      assert.dom('[data-test-vertical-demo-group]').isNotFocused();
+    });
+
+    test('Keyboard selection moves down on DOWN and is cancelled on ESC', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ESCAPE_KEY_CODE,
+      );
+
+      const movedHandle = findAll('[data-test-vertical-demo-handle]')[0];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+    });
+
+    test('Keyboard selection moves down on DOWN and is cancelled on losing focus', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+
+      await blur('[data-test-vertical-demo-group]');
+
+      const movedHandle = findAll('[data-test-vertical-demo-handle]')[0];
+
+      assert.dom(movedHandle).isNotFocused();
+      assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+    });
+
+    test('Keyboard selection is confirmed on ENTER', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+
+      const movedHandle = findAll('[data-test-vertical-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(verticalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
+    });
+
+    test('Keyboard selection moves up on UP and is confirmed on SPACE', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.UP
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+
+      const movedHandle = findAll('[data-test-vertical-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(verticalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
+    });
+
+    test('Keyboard selection moves down on DOWN and is confirmed on SPACE', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+
+      const movedHandle = findAll('[data-test-vertical-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(verticalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
+    });
+
+    test('Keyboard selection moves right on RIGHT and is confirmed on ENTER', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-horizontal-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+
+      const movedHandle = findAll('[data-test-horizontal-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(verticalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
+    });
+
+    test('Keyboard selection moves left on LEFT and is confirmed on ENTER', async function(assert) {
+      assert.expect(5);
+
+      await visit("/");
+
+      await focus('[data-test-horizontal-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.LEFT
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+
+      const movedHandle = findAll('[data-test-horizontal-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(verticalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
+      assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
+    });
   });
 
   function verticalContents() {

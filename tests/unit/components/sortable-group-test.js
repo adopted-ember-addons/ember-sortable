@@ -260,76 +260,6 @@ test('commit without specified group model', function(assert) {
     'expected target to receive models in order');
 });
 
-test('commit with specified group model', function(assert) {
-  let items = [{
-    y: 20,
-    model: 'bar'
-  }, {
-    y: 30,
-    model: 'baz'
-  }, {
-    y: 10,
-    model: 'foo'
-  }];
-
-  let model = {
-    items: items
-  };
-  let target = EmberObject.create({
-    reorder(model, newOrder) {
-      model.newOrder = newOrder;
-      target.newModel = model;
-    }
-  });
-  let component = this.subject({
-    model,
-    items,
-    target,
-    onChange: target.reorder.bind(target)
-  });
-
-  run(() => {
-    component.commit();
-  });
-
-  assert.deepEqual(target.newModel.newOrder, ['foo', 'bar', 'baz'],
-    'expected target to receive models in order');
-});
-
-test('commit with missmatched group model', function(assert) {
-  let items = [{
-    y: 20,
-    model: 'bar'
-  }, {
-    y: 30,
-    model: 'baz'
-  }, {
-    y: 10,
-    model: 'foo'
-  }];
-  let model = null;
-  let target = EmberObject.create({
-    reorder(model, newOrder) {
-      if (typeof newOrder !== 'undefined') {
-        target.correctActionFired = true;
-      }
-    }
-  });
-  let component = this.subject({
-    model,
-    items,
-    target,
-    onChange: target.reorder.bind(target)
-  });
-
-  run(() => {
-    component.commit();
-  });
-
-  assert.equal(target.correctActionFired, true,
-    'expected reorder() to receive two params');
-});
-
 test('draggedModel', function(assert) {
   assert.expect(1);
 
@@ -368,3 +298,74 @@ test('renders data-test-selector', function(assert) {
   assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
   'support data-test-selector attribute binging');
 });
+
+test('commit with specified group model', function(assert) {
+  let items = [{
+    y: 20,
+    model: 'bar'
+  }, {
+    y: 30,
+    model: 'baz'
+  }, {
+    y: 10,
+    model: 'foo'
+  }];
+
+  let groupModel = {
+    items: items
+  };
+  let target = EmberObject.create({
+    reorder(model, newOrder) {
+      model.newOrder = newOrder;
+      target.newModel = model;
+    }
+  });
+  let component = this.subject({
+    groupModel,
+    items,
+    target,
+    onChange: target.reorder.bind(target)
+  });
+
+  run(() => {
+    component.commit();
+  });
+
+  assert.deepEqual(target.newModel.newOrder, ['foo', 'bar', 'baz'],
+    'expected target to receive models in order');
+});
+
+test('commit with missmatched group model', function(assert) {
+  let items = [{
+    y: 20,
+    model: 'bar'
+  }, {
+    y: 30,
+    model: 'baz'
+  }, {
+    y: 10,
+    model: 'foo'
+  }];
+  let groupModel = null;
+  let target = EmberObject.create({
+    reorder(model, newOrder) {
+      if (typeof newOrder !== 'undefined') {
+        target.correctActionFired = true;
+      }
+    }
+  });
+  let component = this.subject({
+    groupModel,
+    items,
+    target,
+    onChange: target.reorder.bind(target)
+  });
+
+  run(() => {
+    component.commit();
+  });
+
+  assert.equal(target.correctActionFired, true,
+    'expected reorder() to receive two params');
+});
+
