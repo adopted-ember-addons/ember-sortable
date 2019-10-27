@@ -53,9 +53,23 @@ export default Component.extend({
    */
   groupModel: NO_MODEL,
 
+  /**
+   * @property an object containing different classes for visual indicators
+   * @type
+   * @default null
+   * @example
+   * {
+   *  UP: 'up'
+   *  DOWN: 'down',
+   *  LEFT: 'left',
+   *  RIGHT: 'right',
+   * }
+   */
+  handleVisualClass: NO_MODEL,
+
   /** Primary keyboard utils */
   // Tracks the currently selected item
-  selectedItem: null,
+  _selectedItem: null,
   // Tracks the current move
   move: null,
   // Tracks the status of keyboard reorder mode
@@ -201,9 +215,13 @@ export default Component.extend({
   keyDown(event) {
     // Note: If handle is specified, we need to target the keyDown on the handle
     const isKeyboardReorderModeEnabled = this.get('isKeyboardReorderModeEnabled');
+    const _selectedItem = this.get('_selectedItem');
 
     if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
       this.prepareKeyboardReorderMode();
+      this._updateItemVisualIndicators(_selectedItem, true);
+      this._updateHandleVisualIndicators(_selectedItem, true);
+
       this.set('isRetainingFocus', true);
 
       run.scheduleOnce('render', () => {
@@ -259,6 +277,7 @@ export default Component.extend({
       }
 
       this._move(sortedIndex, newSortedIndex);
+      this._updateHandleVisualIndicators(item, true);
 
       moves.push([sortedIndex, newSortedIndex]);
     });
@@ -272,6 +291,7 @@ export default Component.extend({
    * 4. Resets the current selected item.
    */
   cancelKeyboardSelection() {
+    const _selectedItem = this.get('_selectedItem');
     this._disableKeyboardReorderMode();
     // Revert the process by reversing the move.
     const moves = this.get('moves');
@@ -280,6 +300,8 @@ export default Component.extend({
       this._move(move[1], move[0])
     }
     this._tearDownA11yApplicationContainer();
+    this._updateItemVisualIndicators(_selectedItem, false);
+    this._updateHandleVisualIndicators(_selectedItem, false);
     this._resetItemSelection();
   },
 
@@ -294,7 +316,8 @@ export default Component.extend({
   confirmKeyboardSelection() {
     const items = this.get('sortedItems');
     const groupModel = this.get('groupModel');
-    const selectedModel = this.get('selectedItem.model');
+    const _selectedItem = this.get('_selectedItem');
+    const selectedModel = _selectedItem.get('model');
     const itemModels = items.mapBy('model');
     this.set('moves', []);
     this._disableKeyboardReorderMode();
@@ -305,6 +328,8 @@ export default Component.extend({
     } else {
       this.onChange(itemModels, selectedModel);
     }
+    this._updateItemVisualIndicators(_selectedItem, false);
+    this._updateHandleVisualIndicators(_selectedItem, false);
     this._resetItemSelection();
   },
 
@@ -358,26 +383,26 @@ export default Component.extend({
    * @param {Event} event a DOM event.
    */
   _handleKeyboardReorder(event) {
-    let  { direction, selectedItem } = this.getProperties('direction', 'selectedItem');
+    let  { direction, _selectedItem } = this.getProperties('direction', '_selectedItem');
 
     if (direction === "y" && isDownArrowKey(event)) {
-        this.moveItem(selectedItem, 1);
+        this.moveItem(_selectedItem, 1);
     } else if (direction === "y" && isUpArrowKey(event)) {
-        this.moveItem(selectedItem, -1);
+        this.moveItem(_selectedItem, -1);
     } else if (direction === "x" && isLeftArrowKey(event)) {
-        this.moveItem(selectedItem, -1);
+        this.moveItem(_selectedItem, -1);
     } else if (direction === "x" && isRightArrowKey(event)) {
-        this.moveItem(selectedItem, 1);
+        this.moveItem(_selectedItem, 1);
     } else if (isEnterKey(event) || isSpaceKey(event)) {
-      // confirm will reset the selectedItem, so caching it here before we remove it.
-      const itemElement = this.get('selectedItem.element');
+      // confirm will reset the _selectedItem, so caching it here before we remove it.
+      const itemElement = this.get('_selectedItem.element');
       this.confirmKeyboardSelection();
 
       this.set('isRetainingFocus', true);
       run.scheduleOnce('render', () => this._focusItem(itemElement));
     } else if (isEscapeKey(event)) {
-      // cancel will reset the selectedItem, so caching it here before we remove it.
-      const selectedItemElement = this.get('selectedItem.element');
+      // cancel will reset the _selectedItem, so caching it here before we remove it.
+      const _selectedItemElement = this.get('_selectedItem.element');
       this.cancelKeyboardSelection();
 
       this.set('isRetainingFocus', true);
@@ -388,7 +413,7 @@ export default Component.extend({
           const itemElement = sortedItems[moves[0].fromIndex].element
           this._focusItem(itemElement);
         } else {
-          this._focusItem(selectedItemElement);
+          this._focusItem(_selectedItemElement);
         }
         this.set('isRetainingFocus', false);
       });
@@ -448,7 +473,7 @@ export default Component.extend({
    * Reset the selected item.
    */
   _resetItemSelection() {
-    this.set('selectedItem', null);
+    this.set('_selectedItem', null);
   },
 
   /**
@@ -460,5 +485,50 @@ export default Component.extend({
     return element.closest(
       `#${this.element.id} [data-sortable-handle]`
     );
+  },
+
+  _updateItemVisualIndicators(item, isActive) {
+    const itemVisualClass = this.get('itemVisualClass');
+
+    if (itemVisualClass === NO_MODEL || !item) {
+      return;
+    }
+
+    if (isActive) {
+      item.element.classList.add(itemVisualClass);
+    } else {
+      item.element.classList.remove(itemVisualClass);
+    }
+  },
+
+  _updateHandleVisualIndicators(item, isUpdate) {
+    const handleVisualClass = this.get('handleVisualClass');
+
+    if (handleVisualClass === NO_MODEL || !item) {
+      return;
+    }
+
+    const sortedItems = this.get('sortedItems');
+    const direction = this.get('direction');
+    const index = sortedItems.indexOf(item);
+    const handle = item.element.querySelector('[data-sortable-handle');
+    const visualHandle = handle ? handle : item.element;
+    const visualKeys = direction === 'y' ? ['UP', 'DOWN'] : ['LEFT', 'RIGHT'];
+
+    visualKeys.forEach(visualKey => {
+      visualHandle.classList.remove(handleVisualClass[visualKey]);
+    });
+
+    if (!isUpdate) {
+      return;
+    }
+
+    if (index > 0) {
+      visualHandle.classList.add(handleVisualClass[visualKeys[0]]);
+    }
+
+    if (index < sortedItems.length - 1) {
+      visualHandle.classList.add(handleVisualClass[visualKeys[1]]);
+    }
   },
 });

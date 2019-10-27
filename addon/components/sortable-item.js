@@ -307,7 +307,7 @@ export default Component.extend({
   },
 
   keyDown() {
-    this.set('group.selectedItem', this);
+    this.set('group._selectedItem', this);
   },
 
   /**
