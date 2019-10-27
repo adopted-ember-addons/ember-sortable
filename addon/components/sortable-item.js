@@ -106,7 +106,6 @@ export default Component.extend({
   */
   wasDropped: false,
 
-
   /**
     @property isBusy
     @type Boolean
@@ -256,11 +255,13 @@ export default Component.extend({
   init() {
     this._super(...arguments);
   },
+
   /**
     @method didInsertElement
   */
   didInsertElement() {
-    this._super();
+    this._super(...arguments);
+
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
@@ -282,6 +283,7 @@ export default Component.extend({
     @method willDestroyElement
   */
   willDestroyElement() {
+    this._super(...arguments);
     // scheduled to prevent deprecation warning:
     // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
     run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
@@ -302,6 +304,10 @@ export default Component.extend({
     if (event.ctrlKey) { return; }
 
     this._primeDrag(event);
+  },
+
+  keyDown() {
+    this.set('group.selectedItem', this);
   },
 
   /**

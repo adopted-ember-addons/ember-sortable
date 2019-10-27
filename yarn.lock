@@ -1030,6 +1030,11 @@ atob@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.0.3.tgz#19c7a760473774468f20b2d2d03372ad7d4cbf5d"
 
+axe-core@^3.3.2:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-3.4.0.tgz#a57ee620c182d5389aff229586aaae06bc541abe"
+  integrity sha512-5C0OdgxPv/DrQguO6Taj5F1dY5OlkWg4SVmZIVABFYKWlnAc5WTLPzG+xJSgIwf2fmY+NiNGiZXhXx2qT0u/9Q==
+
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-code-frame/-/babel-code-frame-6.26.0.tgz#63fd43f7dc1e3bb7ce35947db8fe369a3f58c74b"
@@ -1834,6 +1839,14 @@ broccoli-debug@^0.6.4, broccoli-debug@^0.6.5:
     symlink-or-copy "^1.1.8"
     tree-sync "^1.2.2"
 
+broccoli-file-creator@^1.1.1:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/broccoli-file-creator/-/broccoli-file-creator-1.2.0.tgz#27f1b25b1b00e7bb7bf3d5d7abed5f4d5388df4d"
+  integrity sha512-l9zthHg6bAtnOfRr/ieZ1srRQEsufMZID7xGYRW3aBDv3u/3Eux+Iawl10tAGYE5pL9YB4n5X4vxkp6iNOoZ9g==
+  dependencies:
+    broccoli-plugin "^1.1.0"
+    mkdirp "^0.5.1"
+
 broccoli-filter@^1.2.2, broccoli-filter@^1.2.3:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/broccoli-filter/-/broccoli-filter-1.2.4.tgz#409afb94b9a3a6da9fac8134e91e205f40cc7330"
@@ -2022,7 +2035,7 @@ broccoli-plugin@1.1.0:
     rimraf "^2.3.4"
     symlink-or-copy "^1.0.1"
 
-broccoli-plugin@^1.0.0, broccoli-plugin@^1.2.0, broccoli-plugin@^1.2.1, broccoli-plugin@^1.3.0, broccoli-plugin@^1.3.1:
+broccoli-plugin@^1.0.0, broccoli-plugin@^1.1.0, broccoli-plugin@^1.2.0, broccoli-plugin@^1.2.1, broccoli-plugin@^1.3.0, broccoli-plugin@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/broccoli-plugin/-/broccoli-plugin-1.3.1.tgz#a26315732fb99ed2d9fb58f12a1e14e986b4fabd"
   integrity sha512-DW8XASZkmorp+q7J4EeDEZz+LoyKLAd2XZULXyD9l4m9/hAKV3vjHmB1kiUshcWAYMgTP1m2i4NnqCE/23h6AQ==
@@ -2902,6 +2915,17 @@ electron-to-chromium@^1.3.103, electron-to-chromium@^1.3.47:
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.108.tgz#2e79a6fcaa4b3e7c75abf871505bda8e268c910e"
   integrity sha512-/QI4hMpAh48a1Sea6PALGv+kuVne9A2EWGd8HrWHMdYhIzGtbhVVHh6heL5fAzGaDnZuPyrlWJRl8WPm4RyiQQ==
 
+ember-a11y-testing@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ember-a11y-testing/-/ember-a11y-testing-1.1.1.tgz#2fd3d9a8343e0e1dd107fb819d4878b4a31f1dcb"
+  integrity sha512-4WPcznYO6jD6bi+och92lMUd6EdZTHIAFN4XTJ3DkTlIpXW2jH5GExX2/pZmz0QcTTfWry0VVjM5cq9xcFjeEA==
+  dependencies:
+    axe-core "^3.3.2"
+    broccoli-funnel "^2.0.2"
+    ember-cli-babel "^6.8.2"
+    ember-cli-version-checker "^3.1.3"
+    ember-get-config "^0.2.4"
+
 ember-assign-polyfill@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/ember-assign-polyfill/-/ember-assign-polyfill-2.6.0.tgz#07847e3357ee35b33f886a0b5fbec6873f6860eb"
@@ -2915,7 +2939,7 @@ ember-cli-babel-plugin-helpers@^1.1.0:
   resolved "https://registry.yarnpkg.com/ember-cli-babel-plugin-helpers/-/ember-cli-babel-plugin-helpers-1.1.0.tgz#de3baedd093163b6c2461f95964888c1676325ac"
   integrity sha512-Zr4my8Xn+CzO0gIuFNXji0eTRml5AxZUTDQz/wsNJ5AJAtyFWCY4QtKdoELNNbiCVGt1lq5yLiwTm4scGKu6xA==
 
-ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6.16.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
+ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.0.0-beta.7, ember-cli-babel@^6.16.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
@@ -3130,7 +3154,7 @@ ember-cli-version-checker@^3.0.0:
     resolve "^1.9.0"
     semver "^5.6.0"
 
-ember-cli-version-checker@^3.1.2:
+ember-cli-version-checker@^3.1.2, ember-cli-version-checker@^3.1.3:
   version "3.1.3"
   resolved "https://registry.npmjs.org/ember-cli-version-checker/-/ember-cli-version-checker-3.1.3.tgz#7c9b4f5ff30fdebcd480b1c06c4de43bb51c522c"
   integrity sha512-PZNSvpzwWgv68hcXxyjREpj3WWb81A7rtYNQq1lLEgrWIchF8ApKJjWP3NBpHjaatwILkZAV8klair5WFlXAKg==
@@ -3244,6 +3268,14 @@ ember-export-application-global@^2.0.0:
   resolved "https://registry.yarnpkg.com/ember-export-application-global/-/ember-export-application-global-2.0.0.tgz#8d6d7619ac8a1a3f8c43003549eb21ebed685bd2"
   dependencies:
     ember-cli-babel "^6.0.0-beta.7"
+
+ember-get-config@^0.2.4:
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/ember-get-config/-/ember-get-config-0.2.4.tgz#118492a2a03d73e46004ed777928942021fe1ecd"
+  integrity sha1-EYSSoqA9c+RgBO13eSiUICH+Hs0=
+  dependencies:
+    broccoli-file-creator "^1.1.1"
+    ember-cli-babel "^6.3.0"
 
 ember-load-initializers@^1.1.0:
   version "1.1.0"
