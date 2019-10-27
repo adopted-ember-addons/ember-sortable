@@ -172,6 +172,66 @@ module('Acceptance | smoke', function(hooks) {
       assert.ok(true, 'no a11y errors found!');
     });
 
+    test('Keyboard selection shows UP and DOWN visual indicators on vertical sort', async function(assert) {
+      assert.expect(8);
+
+      await visit("/");
+
+      const handle = find('[data-test-vertical-demo-handle]');
+      await focus(handle);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+      assert.dom('[data-test-vertical-demo-item').hasClass('sortable-item--active');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-up');
+      assert.dom(handle).hasClass('sortable-handle-down');
+
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      assert.dom(handle).hasClass('sortable-handle-up');
+      assert.dom(handle).hasClass('sortable-handle-down');
+
+      await blur('[data-test-vertical-demo-group]');
+      assert.dom('[data-test-vertical-demo-item]').doesNotHaveClass('sortable-item--active');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-up');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-down');
+    });
+
+    test('Keyboard selection shows LEFT and RIGHT visual indicators on horizontal sort', async function(assert) {
+      assert.expect(8);
+
+      await visit("/");
+
+      const handle = find('[data-test-horizontal-demo-handle]');
+      await focus(handle);
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE
+      );
+      assert.dom(handle).hasClass('sortable-item--active');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-left');
+      assert.dom(handle).hasClass('sortable-handle-right');
+
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT
+      );
+      assert.dom(handle).hasClass('sortable-handle-left');
+      assert.dom(handle).hasClass('sortable-handle-right');
+
+      await blur('[data-test-horizontal-demo-group]');
+      assert.dom(handle).doesNotHaveClass('sortable-item--active');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-left');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-right');
+    });
+
     test('Keyboard selection is activated on ENTER', async function(assert) {
       assert.expect(3);
 
