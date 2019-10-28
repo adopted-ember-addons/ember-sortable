@@ -12,12 +12,14 @@ import {
   isLeftArrowKey,
   isRightArrowKey,
 } from '../utils/keyboard';
+import {  ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
 
 const a = A;
 const NO_MODEL = {};
 
 export default Component.extend({
   layout,
+  tagName: 'ol',
 
   attributeBindings: ['data-test-selector', 'tabindex', 'role'],
 
@@ -67,6 +69,17 @@ export default Component.extend({
    */
   handleVisualClass: NO_MODEL,
 
+  /**
+   * @property an object containing functions for producing screen reader announcements
+   * @type
+   * @default null
+   * @example
+   * {
+   *  MOVE: function()
+   * }
+   */
+  a11yAnnouncementConfig: NO_MODEL,
+
   /** Primary keyboard utils */
   // Tracks the currently selected item
   _selectedItem: null,
@@ -112,6 +125,15 @@ export default Component.extend({
     this._super(...arguments);
 
     this.set('moves', []);
+  },
+
+  didInsertElement() {
+    this._super(...arguments);
+
+    // Adding announcer inside an ordered list violates a11y guidelines, so we insert it after our list.
+    const announcer = this._createAnnouncer();
+    this.set('announcer', announcer);
+    this.element.insertAdjacentElement('afterend', announcer);
   },
 
   /**
@@ -219,6 +241,7 @@ export default Component.extend({
 
     if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
       this.prepareKeyboardReorderMode();
+      this._announceAction(ANNOUNCEMENT_ACTION_TYPES.ACTIVATE);
       this._updateItemVisualIndicators(_selectedItem, true);
       this._updateHandleVisualIndicators(_selectedItem, true);
 
@@ -266,16 +289,16 @@ export default Component.extend({
    * @param {Integer} delta how much to move index-wise.
    */
   moveItem(item, delta) {
+    const { sortedItems, moves } = this.getProperties('sortedItems', 'moves');
+    const sortedIndex = sortedItems.indexOf(item);
+    const newSortedIndex = sortedIndex + delta;
+    // If out of bounds, we don't do anything.
+    if (newSortedIndex < 0 || newSortedIndex >= sortedItems.length) {
+      return;
+    }
+    this._announceAction(ANNOUNCEMENT_ACTION_TYPES.MOVE, delta);
     // Guarantees that the before the UI is fully rendered before we move again.
     run.scheduleOnce('render', () => {
-      const { sortedItems, moves } = this.getProperties('sortedItems', 'moves');
-      const sortedIndex = sortedItems.indexOf(item);
-      const newSortedIndex = sortedIndex + delta;
-      // If out of bounds, we don't do anything.
-      if (newSortedIndex < 0 || newSortedIndex >= sortedItems.length) {
-        return;
-      }
-
       this._move(sortedIndex, newSortedIndex);
       this._updateHandleVisualIndicators(item, true);
 
@@ -386,16 +409,17 @@ export default Component.extend({
     let  { direction, _selectedItem } = this.getProperties('direction', '_selectedItem');
 
     if (direction === "y" && isDownArrowKey(event)) {
-        this.moveItem(_selectedItem, 1);
+      this.moveItem(_selectedItem, 1);
     } else if (direction === "y" && isUpArrowKey(event)) {
-        this.moveItem(_selectedItem, -1);
+      this.moveItem(_selectedItem, -1);
     } else if (direction === "x" && isLeftArrowKey(event)) {
-        this.moveItem(_selectedItem, -1);
+      this.moveItem(_selectedItem, -1);
     } else if (direction === "x" && isRightArrowKey(event)) {
-        this.moveItem(_selectedItem, 1);
+      this.moveItem(_selectedItem, 1);
     } else if (isEnterKey(event) || isSpaceKey(event)) {
       // confirm will reset the _selectedItem, so caching it here before we remove it.
       const itemElement = this.get('_selectedItem.element');
+      this._announceAction(ANNOUNCEMENT_ACTION_TYPES.CONFIRM);
       this.confirmKeyboardSelection();
 
       this.set('isRetainingFocus', true);
@@ -403,6 +427,7 @@ export default Component.extend({
     } else if (isEscapeKey(event)) {
       // cancel will reset the _selectedItem, so caching it here before we remove it.
       const _selectedItemElement = this.get('_selectedItem.element');
+      this._announceAction(ANNOUNCEMENT_ACTION_TYPES.CANCEL);
       this.cancelKeyboardSelection();
 
       this.set('isRetainingFocus', true);
@@ -457,6 +482,43 @@ export default Component.extend({
       role: 'application',
       tabindex: -1,
     });
+  },
+
+  _createAnnouncer() {
+    const announcer = document.createElement('span');
+    announcer.setAttribute('aria-live', 'polite');
+    announcer.classList.add('visually-hidden');
+    return announcer;
+  },
+
+  _announceAction(type, delta = null) {
+    const a11yAnnouncementConfig = this.get('a11yAnnouncementConfig');
+    const a11yItemName = this.get('a11yItemName');
+
+    if (a11yAnnouncementConfig === NO_MODEL || !a11yItemName) {
+      return;
+    }
+
+    const sortedItems = this.get('sortedItems');
+    const _selectedItem = this.get('_selectedItem');
+    const index = sortedItems.indexOf(_selectedItem);
+    const announcer = this.get('announcer');
+
+    const config = {
+      a11yItemName,
+      index: index,
+      maxLength : sortedItems.length,
+      direction: this.get('direction'),
+      delta,
+    }
+
+    const message = a11yAnnouncementConfig[type](config);
+    announcer.textContent = message;
+
+    // Reset the message after the message is announced.
+    run.later(() => {
+      announcer.textContent = '';
+    }, 1000);
   },
 
   /**
