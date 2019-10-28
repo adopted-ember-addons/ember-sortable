@@ -7,7 +7,7 @@
     <section class="vertical-demo">
       <h3>Vertical</h3>
 
-      {{#sortable-group data-test-vertical-demo-group tagName="ol" itemVisualClass=itemVisualClass handleVisualClass=handleVisualClass onChange=(action "update") model=model.items as |group|}}
+      {{#sortable-group data-test-vertical-demo-group tagName="ol" a11yAnnouncementConfig=a11yAnnouncementConfig a11yItemName="spanish number" itemVisualClass=itemVisualClass handleVisualClass=handleVisualClass onChange=(action "update") model=model.items as |group|}}
         {{#each group.model as |item|}}
           {{#group.item data-test-vertical-demo-item tagName="li" model=item  as |groupItem|}}
             {{item}}
