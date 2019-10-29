@@ -1,9 +1,9 @@
 # Ember-sortable
 
 [![npm version](https://badge.fury.io/js/ember-sortable.svg)](http://badge.fury.io/js/ember-sortable)
-[![Download Total](https://img.shields.io/npm/dt/ember-sortable)](http://badge.fury.io/js/ember-sortable)
-[![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Build Status](https://travis-ci.org/adopted-ember-addons/ember-sortable.svg?branch=master)](https://travis-ci.org/adopted-ember-addons/ember-sortable)
+[![Downloads Weekly](https://img.shields.io/npm/dw/ember-sortable)](http://badge.fury.io/js/ember-sortable)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
 
 Sortable UI primitives for Ember.
@@ -12,17 +12,14 @@ Sortable UI primitives for Ember.
 
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
 
-## Releases ##
-We're actively working on the next exciting `2.0.0` release. The `master` branch will contain all the up-to-date development
-Please refer to the [Migration RFC](V2_MIGRATION_RFC.md) for more information.
+## Migration
+If you are migrating from `1.x.x` to `2.x.x`. Please read this [migration guide](/MIGRATION_GUIDE_V2.md).
 
 ## Requirements
 
 Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
-
-As of version 1.12.2 `ember-sortable` depends on `Element.closest`, which is [unsupported in all versions of Internet Explorer](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Browser_compatibility). A polyfill is available - both [on MDN](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill), and [as a package](https://github.com/jonathantneal/closest).
 
 ## Installation
 
@@ -35,11 +32,13 @@ $ ember install ember-sortable
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-{{#sortable-group tagName="ul" onChange=(action "reorderItems") as |group|}}
-  {{#each model.items as |item|}}
-    {{#group.item tagName="li" model=item group=group handle=".handle"}}
-      {{item.name}}
-      <span class="handle">&varr;</span>
+{{#sortable-group model=model.items onChange=(action "reorderItems") as |group|}}
+  {{#each group.model as |modelItem|}}
+    {{#group.item model=item group=group as |item|}}
+      {{modelItem.name}}
+      {{#item.handle}}
+        <span class="handle">&varr;</span>
+      {{/item.handle}}
     {{/group.item}}
   {{/each}}
 {{/sortable-group}}
@@ -65,17 +64,19 @@ export default Ember.Route.extend({
 
 ### Declaring a “group model”
 
-When `model` is set on the `sortable-group`, the `onChange` action is called
+When `groupModel` is set on the `sortable-group`, the `onChange` action is called
 with that group model as the first argument:
 
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-{{#sortable-group tagName="ul" model=model onChange=(action "reorderItems") as |group|}}
-  {{#each model.items as |item|}}
-    {{#group.item tagName="li" model=item group=group handle=".handle"}}
-      {{item.name}}
-      <span class="handle">&varr;</span>
+{{#sortable-group groupModel=model model=model.items onChange=(action "reorderItems") as |group|}}
+  {{#each group.model as |modelItem|}}
+    {{#group.item model=item group=group as |item|}}
+      {{modelItem.name}}
+      {{#item.handle}}
+        <span class="handle">&varr;</span>
+      {{/item.handle}}
     {{/group.item}}
   {{/each}}
 {{/sortable-group}}
@@ -199,13 +200,14 @@ export default Ember.Route.extend({
   {{#sortable-item
     onDragStart=(action "dragStarted")
     onDragStop=(action "dragStopped")
-    tagName="li"
-    model=item
+    model=modelItem
     group=group
-    handle=".handle"
+    as |item|
   }}
-    {{item.name}}
-    <span class="handle">&varr;</span>
+    {{modelItem.name}}
+    {{#item.handle}}
+      <span class="handle">&varr;</span>
+    {{/item.handle}}
   {{/sortable-item}}
 ```
 
@@ -218,34 +220,85 @@ No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “d
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
 ### Accessibility
+The `sortable-group` has support for the following accessibility functionality:
 
-`sortable-item`s can receive a `tabindex` which allows them to be focused.  Use this to enable keyboard sorting for accessibility.
+#### Built-in Functionalities
 
-```hbs
-{{#each myItems as |item idx| }}
-  {{#sortable-item tabindex=0 keyUp=(action 'keyUp' idx) tagName="li" model=item group=group handle=".handle"}}
-    {{item.name}}
-    <span class="handle">&varr;</span>
-  {{/sortable-item}}
-{{/each}}
+##### Semantic HTML
+- `sortable-group`
+  an ordered list, `ol`, by default.
+- `sortable-item`
+  a list item, `li`, by default.
+
+##### Keyboard Navigation
+There are 4 modes during keyboard navigation:
+- **ACTIVATE**
+  enables the keyboard navigation.
+  Activate via  `ENTER/SPACE`
+- **MOVE**
+  enables item(s) to be moved up, down, left, or right based on `direction`.
+  Activate via  `ARROW UP/DOWN/LEFT/RIGHT`
+- **CONFIRM**
+  submits the new sort order, invokes the `onChange` action.
+  Activate via  `ENTER/SPACE`.
+- **CANCEL**
+  cancels the new sort order, reverts back to the old sort order.
+  Activate via  `ESCAPE` or when `focus` is lost.
+
+##### Focus Management
+- When `focus` is on a `item` or `handle`, user can effectively select the `item` via `ENTER/SPACE`. This is the `ACTIVATE` mode.
+- While `ACTIVATE`, the `focus` is locked on `sortable-group` container and will not be lost until `CONFIRM`, `CANCEL`, or `focus` is lost.
+
+#### User configurable
+##### Screen Reader
+- **a11yItemName**
+  a name for the item.
+- **a11yAnnouncementConfig**
+  a map of `action enums` to `functions` that takes the following `config`, which is exposed by `sortable-group`.
+```javascript
+a11yAnnounceConfig = {
+  a11yItemName, // name associated with the name
+  index, // 0-based
+  maxLength, // length of the items
+  direction, // x or y
+  delta, // +1 means down or right, -1 means up or left
+}
 ```
+and returns a `string` constructed from the `config`.
 
-```js
-actions: {
-  keyUp(index, evt) {
-    switch(evt.key) {
-      case "ArrowDown":
-        // move item at `index` back one
-        break;
-      case "ArrowUp":
-        // move item at `index` forward one
-        break;
-      default:
-        return;
+**Example**
+```javascript
+{
+  ACTIVATE: function({ a11yItemName, index, maxLength, direction }) {
+    let message = `${a11yItemName} at position, ${index + 1} of ${maxLength}, is activated to be repositioned.`;
+    if (direction === 'y') {
+      message += 'Press up and down keys to change position,';
+    } else {
+      message += 'Press left and right keys to change position,';
     }
+
+    message += ' Space to confirm new position, Escape to cancel.';
+
+    return message;
+  },
+  MOVE: function({ a11yItemName, index, maxLength, delta }) {
+    return `${a11yItemName} is moved to position, ${index + 1 + delta} of ${maxLength}. Press Space to confirm new position, Escape to cancel.`;
+  },
+  CONFIRM: function({ a11yItemName}) {
+    return `${a11yItemName} is successfully repositioned.`;
+  },
+  CANCEL: function({ a11yItemName }) {
+    return `Cancelling ${a11yItemName} repositioning`;
   }
 }
 ```
+
+##### Visual Indicator
+- **handleVisualClass**
+  This class will be added to the `sortable-handle` during `ACTIVATE` and `MOVE` operations. This allows you to add custom styles such as `visual arrows` via `pseudo` classes.
+
+- **itemVisualClass**
+  This class will be added to the `sortable-item` during `ACTIVATE` and `MOVE` operations. This is needed to creating a `visual indicator` that mimics `focus` b/c the native `focus` is on the container.
 
 ## Testing
 
@@ -257,12 +310,10 @@ actions: {
 [drag]: addon/helpers/drag.js
 [reorder]: addon/helpers/reorder.js
 
-To include them in your application, import then in your `start-app.js`:
+To include them in your application, you can import them:
 
 ```js
-// tests/helpers/start-app.js
-
-import './ember-sortable/test-helpers';
+import { drag, reorder } from 'ember-sortable/test-helpers';
 ```
 
 ## Developing
