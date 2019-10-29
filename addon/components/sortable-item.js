@@ -14,6 +14,18 @@ import { buildWaiter } from 'ember-test-waiters';
 
 const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
+/**
+ * This component represents an individual model of `sortable-group`.
+ *
+ * Public API
+ * @param {Ember.Object} group the group that this model belongs to.
+ * @param {String} handle the attached handle, by default, it looks for a `sortable-handle`.
+ * @param {Function}  model the model that this component is associated with.
+ * @param {Function}  [onDragStart] An optional callback for when dragging starts.
+ * @param {Function}  [onDragStop] An optional callback for when dragging stops.
+ *
+ * @module drag-drop/-private/draggable-item
+ */
 export default Component.extend({
   layout,
   tagName: 'li',

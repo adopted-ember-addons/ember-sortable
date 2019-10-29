@@ -17,6 +17,33 @@ import {  ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
 const a = A;
 const NO_MODEL = {};
 
+/**
+ * This component supports re-ordering items in a group via drag-drop and keyboard navigation.
+ * The component is built with accessibility in mind.
+ *
+ * @param {Ember.Object} groupModel The group of models to be rearranged.
+ * @param {Ember.Array} model The array of models.
+ * @param {String} a11yItemName A name for each model, used for creating more meaningful a11y announcements.
+ * @param {Object} a11yAnnouncementConfig A map of action to function to build meaningful a11y announcements.
+ * @param {String} itemVisualClass A class for styling visual indicators on the yielded `sortable-item`.
+ * @param {Object} handleVisualClass An object for styling visual indicators on the yielded `sortable-handle` on different `move`.
+ * @param {Function} [onChange] An optional callback for when position rearrangements are confirmed.
+ *
+ * @module drag-drop/draggable-group
+ * @example
+ * {{#sortable-group data-test-vertical-demo-group tagName="ol" a11yAnnouncementConfig=a11yAnnouncementConfig a11yItemName="spanish number" itemVisualClass=itemVisualClass handleVisualClass=handleVisualClass onChange=(action "update") model=model.items as |group|}}
+ *   {{#each group.model as |item|}}
+ *     {{#group.item data-test-vertical-demo-item tagName="li" model=item  as |groupItem|}}
+ *       {{item}}
+ *       {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
+ *         <span data-item={{item}}>
+ *           <span>&vArr;</span>
+ *         </span>
+ *       {{/groupItem.handle}}
+ *     {{/group.item}}
+ *   {{/each}}
+ * {{/sortable-group}}
+**/
 export default Component.extend({
   layout,
   tagName: 'ol',
@@ -75,7 +102,10 @@ export default Component.extend({
    * @default null
    * @example
    * {
-   *  MOVE: function()
+   *  MOVE: function() {},
+   *  ACTIVATE: function() {},
+   *  CONFIRM: function() {},
+   *  CANCEL: function() {},
    * }
    */
   a11yAnnouncementConfig: NO_MODEL,
@@ -484,6 +514,9 @@ export default Component.extend({
     });
   },
 
+  /**
+   * Creates a `visually-hidden` `aria-live` announcement region.
+   */
   _createAnnouncer() {
     const announcer = document.createElement('span');
     announcer.setAttribute('aria-live', 'polite');
@@ -491,11 +524,17 @@ export default Component.extend({
     return announcer;
   },
 
+  /**
+   * Announces the message constructed from `a11yAnnouncementConfig`.
+   *
+   * @param {String} type the action type.
+   * @param {Number} delta how much distance (item-wise) is being moved.
+   */
   _announceAction(type, delta = null) {
     const a11yAnnouncementConfig = this.get('a11yAnnouncementConfig');
     const a11yItemName = this.get('a11yItemName');
 
-    if (a11yAnnouncementConfig === NO_MODEL || !a11yItemName) {
+    if (a11yAnnouncementConfig === NO_MODEL || !a11yItemName || !(type in a11yAnnouncementConfig)) {
       return;
     }
 
@@ -549,10 +588,16 @@ export default Component.extend({
     );
   },
 
+  /**
+   * Updates the selected item's visual indicators.
+   *
+   * @param {Object} item the selected item.
+   * @param {Boolean} isActive to activate or deactivate the class.
+   */
   _updateItemVisualIndicators(item, isActive) {
     const itemVisualClass = this.get('itemVisualClass');
 
-    if (itemVisualClass === NO_MODEL || !item) {
+    if (!itemVisualClass || !item) {
       return;
     }
 
@@ -563,6 +608,12 @@ export default Component.extend({
     }
   },
 
+  /**
+   * Updates the selected item's handle's visual indicators
+   *
+   * @param {Object} item the selected item.
+   * @param {Boolean} isUpdate to update or not update.
+   */
   _updateHandleVisualIndicators(item, isUpdate) {
     const handleVisualClass = this.get('handleVisualClass');
 
