@@ -76,7 +76,7 @@
 **V1**
 ```hbs
 {{#sortable-group model=model onChange=(action "reorderItems") as |group|}}
-  {{#each model.items as |item|}
+  {{#each model.items as |item|}}
   ...
 {{/sortable-group}}
 ```
@@ -84,7 +84,7 @@
 **V2**
 ```hbs
 {{#sortable-group groupModel=model model=model.items onChange=(action "reorderItems") as |group|}}
-  {{#each group.model as |item|}
+  {{#each group.model as |item|}}
   ...
 {{/sortable-group}}
 ```
@@ -102,5 +102,5 @@
 1. The `drag` and `reorder` test helpers are no longer global `async` helpers. They are now importable.
 
 ```javascript
-import { drag, reorder } from 'ember-sortable/test-helpers
+import { drag, reorder } from 'ember-sortable/test-helpers'
 ```
