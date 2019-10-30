@@ -7728,7 +7728,15 @@ regjsparser@^0.6.0:
   dependencies:
     jsesc "~0.5.0"
 
-release-it@^12.4.3:
+release-it-lerna-changelog@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/release-it-lerna-changelog/-/release-it-lerna-changelog-1.0.3.tgz#41532f10ff1209c6aeae9839fa7b2ca77a7ea646"
+  integrity sha512-zyblh1FN5xepJ2Jb9Sezn2I4we3DStpO6oPbNr673qMc0WR/22wym+AAn0dK80CCLNDKl+a/zzP3AOK8ZkGlkA==
+  dependencies:
+    lerna-changelog "^0.8.2"
+    release-it "^12.0.1"
+
+release-it@^12.0.1, release-it@^12.4.3:
   version "12.4.3"
   resolved "https://registry.yarnpkg.com/release-it/-/release-it-12.4.3.tgz#c99a72cd1c812bcde3b532ecfee8b22c652b36f8"
   integrity sha512-nQMzrAhlNg7LM7c9+4QkDtwzU/cOZeWmqsevzkp/FILSGIu3wjmQ63iSeBuZi1gpscjvJJy8/cCxhnHKczy1RQ==
