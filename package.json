@@ -20,7 +20,8 @@
     "start": "ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
-    "lint": "yarn lint:hbs && yarn lint:js"
+    "lint": "yarn lint:hbs && yarn lint:js",
+    "release": "release-it"
   },
   "dependencies": {
     "ember-cli-babel": "^7.1.2",
@@ -55,7 +56,8 @@
     "husky": "^3.0.8",
     "lerna-changelog": "^0.8.2",
     "loader.js": "^4.7.0",
-    "qunit-dom": "^0.8.5"
+    "qunit-dom": "^0.8.5",
+    "release-it": "^12.4.3"
   },
   "engines": {
     "node": "6.* || 8.* || >= 10.*"
@@ -63,5 +65,18 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://adopted-ember-addons.github.io/ember-sortable/demo/"
+  },
+  "release-it": {
+    "plugins": {
+      "release-it-lerna-changelog": {
+        "infile": "CHANGELOG.md"
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true
+    }
   }
 }
