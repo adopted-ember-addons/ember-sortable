@@ -1,3 +1,11 @@
+## v2.0.1 (2019-10-31)
+
+#### :bug: Bug Fix
+* [#305](https://github.com/adopted-ember-addons/ember-sortable/pull/305) [Bugfix] ember-test-waiters ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 1
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.0 (2019-10-31)
 
 #### :rocket: Enhancement
