@@ -3654,7 +3654,7 @@ ember-template-lint@^1.0.0-beta.5:
 
 ember-test-selectors@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.npmjs.org/ember-test-selectors/-/ember-test-selectors-2.1.0.tgz#faebdf06702aaa0bc510d55eb721ce54d2e85793"
+  resolved "https://registry.yarnpkg.com/ember-test-selectors/-/ember-test-selectors-2.1.0.tgz#faebdf06702aaa0bc510d55eb721ce54d2e85793"
   integrity sha512-c5HmvefmeABH8hg380TSNZiE9VAK1CBeXWrgyXy+IXHtsew4lZHHw7GnqCAqsakxwvmaMARbAKY9KfSAE91s1g==
   dependencies:
     ember-cli-babel "^6.8.2"
