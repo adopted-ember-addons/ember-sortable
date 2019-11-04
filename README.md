@@ -34,7 +34,7 @@ $ ember install ember-sortable
 
 {{#sortable-group model=model.items onChange=(action "reorderItems") as |group|}}
   {{#each group.model as |modelItem|}}
-    {{#group.item model=item group=group as |item|}}
+    {{#group.item model=item as |item|}}
       {{modelItem.name}}
       {{#item.handle}}
         <span class="handle">&varr;</span>
@@ -72,7 +72,7 @@ with that group model as the first argument:
 
 {{#sortable-group groupModel=model model=model.items onChange=(action "reorderItems") as |group|}}
   {{#each group.model as |modelItem|}}
-    {{#group.item model=item group=group as |item|}}
+    {{#group.item model=item as |item|}}
       {{modelItem.name}}
       {{#item.handle}}
         <span class="handle">&varr;</span>
@@ -112,7 +112,7 @@ In `x` case: elements before current one jump to the left, and elements after cu
 To change this property, define `spacing` on `sortable-item` (default is `0`):
 
 ```hbs
-{{#sortable-item tagName="li" group=group spacing=15}}
+{{#sortable-item tagName="li" spacing=15}}
 ```
 
 ### Changing the drag tolerance
@@ -122,7 +122,7 @@ If specified, sorting will not start until after mouse is dragged beyond distanc
 Can be used to allow for clicks on elements within a handle.
 
 ```hbs
-{{#sortable-item group=group distance=30}}
+{{#sortable-item distance=30}}
 ```
 
 ### CSS, Animation
@@ -201,7 +201,6 @@ export default Ember.Route.extend({
     onDragStart=(action "dragStarted")
     onDragStop=(action "dragStopped")
     model=modelItem
-    group=group
     as |item|
   }}
     {{modelItem.name}}
