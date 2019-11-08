@@ -1,6 +1,6 @@
 import { A } from '@ember/array';
 import Component from '@ember/component';
-import { set, get, computed } from '@ember/object';
+import { set, get, computed, defineProperty } from '@ember/object';
 import { run } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
 import {
@@ -127,33 +127,10 @@ export default Component.extend({
   */
   items: computed(() => a()),
 
-  /**
-    Position for the first item.
-    If spacing is present, first item's position will have to change as well.
-    @property itemPosition
-    @type Number
-  */
-  itemPosition: computed(function() {
-    const direction = this.get('direction');
-
-    return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
-  }).volatile(),
-
-  /**
-   * An array of DOM elements.
-    @property sortedItems
-    @type Array
-  */
-  sortedItems: computed(function() {
-    const items = a(this.get('items'));
-    const direction = this.get('direction');
-
-    return a(items.sortBy(direction));
-  }).volatile(),
-
   init() {
     this._super(...arguments);
 
+    this._setGetterSetters();
     this.set('moves', []);
   },
 
@@ -674,5 +651,38 @@ export default Component.extend({
    */
   activateKeyDown(){
     this.set('isKeyDownEnabled', true);
-  }
+  },
+
+  /**
+   * Defining getters and setters to support native getter and setters until we decide to drop support for ember versions below 3.10
+   */
+  _setGetterSetters() {
+    /**
+      Position for the first item.
+      If spacing is present, first item's position will have to change as well.
+      @property itemPosition
+      @type Number
+    */
+    defineProperty(this, 'itemPosition', {
+      get() {
+        const direction = this.get('direction');
+
+        return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
+      }
+    });
+
+    /**
+      An array of DOM elements.
+      @property sortedItems
+      @type Array
+    */
+    defineProperty(this, 'sortedItems', {
+      get() {
+        const items = a(this.get('items'));
+        const direction = this.get('direction');
+
+        return a(items.sortBy(direction));
+      }
+    })
+  },
 });

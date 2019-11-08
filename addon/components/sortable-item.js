@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { Promise, defer } from 'rsvp';
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, defineProperty } from '@ember/object';
 import { run, throttle } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
 import scrollParent from '../system/scroll-parent';
@@ -143,122 +143,6 @@ export default Component.extend({
   spacing: 0,
 
   /**
-    True if the item transitions with animation.
-    @property isAnimated
-    @type Boolean
-  */
-  isAnimated: computed(function() {
-    if (!this.element) { return; }
-
-    let el = this.element;
-    let property = getComputedStyle(el).transitionProperty;
-
-    return /all|transform/.test(property);
-  }).volatile(),
-
-  /**
-    The current transition duration in milliseconds.
-    @property transitionDuration
-    @type Number
-  */
-  transitionDuration: computed(function() {
-    let el = this.element;
-    let rule = getComputedStyle(el).transitionDuration;
-    let match = rule.match(/([\d.]+)([ms]*)/);
-
-    if (match) {
-      let value = parseFloat(match[1]);
-      let unit = match[2];
-
-      if (unit === 's') {
-        value = value * 1000;
-      }
-
-      return value;
-    }
-
-    return 0;
-  }).volatile(),
-
-  /**
-    Horizontal position of the item.
-    @property x
-    @type Number
-  */
-  x: computed({
-    get() {
-      if (this._x === undefined) {
-        let marginLeft = parseFloat(getComputedStyle(this.element).marginLeft);
-        this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
-      }
-
-      return this._x;
-    },
-    set(_, value) {
-      if (value !== this._x) {
-        this._x = value;
-        this._scheduleApplyPosition();
-      }
-    },
-  }).volatile(),
-
-  /**
-    Vertical position of the item relative to its offset parent.
-    @property y
-    @type Number
-  */
-  y: computed({
-    get() {
-      if (this._y === undefined) {
-        this._y = this.element.offsetTop;
-      }
-
-      return this._y;
-    },
-    set(key, value) {
-      if (value !== this._y) {
-        this._y = value;
-        this._scheduleApplyPosition();
-      }
-    }
-  }).volatile(),
-
-  /**
-    Width of the item.
-    @property height
-    @type Number
-  */
-  width: computed(function() {
-    let el = this.element;
-    let width = el.offsetWidth;
-    let elStyles = getComputedStyle(el);
-
-    width += parseInt(elStyles.marginLeft) + parseInt(elStyles.marginRight); // equal to jQuery.outerWidth(true)
-
-
-    width += getBorderSpacing(el).horizontal;
-
-    return width;
-  }).volatile(),
-
-  /**
-    Height of the item including margins.
-    @property height
-    @type Number
-  */
-  height: computed(function() {
-    let el = this.element;
-    let height = el.offsetHeight;
-
-    let marginBottom = parseFloat(getComputedStyle(el).marginBottom);
-    height += marginBottom;
-
-    height += getBorderSpacing(el).vertical;
-
-    return height;
-  }).volatile(),
-
-  /**
     @private
     Allows host instance to use the `group` property for something else with
     minimal overriding.
@@ -267,6 +151,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+    this._setGetterSetters();
   },
 
   /**
@@ -736,5 +621,133 @@ export default Component.extend({
     this.set('isDropping', false);
     this.set('wasDropped', true);
     this._tellGroup('commit');
+  },
+
+  /**
+   * Defining getters and setters to support native getter and setters until we decide to drop support for ember versions below 3.10
+   */
+  _setGetterSetters() {
+    /**
+      True if the item transitions with animation.
+      @property isAnimated
+      @type Boolean
+    */
+    defineProperty(this, 'isAnimated', {
+      get() {
+        if (!this.element) { return; }
+
+        let el = this.element;
+        let property = getComputedStyle(el).transitionProperty;
+
+        return /all|transform/.test(property);
+      }
+    });
+
+    /**
+      The current transition duration in milliseconds.
+      @property transitionDuration
+      @type Number
+    */
+    defineProperty(this, 'transitionDuration', {
+      get() {
+        let el = this.element;
+        let rule = getComputedStyle(el).transitionDuration;
+        let match = rule.match(/([\d.]+)([ms]*)/);
+
+        if (match) {
+          let value = parseFloat(match[1]);
+          let unit = match[2];
+
+          if (unit === 's') {
+            value = value * 1000;
+          }
+
+          return value;
+        }
+
+        return 0;
+      }
+    });
+
+    /**
+      Horizontal position of the item.
+      @property x
+      @type Number
+    */
+    defineProperty(this, 'x', {
+      get() {
+        if (this._x === undefined) {
+          let marginLeft = parseFloat(getComputedStyle(this.element).marginLeft);
+          this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
+        }
+
+        return this._x;
+      },
+      set(value) {
+        if (value !== this._x) {
+          this._x = value;
+          this._scheduleApplyPosition();
+        }
+      }
+    });
+
+    /**
+      Vertical position of the item relative to its offset parent.
+      @property y
+      @type Number
+    */
+    defineProperty(this, 'y', {
+      get() {
+        if (this._y === undefined) {
+          this._y = this.element.offsetTop;
+        }
+
+        return this._y;
+      },
+      set(value) {
+        if (value !== this._y) {
+          this._y = value;
+          this._scheduleApplyPosition();
+        }
+      }
+    });
+
+    /**
+      Width of the item.
+      @property height
+      @type Number
+    */
+    defineProperty(this, 'width', {
+      get() {
+        let el = this.element;
+        let width = el.offsetWidth;
+        let elStyles = getComputedStyle(el);
+
+        width += parseInt(elStyles.marginLeft) + parseInt(elStyles.marginRight); // equal to jQuery.outerWidth(true)
+
+        width += getBorderSpacing(el).horizontal;
+
+        return width;
+      }
+    });
+
+    /**
+      Height of the item including margins.
+      @property height
+      @type Number
+    */
+    defineProperty(this, 'height', {
+      get() {
+        let el = this.element;
+        let height = el.offsetHeight;
+
+        let marginBottom = parseFloat(getComputedStyle(el).marginBottom);
+        height += marginBottom;
+
+        height += getBorderSpacing(el).vertical;
+
+        return height;
+      }
+    });
   },
 });
