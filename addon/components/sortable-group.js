@@ -659,10 +659,19 @@ export default Component.extend({
     }
   },
 
+  /**
+   * Disables keyboard navigation
+   * Currently used to handle keydown events bubbling up from
+   * elements that aren't meant to invoke keyboard navigation
+   * by ignoring them.
+   */
   deactivateKeyDown() {
     this.set('isKeyDownEnabled', false);
   },
 
+  /**
+   * Enables keyboard navigation
+   */
   activateKeyDown(){
     this.set('isKeyDownEnabled', true);
   }
