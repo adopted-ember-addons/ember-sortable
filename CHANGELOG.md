@@ -1,3 +1,14 @@
+## v2.0.2 (2019-11-08)
+
+#### :rocket: Enhancement
+* [#317](https://github.com/adopted-ember-addons/ember-sortable/pull/317) Bug fixes ([@ygongdev](https://github.com/ygongdev))
+
+#### :bug: Bug Fix
+* [#317](https://github.com/adopted-ember-addons/ember-sortable/pull/317) Bug fixes ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 1
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.1 (2019-10-31)
 
 #### :bug: Bug Fix
