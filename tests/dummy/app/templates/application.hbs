@@ -7,9 +7,42 @@
     <section class="vertical-demo">
       <h3>Vertical</h3>
 
-      {{#sortable-group data-test-vertical-demo-group tagName="ol" a11yAnnouncementConfig=a11yAnnouncementConfig a11yItemName="spanish number" itemVisualClass=itemVisualClass handleVisualClass=handleVisualClass onChange=(action "update") model=model.items as |group|}}
+      {{#sortable-group
+        data-test-vertical-demo-group
+        tagName="ol"
+        a11yAnnouncementConfig=a11yAnnouncementConfig
+        a11yItemName="spanish number"
+        itemVisualClass=itemVisualClass
+        handleVisualClass=handleVisualClass onChange=(action "update")
+        model=model.items as |group|
+      }}
         {{#each group.model as |item|}}
           {{#group.item data-test-vertical-demo-item tagName="li" model=item  as |groupItem|}}
+            {{item}}
+            {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
+              <span data-item={{item}}>
+                <span>&vArr;</span>
+              </span>
+            {{/groupItem.handle}}
+          {{/group.item}}
+        {{/each}}
+      {{/sortable-group}}
+    </section>
+
+    <section class="vertical-demo">
+      <h3>Vertical With Different Sized Model</h3>
+
+      {{#sortable-group
+        data-test-vertical-demo-group
+        tagName="ol"
+        a11yAnnouncementConfig=a11yAnnouncementConfig
+        a11yItemName="spanish number"
+        itemVisualClass=itemVisualClass
+        handleVisualClass=handleVisualClass onChange=(action "updateDifferentSizedModels")
+        model=differentSizedModels as |group|
+      }}
+        {{#each group.model as |item|}}
+          {{#group.item data-test-vertical-demo-item class="word-break" tagName="li" model=item  as |groupItem|}}
             {{item}}
             {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
               <span data-item={{item}}>
@@ -63,7 +96,7 @@
 
       {{#sortable-group tagName="ol" onChange=(action "update") model=model.items as |group|}}
         {{#each group.model as |item|}}
-          {{#group.item tagName="li" model=item spacing=15}}
+          {{#group.item tabindex="0" tagName="li" model=item spacing=15}}
             {{item}}
             <span data-test-vertical-spacing-demo-handle data-item={{item}}>
             </span>
@@ -77,7 +110,7 @@
 
       {{#sortable-group tagName="ol" onChange=(action "update") model=model.items as |group|}}
         {{#each group.model as |item|}}
-          {{#group.item data-test-vertical-distance-demo-handle tagName="li" model=item distance=15}}
+          {{#group.item data-test-vertical-distance-demo-handle tagName="li" tabindex="0" model=item distance=15}}
             {{item}}
             <span data-item={{item}}>
             </span>

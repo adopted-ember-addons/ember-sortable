@@ -265,6 +265,9 @@ export default Component.extend({
    * @param {Event} evt a DOM event
    */
   keyDown(event) {
+    if (!this.get('isKeyDownEnabled')) {
+      return;
+    }
     // Note: If handle is specified, we need to target the keyDown on the handle
     const isKeyboardReorderModeEnabled = this.get('isKeyboardReorderModeEnabled');
     const _selectedItem = this.get('_selectedItem');
@@ -420,10 +423,21 @@ export default Component.extend({
     const { direction, sortedItems } = this.getProperties('direction', 'sortedItems');
     const item = sortedItems[fromIndex];
     const nextItem = sortedItems[toIndex];
+
     // switch direction values to notify sortedItems to update, so it sorts by direction.
-    const value = item.get(direction);
-    item.set(direction, nextItem.get(direction));
-    nextItem.set(direction, value);
+    let value;
+    const dimension = direction === "y" ? "height" : "width";
+    // DOWN or RIGHT
+    if (toIndex > fromIndex) {
+      value = item.get(direction);
+      item.set(direction, nextItem.get(direction) + (nextItem.get(dimension) - item.get(dimension)));
+      nextItem.set(direction, value);
+    // UP or LEFT
+    } else {
+      value = nextItem.get(direction);
+      nextItem.set(direction, item.get(direction) + (item.get(dimension) - nextItem.get(dimension)));
+      item.set(direction, value);
+    }
   },
 
   /**
@@ -644,4 +658,12 @@ export default Component.extend({
       visualHandle.classList.add(handleVisualClass[visualKeys[1]]);
     }
   },
+
+  deactivateKeyDown() {
+    this.set('isKeyDownEnabled', false);
+  },
+
+  activateKeyDown(){
+    this.set('isKeyDownEnabled', true);
+  }
 });
