@@ -30,7 +30,7 @@
     </section>
 
     <section class="vertical-demo">
-      <h3>Vertical With Different Sized Model</h3>
+      <h3>Vertical with different sized models and inputs</h3>
 
       {{#sortable-group
         data-test-vertical-demo-group
@@ -43,7 +43,8 @@
       }}
         {{#each group.model as |item|}}
           {{#group.item data-test-vertical-demo-item class="word-break" tagName="li" model=item  as |groupItem|}}
-            {{item}}
+            <label for="demo-input">{{item}}</label>
+            <input id="demo-input" type="text">
             {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
               <span data-item={{item}}>
                 <span>&vArr;</span>
