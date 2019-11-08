@@ -1,7 +1,8 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { render, find, triggerEvent } from '@ember/test-helpers';
+import { render, find, triggerEvent, fillIn } from '@ember/test-helpers';
+import { ENTER_KEY_CODE, SPACE_KEY_CODE } from "ember-sortable/utils/keyboard";
 
 module('Integration | Component | sortable group', function(hooks) {
   setupRenderingTest(hooks);
@@ -39,5 +40,24 @@ module('Integration | Component | sortable group', function(hooks) {
     `);
 
     assert.dom('#dummy-sortable-item').hasAttribute('tabindex', '0', 'sortable-items have tabindexes');
+  });
+
+  test('events on input inside sortable-item does not bubble up', async function(assert) {
+    assert.expect(2);
+
+    await render(hbs`
+      {{#sortable-group as |group|}}
+        {{#group.item tabindex=0 model=1 id="dummy-sortable-item"}}
+          <input id="item-input" type="text">
+        {{/group.item}}
+      {{/sortable-group}}
+    `);
+
+    await fillIn('#item-input', 'foo');
+    await triggerEvent('#item-input', 'keydown', SPACE_KEY_CODE);
+    assert.dom('#item-input').isFocused();
+    await fillIn('#item-input', 'bar');
+    await triggerEvent('#item-input', 'keydown', ENTER_KEY_CODE);
+    assert.dom('#item-input').isFocused();
   });
 });

@@ -319,8 +319,16 @@ export default Component.extend({
     this._primeDrag(event);
   },
 
-  keyDown() {
-    this.set('group._selectedItem', this);
+  keyDown(event) {
+    const handleElement = this.element.querySelector(this.get('handle'));
+
+    // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
+    if (event.target === handleElement || event.target === this.element) {
+      this.set('group._selectedItem', this);
+      this._tellGroup('activateKeyDown');
+    } else {
+      this._tellGroup('deactivateKeyDown');
+    }
   },
 
   /**

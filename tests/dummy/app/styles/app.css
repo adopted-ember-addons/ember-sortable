@@ -211,3 +211,7 @@
   left: calc(100% + 10px);
   border-left-color: #000;
 }
+
+.word-break {
+  word-wrap: break-word;
+}
