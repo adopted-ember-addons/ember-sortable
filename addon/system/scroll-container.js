@@ -53,13 +53,4 @@ export default class ScrollContainer {
     }
     return this.element.scrollLeft;
   }
-
-  $(selector) {
-    let element = this.element;
-    if (selector) {
-      return element.querySelector(selector);
-    } else {
-      return element;
-    }
-  }
 }
