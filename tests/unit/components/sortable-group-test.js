@@ -8,24 +8,25 @@ import {
 moduleForComponent('sortable-group', { unit: true });
 
 test('items', function(assert) {
-  let component = this.subject();
+  const component = this.subject();
 
   assert.deepEqual(component.get('items'), [],
     'expected items to default to an empty array');
 });
 
 test('sortedItems', function(assert) {
-  let items = [{ y: 30 }, { y: 10 }, { y: 20 }];
-  let component = this.subject({ items });
-  let expected = [{ y: 10 }, { y: 20 }, { y: 30 }];
+  const items = [{ y: 30 }, { y: 10 }, { y: 20 }];
+  const component = this.subject();
+  const expected = [{ y: 10 }, { y: 20 }, { y: 30 }];
 
+  items.forEach(item => component.registerItem(item));
   assert.deepEqual(component.get('sortedItems'), expected,
     'expected sortedItems to sort on y');
 });
 
 test('[de]registerItem', function(assert) {
-  let item = 'foo';
-  let component = this.subject();
+  const item = 'foo';
+  const component = this.subject();
 
   component.registerItem(item);
 
@@ -39,7 +40,7 @@ test('[de]registerItem', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  const items = [{
     y: 10,
     height: 15,
     spacing: 0
@@ -53,13 +54,14 @@ test('update', function(assert) {
     spacing: 0,
     isDragging: true
   }];
-  let component = this.subject({ items });
+  const component = this.subject();
+  items.forEach(item => component.registerItem(item));
 
   this.render();
 
   component.update();
 
-  let expected = [{
+  const expected = [{
     y: 25,
     height: 15,
     spacing: 0
@@ -80,7 +82,7 @@ test('update', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  const items = [{
     y: 15,
     height: 15,
     spacing: 10
@@ -99,13 +101,14 @@ test('update', function(assert) {
     spacing: 10
   }];
 
-  let component = this.subject({ items });
+  const component = this.subject();
+  items.forEach(item => component.registerItem(item));
 
   this.render();
 
   component.update();
 
-  let expected = [{
+  const expected = [{
     y: 5,
     height: 15,
     spacing: 10
@@ -129,7 +132,7 @@ test('update', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  const items = [{
     y: 15,
     height: 15,
     spacing: 8
@@ -148,13 +151,14 @@ test('update', function(assert) {
     spacing: 11
   }];
 
-  let component = this.subject({ items });
+  const component = this.subject();
+  items.forEach(item => component.registerItem(item));
 
   this.render();
 
   component.update();
 
-  let expected = [{
+  const expected = [{
     y: 7,
     height: 15,
     spacing: 8
@@ -178,7 +182,7 @@ test('update', function(assert) {
 });
 
 test('update', function(assert) {
-  let items = [{
+  const items = [{
     x: 15,
     width: 15,
     spacing: 10
@@ -197,16 +201,16 @@ test('update', function(assert) {
     spacing: 10
   }];
 
-  let component = this.subject({
-    items,
+  const component = this.subject({
     direction: 'x'
   });
+  items.forEach(item => component.registerItem(item));
 
   this.render();
 
   component.update();
 
-  let expected = [{
+  const expected = [{
     x: 5,
     width: 15,
     spacing: 10
@@ -230,7 +234,7 @@ test('update', function(assert) {
 });
 
 test('commit without specified group model', function(assert) {
-  let items = [{
+  const items = [{
     y: 20,
     model: 'bar'
   }, {
@@ -241,16 +245,18 @@ test('commit without specified group model', function(assert) {
     model: 'foo'
   }];
 
-  let target = EmberObject.create({
+  const target = EmberObject.create({
     reorder(newOrder) {
       this.newOrder = newOrder;
     }
   });
-  let component = this.subject({
-    items,
+  const component = this.subject({
     target,
     onChange: target.reorder.bind(target)
   });
+
+  items.forEach(item => component.registerItem(item));
+
 
   run(() => {
     component.commit();
@@ -263,7 +269,7 @@ test('commit without specified group model', function(assert) {
 test('draggedModel', function(assert) {
   assert.expect(1);
 
-  let items = [{
+  const items = [{
     y: 1,
     model: 'One',
   }, {
@@ -275,17 +281,17 @@ test('draggedModel', function(assert) {
     model: 'Three'
   }];
 
-  let target = {
+  const target = {
     action(models, draggedModel) {
       assert.equal(draggedModel, 'Two');
     }
   };
 
-  let component = this.subject({
-    items,
+  const component = this.subject({
     target,
     onChange: target.action.bind(target)
   });
+  items.forEach(item => component.registerItem(item));
 
   run(() => {
     component.commit();
@@ -293,14 +299,14 @@ test('draggedModel', function(assert) {
 });
 
 test('renders data-test-selector', function(assert) {
-  let component = this.subject();
+  const component = this.subject();
 
   assert.ok(component.get('attributeBindings').indexOf('data-test-selector') > -1,
   'support data-test-selector attribute binging');
 });
 
 test('commit with specified group model', function(assert) {
-  let items = [{
+  const items = [{
     y: 20,
     model: 'bar'
   }, {
@@ -311,21 +317,22 @@ test('commit with specified group model', function(assert) {
     model: 'foo'
   }];
 
-  let groupModel = {
+  const groupModel = {
     items: items
   };
-  let target = EmberObject.create({
+  const target = EmberObject.create({
     reorder(model, newOrder) {
       model.newOrder = newOrder;
       target.newModel = model;
     }
   });
-  let component = this.subject({
+
+  const component = this.subject({
     groupModel,
-    items,
     target,
     onChange: target.reorder.bind(target)
   });
+  items.forEach(item => component.registerItem(item));
 
   run(() => {
     component.commit();
@@ -336,7 +343,7 @@ test('commit with specified group model', function(assert) {
 });
 
 test('commit with missmatched group model', function(assert) {
-  let items = [{
+  const items = [{
     y: 20,
     model: 'bar'
   }, {
@@ -346,20 +353,20 @@ test('commit with missmatched group model', function(assert) {
     y: 10,
     model: 'foo'
   }];
-  let groupModel = null;
-  let target = EmberObject.create({
+  const groupModel = null;
+  const target = EmberObject.create({
     reorder(model, newOrder) {
       if (typeof newOrder !== 'undefined') {
         target.correctActionFired = true;
       }
     }
   });
-  let component = this.subject({
+  const component = this.subject({
     groupModel,
-    items,
     target,
     onChange: target.reorder.bind(target)
   });
+  items.forEach(item => component.registerItem(item));
 
   run(() => {
     component.commit();
