@@ -1,7 +1,6 @@
 import EmberObject from '@ember/object';
 import { run } from '@ember/runloop';
 import { moduleForComponent, test } from 'ember-qunit';
-import $ from 'jquery';
 
 const MockEvent = { };
 const MockModel = { name: 'Mock Model' };
@@ -39,8 +38,6 @@ moduleForComponent('sortable-item', {
     run(() => {
       subject.destroy();
     });
-    // Otherwise we end up with dangling event handlers.
-    $(window).off();
   }
 });
 
@@ -49,16 +46,17 @@ test('isAnimated', function(assert) {
 
   this.render();
 
-  subject.$().css({ transition: 'all' });
+  subject.element.style.transition = 'all';
   assert.equal(subject.get('isAnimated'), true);
 
-  subject.$().css({ transition: 'transform' });
+  subject.element.style.transition = 'transform';
+
   assert.equal(subject.get('isAnimated'), true);
 
-  subject.$().css({ transition: 'color' });
+  subject.element.style.transition = 'color';
   assert.equal(subject.get('isAnimated'), false);
 
-  subject.$().css({ transition: 'none' });
+  subject.element.style.transition = 'none';
   assert.equal(subject.get('isAnimated'), false);
 });
 
@@ -82,19 +80,19 @@ test('transitionDuration', function(assert) {
 
   this.render();
 
-  subject.$().css({ transition: 'all .25s' });
+  subject.element.style.transition = 'all .25s';
   assert.equal(subject.get('transitionDuration'), 250);
 
-  subject.$().css({ transition: 'all 250ms' });
+  subject.element.style.transition = 'all 250ms';
   assert.equal(subject.get('transitionDuration'), 250);
 
-  subject.$().css({ transition: 'all 0s' });
+  subject.element.style.transition = 'all 0s';
   assert.equal(subject.get('transitionDuration'), 0);
 
-  subject.$().css({ transition: 'all 0ms' });
+  subject.element.style.transition = 'all 0ms';
   assert.equal(subject.get('transitionDuration'), 0);
 
-  subject.$().css({ transition: 'none' });
+  subject.element.style.transition = 'none';
   assert.equal(subject.get('transitionDuration'), 0);
 });
 
@@ -156,11 +154,9 @@ test('height', function(assert) {
 
   this.render();
 
-  subject.$().css({
-    height: '50px',
-    marginTop: '10px',
-    marginBottom: '10px'
-  });
+  subject.element.style.height = '50px';
+  subject.element.style.marginTop = '10px';
+  subject.element.style.marginBottom = '10px';
 
   assert.equal(subject.get('height'), 60,
     'expected height to be height + margin-bottom');
@@ -171,11 +167,9 @@ test('width', function(assert) {
 
   this.render();
 
-  subject.$().css({
-    width: '50px',
-    marginLeft: '10px',
-    marginRight: '10px'
-  });
+  subject.element.style.width = '50px';
+  subject.element.style.marginLeft = '10px';
+  subject.element.style.marginRight = '10px';
 
   assert.equal(subject.get('width'), 70,
     'expected width to be width + margin-right + margin-left (like outerWidth)');

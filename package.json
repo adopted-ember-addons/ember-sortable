@@ -30,7 +30,6 @@
     "ember-test-waiters": "^1.1.1"
   },
   "devDependencies": {
-    "@ember/jquery": "^0.6.0",
     "@ember/optional-features": "^0.6.3",
     "broccoli-asset-rev": "^2.7.0",
     "ember-a11y-testing": "^1.1.1",
