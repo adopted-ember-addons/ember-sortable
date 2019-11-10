@@ -1,3 +1,19 @@
+## v2.0.3 (2019-11-10)
+
+#### :rocket: Enhancement
+* [#324](https://github.com/adopted-ember-addons/ember-sortable/pull/324) Removing @ember/jquery and updating tests ([@ygongdev](https://github.com/ygongdev))
+* [#322](https://github.com/adopted-ember-addons/ember-sortable/pull/322) Deprecating volatile in favor of native getter and setter ([@ygongdev](https://github.com/ygongdev))
+* [#321](https://github.com/adopted-ember-addons/ember-sortable/pull/321) Updated demo example and added a few more code docs ([@ygongdev](https://github.com/ygongdev))
+* [#318](https://github.com/adopted-ember-addons/ember-sortable/pull/318) Update README.md ([@2hu12](https://github.com/2hu12))
+
+#### :house: Internal
+* [#324](https://github.com/adopted-ember-addons/ember-sortable/pull/324) Removing @ember/jquery and updating tests ([@ygongdev](https://github.com/ygongdev))
+* [#322](https://github.com/adopted-ember-addons/ember-sortable/pull/322) Deprecating volatile in favor of native getter and setter ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 2
+- 2hu ([@2hu12](https://github.com/2hu12))
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.2 (2019-11-08)
 
 #### :rocket: Enhancement
