@@ -552,7 +552,7 @@ export default Component.extend({
     this.set('isDropping', true);
 
     this._tellGroup('update');
-    transitionPromise.then(() => this._complete())
+    transitionPromise.then(() => this._complete());
   },
 
   /**
