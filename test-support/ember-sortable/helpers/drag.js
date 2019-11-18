@@ -103,6 +103,10 @@ export async function drag(
     clientY: targetY,
   });
 
+  if (callbacks.beforedragend) {
+    await callbacks.beforedragend();
+  }
+
   await triggerEvent(itemElement, end, {
     clientX: targetX,
     clientY: targetY,
