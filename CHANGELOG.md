@@ -1,3 +1,14 @@
+## v2.0.6-0 (2019-11-19)
+
+#### :bug: Bug Fix
+* [#330](https://github.com/adopted-ember-addons/ember-sortable/pull/330) Attempt to fix vendor on consuming app again ([@ygongdev](https://github.com/ygongdev))
+
+#### :house: Internal
+* [#330](https://github.com/adopted-ember-addons/ember-sortable/pull/330) Attempt to fix vendor on consuming app again ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 1
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.5 (2019-11-19)
 
 #### :bug: Bug Fix
