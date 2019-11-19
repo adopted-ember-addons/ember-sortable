@@ -1,3 +1,16 @@
+## v2.0.4 (2019-11-19)
+
+#### :bug: Bug Fix
+* [#327](https://github.com/adopted-ember-addons/ember-sortable/pull/327) Adding ember-sortable to the yield scope ([@ygongdev](https://github.com/ygongdev))
+
+#### :house: Internal
+* [#327](https://github.com/adopted-ember-addons/ember-sortable/pull/327) Adding ember-sortable to the yield scope ([@ygongdev](https://github.com/ygongdev))
+* [#325](https://github.com/adopted-ember-addons/ember-sortable/pull/325) Adding nested model integration test ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 2
+- Cory Forsyth ([@bantic](https://github.com/bantic))
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.3 (2019-11-10)
 
 #### :rocket: Enhancement
