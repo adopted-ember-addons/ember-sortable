@@ -17,6 +17,8 @@ If you are migrating from `1.x.x` to `2.x.x`. Please read this [migration guide]
 
 ## Requirements
 
+In version 2.0.0+, our `closest` polyfill seems to break some app's `production` build. To mitigate this, the `closest` polyfill will only enabled if it doesn't break the `production` build (if the `polyfill` file is recognized by the build). Affected apps will need to supply their own [closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill) polyfill to ensure compatibility with IE. This issue is tracked [here](https://github.com/adopted-ember-addons/ember-sortable/issues/333).
+
 Version 1.0 depends upon the availability of 2D CSS transforms.
 Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
 to see if your target browsers are compatible.
