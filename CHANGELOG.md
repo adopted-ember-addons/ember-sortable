@@ -1,3 +1,17 @@
+## v2.0.6 (2019-11-19)
+
+#### :rocket: Enhancement
+* [#334](https://github.com/adopted-ember-addons/ember-sortable/pull/334) Updating README regarding polyfill breaking production build ([@ygongdev](https://github.com/ygongdev))
+
+#### :bug: Bug Fix
+* [#332](https://github.com/adopted-ember-addons/ember-sortable/pull/332) Mitigate vendor build error ([@ygongdev](https://github.com/ygongdev))
+
+#### :house: Internal
+* [#332](https://github.com/adopted-ember-addons/ember-sortable/pull/332) Mitigate vendor build error ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 1
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.6-1 (2019-11-19)
 
 #### :bug: Bug Fix
