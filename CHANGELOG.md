@@ -1,3 +1,16 @@
+## v2.0.5 (2019-11-19)
+
+#### :bug: Bug Fix
+* [#329](https://github.com/adopted-ember-addons/ember-sortable/pull/329) Attempt to fix vendor on consuming app production build ([@ygongdev](https://github.com/ygongdev))
+* [#328](https://github.com/adopted-ember-addons/ember-sortable/pull/328) Correcting test-support helper extraction ([@ygongdev](https://github.com/ygongdev))
+
+#### :house: Internal
+* [#329](https://github.com/adopted-ember-addons/ember-sortable/pull/329) Attempt to fix vendor on consuming app production build ([@ygongdev](https://github.com/ygongdev))
+* [#328](https://github.com/adopted-ember-addons/ember-sortable/pull/328) Correcting test-support helper extraction ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 1
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.4 (2019-11-19)
 
 #### :bug: Bug Fix
