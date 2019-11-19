@@ -101,6 +101,4 @@
 ### Testing
 1. The `drag` and `reorder` test helpers are no longer global `async` helpers. They are now importable.
 
-```javascript
-import { drag, reorder } from 'ember-sortable/test-helpers'
-```
+Refer to [Testing Section](/README.md#Testing) for more details.
