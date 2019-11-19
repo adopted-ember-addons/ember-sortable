@@ -305,14 +305,41 @@ and returns a `string` constructed from the `config`.
 
 * [`drag`][drag]: Drags elements by an offset specified in pixels.
 * [`reorder`][reorder]: Reorders elements to the specified state.
+* [`keyboard`][keyboard]: Keycode constants for quick.
 
-[drag]: addon/helpers/drag.js
-[reorder]: addon/helpers/reorder.js
+[drag]: addon-test-support/helpers/drag.js
+[reorder]: addon-test-support/helpers/reorder.js
+[keyboard]: addon-test-support/utils/kebyoard.js
 
 To include them in your application, you can import them:
 
 ```js
-import { drag, reorder } from 'ember-sortable/test-helpers';
+import { drag, reorder }  from 'ember-sortable/test-support/helpers';
+import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/test-support/utils/keyboard";
+```
+
+### Examples
+`Reorder`
+```js
+await reorder(
+  'mouse',
+  '[data-test-vertical-demo-handle]',
+  ...order
+);
+```
+
+`Drag`
+```js
+await drag('mouse', '[data-test-scrollable-demo-handle] .handle', () => { return {dy: itemHeight() * 2 + 1, dx: undefined}});
+```
+
+`Keyboard`
+```js
+await triggerKeyEvent(
+  '[data-test-vertical-demo-handle]',
+  'keydown',
+  ENTER_KEY_CODE
+);
 ```
 
 ## Developing

@@ -1,5 +1,5 @@
 import { find, findAll } from '@ember/test-helpers';
-import { drag } from '../helpers/drag';
+import { drag } from './drag';
 import { getOffset } from '../utils/offset';
 /**
   In tests, the dummy app is rendered at half size.
