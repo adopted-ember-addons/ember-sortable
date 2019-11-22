@@ -18,7 +18,6 @@ const sortableItemWaiter = buildWaiter("sortable-item-waiter");
  * This component represents an individual model of `sortable-group`.
  *
  * Public API
- * @param {Ember.Object} group the group that this model belongs to.
  * @param {String} handle the attached handle, by default, it looks for a `sortable-handle`.
  * @param {Function}  model the model that this component is associated with.
  * @param {Function}  [onDragStart] An optional callback for when dragging starts.
@@ -33,14 +32,6 @@ export default Component.extend({
   classNameBindings: ['isDragging', 'isDropping'],
 
   attributeBindings: ['data-test-selector', 'tabindex'],
-
-  /**
-    Group to which the item belongs.
-    @property group
-    @type SortableGroup
-    @default null
-  */
-  group: null,
 
   /**
     Model which the item represents.
@@ -147,7 +138,7 @@ export default Component.extend({
     Allows host instance to use the `group` property for something else with
     minimal overriding.
   */
-  _direction: computed.readOnly('group.direction'),
+  _direction: computed.readOnly('direction'),
 
   init() {
     this._super(...arguments);
@@ -160,9 +151,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "registerItem", this);
+    this.registerItem(this);
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
@@ -182,9 +171,7 @@ export default Component.extend({
   */
   willDestroyElement() {
     this._super(...arguments);
-    // scheduled to prevent deprecation warning:
-    // "never change properties on components, services or models during didInsertElement because it causes significant performance degradation"
-    run.schedule("afterRender", this, "_tellGroup", "deregisterItem", this);
+    this.deregisterItem(this);
 
     // remove event listeners that may still be attached
     DRAG_ACTIONS.forEach(event => window.removeEventListener(event, this._prepareDragListener));
@@ -209,10 +196,10 @@ export default Component.extend({
 
     // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
     if (event.target === handleElement || event.target === this.element) {
-      this.set('group._selectedItem', this);
-      this._tellGroup('activateKeyDown');
+      this.setSelectedItem(this);
+      this.activateKeyDown();
     } else {
-      this._tellGroup('deactivateKeyDown');
+      this.deactivateKeyDown();
     }
   },
 
@@ -333,7 +320,7 @@ export default Component.extend({
     DRAG_ACTIONS.forEach(event => window.addEventListener(event, dragThrottled));
     END_ACTIONS.forEach(event => window.addEventListener(event, drop));
 
-    this._tellGroup('prepare');
+    this.prepare();
     this.set('isDragging', true);
     this.onDragStart(this.get('model'));
     this._scrollOnEdges(drag);
@@ -474,18 +461,6 @@ export default Component.extend({
   },
 
   /**
-    @method _tellGroup
-    @private
-  */
-  _tellGroup(method, ...args) {
-    let group = this.get('group');
-
-    if (group) {
-      group[method](...args);
-    }
-  },
-
-  /**
     @method _scheduleApplyPosition
     @private
   */
@@ -534,7 +509,7 @@ export default Component.extend({
       this.set('y', dimension);
     }
 
-    throttle(this, '_tellGroup', 'update', updateInterval);
+    throttle(this, 'update', updateInterval);
   },
 
   /**
@@ -551,7 +526,7 @@ export default Component.extend({
     this.set('isDragging', false);
     this.set('isDropping', true);
 
-    this._tellGroup('update');
+    this.update();
     transitionPromise.then(() => this._complete());
   },
 
@@ -620,7 +595,7 @@ export default Component.extend({
     this.onDragStop(this.get('model'));
     this.set('isDropping', false);
     this.set('wasDropped', true);
-    this._tellGroup('commit');
+    this.commit();
   },
 
   /**
