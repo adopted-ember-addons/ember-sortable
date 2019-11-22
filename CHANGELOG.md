@@ -1,3 +1,17 @@
+## v2.1.0-beta.0 (2019-11-22)
+
+#### :rocket: Enhancement
+* [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
+
+#### :bug: Bug Fix
+* [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
+
+#### :house: Internal
+* [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 1
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.0.6 (2019-11-19)
 
 #### :rocket: Enhancement
