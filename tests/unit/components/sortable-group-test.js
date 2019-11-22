@@ -19,7 +19,7 @@ test('sortedItems', function(assert) {
   const component = this.subject();
   const expected = [{ y: 10 }, { y: 20 }, { y: 30 }];
 
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
   assert.deepEqual(component.get('sortedItems'), expected,
     'expected sortedItems to sort on y');
 });
@@ -28,12 +28,12 @@ test('[de]registerItem', function(assert) {
   const item = 'foo';
   const component = this.subject();
 
-  component.registerItem(item);
+  component._registerItem(item);
 
   assert.ok(component.get('items').includes(item),
     'expected registerItem to add item to items');
 
-  component.deregisterItem(item);
+  component._deregisterItem(item);
 
   assert.ok(!component.get('items').includes(item),
     'expected registerItem to remove item from items');
@@ -55,11 +55,11 @@ test('update', function(assert) {
     isDragging: true
   }];
   const component = this.subject();
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   this.render();
 
-  component.update();
+  component._update();
 
   const expected = [{
     y: 25,
@@ -102,11 +102,11 @@ test('update', function(assert) {
   }];
 
   const component = this.subject();
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   this.render();
 
-  component.update();
+  component._update();
 
   const expected = [{
     y: 5,
@@ -152,11 +152,11 @@ test('update', function(assert) {
   }];
 
   const component = this.subject();
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   this.render();
 
-  component.update();
+  component._update();
 
   const expected = [{
     y: 7,
@@ -204,11 +204,11 @@ test('update', function(assert) {
   const component = this.subject({
     direction: 'x'
   });
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   this.render();
 
-  component.update();
+  component._update();
 
   const expected = [{
     x: 5,
@@ -255,11 +255,11 @@ test('commit without specified group model', function(assert) {
     onChange: target.reorder.bind(target)
   });
 
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
 
   run(() => {
-    component.commit();
+    component._commit();
   });
 
   assert.deepEqual(target.newOrder, ['foo', 'bar', 'baz'],
@@ -291,10 +291,10 @@ test('draggedModel', function(assert) {
     target,
     onChange: target.action.bind(target)
   });
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   run(() => {
-    component.commit();
+    component._commit();
   });
 });
 
@@ -332,10 +332,10 @@ test('commit with specified group model', function(assert) {
     target,
     onChange: target.reorder.bind(target)
   });
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   run(() => {
-    component.commit();
+    component._commit();
   });
 
   assert.deepEqual(target.newModel.newOrder, ['foo', 'bar', 'baz'],
@@ -366,10 +366,10 @@ test('commit with missmatched group model', function(assert) {
     target,
     onChange: target.reorder.bind(target)
   });
-  items.forEach(item => component.registerItem(item));
+  items.forEach(item => component._registerItem(item));
 
   run(() => {
-    component.commit();
+    component._commit();
   });
 
   assert.equal(target.correctActionFired, true,

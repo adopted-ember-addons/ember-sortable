@@ -144,95 +144,6 @@ export default Component.extend({
   },
 
   /**
-    Register an item with this group.
-    @method registerItem
-    @param {SortableItem} [item]
-  */
-  registerItem(item) {
-    this.get('items').addObject(item);
-  },
-
-  /**
-    De-register an item with this group.
-    @method deregisterItem
-    @param {SortableItem} [item]
-  */
-  deregisterItem(item) {
-    this.get('items').removeObject(item);
-  },
-
-  /**
-    Prepare for sorting.
-    Main purpose is to stash the current itemPosition so
-    we don’t incur expensive re-layouts.
-    @method prepare
-  */
-  prepare() {
-    this._itemPosition = this.get('itemPosition');
-  },
-
-  /**
-    Update item positions (relatively to the first element position).
-    @method update
-  */
-  update() {
-    let sortedItems = this.get('sortedItems');
-    // Position of the first element
-    let position = this._itemPosition;
-
-    // Just in case we haven’t called prepare first.
-    if (position === undefined) {
-      position = this.get('itemPosition');
-    }
-
-    sortedItems.forEach(item => {
-      let dimension;
-      let direction = this.get('direction');
-
-      if (!get(item, 'isDragging')) {
-        set(item, direction, position);
-      }
-
-      // add additional spacing around active element
-      if (get(item, 'isBusy')) {
-        position += get(item, 'spacing') * 2;
-      }
-
-      if (direction === 'x') {
-        dimension = 'width';
-      }
-      if (direction === 'y') {
-        dimension = 'height';
-      }
-
-      position += get(item, dimension);
-    });
-  },
-
-  /**
-    @method commit
-  */
-  commit() {
-    const items = this.get('sortedItems');
-    const groupModel = this.get('groupModel');
-    const itemModels = items.mapBy('model');
-    const draggedItem = items.findBy('wasDropped', true);
-    let draggedModel;
-
-    if (draggedItem) {
-      set(draggedItem, 'wasDropped', false); // Reset
-      draggedModel = get(draggedItem, 'model');
-    }
-
-    this._updateItems();
-    if (groupModel !== NO_MODEL) {
-      this.onChange(groupModel, itemModels, draggedModel);
-    } else {
-      this.onChange(itemModels, draggedModel);
-    }
-  },
-
-  /**
    * Explanation
    * 1. `KeyboardReorderMode` is disabled: users can activate it via ENTER or SPACE.
    * 2. `KeyboardReorderMode` is enabled: users can reorder via UP or DOWN arrow keys. TODO: Expand to more keys, e.g LEFT, RIGHT
@@ -302,6 +213,7 @@ export default Component.extend({
     const { sortedItems, moves } = this.getProperties('sortedItems', 'moves');
     const sortedIndex = sortedItems.indexOf(item);
     const newSortedIndex = sortedIndex + delta;
+
     // If out of bounds, we don't do anything.
     if (newSortedIndex < 0 || newSortedIndex >= sortedItems.length) {
       return;
@@ -364,6 +276,116 @@ export default Component.extend({
     this._updateItemVisualIndicators(_selectedItem, false);
     this._updateHandleVisualIndicators(_selectedItem, false);
     this._resetItemSelection();
+  },
+
+  /**
+   * Enables keyboard navigation
+   */
+  _activateKeyDown(){
+    this.set('isKeyDownEnabled', true);
+  },
+
+  /**
+   * Disables keyboard navigation
+   * Currently used to handle keydown events bubbling up from
+   * elements that aren't meant to invoke keyboard navigation
+   * by ignoring them.
+   */
+  _deactivateKeyDown() {
+    this.set('isKeyDownEnabled', false);
+  },
+
+  /**
+    Register an item with this group.
+    @method registerItem
+    @param {SortableItem} [item]
+  */
+  _registerItem(item) {
+    this.get('items').addObject(item);
+  },
+
+  /**
+    De-register an item with this group.
+    @method deregisterItem
+    @param {SortableItem} [item]
+  */
+  _deregisterItem(item) {
+    this.get('items').removeObject(item);
+  },
+
+  _setSelectedItem(item) {
+    this.set('_selectedItem', item);
+  },
+
+  /**
+    Prepare for sorting.
+    Main purpose is to stash the current itemPosition so
+    we don’t incur expensive re-layouts.
+    @method _=repare
+  */
+  _prepare() {
+    this._itemPosition = this.get('itemPosition');
+  },
+
+  /**
+    Update item positions (relatively to the first element position).
+    @method update
+  */
+  _update() {
+    let sortedItems = this.get('sortedItems');
+    // Position of the first element
+    let position = this._itemPosition;
+
+    // Just in case we haven’t called prepare first.
+    if (position === undefined) {
+      position = this.get('itemPosition');
+    }
+
+    sortedItems.forEach(item => {
+      let dimension;
+      let direction = this.get('direction');
+
+      if (!get(item, 'isDragging')) {
+        set(item, direction, position);
+      }
+
+      // add additional spacing around active element
+      if (get(item, 'isBusy')) {
+        position += get(item, 'spacing') * 2;
+      }
+
+      if (direction === 'x') {
+        dimension = 'width';
+      }
+      if (direction === 'y') {
+        dimension = 'height';
+      }
+
+      position += get(item, dimension);
+    });
+  },
+
+  /**
+    @method _commit
+  */
+  _commit() {
+    const items = this.get('sortedItems');
+    const groupModel = this.get('groupModel');
+    const itemModels = items.mapBy('model');
+    const draggedItem = items.findBy('wasDropped', true);
+    let draggedModel;
+
+    if (draggedItem) {
+      set(draggedItem, 'wasDropped', false); // Reset
+      draggedModel = get(draggedItem, 'model');
+    }
+
+    this._updateItems();
+    if (groupModel !== NO_MODEL) {
+      this.onChange(groupModel, itemModels, draggedModel);
+    } else {
+      this.onChange(itemModels, draggedModel);
+    }
   },
 
   /**
@@ -637,23 +659,6 @@ export default Component.extend({
   },
 
   /**
-   * Disables keyboard navigation
-   * Currently used to handle keydown events bubbling up from
-   * elements that aren't meant to invoke keyboard navigation
-   * by ignoring them.
-   */
-  deactivateKeyDown() {
-    this.set('isKeyDownEnabled', false);
-  },
-
-  /**
-   * Enables keyboard navigation
-   */
-  activateKeyDown(){
-    this.set('isKeyDownEnabled', true);
-  },
-
-  /**
    * Defining getters and setters to support native getter and setters until we decide to drop support for ember versions below 3.10
    */
   _setGetterSetters() {
@@ -685,4 +690,38 @@ export default Component.extend({
       }
     })
   },
+
+  actions: {
+    activateKeyDown(){
+      this._activateKeyDown();
+    },
+
+    deactivateKeyDown() {
+      this._deactivateKeyDown();
+    },
+
+    registerItem(item) {
+      this._registerItem(item);
+    },
+
+    deregisterItem(item) {
+      this._registerItem(item);
+    },
+
+    setSelectedItem(item) {
+      this._setSelectedItem(item);
+    },
+
+    prepare() {
+      this._prepare();
+    },
+
+    update() {
+      this._update();
+    },
+
+    commit() {
+      this._commit();
+    },
+  }
 });

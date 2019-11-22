@@ -1,1 +1,16 @@
-{{yield (hash item=(component "ember-sortable@sortable-item" group=this) model=model)}}
+{{yield (
+  hash
+    item=(component "ember-sortable@sortable-item"
+      direction=direction
+      registerItem=(action "registerItem")
+      deregisterItem=(action "deregisterItem")
+      setSelectedItem=(action "setSelectedItem")
+      update=(action "update")
+      prepare=(action "prepare")
+      commit=(action "commit")
+      activateKeyDown=(action "activateKeyDown")
+      deactivateKeyDown=(action "deactivateKeyDown")
+    )
+    model=model
+  )
+}}

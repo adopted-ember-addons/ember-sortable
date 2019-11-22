@@ -6,6 +6,7 @@ const MockEvent = { };
 const MockModel = { name: 'Mock Model' };
 const MockGroup = EmberObject.extend({
   direction: 'y',
+
   registerItem(item) {
     this.item = item;
   },
@@ -28,9 +29,14 @@ moduleForComponent('sortable-item', {
 
   beforeEach() {
     run(() => {
-      group = MockGroup.create();
       subject = this.subject();
-      subject.set('group', group);
+      group = MockGroup.create();
+      subject.set('direction', group.direction);
+      subject.set('registerItem', group.registerItem.bind(group));
+      subject.set('deregisterItem', group.deregisterItem.bind(group));
+      subject.set('update', group.update.bind(group));
+      subject.set('prepare', group.prepare.bind(group));
+      subject.set('commit', group.commit.bind(group));
     });
   },
 
@@ -138,6 +144,7 @@ test('set x', function(assert) {
 
   run(() => {
     group.set('direction', 'x');
+    subject.set('direction', 'x');
     subject.set('x', 50);
   });
 
@@ -179,7 +186,6 @@ test('registers itself with group', function(assert) {
   assert.expect(1);
 
   this.render();
-
   assert.equal(group.item, subject,
     'expected to be registered with group');
 });
