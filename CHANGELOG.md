@@ -1,3 +1,6 @@
+* [A11y enhancement] Adding role=button to sortable-handle (828cace)
+* [Bugfix] Use deregisterItem instead of registerItem on destroy [Feature] Adding isDraggingDisabled flag to allow specifying a sortable-item to be non-sortable (29fc641)
+
 
 
 ## v2.1.0-beta.0 (2019-11-22)
