@@ -5,7 +5,7 @@ import { render, find, triggerEvent, fillIn, triggerKeyEvent } from '@ember/test
 import { ENTER_KEY_CODE, SPACE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/utils/keyboard";
 import { set, setProperties } from '@ember/object';
 
-module('Integration | Component | sortable group', function(hooks) {
+module('Integration | Component | sortable-group', function(hooks) {
   setupRenderingTest(hooks);
 
   const NESTED_MODEL = [
