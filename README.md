@@ -212,6 +212,13 @@ export default Ember.Route.extend({
   {{/sortable-item}}
 ```
 
+### Disabling Drag (Experimental)
+`sortable-item` exposes an optional `isDraggingDisabled` flag that you can use to disable `drag` on the particular item.
+This flag is intended as an utility to make your life easier with 3 main benefits:
+1. You can now specify which `sortable-item` are not intended to be draggable/sortable.
+2. You do not have to duplicate the `sortable-item` UI just for the purpose of disabling the `sorting` behavior.
+3. Allows you to access the entire list of `models` for your `onChange` action, which can now be a mix of sortable and non-sortable items.
+
 ### Data down, actions up
 
 No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.

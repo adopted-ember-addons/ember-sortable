@@ -134,6 +134,14 @@ export default Component.extend({
   spacing: 0,
 
   /**
+    Removes the ability for the current item to be dragged
+    @property isDraggingDisabled
+    @type Boolean
+    @default false
+  */
+  isDraggingDisabled: false,
+
+  /**
     @private
     Allows host instance to use the `group` property for something else with
     minimal overriding.
@@ -251,6 +259,11 @@ export default Component.extend({
    * @private
    */
   _primeDrag(startEvent) {
+    // Prevent dragging if the sortable-item is disabled.
+    if (this.get('isDraggingDisabled')) {
+      return;
+    }
+
     let handle = this.get('handle');
 
     if (handle && !startEvent.target.closest(handle)) {

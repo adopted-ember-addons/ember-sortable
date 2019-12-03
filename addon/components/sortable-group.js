@@ -705,7 +705,7 @@ export default Component.extend({
     },
 
     deregisterItem(item) {
-      this._registerItem(item);
+      this._deregisterItem(item);
     },
 
     setSelectedItem(item) {
