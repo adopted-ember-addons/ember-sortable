@@ -5,7 +5,7 @@ import { drag, reorder }  from 'ember-sortable/test-support/helpers';
 import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/test-support/utils/keyboard";
 import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
-module('Acceptance | smoke', function(hooks) {
+module('Acceptance | smoke component', function(hooks) {
   setupApplicationTest(hooks);
 
   test('reordering with mouse events', async function(assert) {
