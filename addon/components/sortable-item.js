@@ -627,7 +627,7 @@ export default Component.extend({
         let el = this.element;
         let property = getComputedStyle(el).transitionProperty;
 
-        return /all|transform/.test(property);
+        return /all|transform/.test(property) && this.get("transitionDuration") > 0;
       }
     });
 
