@@ -279,7 +279,7 @@ export default class Sortable extends Component {
   /**
    * API of methods needed by the modifiers
    *
-   * This api was created to prevent re-rendering when some of the things change. These things are needec
+   * This api was created to prevent re-rendering when some of the things change. These things are needed
    * upon request, and if not requested are not needed, so no reason to re-render. Was also getting an
    * infinite re-render because of this
    */

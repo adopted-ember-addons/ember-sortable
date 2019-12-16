@@ -82,9 +82,9 @@ modifier.
 
 ```hbs
 <Sortable @model={{model.items}} @onChange={{action "reorderItems"}} as |sortable|>
-  <ol {{sortable-group api=sortable.api}}>
+  <ol {{sortable-group api=sortable.api a11yItemName=this.a11yItemName}}>
     {{#each sortable.model as |item|}}
-       <li {{sortable-item api=sortable.api model=item a11yItemName=this.a11yItemName}}>
+       <li {{sortable-item api=sortable.api model=item}}>
           {{tem.name}}
           <span class="handle" {{sortable-handle api=sortable.api model=item}}>&varr;</span>
        </li>
