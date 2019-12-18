@@ -150,3 +150,25 @@
     </p>
   </footer>
 </article>
+<article class="demo-no-css">
+  <section class="vertical-demo">
+    <h3>Vertical</h3>
+
+    {{#sortable-group
+            data-test-vertical-demo-group-no-css
+            handleVisualClass=handleVisualClass onChange=(action "update")
+            model=model.items as |group|
+    }}
+      {{#each group.model as |item|}}
+        {{#group.item data-test-vertical-demo-item-no-css tagName="li" model=item  as |groupItem|}}
+          {{item}}
+          {{#groupItem.handle data-test-vertical-demo-handle-no-css class="handle"}}
+            <span data-item={{item}}>
+              <span>&vArr;</span>
+            </span>
+          {{/groupItem.handle}}
+        {{/group.item}}
+      {{/each}}
+    {{/sortable-group}}
+  </section>
+</article>

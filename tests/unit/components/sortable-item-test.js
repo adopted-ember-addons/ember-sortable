@@ -48,21 +48,26 @@ moduleForComponent('sortable-item', {
 });
 
 test('isAnimated', function(assert) {
-  assert.expect(4);
+  assert.expect(6);
 
-  this.render();
+  this.render(); //
 
-  subject.element.style.transition = 'all';
-  assert.equal(subject.get('isAnimated'), true);
-
-  subject.element.style.transition = 'transform';
-
-  assert.equal(subject.get('isAnimated'), true);
-
-  subject.element.style.transition = 'color';
   assert.equal(subject.get('isAnimated'), false);
 
-  subject.element.style.transition = 'none';
+  subject.element.style.transition = 'all 0s';
+  assert.equal(subject.get('isAnimated'), false);
+
+  subject.element.style.transition = 'all .125s';
+  assert.equal(subject.get('isAnimated'), true);
+
+  subject.element.style.transition = 'transform .125s';
+
+  assert.equal(subject.get('isAnimated'), true);
+
+  subject.element.style.transition = 'color .125s';
+  assert.equal(subject.get('isAnimated'), false);
+
+  subject.element.style.transition = 'none .125s';
   assert.equal(subject.get('isAnimated'), false);
 });
 

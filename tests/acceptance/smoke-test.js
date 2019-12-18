@@ -91,7 +91,28 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
   });
 
-  test('reordering with touch events', async function(assert) {
+  test('Test is Animated still works without css for transitionDuration', async function(assert) {
+    await visit('/');
+
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    let order = findAll('[data-test-vertical-demo-handle-no-css]').reverse();
+    await reorder(
+      'mouse',
+      '[data-test-vertical-demo-handle-no-css]',
+      ...order
+    );
+
+    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
+  });
+
+    test('reordering with touch events', async function(assert) {
     await visit('/');
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
