@@ -6,4 +6,4 @@ export const ANNOUNCEMENT_ACTION_TYPES = {
   MOVE: 'MOVE',
   CONFIRM: 'CONFIRM',
   CANCEL: 'CANCEL',
-}
+};

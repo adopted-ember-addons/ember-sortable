@@ -5,7 +5,7 @@ import { drag, reorder }  from 'ember-sortable/test-support/helpers';
 import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/test-support/utils/keyboard";
 import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
-module('Acceptance | smoke', function(hooks) {
+module('Acceptance | smoke component', function(hooks) {
   setupApplicationTest(hooks);
 
   test('reordering with mouse events', async function(assert) {
@@ -91,7 +91,7 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
   });
 
-  test('Test is Animated still works without css for transitionDuration', async function(assert) {
+  test('Test isAnimated still works without css for transitionDuration', async function(assert) {
     await visit('/');
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
@@ -112,7 +112,7 @@ module('Acceptance | smoke', function(hooks) {
     assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
   });
 
-    test('reordering with touch events', async function(assert) {
+  test('reordering with touch events', async function(assert) {
     await visit('/');
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
