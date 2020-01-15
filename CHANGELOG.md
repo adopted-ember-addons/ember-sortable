@@ -1,3 +1,5 @@
+* Added check for transitionDuration to isAnimated (#343) (b0597db)
+
 * [A11y enhancement] Adding role=button to sortable-handle (828cace)
 * [Bugfix] Use deregisterItem instead of registerItem on destroy [Feature] Adding isDraggingDisabled flag to allow specifying a sortable-item to be non-sortable (29fc641)
 
