@@ -386,7 +386,9 @@ export default Component.extend({
       if (this._pageX == null && this._pageY == null) { return; }
       return {
         pageX: this._pageX,
-        pageY: this._pageY
+        pageY: this._pageY,
+        clientX: this._pageX,
+        clientY: this._pageY
       };
     };
 
