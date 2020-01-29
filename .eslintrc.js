@@ -1,7 +1,8 @@
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2018,
     sourceType: 'module'
   },
   plugins: [
@@ -16,6 +17,7 @@ module.exports = {
   },
   rules: {
     'ember/closure-actions': 'off',
+    "no-console": ["error", {allow: ["warn", "error"]}],
     'arrow-spacing': 'error'
   },
   overrides: [

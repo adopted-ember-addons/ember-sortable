@@ -31,6 +31,7 @@ $ ember install ember-sortable
 
 ## Usage
 
+### component 
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -44,6 +45,20 @@ $ ember install ember-sortable
     {{/group.item}}
   {{/each}}
 {{/sortable-group}}
+```
+
+### modifier 
+```hbs
+{{! app/templates/my-route.hbs }}
+
+<ol {{sortable-group onChange=(action "reorderItems")}}>
+  {{#each model.items as |modelItem|}}
+    <li {{group.item model=modelItem}}>
+      {{modelItem.name}}
+      <span class="handle" {{sortable-handle}}>&varr;</span>
+    </li>
+  {{/each}}
+</ol>>
 ```
 
 The `onChange` action is called with two arguments:
@@ -96,12 +111,33 @@ export default Ember.Route.extend({
 });
 ```
 
+The modifier version does not support `groupModel`, use the currying of `action` or the `fn` helper.
+
+```hbs
+{{! app/templates/my-route.hbs }}
+
+<ol {{sortable-group onChange=(action "reorderItems" model)}}>
+  {{#each model.items as |modelItem|}}
+    <li {{group.item model=modelItem}}>
+      {{modelItem.name}}
+      <span class="handle" {{sortable-handle}}>&varr;</span>
+    </li>
+  {{/each}}
+</ol>>
+```
+
+
 ### Changing sort direction
 
 To change sort direction, define `direction` on `sortable-group` (default is `y`):
 
+component
 ```hbs
 {{#sortable-group direction="x" onChange=(action "reorderItems") as |group|}}
+```
+modifier
+```hbs
+<ol {{sortable-group direction="x" onChange=(action "reorderItems")}>
 ```
 
 ### Changing spacing between currently dragged element and the rest of the group
@@ -113,8 +149,13 @@ In `x` case: elements before current one jump to the left, and elements after cu
 
 To change this property, define `spacing` on `sortable-item` (default is `0`):
 
+component
 ```hbs
-{{#sortable-item tagName="li" spacing=15}}
+{{#sortable-item spacing=15}}
+```
+modifier
+```hbs
+<li {{sortable-item spacing=15}}>
 ```
 
 ### Changing the drag tolerance
@@ -123,8 +164,13 @@ To change this property, define `spacing` on `sortable-item` (default is `0`):
 If specified, sorting will not start until after mouse is dragged beyond distance.
 Can be used to allow for clicks on elements within a handle.
 
+component
 ```hbs
 {{#sortable-item distance=30}}
+```
+modifier
+```hbs
+<li {{sortable-item distance=30}}>
 ```
 
 ### CSS, Animation
@@ -198,6 +244,7 @@ export default Ember.Route.extend({
 });
 ```
 
+component
 ```hbs
   {{#sortable-item
     onDragStart=(action "dragStarted")
@@ -211,9 +258,21 @@ export default Ember.Route.extend({
     {{/item.handle}}
   {{/sortable-item}}
 ```
+modifier
+```hbs
+  <li {{#sortable-item
+    onDragStart=(action "dragStarted")
+    onDragStop=(action "dragStopped")
+    model=modelItem
+    }}
+  >
+    {{modelItem.name}}
+    <span class="handle" {{sortable-handle}}>&varr;</span>
+  </li>
+```
 
 ### Disabling Drag (Experimental)
-`sortable-item` exposes an optional `isDraggingDisabled` flag that you can use to disable `drag` on the particular item.
+`sortable-item` (component and modifier) exposes an optional `isDraggingDisabled` flag that you can use to disable `drag` on the particular item.
 This flag is intended as an utility to make your life easier with 3 main benefits:
 1. You can now specify which `sortable-item` are not intended to be draggable/sortable.
 2. You do not have to duplicate the `sortable-item` UI just for the purpose of disabling the `sorting` behavior.
@@ -223,8 +282,6 @@ This flag is intended as an utility to make your life easier with 3 main benefit
 
 No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “data down, actions up”, a fresh array containing the models from each item in their new order is sent via the group’s `onChange` action.
 
-`sortable-group` yields itself to the block so that it may be assigned explicitly to each item’s `group` property.
-
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
 ### Accessibility
@@ -233,10 +290,14 @@ The `sortable-group` has support for the following accessibility functionality:
 #### Built-in Functionalities
 
 ##### Semantic HTML
+
+component
 - `sortable-group`
   an ordered list, `ol`, by default.
 - `sortable-item`
   a list item, `li`, by default.
+  
+The modifier version can be attached to to any element that makes sense, 
 
 ##### Keyboard Navigation
 There are 4 modes during keyboard navigation:

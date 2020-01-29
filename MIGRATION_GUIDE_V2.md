@@ -2,6 +2,8 @@
 
 ## Migration Guide (v1 -> v2)
 
+[High Order Components](#Higher Order Components) or [Modifiers](/MIGRATION_GUIDE_MODIFIERS.md)
+
 ### Higher Order Components
 `Ember-sortable` can now be built using [higher order components](https://v4.chriskrycho.com/2018/higher-order-components-in-emberjs.html)
 
@@ -88,6 +90,8 @@
   ...
 {{/sortable-group}}
 ```
+
+### Modifiers
 
 ### Accessibility support
 1. Keyboard navigation is built into `ember-sortable`.
