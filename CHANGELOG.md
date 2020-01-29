@@ -1,3 +1,11 @@
+## v2.1.3 (2020-01-29)
+
+#### :bug: Bug Fix
+* [#347](https://github.com/adopted-ember-addons/ember-sortable/pull/347) [BUGFIX] Fixes scrolling outside of an overflow container's boundaries resolves#346 ([@validkeys](https://github.com/validkeys))
+
+#### Committers: 1
+- Kyle Davis ([@validkeys](https://github.com/validkeys))
+
 * Added check for transitionDuration to isAnimated (#343) (b0597db)
 
 * [A11y enhancement] Adding role=button to sortable-handle (828cace)
