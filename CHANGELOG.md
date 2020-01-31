@@ -1,3 +1,15 @@
+## v2.2.0-beta.0 (2020-01-31)
+
+#### :rocket: Enhancement
+* [#345](https://github.com/adopted-ember-addons/ember-sortable/pull/345) Create a modifier version - Part 2 - more streamlined ([@cah-briangantzler](https://github.com/cah-briangantzler))
+
+#### :house: Internal
+* [#348](https://github.com/adopted-ember-addons/ember-sortable/pull/348) [Ember try] Adding 3.15 to list of scenarios ([@ygongdev](https://github.com/ygongdev))
+
+#### Committers: 2
+- Brian Gantzler ([@cah-briangantzler](https://github.com/cah-briangantzler))
+- Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
+
 ## v2.1.3 (2020-01-29)
 
 #### :bug: Bug Fix
