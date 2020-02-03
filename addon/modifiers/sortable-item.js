@@ -266,10 +266,7 @@ export default class SortableItemModifier extends Modifier {
       return;
     }
 
-    let handle = this.handle;
-
-    // todo what does this do? why do you have to null handle
-    if (!this.handleElement && !startEvent.target.closest(handle)) {
+    if (this.handleElement && !startEvent.target.closest(this.handle)) {
       return;
     }
 
