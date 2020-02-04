@@ -740,12 +740,11 @@ export default class SortableItemModifier extends Modifier {
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
     this.handleElement = this.element.querySelector(this.handle);
-
-    if (!this.handleElement) {
-      this.handleElement = this.element;
+    if (this.handleElement) {
+      this.handleElement.style['touch-action'] = 'none';
+    } else {
+      this.element.style['touch-action'] = 'none';
     }
-
-    this.handleElement.style['touch-action'] = 'none';
   }
 
   didInstall() {
