@@ -11,6 +11,7 @@ import {
 } from "../utils/keyboard";
 import {ANNOUNCEMENT_ACTION_TYPES} from "../utils/constant";
 import { run } from '@ember/runloop';
+import SortableItemModifier from './sortable-item';
 
 const NO_MODEL = {};
 
@@ -102,7 +103,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Event} event a DOM event.
    */
   @action
-  focusOut(event) {
+  focusOut(event :Event) {
     if (!this.isRetainingFocus && !this._isElementWithinHandle(document.activeElement)) {
       this.cancelKeyboardSelection();
     }
@@ -119,7 +120,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Event} event a DOM event
    */
   @action
-  keyDown(event) {
+  keyDown(event :Event) {
     if (!this.isKeyDownEnabled) {
       return;
     }
@@ -157,7 +158,7 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @param {Element} element a DOM element.
    */
-  _isElementWithinHandle(element) {
+  _isElementWithinHandle(element :HTMLElement) {
     return element.closest(`[data-sortable-handle]`);
   }
 
@@ -167,7 +168,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Integer} fromIndex the original index
    * @param {Integer} toIndex the new index
    */
-  _move(fromIndex, toIndex) {
+  _move(fromIndex :number, toIndex :number) {
     const direction = this.direction;
     const sortedItems = this.sortedItems;
     const item = sortedItems[fromIndex];
@@ -198,7 +199,7 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @param {Event} event a DOM event.
    */
-  _handleKeyboardReorder(event) {
+  _handleKeyboardReorder(event :Event) {
     const direction = this.direction;
     const selectedItem = this._selectedItem;
 
@@ -245,7 +246,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {SortableItemModifier} item the item to be moved.
    * @param {Integer} delta how much to move index-wise.
    */
-  moveItem(item, delta) {
+  moveItem(item :SortableItemModifier, delta :number) {
     const sortedItems = this.sortedItems;
     const moves = this.moves;
 
@@ -314,7 +315,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {String} type the action type.
    * @param {Number} delta how much distance (item-wise) is being moved.
    */
-  _announceAction(type, delta = null) {
+  _announceAction(type :String, delta = null) {
     const a11yAnnouncementConfig = this.a11yAnnouncementConfig;
     const a11yItemName = this.a11yItemName;
 
@@ -357,7 +358,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {SortableItemModifier} item the selected item.
    * @param {Boolean} isActive to activate or deactivate the class.
    */
-  _updateItemVisualIndicators(item, isActive) {
+  _updateItemVisualIndicators(item :SortableItemModifier, isActive :boolean) {
 
     const itemVisualClass = this.itemVisualClass;
 
@@ -378,7 +379,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {SortableItemModifier} item the selected item.
    * @param {boolean} isUpdate to update or not update.
    */
-  _updateHandleVisualIndicators(item, isUpdate) {
+  _updateHandleVisualIndicators(item :SortableItemModifier, isUpdate :boolean) {
     const handleVisualClass = this.handleVisualClass;
 
     if (handleVisualClass === NO_MODEL || !item) {
@@ -414,7 +415,7 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @param {Element} itemElement an DOM element representing an sortable-item.
    */
-  _focusItem(itemElement) {
+  _focusItem(itemElement :HTMLElement) {
     const handle = itemElement.querySelector('[data-sortable-handle]');
     if (handle) {
       handle.focus();
@@ -489,7 +490,7 @@ export default class SortableGroupModifier extends Modifier {
    @property items
    @type SortableItemModifier[]
    */
-  items = [];
+  items :Array<SortableItemModifier> = [];
 
   /**
    * Announcer element

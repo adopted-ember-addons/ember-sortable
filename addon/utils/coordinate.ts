@@ -5,7 +5,7 @@
   @return {Number}
   @private
 */
-export function getY(event) {
+export function getY(event :Event) {
   let touches = event.changedTouches;
   let touch = touches && touches[0];
 
@@ -22,7 +22,7 @@ export function getY(event) {
   @return {Number}
   @private
 */
-export function getX(event) {
+export function getX(event :Event) {
   let touches = event.changedTouches;
   let touch = touches && touches[0];
 

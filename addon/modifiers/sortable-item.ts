@@ -12,6 +12,7 @@ import ScrollContainer from "../system/scroll-container";
 import scrollParent from "../system/scroll-parent";
 import {getBorderSpacing} from "../utils/css-calculation";
 import { buildWaiter } from 'ember-test-waiters';
+import SortableGroupModifier from './sortable-group';
 
 const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
@@ -44,13 +45,16 @@ export default class SortableItemModifier extends Modifier {
    *
    * @type SortableGroupModifier
    */
-  sortableGroup;
+  sortableGroup? :SortableGroupModifier;
+
+  _prepareDragListener? :Function;
+  _cancelStartDragListener? :Function;
 
   @reads("args.named.model")
-  model;
+  model? :Object;
 
   @reads("sortableGroup.direction")
-  direction;
+  direction! :string;
 
   /**
    The frequency with which the group is informed
@@ -195,7 +199,7 @@ export default class SortableItemModifier extends Modifier {
    @method mouseDown
    */
   @action
-  mouseDown(event) {
+  mouseDown(event :MouseEvent) {
     if (event.which !== 1) { return; }
     if (event.ctrlKey) { return; }
 
@@ -203,7 +207,7 @@ export default class SortableItemModifier extends Modifier {
   }
 
   @action
-  keyDown(event) {
+  keyDown(event :KeyboardEvent) {
     // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
     if (event.target === this.handleElement || event.target === this.element) {
       this.sortableGroup.activateKeyDown(this);
@@ -216,7 +220,7 @@ export default class SortableItemModifier extends Modifier {
    @method touchStart
    */
   @action
-  touchStart(event) {
+  touchStart(event :TouchEvent) {
     this._primeDrag(event);
   }
 
@@ -260,7 +264,7 @@ export default class SortableItemModifier extends Modifier {
    * @param {Event} startEvent JS Event object
    * @private
    */
-  _primeDrag(startEvent) {
+  _primeDrag(startEvent :Event) {
     // Prevent dragging if the sortable-item is disabled.
     if (this.isDraggingDisabled) {
       return;
@@ -300,7 +304,7 @@ export default class SortableItemModifier extends Modifier {
    * @param {Event} event JS Event object
    * @private
    */
-  _prepareDrag(startEvent, event) {
+  _prepareDrag(startEvent :Event, event :Event) {
     let distance = this.distance;
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
@@ -318,7 +322,7 @@ export default class SortableItemModifier extends Modifier {
    * @param {Event} event JS Event object
    * @private
    */
-  _startDrag(event) {
+  _startDrag(event :Event) {
     if (this.isBusy) { return; }
 
     let drag = this._makeDragHandler(event);
@@ -349,7 +353,7 @@ export default class SortableItemModifier extends Modifier {
    */
   maxScrollSpeed = 20;
 
-  _scrollOnEdges(drag) {
+  _scrollOnEdges(drag :Function) {
     let groupDirection = this.direction;
     let element = this.element;
     let scrollContainer = new ScrollContainer(scrollParent(element));
@@ -440,11 +444,11 @@ export default class SortableItemModifier extends Modifier {
    @return {Function}
    @private
    */
-  _makeDragHandler(startEvent) {
+  _makeDragHandler(startEvent :Event) {
     const groupDirection = this.direction;
-    let dragOrigin;
-    let elementOrigin;
-    let scrollOrigin;
+    let dragOrigin :number;
+    let elementOrigin :number;
+    let scrollOrigin :number;
     let parentElement = this.element.parentNode;
 
     if (groupDirection === 'x') {
@@ -753,7 +757,7 @@ export default class SortableItemModifier extends Modifier {
 
   didInstall() {
     this.addEventListener();
-    this.element.dataset.sortableItem=true;
+    this.element.dataset.sortableItem = true;
     this.element.sortableItem = this;
   }
 
