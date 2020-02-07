@@ -11,12 +11,25 @@ module('Acceptance | smoke modifier', function(hooks) {
   test('reordering with mouse events', async function(assert) {
     await visit('/modifier');
 
+    // when a handle is present, the element itself shall not be draggable
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
-    let order = findAll('[data-test-vertical-demo-handle]').reverse();
+    let order = findAll('[data-test-vertical-demo-item]').reverse();
+    await reorder(
+      'mouse',
+      '[data-test-vertical-demo-item]',
+      ...order
+    );
+
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    order = findAll('[data-test-vertical-demo-handle]').reverse();
     await reorder(
       'mouse',
       '[data-test-vertical-demo-handle]',
