@@ -36,12 +36,15 @@
 
 .demo .sortable-item .handle {
   padding: 0 .5em;
-  cursor: move;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  user-select: none;
 }
 
+.demo .sortable-item:not([data-sortable-disabled=true]) .handle {
+  cursor: move;
+}
 
 .vertical-demo .sortable-item {
   display: block;

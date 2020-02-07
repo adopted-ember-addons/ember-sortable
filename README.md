@@ -31,7 +31,7 @@ $ ember install ember-sortable
 
 ## Usage
 
-### component 
+### component
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -47,7 +47,7 @@ $ ember install ember-sortable
 {{/sortable-group}}
 ```
 
-### modifier 
+### modifier
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -277,6 +277,7 @@ This flag is intended as an utility to make your life easier with 3 main benefit
 1. You can now specify which `sortable-item` are not intended to be draggable/sortable.
 2. You do not have to duplicate the `sortable-item` UI just for the purpose of disabling the `sorting` behavior.
 3. Allows you to access the entire list of `models` for your `onChange` action, which can now be a mix of sortable and non-sortable items.
+When dragging is disabled the attribute `data-sortable-disabled=true` is added to the sortable item, so it is possible to style the handle when the element actually is draggable like `.sortable-item:not([data-sortable-disabled=true])`.
 
 ### Data down, actions up
 
@@ -296,8 +297,8 @@ component
   an ordered list, `ol`, by default.
 - `sortable-item`
   a list item, `li`, by default.
-  
-The modifier version can be attached to to any element that makes sense, 
+
+The modifier version can be attached to to any element that makes sense,
 
 ##### Keyboard Navigation
 There are 4 modes during keyboard navigation:

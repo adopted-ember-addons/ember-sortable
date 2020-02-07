@@ -7,6 +7,9 @@
     <section class="vertical-demo">
       <h3>Vertical</h3>
 
+      <input data-test-vertical-demo-disabled type="checkbox" id="disable-vertical-demo-group" checked={{readonly this.verticalDisabled}} onchange={{action (mut this.verticalDisabled) value="target.checked"}}>
+      <label for="disable-vertical-demo-group">disabled</label>
+
       <ol data-test-vertical-demo-group
         {{sortable-group
           onChange=this.update
@@ -17,7 +20,7 @@
         }}
       >
         {{#each model.items as |item|}}
-          <li data-test-vertical-demo-item {{sortable-item model=item}}>
+          <li data-test-vertical-demo-item {{sortable-item model=item isDraggingDisabled=this.verticalDisabled}}>
             {{item}}
             <span class="handle" data-test-vertical-demo-handle {{sortable-handle}} data-item={{item}}>
               <span>&vArr;</span>

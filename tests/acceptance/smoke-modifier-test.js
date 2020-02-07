@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, find, findAll, triggerKeyEvent, focus, blur } from '@ember/test-helpers';
+import { click, visit, find, findAll, triggerKeyEvent, focus, blur } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { drag, reorder }  from 'ember-sortable/test-support/helpers';
 import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/test-support/utils/keyboard";
@@ -8,19 +8,34 @@ import a11yAudit from 'ember-a11y-testing/test-support/audit';
 module('Acceptance | smoke modifier', function(hooks) {
   setupApplicationTest(hooks);
 
-  test('reordering with mouse events', async function(assert) {
+  test('disabled elements should not be sortable', async function(assert) {
     await visit('/modifier');
 
-    // when a handle is present, the element itself shall not be draggable
+    // disable sorting
+    await click('[data-test-vertical-demo-disabled]');
+
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
-    let order = findAll('[data-test-vertical-demo-item]').reverse();
+    const handles = findAll('[data-test-vertical-demo-handle]')
+
+    assert.ok(getComputedStyle(handles[0]).cursor == "auto");
+    assert.ok(handles[0].getAttribute('role') == undefined);
+    assert.ok(getComputedStyle(handles[1]).cursor == "auto");
+    assert.ok(handles[1].getAttribute('role') == undefined);
+    assert.ok(getComputedStyle(handles[2]).cursor == "auto");
+    assert.ok(handles[2].getAttribute('role') == undefined);
+    assert.ok(getComputedStyle(handles[3]).cursor == "auto");
+    assert.ok(handles[3].getAttribute('role') == undefined);
+    assert.ok(getComputedStyle(handles[4]).cursor == "auto");
+    assert.ok(handles[4].getAttribute('role') == undefined);
+
+    let order = findAll('[data-test-vertical-demo-handle]').reverse();
     await reorder(
       'mouse',
-      '[data-test-vertical-demo-item]',
+      '[data-test-vertical-demo-handle]',
       ...order
     );
 
@@ -29,7 +44,31 @@ module('Acceptance | smoke modifier', function(hooks) {
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
-    order = findAll('[data-test-vertical-demo-handle]').reverse();
+    // enable sorting
+    await click('[data-test-vertical-demo-disabled]');
+
+    await reorder(
+      'mouse',
+      '[data-test-vertical-demo-handle]',
+      ...order
+    );
+
+    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
+
+  });
+
+  test('reordering with mouse events', async function(assert) {
+    await visit('/modifier');
+
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    let order = findAll('[data-test-vertical-demo-handle]').reverse();
     await reorder(
       'mouse',
       '[data-test-vertical-demo-handle]',

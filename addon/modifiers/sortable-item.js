@@ -726,34 +726,64 @@ export default class SortableItemModifier extends Modifier {
   }
 
   addEventListener() {
-    this.element.addEventListener("keydown", this.keyDown);
-    this.element.addEventListener("mousedown", this.mouseDown);
-    this.element.addEventListener("touchstart", this.touchStart);
+    if (!this.listenersActive) {
+      this.handleElement.addEventListener("keydown", this.keyDown);
+      this.handleElement.addEventListener("mousedown", this.mouseDown);
+      this.handleElement.addEventListener("touchstart", this.touchStart);
+    }
+    this.listenersActive = true;
   }
 
   removeEventListener() {
-    this.element.removeEventListener("keydown", this.keyDown);
-    this.element.removeEventListener("mousedown", this.mouseDown);
-    this.element.removeEventListener("touchstart", this.touchStart);
+    if (this.listenersActive) {
+      this.handleElement.removeEventListener("keydown", this.keyDown);
+      this.handleElement.removeEventListener("mousedown", this.mouseDown);
+      this.handleElement.removeEventListener("touchstart", this.touchStart);
+      this.listenersActive = false;
+    }
   }
 
   didReceiveArguments() {
     this.element.classList.add(this.className);
 
-    // Instead of using `event.preventDefault()` in the 'primeDrag' event,
-    // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    this.handleElement = this.element.querySelector(this.handle);
+    this.initializeHandleElement();
 
-    if (!this.handleElement) {
-      this.handleElement = this.element;
+    if (this.isDraggingDisabled) {
+      this.removeEventListener();
+      this.element.dataset.sortableDisabled = true;
+    } else {
+      this.addEventListener();
+      this.element.dataset.sortableItem = true;
+      this.element.sortableItem = this;
+      delete this.element.dataset.sortableDisabled;
+    }
+  }
+
+  initializeHandleElement() {
+    const handle = this.element.querySelector(this.handle);
+
+    // if already initialized and handle is the same
+    if (this.handleElement != null && (handle == this.handleElement) || this.element == this.handleElement) {
+      return;
     }
 
+    if (this.handleElement != null) {
+      this.removeEventListener();
+    }
+
+    if (!handle) {
+      this.handleElement = this.element;
+    } else {
+      this.handleElement = handle;
+    }
+
+    // Instead of using `event.preventDefault()` in the 'primeDrag' event,
+    // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
     this.handleElement.style['touch-action'] = 'none';
   }
 
   didInstall() {
-    this.addEventListener();
-    this.element.dataset.sortableItem=true;
+    this.element.dataset.sortableItem = true;
     this.element.sortableItem = this;
   }
 
