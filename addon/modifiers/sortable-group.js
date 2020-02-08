@@ -730,10 +730,10 @@ export default class SortableGroupModifier extends Modifier {
     this.announcer = this._createAnnouncer();
     this.element.insertAdjacentElement('afterend', this.announcer);
 
-    var observer = new MutationObserver(() => {
+    this.observer = new MutationObserver(() => {
       run(() => this.initializeGroup());
     });
-    observer.observe(this.element, {
+    this.observer.observe(this.element, {
       childList: true,
       attributes: false,
       subtree: false
@@ -744,6 +744,10 @@ export default class SortableGroupModifier extends Modifier {
     // todo cleanup the announcer
     this.announcer.parentNode.removeChild(this.announcer);
     this.removeEventListener();
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = undefined;
+    }
   }
 
 }
