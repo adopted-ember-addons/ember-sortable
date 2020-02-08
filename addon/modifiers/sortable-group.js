@@ -711,16 +711,17 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   didReceiveArguments() {
+    this.initializeGroup();
+  }
+
+  initializeGroup() {
     let items = this.element.querySelectorAll("[data-sortable-item]");
 
     // create the array of modifiers that match the items. If items are changed, a property needs updated
     this.items = Array.from(items).map(item => {
-      item.sortableItem.sortableGroup = this;
+      set(item.sortableItem, 'sortableGroup', this);
       return item.sortableItem;
     });
-  }
-
-  didUpdateArguments() {
   }
 
   didInstall() {
@@ -728,6 +729,15 @@ export default class SortableGroupModifier extends Modifier {
 
     this.announcer = this._createAnnouncer();
     this.element.insertAdjacentElement('afterend', this.announcer);
+
+    var observer = new MutationObserver(() => {
+      run(() => this.initializeGroup());
+    });
+    observer.observe(this.element, {
+      childList: true,
+      attributes: false,
+      subtree: false
+    });
   }
 
   willRemove() {
