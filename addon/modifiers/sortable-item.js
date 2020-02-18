@@ -154,7 +154,7 @@ export default class SortableItemModifier extends Modifier {
    @default null
    */
   get onDragStop() {
-    return this.args.named.onDragStart || (item => item);
+    return this.args.named.onDragStop || (item => item);
   }
 
   /**
