@@ -1,0 +1,13 @@
+<section class={{if isVertical "vertical-doc-auto-scroll-demo" "horizontal-doc-auto-scroll-demo" }}>
+  <ol data-test-doc-auto-scroll-demo-group
+    {{sortable-group
+      onChange=(action "updateItems")
+      direction=direction}}
+  >
+    {{#each model.items as |item|}}
+      <li data-test-doc-auto-scroll-demo-item {{sortable-item model=item}}>
+        {{item}}
+      </li>
+    {{/each}}
+  </ol>
+</section>
