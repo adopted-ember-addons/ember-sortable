@@ -148,6 +148,9 @@ export default Component.extend({
   */
   _direction: computed.readOnly('direction'),
 
+
+  disableCheckScrollBounds: Ember.testing,
+
   init() {
     this._super(...arguments);
     this._setGetterSetters();
@@ -425,8 +428,7 @@ export default Component.extend({
         requestAnimationFrame(checkScrollBounds);
       }
     };
-
-    if (!Ember.testing) {
+    if (!this.disableCheckScrollBounds) {
       requestAnimationFrame(checkScrollBounds);
     }
   },

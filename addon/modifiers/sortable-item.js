@@ -215,6 +215,16 @@ export default class SortableItemModifier extends Modifier {
   isBusy;
 
   /**
+   Removes the ability for the current item to be dragged
+   @property isDraggingDisabled
+   @type  boolean
+   @default false
+   */
+  get disableCheckScrollBounds() {
+    return this.args.named.disableCheckScrollBounds != undefined ? this.args.named.disableCheckScrollBounds : Ember.testing;
+  }
+
+  /**
    @method mouseDown
    */
   @action
@@ -449,7 +459,7 @@ export default class SortableItemModifier extends Modifier {
       }
     };
 
-    if (!Ember.testing) {
+    if (!this.disableCheckScrollBounds) {
       requestAnimationFrame(checkScrollBounds);
     }
   }
