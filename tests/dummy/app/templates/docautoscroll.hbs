@@ -5,7 +5,7 @@
       direction=direction}}
   >
     {{#each model.items as |item|}}
-      <li data-test-doc-auto-scroll-demo-item {{sortable-item model=item}}>
+      <li data-test-doc-auto-scroll-demo-item {{sortable-item disableCheckScrollBounds=false model=item}}>
         {{item}}
       </li>
     {{/each}}
