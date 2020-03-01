@@ -751,10 +751,26 @@ export default class SortableItemModifier extends Modifier {
     this.addEventListener();
     this.element.dataset.sortableItem=true;
     this.element.sortableItem = this;
+
+    // Find my group
+    // we have to schedule because the items are installed before the group
+    run.schedule('afterRender', () => {
+      let parent = this.element.parentElement;
+      while (parent) {
+        if (parent.sortableGroup) {
+          parent.sortableGroup.registerItem(this);
+          this.sortableGroup = parent.sortableGroup;
+          break;
+        }
+        parent = parent.parentElement;
+      }
+    });
   }
 
   willRemove() {
     this.removeEventListener();
+    this.sortableGroup.deregisterItem(this);
+    delete this.sortableGroup;
   }
 
 }

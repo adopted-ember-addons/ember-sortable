@@ -564,7 +564,7 @@ export default class SortableGroupModifier extends Modifier {
     const index = this.items.indexOf(item);
     if (index !== -1) {
       const items = [...this.items.slice(0, index), ...this.items.slice(index + 1)];
-      this.set("items", items);
+      set(this, "items", items);
     }
   }
 
@@ -711,13 +711,6 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   didReceiveArguments() {
-    let items = this.element.querySelectorAll("[data-sortable-item]");
-
-    // create the array of modifiers that match the items. If items are changed, a property needs updated
-    this.items = Array.from(items).map(item => {
-      item.sortableItem.sortableGroup = this;
-      return item.sortableItem;
-    });
   }
 
   didUpdateArguments() {
@@ -728,6 +721,7 @@ export default class SortableGroupModifier extends Modifier {
 
     this.announcer = this._createAnnouncer();
     this.element.insertAdjacentElement('afterend', this.announcer);
+    this.element.sortableGroup = this;
   }
 
   willRemove() {
