@@ -12,6 +12,7 @@ import ScrollContainer from "../system/scroll-container";
 import scrollParent from "../system/scroll-parent";
 import {getBorderSpacing} from "../utils/css-calculation";
 import { buildWaiter } from 'ember-test-waiters';
+import {inject as service} from '@ember/service';
 
 const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
@@ -38,19 +39,39 @@ export default class SortableItemModifier extends Modifier {
 
   className = "sortable-item";
 
+  _sortableGroup;
   /**
    * The SortableGroupModifier this item belongs to. Assigned by the group
    * when it inspects all the items in the list
    *
    * @type SortableGroupModifier
    */
-  sortableGroup;
+  get sortableGroup() {
+    if (this._sortableGroup === undefined) {
+      this._sortableGroup = this.sortableService.fetchGroup(this.groupName);
+    }
+    return this._sortableGroup.groupModifier;
+  }
 
   @reads("args.named.model")
   model;
 
   @reads("sortableGroup.direction")
   direction;
+
+  @service('ember-sortable@ember-sortable')
+  sortableService;
+
+  /**
+   * This is the group name used to keep groups separate if there are more than one on the screen at a time.
+   * If no group is assigned a default is used
+   *
+   * @default "_EmberSortableGroup"
+   * @returns {*|string}
+   */
+  get groupName() {
+    return this.args.named.groupName || "_EmberSortableGroup";
+  }
 
   /**
    The frequency with which the group is informed
@@ -750,11 +771,12 @@ export default class SortableItemModifier extends Modifier {
   didInstall() {
     this.addEventListener();
     this.element.dataset.sortableItem=true;
-    this.element.sortableItem = this;
+    this.sortableService.registerItem(this.groupName, this);
   }
 
   willRemove() {
     this.removeEventListener();
+    this.sortableService.deregisterItem(this.groupName, this);
   }
 
 }

@@ -11,6 +11,7 @@ import {
 } from "../utils/keyboard";
 import {ANNOUNCEMENT_ACTION_TYPES} from "../utils/constant";
 import { run } from '@ember/runloop';
+import {inject as service} from '@ember/service';
 
 const NO_MODEL = {};
 
@@ -483,13 +484,34 @@ export default class SortableGroupModifier extends Modifier {
     return this.args.named.onChange;
   }
 
+  @service('ember-sortable@ember-sortable')
+  sortableService;
+
+  /**
+   * This is the group name used to keep groups separate if there are more than one on the screen at a time.
+   * If no group is assigned a default is used
+   *
+   * @default "_EmberSortableGroup"
+   * @returns {*|string}
+   */
+  get groupName() {
+    return this.args.named.groupName || "_EmberSortableGroup";
+  }
+
+  _groupDef = this.sortableService.fetchGroup(this.groupName);
+
   /**
    This is an array of SortableItemModifiers
 
    @property items
    @type SortableItemModifier[]
    */
-  items = [];
+  get items() {
+    return this._groupDef.items;
+  }
+  set(items) {
+    this._groupDef.items = items;
+  }
 
   /**
    * Announcer element
@@ -540,32 +562,6 @@ export default class SortableGroupModifier extends Modifier {
   @action
   deactivateKeyDown() {
     this.isKeyDownEnabled = false;
-  }
-
-  /**
-   Register an item with this group.
-   @method registerItem
-   @param {SortableItemModifier} item
-   */
-  @action
-  registerItem(item) {
-    if (this.items.indexOf(item) === -1) {
-      this.items = [...this.items, item];
-    }
-  }
-
-  /**
-   De-register an item with this group.
-   @method deregisterItem
-   @param {SortableItemModifier} item
-   */
-  @action
-  deregisterItem(item) {
-    const index = this.items.indexOf(item);
-    if (index !== -1) {
-      const items = [...this.items.slice(0, index), ...this.items.slice(index + 1)];
-      this.set("items", items);
-    }
   }
 
   /**
@@ -711,13 +707,6 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   didReceiveArguments() {
-    let items = this.element.querySelectorAll("[data-sortable-item]");
-
-    // create the array of modifiers that match the items. If items are changed, a property needs updated
-    this.items = Array.from(items).map(item => {
-      item.sortableItem.sortableGroup = this;
-      return item.sortableItem;
-    });
   }
 
   didUpdateArguments() {
@@ -728,12 +717,16 @@ export default class SortableGroupModifier extends Modifier {
 
     this.announcer = this._createAnnouncer();
     this.element.insertAdjacentElement('afterend', this.announcer);
+
+    this.sortableService.registerGroup(this.groupName, this);
   }
 
   willRemove() {
     // todo cleanup the announcer
     this.announcer.parentNode.removeChild(this.announcer);
     this.removeEventListener();
+
+    this.sortableService.deregisterGroup(this.groupName, this);
   }
 
 }
