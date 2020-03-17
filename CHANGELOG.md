@@ -1,3 +1,5 @@
+# ember-sortable changelog
+
 ## v2.2.0-beta.0 (2020-01-31)
 
 #### :rocket: Enhancement
@@ -278,8 +280,6 @@
 - Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
 - Todd Evanoff ([@tevanoff](https://github.com/tevanoff))
 
-# ember-sortable changelog
-
 ## 1.12.10 (2019-09-24)
 
 #### :bug: Bug Fix
@@ -520,6 +520,6 @@
 
 - [#28](https://github.com/jgwhite/ember-sortable/pull/28) Add `model` attr to `sortable-group` [@ujamer](https://github.com/ujamer)
 
-### 1.0.0 (2015-05-13)
+### 1.1.0 (2015-05-13)
 
 First stable release.
