@@ -524,7 +524,14 @@ export default Mixin.create({
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
-    let parentElement = this.element.parentNode;
+    let parentElement = null;
+    
+    if (this.element && this.element.parentNode) {
+      parentElement = this.element.parentNode;
+    } else {
+      console.warn('Could not find element or parentNode');
+      return;
+    }
 
     if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
