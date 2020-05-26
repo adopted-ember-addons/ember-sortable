@@ -53,7 +53,7 @@ $ ember install ember-sortable
 
 <ol {{sortable-group onChange=(action "reorderItems")}}>
   {{#each model.items as |modelItem|}}
-    <li {{group.item model=modelItem}}>
+    <li {{sortable-item model=modelItem}}>
       {{modelItem.name}}
       <span class="handle" {{sortable-handle}}>&varr;</span>
     </li>
@@ -118,7 +118,7 @@ The modifier version does not support `groupModel`, use the currying of `action`
 
 <ol {{sortable-group onChange=(action "reorderItems" model)}}>
   {{#each model.items as |modelItem|}}
-    <li {{group.item model=modelItem}}>
+    <li {{sortable-item model=modelItem}}>
       {{modelItem.name}}
       <span class="handle" {{sortable-handle}}>&varr;</span>
     </li>
