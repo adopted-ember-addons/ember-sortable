@@ -1,3 +1,5 @@
+* [BUGFIX] check for destruction before running async events (#372) (0fdd8f3)
+
 ## v2.1.3 (2020-01-29)
 
 #### :bug: Bug Fix
