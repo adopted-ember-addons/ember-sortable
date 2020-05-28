@@ -259,8 +259,8 @@ export default Component.extend({
    * @private
    */
   _primeDrag(startEvent) {
-    // Prevent dragging if the sortable-item is disabled.
-    if (this.get('isDraggingDisabled')) {
+    // Prevent dragging if the sortable-item is destroying or disabled.
+    if (this.isDestroying || this.get('isDraggingDisabled')) {
       return;
     }
 
@@ -316,7 +316,7 @@ export default Component.extend({
    * @private
    */
   _startDrag(event) {
-    if (this.get('isBusy')) { return; }
+    if (this.isDestroying || this.get('isBusy')) { return; }
 
     let drag = this._makeDragHandler(event);
     let dragThrottled = ev => throttle(this, drag, ev, 16, false);
@@ -442,6 +442,12 @@ export default Component.extend({
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
+
+    // if component is destroying or element does not exist or its parent does not exist, stop.
+    if (this.isDestroying || !this.element || !this.element.parentNode) {
+      return;
+    }
+
     let parentElement = this.element.parentNode;
 
     if (groupDirection === 'x') {
