@@ -13,6 +13,7 @@ import scrollParent from "../system/scroll-parent";
 import {getBorderSpacing} from "../utils/css-calculation";
 import { buildWaiter } from 'ember-test-waiters';
 import {inject as service} from '@ember/service';
+import {assert} from '@ember/debug';
 
 const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
@@ -49,6 +50,7 @@ export default class SortableItemModifier extends Modifier {
   get sortableGroup() {
     if (this._sortableGroup === undefined) {
       this._sortableGroup = this.sortableService.fetchGroup(this.groupName);
+      assert(`No sortable group named ${this.groupName} found. Please check that the groups and items have the same groupName`, this._sortableGroup !== undefined)
     }
     return this._sortableGroup.groupModifier;
   }
