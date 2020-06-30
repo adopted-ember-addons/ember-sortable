@@ -58,7 +58,7 @@ $ ember install ember-sortable
       <span class="handle" {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
-</ol>>
+</ol>
 ```
 
 The `onChange` action is called with two arguments:
@@ -123,7 +123,7 @@ The modifier version does not support `groupModel`, use the currying of `action`
       <span class="handle" {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
-</ol>>
+</ol>
 ```
 
 
@@ -270,6 +270,39 @@ modifier
     <span class="handle" {{sortable-handle}}>&varr;</span>
   </li>
 ```
+
+### Multiple Ember-Sortables renders simultaneously (Modifier version) 
+
+The modifier version uses a service behind the scenes for communication between the group and the items and to maintain state. It does this seemlessly when the elements are rendered on the screen. However, if there are two sortables rendered at the same time, either in the same component or different components, the state management does not know which items belong to which group.
+
+Both the `{{sortable-group}}` and `{{sortable-item}}` take an additional argument `groupName`. Should you encounter this conflict, assign a `groupName` to the group and items. You only need to do this for one of the sortables in conflict, but you can on both if you wish.
+
+```hbs
+<ol {{sortable-group groupName="products" onChange=(action "reorderItems" model)}}>
+  {{#each model.items as |modelItem|}}
+    <li {{sortable-item groupName="products" model=modelItem}}>
+      {{modelItem.name}}
+      <span class="handle" {{sortable-handle}}>&varr;</span>
+    </li>
+  {{/each}}
+</ol>
+```
+
+Ensure that the same name is passed to both the group and the items, this would be best accomplished by creating property on the component and referring to that property. If you are able to use the `{{#let}}` helper (useful in template only components), using `{{#let}}` makes the usage clearer.
+
+```hbs
+{{#let "products" as | myGroupName |}}
+  <ol {{sortable-group groupName=myGroupName onChange=(action "reorderItems" model)}}>
+    {{#each model.items as |modelItem|}}
+      <li {{sortable-item groupName=myGroupName model=modelItem}}>
+        {{modelItem.name}}
+        <span class="handle" {{sortable-handle}}>&varr;</span>
+      </li>
+    {{/each}}
+  </ol>
+{{/let}}
+```
+
 
 ### Disabling Drag (Experimental)
 `sortable-item` (component and modifier) exposes an optional `isDraggingDisabled` flag that you can use to disable `drag` on the particular item.

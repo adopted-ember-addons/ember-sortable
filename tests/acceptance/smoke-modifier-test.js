@@ -98,7 +98,7 @@ module('Acceptance | smoke modifier', function(hooks) {
       order[4]
     );
 
-    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
+    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco', "25");
     assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
