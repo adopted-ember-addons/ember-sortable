@@ -1,3 +1,11 @@
+* Use a service to track group/item state (#361) (68c12b6)
+* Correct typos in modifier examples (#365) (17ecd1d)
+* fixes parentNode of null (#370) (#371) (87953ce)
+* fixes handle when using modifiers (#349) (81320bd)
+* Merge pull request #357 from alexabreu/patch-1 (b6f0b97)
+* Bumping travis node to 10 (#358) (5360e49)
+* Actually use `onDragStop` argument rather then re-using `onDragStart`. (88b9562)
+
 ## v2.2.0-beta.0 (2020-01-31)
 
 #### :rocket: Enhancement
