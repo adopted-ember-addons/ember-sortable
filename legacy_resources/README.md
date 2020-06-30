@@ -12,11 +12,8 @@ Sortable UI primitives for Ember.
 
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
 
-
 ## Migration
-We're working on migrating ember-sortable to a modifier on `master` and will release it as `3.x.x`. If you are going to migrate from `2.x.x` to `3.x.x`. Please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md).
-
-If you are migrating from `1.x.x` to `2.x.x`. Please read this [migration guide](/legacy_resources/MIGRATION_GUIDE_V2.md).
+If you are migrating from `1.x.x` to `2.x.x`. Please read this [migration guide](/MIGRATION_GUIDE_V2.md).
 
 ## Requirements
 
@@ -34,6 +31,23 @@ $ ember install ember-sortable
 
 ## Usage
 
+### component 
+```hbs
+{{! app/templates/my-route.hbs }}
+
+{{#sortable-group model=model.items onChange=(action "reorderItems") as |group|}}
+  {{#each group.model as |modelItem|}}
+    {{#group.item model=modelItem as |item|}}
+      {{modelItem.name}}
+      {{#item.handle}}
+        <span class="handle">&varr;</span>
+      {{/item.handle}}
+    {{/group.item}}
+  {{/each}}
+{{/sortable-group}}
+```
+
+### modifier 
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -97,7 +111,7 @@ export default Ember.Route.extend({
 });
 ```
 
-You can also reorder a groupModel via currying of `action` or `fn` helper.
+The modifier version does not support `groupModel`, use the currying of `action` or the `fn` helper.
 
 ```hbs
 {{! app/templates/my-route.hbs }}
@@ -112,10 +126,15 @@ You can also reorder a groupModel via currying of `action` or `fn` helper.
 </ol>
 ```
 
+
 ### Changing sort direction
 
 To change sort direction, define `direction` on `sortable-group` (default is `y`):
 
+component
+```hbs
+{{#sortable-group direction="x" onChange=(action "reorderItems") as |group|}}
+```
 modifier
 ```hbs
 <ol {{sortable-group direction="x" onChange=(action "reorderItems")}>
@@ -130,6 +149,10 @@ In `x` case: elements before current one jump to the left, and elements after cu
 
 To change this property, define `spacing` on `sortable-item` (default is `0`):
 
+component
+```hbs
+{{#sortable-item spacing=15}}
+```
 modifier
 ```hbs
 <li {{sortable-item spacing=15}}>
@@ -141,6 +164,10 @@ modifier
 If specified, sorting will not start until after mouse is dragged beyond distance.
 Can be used to allow for clicks on elements within a handle.
 
+component
+```hbs
+{{#sortable-item distance=30}}
+```
 modifier
 ```hbs
 <li {{sortable-item distance=30}}>
@@ -217,6 +244,20 @@ export default Ember.Route.extend({
 });
 ```
 
+component
+```hbs
+  {{#sortable-item
+    onDragStart=(action "dragStarted")
+    onDragStop=(action "dragStopped")
+    model=modelItem
+    as |item|
+  }}
+    {{modelItem.name}}
+    {{#item.handle}}
+      <span class="handle">&varr;</span>
+    {{/item.handle}}
+  {{/sortable-item}}
+```
 modifier
 ```hbs
   <li {{#sortable-item
@@ -230,7 +271,7 @@ modifier
   </li>
 ```
 
-### Multiple Ember-Sortables renders simultaneously (Modifier version)
+### Multiple Ember-Sortables renders simultaneously (Modifier version) 
 
 The modifier version uses a service behind the scenes for communication between the group and the items and to maintain state. It does this seemlessly when the elements are rendered on the screen. However, if there are two sortables rendered at the same time, either in the same component or different components, the state management does not know which items belong to which group.
 
@@ -283,9 +324,13 @@ The `sortable-group` has support for the following accessibility functionality:
 
 ##### Semantic HTML
 
-For best practices, you want to use the modifiers along with semantic html, e.g
-- `sortable-group` with `ol`
-- `sortable-item` with `li`
+component
+- `sortable-group`
+  an ordered list, `ol`, by default.
+- `sortable-item`
+  a list item, `li`, by default.
+  
+The modifier version can be attached to to any element that makes sense, 
 
 ##### Keyboard Navigation
 There are 4 modes during keyboard navigation:
