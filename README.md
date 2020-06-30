@@ -12,8 +12,13 @@ Sortable UI primitives for Ember.
 
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
 
-## Migration
-If you are migrating from `1.x.x` to `2.x.x`. Please read this [migration guide](/MIGRATION_GUIDE_V2.md).
+## `2.2.0` modifier support
+*Note* `2.2.0` and above contains both component and modifiers invocation capabilities. This means that you will see a signficant size increase for `ember-sortable`, but it should help you with migrations to `modifier`, which is the path forward when we introduce  `v3.x.x`
+
+## v1 -> v2 Migration
+If you are migrating from `1.x.x` to `2.x.x`,
+For components, please read this [migration guide](/MIGRATION_GUIDE_V2.md).
+For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS).
 
 ## Requirements
 
