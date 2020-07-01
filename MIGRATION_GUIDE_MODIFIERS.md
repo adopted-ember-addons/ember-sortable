@@ -5,7 +5,7 @@
 To use modifiers, you must use angle-bracket syntax
 
 ### New Root component
-1. Instead of using `sortable-group` as a component, use `sortable-group` as a modifier 
+1. Instead of using `sortable-group` as a component, use `sortable-group` as a modifier
 any element. You no longer need to tell `sortable-group` about the models, so the `each`
 uses the models directly.
 
