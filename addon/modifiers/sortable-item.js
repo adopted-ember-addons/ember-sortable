@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import Modifier from 'ember-modifier';
 import { Promise, defer } from 'rsvp';
 import {action, set} from '@ember/object';
@@ -14,6 +13,9 @@ import {getBorderSpacing} from "../utils/css-calculation";
 import { buildWaiter } from 'ember-test-waiters';
 import {inject as service} from '@ember/service';
 import {assert} from '@ember/debug';
+import config from 'ember-get-config';
+const { environment } = config;
+const isTesting = environment === 'test';
 
 const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
@@ -221,7 +223,7 @@ export default class SortableItemModifier extends Modifier {
    @default false
    */
   get disableCheckScrollBounds() {
-    return this.args.named.disableCheckScrollBounds != undefined ? this.args.named.disableCheckScrollBounds : Ember.testing;
+    return this.args.named.disableCheckScrollBounds != undefined ? this.args.named.disableCheckScrollBounds : isTesting;
   }
 
   /**
