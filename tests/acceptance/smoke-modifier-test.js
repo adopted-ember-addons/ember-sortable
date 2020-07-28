@@ -104,6 +104,20 @@ module('Acceptance | smoke modifier', function(hooks) {
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
   });
 
+  test('mouse event onChange has correct dragged item', async function(assert) {
+    await visit('/modifier');
+
+    let order = findAll('[data-test-vertical-demo-handle]');
+    await reorder(
+      'mouse',
+      '[data-test-vertical-demo-handle]',
+      order[1]
+    );
+
+    assert.equal(justDraggedContents(), 'Dos');
+
+  });
+
   test('Test isAnimated still works without css for transitionDuration', async function(assert) {
     await visit('/modifier');
 
@@ -194,6 +208,20 @@ module('Acceptance | smoke modifier', function(hooks) {
     assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
+  });
+
+  test('Touch event onChange has correct dragged item', async function(assert) {
+    await visit('/modifier');
+
+    let order = findAll('[data-test-vertical-demo-handle]');
+    await reorder(
+      'touch',
+      '[data-test-vertical-demo-handle]',
+      order[1]
+    );
+
+    assert.equal(justDraggedContents(), 'Dos');
+
   });
 
   module('[A11y] Reordering with keyboard events', function() {
@@ -586,6 +614,33 @@ module('Acceptance | smoke modifier', function(hooks) {
       assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
       assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
     });
+
+    test('Keyboard event onChange has correct dragged item', async function(assert) {
+      await visit('/modifier');
+
+      await visit("/modifier");
+
+      await focus('[data-test-vertical-demo-handle]');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE
+      );
+
+      assert.equal(justDraggedContents(), 'Uno');
+
+    });
+
   });
 
   function verticalContents() {
@@ -602,6 +657,10 @@ module('Acceptance | smoke modifier', function(hooks) {
 
   function scrollableContents() {
     return contents('.scrollable-demo ol');
+  }
+
+  function justDraggedContents() {
+    return contents('[data-test-just-dragged]');
   }
 
   function contents(selector) {
