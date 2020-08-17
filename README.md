@@ -18,7 +18,7 @@ Sortable UI primitives for Ember.
 ## v1 -> v2 Migration
 If you are migrating from `1.x.x` to `2.x.x`,
 For components, please read this [migration guide](/MIGRATION_GUIDE_V2.md).
-For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS).
+For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md).
 
 ## Requirements
 
