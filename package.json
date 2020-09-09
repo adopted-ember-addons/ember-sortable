@@ -1,6 +1,6 @@
 {
   "name": "@gynzy/ember-sortable",
-  "version": "1.9.8",
+  "version": "1.9.11",
   "description": "Sortable UI primitives for Ember.",
   "keywords": [
     "ember-addon",
