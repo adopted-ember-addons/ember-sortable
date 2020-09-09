@@ -1,0 +1,26 @@
+---
+kind: pipeline
+name: default
+
+steps:
+- name: npm
+  image: node:10-slim
+  commands:
+  - bash ./ci/npm.sh
+  environment:
+    NPM_TOKEN:
+      from_secret: npm_token
+
+- name: publish
+  image: node:10-slim
+  commands:
+  - bash ./ci/publish.sh
+  when:
+    event:
+    - pull_request
+    - tag
+
+trigger:
+  event:
+  - pull_request
+  - tag
