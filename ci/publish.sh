@@ -3,7 +3,7 @@
 set -e
 
 yarn install
-yarn build
+# yarn build
 
 VERSION=`yarn version --non-interactive 2>/dev/null | grep 'Current version' | awk '{ print $4 }'`
 if [ "$DRONE_BUILD_EVENT" == "pull_request" ]; then
