@@ -1,5 +1,5 @@
 import { typeOf } from '@ember/utils';
-import transitionend from 'ember-sortable/utils/transitionend';
+import transitionend from '@gynzy/ember-sortable/utils/transitionend';
 import { module, test } from 'qunit';
 
 module('transitionend');
