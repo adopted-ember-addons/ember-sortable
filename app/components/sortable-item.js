@@ -1,3 +1,3 @@
-import sortableItem from '@gynzy/ember-sortable/components/sortable-item';
+import sortableItem from 'ember-sortable/components/sortable-item';
 
 export default sortableItem;

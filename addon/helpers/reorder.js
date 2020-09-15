@@ -1,6 +1,6 @@
 import { registerAsyncHelper } from '@ember/test';
 import { findAll } from "@ember/test-helpers";
-import { drag } from '@gynzy/ember-sortable/helpers/drag';
+import { drag } from 'ember-sortable/helpers/drag';
 
 /**
   In tests, the dummy app is rendered at half size.

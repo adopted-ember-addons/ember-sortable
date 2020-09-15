@@ -1,8 +1,8 @@
 import { module, test } from 'qunit';
 import { setupApplicationTest } from 'ember-qunit';
 import { visit, find } from '@ember/test-helpers';
-import {drag} from '@gynzy/ember-sortable/helpers/drag';
-import {reorder} from '@gynzy/ember-sortable/helpers/reorder';
+import {drag} from 'ember-sortable/helpers/drag';
+import {reorder} from 'ember-sortable/helpers/reorder';
 
 module('Acceptance | smoke', function (hooks) {
   setupApplicationTest(hooks);
