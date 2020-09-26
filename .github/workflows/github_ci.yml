@@ -12,7 +12,7 @@ on:
 jobs:
   build:
 
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -26,6 +26,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
         
     - name: Install Dependencies
-      run: yarn install --no-lockfile --non-interactive
+      run: yarn install --frozen-lockfile
     - name: Tests
       run: yarn test
