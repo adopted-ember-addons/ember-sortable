@@ -10,22 +10,62 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  main-test:
+    name: Main test
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-        
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
-    - name: Tests
-      run: yarn test
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Running tests
+        run: yarn test
+     
+  ember-try-required: 
+    name: Running ember-try on ember version, ${{ matrix.scenario }}
+    
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix: 
+        scenario: [lts-3.8, lts-3.12, lts-3.15]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Running test
+        run: yarn ember try:one ${{ matrix.scenario }}
+
+  ember-try-optional:
+    name: Running ember-try on ember version, ${{ matrix.scenario }}
+    
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix: 
+        scenario: [ember-beta, ember-release, ember-canary]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Running test
+        run: yarn ember try:one ${{ matrix.scenario }}
