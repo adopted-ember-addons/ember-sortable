@@ -10,22 +10,55 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  main-test:
+    name: Main test
     runs-on: ubuntu-latest
-
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Running tests
+        run: yarn test
+     
+  ember-try-required: 
+    name: Ember try ember-${{matrix.scenario}}
+    
+    runs-on: ubuntu-latest
+    
     strategy:
-      matrix:
-        node-version: [10.x, 12.x, 14.x]
+      matrix: 
+        scenario: [ember-lts-3.8, ember-lts-3.12, ember-lts-3.15]
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Running test
+        run: yarn ember try:one ${{ matrix.scenario }}
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-        
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
-    - name: Tests
-      run: yarn test
+  ember-try-optional:
+    name: Ember try ember-${{matrix.scenario}}
+    
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix: 
+        scenario: [ember-beta, ember-release, ember-canary]
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Use Node.js 10
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Running test
+        run: yarn ember try:one ${{ matrix.scenario }}
+        continue-on-error: true
