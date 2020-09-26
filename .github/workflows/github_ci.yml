@@ -29,9 +29,9 @@ jobs:
         run: yarn test
      
   ember-try-required: 
-    name: Running ember-try on ember version, ember-${{ matrix.scenario }}
+    name: ember-${{matrix.scenario}}] [${{matrix.os}}
     
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{matrix.os}}
     
     strategy:
       matrix: 
@@ -50,7 +50,7 @@ jobs:
         run: yarn ember try:one ${{ matrix.scenario }}
 
   ember-try-optional:
-    name: Running ember-try on ember version, ember-${{ matrix.scenario }}
+    name: ember-${{matrix.scenario}}] [${{matrix.os}}
     
     runs-on: ${{ matrix.os }}
     
