@@ -13,19 +13,12 @@ jobs:
   main-test:
     name: Main test
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        browser: [chrome, firefox]
-
     steps: 
       - uses: actions/checkout@v2
       - name: Use Node.js 10
         uses: actions/setup-node@v1
         with:
           node-version: 10
-      - uses: cypress-io/github-action@v2
-        with:
-          browser: ${{matrix.browser}}
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Running tests
@@ -39,16 +32,12 @@ jobs:
     strategy:
       matrix: 
         scenario: [ember-lts-3.8, ember-lts-3.12, ember-lts-3.15]
-        browser: [chrome, firefox]
     steps: 
       - uses: actions/checkout@v2
       - name: Use Node.js 10
         uses: actions/setup-node@v1
         with:
           node-version: 10
-      - uses: cypress-io/github-action@v2
-        with:
-          browser: ${{matrix.browser}}
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Running test
@@ -62,16 +51,12 @@ jobs:
     strategy:
       matrix: 
         scenario: [ember-beta, ember-release, ember-canary]
-        browser: [chrome, firefox]
     steps: 
       - uses: actions/checkout@v2
       - name: Use Node.js 10
         uses: actions/setup-node@v1
         with:
           node-version: 10
-      - uses: cypress-io/github-action@v2
-        with:
-          browser: ${{matrix.browser}}
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Running test
