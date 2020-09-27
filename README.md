@@ -1,7 +1,9 @@
 # Ember-sortable
 
 [![npm version](https://badge.fury.io/js/ember-sortable.svg)](http://badge.fury.io/js/ember-sortable)
-[![Build Status](https://travis-ci.org/adopted-ember-addons/ember-sortable.svg?branch=master)](https://travis-ci.org/adopted-ember-addons/ember-sortable)
+[![Build Status](https://github.com/adopted-ember-addons/ember-sortable/workflows/build/badge.svg?branch=master)](https://github.com/adopted-ember-addons/ember-sortable/actions?query=branch%3Amaster+workflow%3A%22build%22)
+
+https://github.com/adopted-ember-addons/ember-sortable/workflows/Node.js%20CI/badge.svg
 [![Downloads Weekly](https://img.shields.io/npm/dw/ember-sortable)](http://badge.fury.io/js/ember-sortable)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
