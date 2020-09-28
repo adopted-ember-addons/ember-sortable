@@ -29,8 +29,7 @@
     "ember-cli-htmlbars": "^5.0.0",
     "ember-decorators-polyfill": "^1.1.1",
     "ember-modifier": "^1.0.2",
-    "ember-native-class-polyfill": "^1.0.6",
-    "ember-test-selectors": "^2.1.0",
+    "ember-test-selectors": "^4.0.0",
     "ember-test-waiters": "^1.1.1"
   },
   "devDependencies": {
