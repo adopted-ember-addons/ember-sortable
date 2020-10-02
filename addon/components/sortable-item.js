@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import { Promise, defer } from 'rsvp';
 import Component from '@ember/component';
 import { computed, defineProperty } from '@ember/object';
@@ -11,6 +10,11 @@ import { getBorderSpacing } from '../utils/css-calculation';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { getX, getY } from '../utils/coordinate';
 import { buildWaiter } from 'ember-test-waiters';
+import config from 'ember-get-config';
+const { environment } = config;
+const isTesting = environment === 'test';
+
+
 
 const sortableItemWaiter = buildWaiter("sortable-item-waiter");
 
@@ -147,6 +151,9 @@ export default Component.extend({
     minimal overriding.
   */
   _direction: computed.readOnly('direction'),
+
+
+  disableCheckScrollBounds: isTesting,
 
   init() {
     this._super(...arguments);
@@ -425,8 +432,7 @@ export default Component.extend({
         requestAnimationFrame(checkScrollBounds);
       }
     };
-
-    if (!Ember.testing) {
+    if (!this.disableCheckScrollBounds) {
       requestAnimationFrame(checkScrollBounds);
     }
   },
