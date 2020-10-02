@@ -303,6 +303,7 @@ export default class SortableGroupModifier extends Modifier {
     this.moves = [];
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
+    set(_selectedItem, "wasDropped", true);
     this.commit();
     this._updateItemVisualIndicators(_selectedItem, false);
     this._updateHandleVisualIndicators(_selectedItem, false);
