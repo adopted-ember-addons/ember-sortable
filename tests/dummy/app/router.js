@@ -8,6 +8,7 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('modifier');
+  this.route('docautoscroll');
 });
 
 export default Router;
