@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        scenario: [ember-lts-3.15, ember-lts-3.16, ember-lts-3.17, ember-lts-3.18]
+        scenario: [ember-lts-3.15, ember-lts-3.16, ember-lts-3.17, ember-lts-3.18, ember-lts-3.19, ember-lts-3.20, ember-lts-3.21]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 10

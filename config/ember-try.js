@@ -12,14 +12,6 @@ module.exports = function() {
       useYarn: true,
       scenarios: [
         {
-          name: 'ember-lts-3.15',
-          npm: {
-            devDependencies: {
-              'ember-source': '~3.15.0'
-            }
-          }
-        },
-        {
           name: 'ember-lts-3.16',
           npm: {
             devDependencies: {
@@ -40,6 +32,30 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.18.0'
+            }
+          }
+        },
+        {
+          name: 'ember-lts-3.19',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.19.0'
+            }
+          }
+        },
+        {
+          name: 'ember-lts-3.20',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.20.0'
+            }
+          }
+        },
+        {
+          name: 'ember-lts-3.21',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.21.0'
             }
           }
         },
