@@ -724,7 +724,9 @@ export default class SortableGroupModifier extends Modifier {
 
   willRemove() {
     // todo cleanup the announcer
-    this.announcer.parentNode.removeChild(this.announcer);
+    if(this.announcer.parentNode) {
+      this.announcer.parentNode.removeChild(this.announcer);
+    }
     this.removeEventListener();
 
     this.sortableService.deregisterGroup(this.groupName, this);
