@@ -1,3 +1,5 @@
+Must provide GITHUB_AUTH
+
 * Use a service to track group/item state (#361) (68c12b6)
 * Correct typos in modifier examples (#365) (17ecd1d)
 * fixes parentNode of null (#370) (#371) (87953ce)
