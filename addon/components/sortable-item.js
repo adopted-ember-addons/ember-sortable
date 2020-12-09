@@ -170,7 +170,7 @@ export default Component.extend({
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    let handleElement = this.element.querySelector(this.get('handle'));
+    let handleElement = this.element.querySelector(this.handle);
 
     if (!handleElement) {
       // Handle does not exist, so we set it null here.
@@ -207,7 +207,7 @@ export default Component.extend({
   },
 
   keyDown(event) {
-    const handleElement = this.element.querySelector(this.get('handle'));
+    const handleElement = this.element.querySelector(this.handle);
 
     // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
     if (event.target === handleElement || event.target === this.element) {
@@ -267,11 +267,11 @@ export default Component.extend({
    */
   _primeDrag(startEvent) {
     // Prevent dragging if the sortable-item is destroying or is disabled.
-    if (this.isDestroying || this.get('isDraggingDisabled')) {
+    if (this.isDestroying || this.isDraggingDisabled) {
       return;
     }
 
-    let handle = this.get('handle');
+    let handle = this.handle;
 
     if (handle && !startEvent.target.closest(handle)) {
       return;
@@ -305,7 +305,7 @@ export default Component.extend({
    * @private
    */
   _prepareDrag(startEvent, event) {
-    let distance = this.get('distance');
+    let distance = this.distance;
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
 
@@ -323,7 +323,7 @@ export default Component.extend({
    * @private
    */
   _startDrag(event) {
-    if (this.isDestroying || this.get('isBusy')) { return; }
+    if (this.isDestroying || this.isBusy) { return; }
 
     let drag = this._makeDragHandler(event);
     let dragThrottled = ev => throttle(this, drag, ev, 16, false);
@@ -342,7 +342,7 @@ export default Component.extend({
 
     this.prepare();
     this.set('isDragging', true);
-    this.onDragStart(this.get('model'));
+    this.onDragStart(this.model);
     this._scrollOnEdges(drag);
   },
 
@@ -354,7 +354,7 @@ export default Component.extend({
   maxScrollSpeed: 20,
 
   _scrollOnEdges(drag) {
-    let groupDirection = this.get('_direction');
+    let groupDirection = this._direction;
     let element = this.element;
     let scrollContainer = new ScrollContainer(scrollParent(element));
     let itemContainer = {
@@ -415,7 +415,7 @@ export default Component.extend({
       }
 
       if (delta !== 0) {
-        let speed = this.get('maxScrollSpeed');
+        let speed = this.maxScrollSpeed;
         delta = Math.min(Math.max(delta, -1 * speed), speed);
 
         delta = scrollContainer[scrollKey](scroll + delta) - scroll;
@@ -428,7 +428,7 @@ export default Component.extend({
           run(() => drag(event));
         }
       }
-      if (this.get('isDragging')) {
+      if (this.isDragging) {
         requestAnimationFrame(checkScrollBounds);
       }
     };
@@ -444,7 +444,7 @@ export default Component.extend({
     @private
   */
   _makeDragHandler(startEvent) {
-    const groupDirection = this.get('_direction');
+    const groupDirection = this._direction;
     let dragOrigin;
     let elementOrigin;
     let scrollOrigin;
@@ -456,7 +456,7 @@ export default Component.extend({
 
     if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
-      elementOrigin = this.get('x');
+      elementOrigin = this.x;
       scrollOrigin = parentElement.getBoundingClientRect().left;
 
       return event => {
@@ -471,7 +471,7 @@ export default Component.extend({
 
     if (groupDirection === 'y') {
       dragOrigin = getY(startEvent);
-      elementOrigin = this.get('y');
+      elementOrigin = this.y;
       scrollOrigin = parentElement.getBoundingClientRect().top;
 
       return event => {
@@ -500,16 +500,16 @@ export default Component.extend({
   _applyPosition() {
     if (!this.element || !this.element) { return; }
 
-    const groupDirection = this.get('_direction');
+    const groupDirection = this._direction;
 
     if (groupDirection === 'x') {
-      let x = this.get('x');
+      let x = this.x;
       let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
 
       this.element.style.transform = `translateX(${dx}px)`;
     }
     if (groupDirection === 'y') {
-      let y = this.get('y');
+      let y = this.y;
       let dy = y - this.element.offsetTop;
 
       this.element.style.transform = `translateY(${dy}px)`;
@@ -521,11 +521,11 @@ export default Component.extend({
     @private
   */
   _drag(dimension) {
-    if(!this.get("isDragging")) {
+    if(!this.isDragging) {
       return;
     }
-    let updateInterval = this.get('updateInterval');
-    const groupDirection = this.get('_direction');
+    let updateInterval = this.updateInterval;
+    const groupDirection = this._direction;
 
     if (groupDirection === 'x') {
       this.set('x', dimension);
@@ -592,14 +592,14 @@ export default Component.extend({
 
     let transitionPromise;
 
-    if (this.get('isAnimated')) {
+    if (this.isAnimated) {
       const deferred = defer();
       this.element.addEventListener('transitionend', deferred.resolve);
       transitionPromise = deferred.promise.finally(() => {
         this.element.removeEventListener('transitionend', deferred.resolve);
       });
     } else {
-      const duration = this.get('isAnimated') ? this.get('transitionDuration') : 200;
+      const duration = this.isAnimated ? this.transitionDuration : 200;
       transitionPromise = new Promise((resolve) => run.later(resolve, duration));
     }
 
@@ -617,7 +617,7 @@ export default Component.extend({
     @private
   */
   _complete() {
-    this.onDragStop(this.get('model'));
+    this.onDragStop(this.model);
     this.set('isDropping', false);
     this.set('wasDropped', true);
     this.commit();
@@ -639,7 +639,7 @@ export default Component.extend({
         let el = this.element;
         let property = getComputedStyle(el).transitionProperty;
 
-        return /all|transform/.test(property) && this.get("transitionDuration") > 0;
+        return /all|transform/.test(property) && this.transitionDuration > 0;
       }
     });
 

@@ -153,12 +153,12 @@ export default Component.extend({
    * @param {Event} evt a DOM event
    */
   keyDown(event) {
-    if (!this.get('isKeyDownEnabled')) {
+    if (!this.isKeyDownEnabled) {
       return;
     }
     // Note: If handle is specified, we need to target the keyDown on the handle
-    const isKeyboardReorderModeEnabled = this.get('isKeyboardReorderModeEnabled');
-    const _selectedItem = this.get('_selectedItem');
+    const isKeyboardReorderModeEnabled = this.isKeyboardReorderModeEnabled;
+    const _selectedItem = this._selectedItem;
 
     if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
       this.prepareKeyboardReorderMode();
@@ -192,7 +192,7 @@ export default Component.extend({
    * @param {Event} event a DOM event.
    */
   focusOut(event) {
-    if (!this.get('isRetainingFocus') && !this._isElementWithinHandle(document.activeElement)) {
+    if (!this.isRetainingFocus && !this._isElementWithinHandle(document.activeElement)) {
       this.cancelKeyboardSelection();
     }
     event.stopPropagation();
@@ -236,10 +236,10 @@ export default Component.extend({
    * 4. Resets the current selected item.
    */
   cancelKeyboardSelection() {
-    const _selectedItem = this.get('_selectedItem');
+    const _selectedItem = this._selectedItem;
     this._disableKeyboardReorderMode();
     // Revert the process by reversing the move.
-    const moves = this.get('moves');
+    const moves = this.moves;
     while (moves.length > 0) {
       const move = moves.pop();
       this._move(move[1], move[0])
@@ -259,9 +259,9 @@ export default Component.extend({
    * 5. Resets the currently selected item.
    */
   confirmKeyboardSelection() {
-    const items = this.get('sortedItems');
-    const groupModel = this.get('groupModel');
-    const _selectedItem = this.get('_selectedItem');
+    const items = this.sortedItems;
+    const groupModel = this.groupModel;
+    const _selectedItem = this._selectedItem;
     const selectedModel = _selectedItem.get('model');
     const itemModels = items.mapBy('model');
     this.set('moves', []);
@@ -301,7 +301,7 @@ export default Component.extend({
     @param {SortableItem} [item]
   */
   _registerItem(item) {
-    this.get('items').addObject(item);
+    this.items.addObject(item);
   },
 
   /**
@@ -310,7 +310,7 @@ export default Component.extend({
     @param {SortableItem} [item]
   */
   _deregisterItem(item) {
-    this.get('items').removeObject(item);
+    this.items.removeObject(item);
   },
 
   _setSelectedItem(item) {
@@ -324,7 +324,7 @@ export default Component.extend({
     @method _=repare
   */
   _prepare() {
-    this._itemPosition = this.get('itemPosition');
+    this._itemPosition = this.itemPosition;
   },
 
   /**
@@ -332,26 +332,26 @@ export default Component.extend({
     @method update
   */
   _update() {
-    let sortedItems = this.get('sortedItems');
+    let sortedItems = this.sortedItems;
     // Position of the first element
     let position = this._itemPosition;
 
     // Just in case we haven’t called prepare first.
     if (position === undefined) {
-      position = this.get('itemPosition');
+      position = this.itemPosition;
     }
 
     sortedItems.forEach(item => {
       let dimension;
-      let direction = this.get('direction');
+      let direction = this.direction;
 
-      if (!get(item, 'isDragging')) {
+      if (!item.isDragging) {
         set(item, direction, position);
       }
 
       // add additional spacing around active element
-      if (get(item, 'isBusy')) {
-        position += get(item, 'spacing') * 2;
+      if (item.isBusy) {
+        position += item.spacing * 2;
       }
 
       if (direction === 'x') {
@@ -369,15 +369,15 @@ export default Component.extend({
     @method _commit
   */
   _commit() {
-    const items = this.get('sortedItems');
-    const groupModel = this.get('groupModel');
+    const items = this.sortedItems;
+    const groupModel = this.groupModel;
     const itemModels = items.mapBy('model');
     const draggedItem = items.findBy('wasDropped', true);
     let draggedModel;
 
     if (draggedItem) {
       set(draggedItem, 'wasDropped', false); // Reset
-      draggedModel = get(draggedItem, 'model');
+      draggedModel = draggedItem.model;
     }
 
     this._updateItems();
@@ -393,7 +393,7 @@ export default Component.extend({
    * Needed for drag and keyboard operations.
    */
   _updateItems() {
-    const items = this.get('sortedItems');
+    const items = this.sortedItems;
 
     delete this._itemPosition;
 
@@ -475,9 +475,9 @@ export default Component.extend({
 
       this.set('isRetainingFocus', true);
       run.scheduleOnce('render', () => {
-        const moves = this.get('moves');
+        const moves = this.moves;
         if (moves && moves.length > 0) {
-          const sortedItems = this.get('sortedItems');
+          const sortedItems = this.sortedItems;
           const itemElement = sortedItems[moves[0].fromIndex].element
           this._focusItem(itemElement);
         } else {
@@ -544,23 +544,23 @@ export default Component.extend({
    * @param {Number} delta how much distance (item-wise) is being moved.
    */
   _announceAction(type, delta = null) {
-    const a11yAnnouncementConfig = this.get('a11yAnnouncementConfig');
-    const a11yItemName = this.get('a11yItemName');
+    const a11yAnnouncementConfig = this.a11yAnnouncementConfig;
+    const a11yItemName = this.a11yItemName;
 
     if (a11yAnnouncementConfig === NO_MODEL || !a11yItemName || !(type in a11yAnnouncementConfig)) {
       return;
     }
 
-    const sortedItems = this.get('sortedItems');
-    const _selectedItem = this.get('_selectedItem');
+    const sortedItems = this.sortedItems;
+    const _selectedItem = this._selectedItem;
     const index = sortedItems.indexOf(_selectedItem);
-    const announcer = this.get('announcer');
+    const announcer = this.announcer;
 
     const config = {
       a11yItemName,
       index: index,
       maxLength : sortedItems.length,
-      direction: this.get('direction'),
+      direction: this.direction,
       delta,
     }
 
@@ -608,7 +608,7 @@ export default Component.extend({
    * @param {Boolean} isActive to activate or deactivate the class.
    */
   _updateItemVisualIndicators(item, isActive) {
-    const itemVisualClass = this.get('itemVisualClass');
+    const itemVisualClass = this.itemVisualClass;
 
     if (!itemVisualClass || !item) {
       return;
@@ -628,14 +628,14 @@ export default Component.extend({
    * @param {Boolean} isUpdate to update or not update.
    */
   _updateHandleVisualIndicators(item, isUpdate) {
-    const handleVisualClass = this.get('handleVisualClass');
+    const handleVisualClass = this.handleVisualClass;
 
     if (handleVisualClass === NO_MODEL || !item) {
       return;
     }
 
-    const sortedItems = this.get('sortedItems');
-    const direction = this.get('direction');
+    const sortedItems = this.sortedItems;
+    const direction = this.direction;
     const index = sortedItems.indexOf(item);
     const handle = item.element.querySelector('[data-sortable-handle');
     const visualHandle = handle ? handle : item.element;
@@ -670,7 +670,7 @@ export default Component.extend({
     */
     defineProperty(this, 'itemPosition', {
       get() {
-        const direction = this.get('direction');
+        const direction = this.direction;
 
         return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
       }
@@ -683,8 +683,8 @@ export default Component.extend({
     */
     defineProperty(this, 'sortedItems', {
       get() {
-        const items = a(this.get('items'));
-        const direction = this.get('direction');
+        const items = a(this.items);
+        const direction = this.direction;
 
         return a(items.sortBy(direction));
       }

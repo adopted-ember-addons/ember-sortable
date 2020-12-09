@@ -218,7 +218,7 @@ export default class SortableGroupModifier extends Modifier {
       this.confirmKeyboardSelection();
 
       this.isRetainingFocus = true;
-      run.scheduleOnce('render', () => this._focusItem(itemElement));
+      run.scheduleOnce('render', this, () => this._focusItem(itemElement));
     } else if (isEscapeKey(event)) {
       // cancel will reset the selectedItem, so caching it here before we remove it.
       const _selectedItemElement = selectedItem.element;
