@@ -210,7 +210,7 @@ export default Component.extend({
    * @param {Integer} delta how much to move index-wise.
    */
   moveItem(item, delta) {
-    const { sortedItems, moves } = this.getProperties('sortedItems', 'moves');
+    const { sortedItems, moves } = this;
     const sortedIndex = sortedItems.indexOf(item);
     const newSortedIndex = sortedIndex + delta;
 
@@ -419,7 +419,7 @@ export default Component.extend({
    * @param {Integer} toIndex the new index
    */
   _move(fromIndex, toIndex) {
-    const { direction, sortedItems } = this.getProperties('direction', 'sortedItems');
+    const { direction, sortedItems } = this;
     const item = sortedItems[fromIndex];
     const nextItem = sortedItems[toIndex];
 
@@ -449,7 +449,7 @@ export default Component.extend({
    * @param {Event} event a DOM event.
    */
   _handleKeyboardReorder(event) {
-    let  { direction, _selectedItem } = this.getProperties('direction', '_selectedItem');
+    let  { direction, _selectedItem } = this;
 
     if (direction === "y" && isDownArrowKey(event)) {
       this.moveItem(_selectedItem, 1);
@@ -461,7 +461,7 @@ export default Component.extend({
       this.moveItem(_selectedItem, 1);
     } else if (isEnterKey(event) || isSpaceKey(event)) {
       // confirm will reset the _selectedItem, so caching it here before we remove it.
-      const itemElement = this.get('_selectedItem.element');
+      const itemElement = this._selectedItem.element;
       this._announceAction(ANNOUNCEMENT_ACTION_TYPES.CONFIRM);
       this.confirmKeyboardSelection();
 
@@ -469,7 +469,7 @@ export default Component.extend({
       run.scheduleOnce('render', () => this._focusItem(itemElement));
     } else if (isEscapeKey(event)) {
       // cancel will reset the _selectedItem, so caching it here before we remove it.
-      const _selectedItemElement = this.get('_selectedItem.element');
+      const _selectedItemElement = this._selectedItem.element;
       this._announceAction(ANNOUNCEMENT_ACTION_TYPES.CANCEL);
       this.cancelKeyboardSelection();
 
@@ -672,7 +672,7 @@ export default Component.extend({
       get() {
         const direction = this.direction;
 
-        return this.get(`sortedItems.firstObject.${direction}`) - this.get('sortedItems.firstObject.spacing');
+        return this.sortedItems.firstObject[direction] - this.sortedItems.firstObject.spacing;
       }
     });
 
