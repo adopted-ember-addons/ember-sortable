@@ -267,12 +267,20 @@ export default Component.extend({
     this.set('moves', []);
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
-    this._updateItems();
+
+    let promise;
     if (groupModel !== NO_MODEL) {
-      this.onChange(groupModel, itemModels, selectedModel)
+      promise = this.onChange(groupModel, itemModels, selectedModel)
     } else {
-      this.onChange(itemModels, selectedModel);
+      promise = this.onChange(itemModels, selectedModel);
     }
+
+    if (promise && typeof promise.finally === 'function') {
+      promise.finally(() => this._updateItems());
+    } else {
+      this._updateItems();
+    }
+
     this._updateItemVisualIndicators(_selectedItem, false);
     this._updateHandleVisualIndicators(_selectedItem, false);
     this._resetItemSelection();
@@ -380,11 +388,17 @@ export default Component.extend({
       draggedModel = get(draggedItem, 'model');
     }
 
-    this._updateItems();
+    let promise;
     if (groupModel !== NO_MODEL) {
-      this.onChange(groupModel, itemModels, draggedModel);
+      promise = this.onChange(groupModel, itemModels, draggedModel);
     } else {
-      this.onChange(itemModels, draggedModel);
+      promise = this.onChange(itemModels, draggedModel);
+    }
+
+    if (promise && typeof promise.finally === 'function') {
+      promise.finally(() => this._updateItems());
+    } else {
+      this._updateItems();
     }
   },
 

@@ -652,15 +652,17 @@ export default class SortableGroupModifier extends Modifier {
       draggedModel = draggedItem.model;
     }
 
-    this._updateItems();
-    this._onChange(itemModels, draggedModel);
+    const promise = this._onChange(itemModels, draggedModel);
+    if (promise && typeof promise.finally === 'function') {
+      promise.finally(() => this._updateItems);
+    } else {
+      this._updateItems();
+    }
   }
 
   @action
   _onChange(itemModels, draggedModel) {
-    if (this.onChange) {
-      this.onChange(itemModels, draggedModel);
-    }
+    return this.onChange && this.onChange(itemModels, draggedModel);
   }
 
   /**
