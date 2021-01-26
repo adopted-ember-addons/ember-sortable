@@ -170,6 +170,30 @@
   color: pink;
 }
 
+.delayed-demo .sortable-item {
+  display: block;
+  position: relative;
+  background: pink;
+  margin: 4px 0;
+}
+
+.delayed-demo .sortable-item.is-dragging {
+  background: red;
+}
+
+.delayed-demo .sortable-item.is-dropping {
+  background: #f66;
+  z-index: 10;
+}
+
+.delayed-demo .sortable-item .handle {
+  display: block;
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  background: rgba(71, 1, 1, 0.5);
+  color: pink;
+}
+
 #ember-testing {
   transform: none !important;
 }

@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { visit, find, findAll, triggerKeyEvent, focus, blur } from '@ember/test-helpers';
+import { visit, find, findAll, triggerKeyEvent, focus, blur, waitFor } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import { drag, reorder }  from 'ember-sortable/test-support/helpers';
 import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/test-support/utils/keyboard";
@@ -181,6 +181,23 @@ module('Acceptance | smoke component', function(hooks) {
     assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
+  });
+
+  test('reordering with a delayed onChange update', async function(assert) {
+    await visit('/');
+
+    assert.equal(delayedContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    const item = find('[data-test-delayed-demo-handle]');
+    const style = window.getComputedStyle(item);
+    const height = item.offsetHeight + parseInt(style.marginTop);
+    await drag('mouse', '[data-test-delayed-demo-handle]', () => { return { dy: height * 2 + 1, dx: undefined }});
+
+    assert.equal(delayedContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    await waitFor('[data-test-delayed-update-finished]');
+
+    assert.equal(delayedContents(), 'Dos Uno Tres Cuatro Cinco');
   });
 
   module('[A11y] Reordering with keyboard events', function() {
@@ -589,6 +606,10 @@ module('Acceptance | smoke component', function(hooks) {
 
   function scrollableContents() {
     return contents('.scrollable-demo ol');
+  }
+
+  function delayedContents() {
+    return contents('.delayed-demo ol');
   }
 
   function contents(selector) {

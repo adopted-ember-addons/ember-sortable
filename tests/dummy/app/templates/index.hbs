@@ -139,6 +139,35 @@
       </div>
     </section>
 
+    <section class="delayed-demo">
+      <h3>Delayed</h3>
+
+      {{#sortable-group
+        data-test-delayed-demo-group
+        tagName="ol"
+        a11yAnnouncementConfig=a11yAnnouncementConfig
+        a11yItemName="spanish number"
+        itemVisualClass=itemVisualClass
+        handleVisualClass=handleVisualClass onChange=(action "delayedUpdate")
+        model=model.items as |group|
+      }}
+        {{#each group.model as |item|}}
+          {{#group.item data-test-delayed-demo-item tagName="li" model=item  as |groupItem|}}
+            {{item}}
+            {{#groupItem.handle data-test-delayed-demo-handle class="handle"}}
+              <span data-item={{item}}>
+                <span>&vArr;</span>
+              </span>
+            {{/groupItem.handle}}
+          {{/group.item}}
+        {{/each}}
+      {{/sortable-group}}
+
+      {{#if this.delayedUpdateFinished}}
+        <p data-test-delayed-update-finished>Delayed update finished!</p>
+      {{/if}}
+    </section>
+
     {{#if model.dragged}}
       <p>Just dragged {{model.dragged}}</p>
     {{/if}}

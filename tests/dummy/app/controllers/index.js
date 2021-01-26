@@ -1,7 +1,12 @@
 import Controller from '@ember/controller';
-import { set } from '@ember/object';
+import { computed, set } from '@ember/object';
 import { A as a } from '@ember/array';
 
+function timeout(ms) {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(), ms);
+  });
+}
 
 export default Controller.extend({
   init() {
@@ -47,6 +52,13 @@ export default Controller.extend({
     });
   },
 
+  delayedUpdateFinished: computed('model.{delayedUpdateStarts,delayedUpdateFinishes}', function() {
+    const { delayedUpdateStarts, delayedUpdateFinishes } = this.get('model');
+    return delayedUpdateStarts !== undefined &&
+      delayedUpdateFinishes !== undefined &&
+      delayedUpdateStarts === delayedUpdateFinishes;
+  }),
+
   actions: {
     updateDifferentSizedModels(newOrder) {
       set(this, 'differentSizedModels', newOrder);
@@ -54,6 +66,17 @@ export default Controller.extend({
     update(newOrder, draggedModel) {
       set(this, 'model.items', a(newOrder));
       set(this, 'model.dragged', draggedModel);
+    },
+    async delayedUpdate(newOrder, draggedModel) {
+      const startCount = this.get('model.delayedUpdateStarts') || 0;
+      set(this, 'model.delayedUpdateStarts', startCount + 1);
+
+      await timeout(50);
+
+      set(this, 'model.items', a(newOrder));
+      set(this, 'model.dragged', draggedModel);
+      const finishCount = this.get('model.delayedUpdateFinishes') || 0;
+      set(this, 'model.delayedUpdateFinishes', finishCount + 1);
     }
   }
 })
