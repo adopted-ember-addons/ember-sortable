@@ -191,11 +191,10 @@ export default Component.extend({
    *
    * @param {Event} event a DOM event.
    */
-  focusOut(event) {
+  focusOut() {
     if (!this.get('isRetainingFocus') && !this._isElementWithinHandle(document.activeElement)) {
       this.cancelKeyboardSelection();
     }
-    event.stopPropagation();
   },
 
   prepareKeyboardReorderMode() {
