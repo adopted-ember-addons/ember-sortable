@@ -103,11 +103,10 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Event} event a DOM event.
    */
   @action
-  focusOut(event) {
+  focusOut() {
     if (!this.isRetainingFocus && !this._isElementWithinHandle(document.activeElement)) {
       this.cancelKeyboardSelection();
     }
-    event.stopPropagation();
   }
 
   /**
