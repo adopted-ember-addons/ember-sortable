@@ -1,3 +1,5 @@
+* Remove event.stopPropagation from focusOut (#413) (48fd3eb)
+
 Must provide GITHUB_AUTH
 
 Must provide GITHUB_AUTH
