@@ -1,3 +1,6 @@
+* update yarn.lock (a18d3cb)
+* bump ember-get-config to version using babel v7 (#416) (92dd9b9)
+
 * Remove event.stopPropagation from focusOut (#413) (48fd3eb)
 
 Must provide GITHUB_AUTH
