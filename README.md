@@ -364,7 +364,7 @@ There are 4 modes during keyboard navigation:
 #### User configurable
 ##### Screen Reader
 - **a11yItemName**
-  a name for the item.
+  a name for the item. Defaults to `item`.
 - **a11yAnnouncementConfig**
   a map of `action enums` to `functions` that takes the following `config`, which is exposed by `sortable-group`.
 ```javascript
@@ -378,7 +378,7 @@ a11yAnnounceConfig = {
 ```
 and returns a `string` constructed from the `config`.
 
-**Example**
+**Default value**
 ```javascript
 {
   ACTIVATE: function({ a11yItemName, index, maxLength, direction }) {
