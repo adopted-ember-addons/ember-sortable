@@ -10,7 +10,7 @@ import {getX, getY} from "../utils/coordinate";
 import ScrollContainer from "../system/scroll-container";
 import scrollParent from "../system/scroll-parent";
 import {getBorderSpacing} from "../utils/css-calculation";
-import { buildWaiter } from 'ember-test-waiters';
+import { buildWaiter } from '@ember/test-waiters';
 import {inject as service} from '@ember/service';
 import {assert} from '@ember/debug';
 import config from 'ember-get-config';

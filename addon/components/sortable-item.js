@@ -9,7 +9,7 @@ import layout from '../templates/components/sortable-item';
 import { getBorderSpacing } from '../utils/css-calculation';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { getX, getY } from '../utils/coordinate';
-import { buildWaiter } from 'ember-test-waiters';
+import { buildWaiter } from '@ember/test-waiters';
 import config from 'ember-get-config';
 const { environment } = config;
 const isTesting = environment === 'test';
