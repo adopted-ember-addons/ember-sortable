@@ -87,7 +87,7 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   get itemVisualClass() {
-    return this.args.named.itemVisualClass;
+    return this.args.named.itemVisualClass || "is-activated";
   }
 
   get a11yItemName() {
