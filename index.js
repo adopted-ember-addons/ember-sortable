@@ -16,7 +16,7 @@ module.exports = {
     }
 
     var checker = new VersionChecker(this);
-    var emberVersion = checker.forEmber();
+    var emberVersion = checker.for('ember-source');
 
     if (emberVersion.lt('3.10.0')) {
       this.ui.writeWarnLine('ember-sortable requires the ember-decorator-polyfill. Please add it to your `package.json`.');
