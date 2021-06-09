@@ -363,6 +363,9 @@ There are 4 modes during keyboard navigation:
 
 #### User configurable
 ##### Screen Reader
+
+The default language for `ember-sortable` is English. Any language can be supported by passing in the configuration below in the appropriate language.
+
 - **a11yItemName**
   a name for the item. Defaults to `item`.
 - **a11yAnnouncementConfig**
