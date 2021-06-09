@@ -319,7 +319,7 @@ export default class SortableGroupModifier extends Modifier {
     const a11yAnnouncementConfig = this.a11yAnnouncementConfig;
     const a11yItemName = this.a11yItemName;
 
-    if (a11yAnnouncementConfig === NO_MODEL || !a11yItemName || !(type in a11yAnnouncementConfig)) {
+    if (!a11yItemName || !(type in a11yAnnouncementConfig)) {
       return;
     }
 
