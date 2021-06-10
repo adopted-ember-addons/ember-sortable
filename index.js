@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+const VersionChecker = require('ember-cli-version-checker');
 
 module.exports = {
   name: require('./package').name,
@@ -12,6 +13,13 @@ module.exports = {
     // So guarding this with a if polyfill exists.
     if (fs.existsSync('vendor/polyfills/closest.js')) {
       app.import('vendor/polyfills/closest.js', { prepend: true});
+    }
+
+    var checker = new VersionChecker(this);
+    var emberVersion = checker.for('ember-source');
+
+    if (emberVersion.lt('3.10.0')) {
+      this.ui.writeWarnLine('ember-sortable requires the ember-decorator-polyfill. Please add it to your `package.json`.');
     }
   }
 };
