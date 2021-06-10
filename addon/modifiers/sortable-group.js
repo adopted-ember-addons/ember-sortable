@@ -10,6 +10,7 @@ import {
   isUpArrowKey
 } from "../utils/keyboard";
 import {ANNOUNCEMENT_ACTION_TYPES} from "../utils/constant";
+import { defaultA11yAnnouncementConfig } from "../utils/defaults";
 import { run } from '@ember/runloop';
 import {inject as service} from '@ember/service';
 
@@ -73,7 +74,6 @@ export default class SortableGroupModifier extends Modifier {
   /**
    * @property an object containing functions for producing screen reader announcements
    * @type {Object}
-   * @default null
    * @example
    * {
    *  MOVE: function() {},
@@ -83,15 +83,15 @@ export default class SortableGroupModifier extends Modifier {
    * }
    */
   get a11yAnnouncementConfig() {
-    return this.args.named.a11yAnnouncementConfig || NO_MODEL;
+    return this.args.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig;
   }
 
   get itemVisualClass() {
-    return this.args.named.itemVisualClass;
+    return this.args.named.itemVisualClass || "is-activated";
   }
 
   get a11yItemName() {
-    return this.args.named.a11yItemName;
+    return this.args.named.a11yItemName || 'item';
   }
   /** End of a11y properties */
 
@@ -319,7 +319,7 @@ export default class SortableGroupModifier extends Modifier {
     const a11yAnnouncementConfig = this.a11yAnnouncementConfig;
     const a11yItemName = this.a11yItemName;
 
-    if (a11yAnnouncementConfig === NO_MODEL || !a11yItemName || !(type in a11yAnnouncementConfig)) {
+    if (!a11yItemName || !(type in a11yAnnouncementConfig)) {
       return;
     }
 

@@ -36,7 +36,7 @@ $ ember install ember-sortable
 
 ## Usage
 
-### component 
+### component
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -52,7 +52,7 @@ $ ember install ember-sortable
 {{/sortable-group}}
 ```
 
-### modifier 
+### modifier
 ```hbs
 {{! app/templates/my-route.hbs }}
 
@@ -180,7 +180,7 @@ modifier
 
 ### CSS, Animation
 
-Sortable items can be in one of three states: default, dragging, dropping.
+Sortable items can be in one of four states: default, dragging, dropping, and activated.
 The classes look like this:
 
 ```html
@@ -190,6 +190,8 @@ The classes look like this:
 <li class="sortable-item is-dragging">...</li>
 <!-- Dropping -->
 <li class="sortable-item is-dropping">...</li>
+<!-- Keyboard -->
+<li class="sortable-item is-activated">...</li>
 ```
 
 In our [example app.css](tests/dummy/app/styles/app.css) we apply a
@@ -224,6 +226,9 @@ slightly different colour:
   z-index: 10;
 }
 ```
+
+If the user presses space to activate and move an item via the keyboard, `is-activated` is added. Once the user drops the item it is
+removed. Use this class to add a visual indicator that the item is selected and being manipulated.
 
 ### Drag Actions
 
@@ -358,8 +363,11 @@ There are 4 modes during keyboard navigation:
 
 #### User configurable
 ##### Screen Reader
+
+The default language for `ember-sortable` is English. Any language can be supported by passing in the configuration below in the appropriate language.
+
 - **a11yItemName**
-  a name for the item.
+  a name for the item. Defaults to `item`.
 - **a11yAnnouncementConfig**
   a map of `action enums` to `functions` that takes the following `config`, which is exposed by `sortable-group`.
 ```javascript
@@ -373,7 +381,7 @@ a11yAnnounceConfig = {
 ```
 and returns a `string` constructed from the `config`.
 
-**Example**
+**Default value**
 ```javascript
 {
   ACTIVATE: function({ a11yItemName, index, maxLength, direction }) {
@@ -405,7 +413,7 @@ and returns a `string` constructed from the `config`.
   This class will be added to the `sortable-handle` during `ACTIVATE` and `MOVE` operations. This allows you to add custom styles such as `visual arrows` via `pseudo` classes.
 
 - **itemVisualClass**
-  This class will be added to the `sortable-item` during `ACTIVATE` and `MOVE` operations. This is needed to creating a `visual indicator` that mimics `focus` b/c the native `focus` is on the container.
+  This class will be added to the `sortable-item` during `ACTIVATE` and `MOVE` operations. The default class added is `is-activated`. This is needed to creating a `visual indicator` that mimics `focus` b/c the native `focus` is on the container.
 
 ## Testing
 
