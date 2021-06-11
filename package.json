@@ -25,13 +25,13 @@
   },
   "dependencies": {
     "@ember/render-modifiers": "^1.0.2",
+    "@ember/test-waiters": "^2.4.4",
     "ember-cli-babel": "^7.11.1",
     "ember-cli-htmlbars": "^5.0.0",
     "ember-cli-version-checker": "^5.1.2",
     "ember-get-config": "^0.3.0",
     "ember-modifier": "^2.1.0",
-    "ember-test-selectors": "^5.0.0",
-    "ember-test-waiters": "^1.1.1"
+    "ember-test-selectors": "^5.0.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
