@@ -182,8 +182,7 @@ modifier
 
 ### Disabling reordering
 
-The `disabled` attribute allows you to disable sorting for the entire group and its child items. While
-set to true the user won't be able to reorder using the mouse of keyboard.
+The `disabled` attribute allows you to disable sorting for the entire group and its child items.
 
 modifier
 ```hbs
