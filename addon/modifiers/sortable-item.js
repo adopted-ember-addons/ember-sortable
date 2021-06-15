@@ -63,17 +63,11 @@ export default class SortableItemModifier extends Modifier {
   @reads("sortableGroup.direction")
   direction;
 
+  @reads("sortableGroup.disabled")
+  disabled;
+
   @service('ember-sortable@ember-sortable')
   sortableService;
-
-  /**
-   * True if the entire sortable-group has been disabled
-   * @type Boolean;
-   */
-  get disabled() {
-    let group = this.sortableService.fetchGroup(this.groupName);
-    return group.disabled;
-  }
 
   /**
    * This is the group name used to keep groups separate if there are more than one on the screen at a time.

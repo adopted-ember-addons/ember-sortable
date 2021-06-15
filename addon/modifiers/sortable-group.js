@@ -54,6 +54,10 @@ export default class SortableGroupModifier extends Modifier {
   isRetainingFocus = false;
   /** End of keyboard utils */
 
+  get disabled() {
+    return this.args.named.disabled || false;
+  }
+
   /** Start of a11y properties */
   /**
    * @property an object containing different classes for visual indicators
@@ -709,12 +713,10 @@ export default class SortableGroupModifier extends Modifier {
   didReceiveArguments() {
     this.removeEventListener();
 
-    if (this.args.named.disabled) {
-      this.sortableService.disableGroup(this.groupName);
+    if (this.disabled) {
       return;
     }
 
-    this.sortableService.enableGroup(this.groupName);
     this.addEventListener();
   }
 

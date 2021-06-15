@@ -45,24 +45,6 @@ export default class EmberSortableService extends Service {
   }
 
   /**
-   * Disable a group and prevent all reorder activity
-   *
-   * @param {String} groupName
-   */
-  disableGroup(groupName) {
-    this.groups[groupName].disabled = true;
-  }
-
-  /**
-   * Enable a group and allow reorder
-   *
-   * @param {String} groupName
-   */
-  enableGroup(groupName) {
-    this.groups[groupName].disabled = false;
-  }
-
-  /**
    * Register an item with this group
    *
    * @method registerItem
