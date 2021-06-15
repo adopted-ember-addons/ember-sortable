@@ -26,7 +26,6 @@ export default class EmberSortableService extends Service {
   registerGroup(groupName, groupModifier) {
     if (this.groups[groupName] === undefined) {
       this.groups[groupName] = {
-        disabled: false,
         groupModifier: groupModifier,
         items: []
       }
