@@ -3,9 +3,13 @@
     <h2>Ember Sortable</h2>
   </header>
 
-  <LinkTo @route="index">Components</LinkTo>
+  {{#link-to "index"}}
+    Components
+  {{/link-to}}
   |
-  <LinkTo @route="modifier">Modifiers</LinkTo>
+  {{#link-to "modifier"}}
+    Modifiers
+  {{/link-to}}
 
   <main>
     <section class="vertical-demo">
