@@ -63,6 +63,9 @@ export default class SortableItemModifier extends Modifier {
   @reads("sortableGroup.direction")
   direction;
 
+  @reads("sortableGroup.disabled")
+  disabled;
+
   @service('ember-sortable@ember-sortable')
   sortableService;
 
@@ -239,6 +242,9 @@ export default class SortableItemModifier extends Modifier {
 
   @action
   keyDown(event) {
+    // Prevents keyboard sorting if group is disabled
+    if (this.disabled) { return; }
+
     // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
     if (event.target === this.handleElement || event.target === this.element) {
       this.sortableGroup.activateKeyDown(this);
@@ -296,6 +302,9 @@ export default class SortableItemModifier extends Modifier {
    * @private
    */
   _primeDrag(startEvent) {
+    // Prevent dragging if the entire group is disabled
+    if (this.disabled) { return; }
+
     // Prevent dragging if the sortable-item is disabled.
     if (this.isDraggingDisabled) {
       return;

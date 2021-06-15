@@ -26,6 +26,7 @@ export default class EmberSortableService extends Service {
   registerGroup(groupName, groupModifier) {
     if (this.groups[groupName] === undefined) {
       this.groups[groupName] = {
+        disabled: false,
         groupModifier: groupModifier,
         items: []
       }
@@ -41,6 +42,24 @@ export default class EmberSortableService extends Service {
    */
   deregisterGroup(groupName) {
     delete this.groups[groupName];
+  }
+
+  /**
+   * Disable a group and prevent all reorder activity
+   *
+   * @param {String} groupName
+   */
+  disableGroup(groupName) {
+    this.groups[groupName].disabled = true;
+  }
+
+  /**
+   * Enable a group and allow reorder
+   *
+   * @param {String} groupName
+   */
+  enableGroup(groupName) {
+    this.groups[groupName].disabled = false;
   }
 
   /**

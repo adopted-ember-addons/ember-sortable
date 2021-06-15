@@ -707,14 +707,21 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   didReceiveArguments() {
+    this.removeEventListener();
+
+    if (this.args.named.disabled) {
+      this.sortableService.disableGroup(this.groupName);
+      return;
+    }
+
+    this.sortableService.enableGroup(this.groupName);
+    this.addEventListener();
   }
 
   didUpdateArguments() {
   }
 
   didInstall() {
-    this.addEventListener();
-
     this.announcer = this._createAnnouncer();
     this.element.insertAdjacentElement('afterend', this.announcer);
 
