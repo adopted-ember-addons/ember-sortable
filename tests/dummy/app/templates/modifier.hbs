@@ -3,6 +3,10 @@
     <h2>Ember Sortable</h2>
   </header>
 
+  <LinkTo @route="index">Components</LinkTo>
+  |
+  <LinkTo @route="modifier">Modifiers</LinkTo>
+
   <main>
     <section class="vertical-demo">
       <h3>Vertical</h3>
@@ -163,5 +167,34 @@
       {{/each}}
     </ol>
 
+  </section>
+</article>
+
+<article class="demo">
+  <section class="vertical-demo">
+    <h3>Disabled</h3>
+
+    <button {{on "click" this.toggleDisabled}}>
+      Disabled: {{this.disabled}}
+    </button>
+
+    <ol
+      {{sortable-group
+        disabled=this.disabled
+        groupName="disabled"
+        onChange=this.update
+      }}
+    >
+      {{#each model.items as |item|}}
+        <li {{sortable-item model=item groupName="disabled"}}>
+          {{item}}
+          {{#unless this.disabled}}
+            <span class="handle" {{sortable-handle}} data-item={{item}}>
+              <span>&vArr;</span>
+            </span>
+          {{/unless}}
+        </li>
+      {{/each}}
+    </ol>
   </section>
 </article>

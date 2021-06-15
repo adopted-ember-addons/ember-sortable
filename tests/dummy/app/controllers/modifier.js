@@ -1,8 +1,11 @@
 import Controller from '@ember/controller';
 import { set, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking'
 
 
 export default class ModifierController extends Controller {
+  @tracked disabled = false;
+
   differentSizedModels =  [
     'A',
     'B'.repeat(100),
@@ -51,5 +54,10 @@ export default class ModifierController extends Controller {
   update(newOrder, draggedModel) {
     set(this, 'model.items', newOrder);
     set(this, 'model.dragged', draggedModel);
+  }
+
+  @action
+  toggleDisabled() {
+    this.disabled = !this.disabled;
   }
 }
