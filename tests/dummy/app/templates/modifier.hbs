@@ -174,9 +174,11 @@
   <section class="vertical-demo">
     <h3>Disabled</h3>
 
-    <button {{on "click" this.toggleDisabled}}>
-      Disabled: {{this.disabled}}
-    </button>
+    <div>
+      <button {{on "click" this.toggleDisabled}}>
+        Disabled: {{this.disabled}}
+      </button>
+    </div>
 
     <ol
       {{sortable-group
