@@ -23,7 +23,7 @@ const sortableItemWaiter = buildWaiter("sortable-item-waiter");
  * Modifier to mark an element as an item to be reordered
  *
  * @param {Object} model The model that this item will represent
- * @param {boolean} [isDraggingDisabled=false] Set to true to make this item not draggable
+ * @param {boolean} [disabled=false] Set to true to make this item not sortable
  * @param {Function}  [onDragStart] An optional callback for when dragging starts.
  * @param {Function}  [onDragStop] An optional callback for when dragging stops.
  *
@@ -64,7 +64,7 @@ export default class SortableItemModifier extends Modifier {
   direction;
 
   @reads("sortableGroup.disabled")
-  disabled;
+  groupDisabled;
 
   @service('ember-sortable@ember-sortable')
   sortableService;
@@ -102,13 +102,13 @@ export default class SortableItemModifier extends Modifier {
   }
 
   /**
-   Removes the ability for the current item to be dragged
-   @property isDraggingDisabled
+   Removes the ability for the current item to be sorted
+   @property disabled
    @type  boolean
    @default false
    */
-  get isDraggingDisabled() {
-    return this.args.named.isDraggingDisabled || false;
+  get isDisabled() {
+    return this.groupDisabled || this.args.named.disabled || this.args.named.isDraggingDisabled || false;
   }
 
   /**
@@ -220,10 +220,7 @@ export default class SortableItemModifier extends Modifier {
   isBusy;
 
   /**
-   Removes the ability for the current item to be dragged
-   @property isDraggingDisabled
-   @type  boolean
-   @default false
+   @property disableCheckScrollBounds
    */
   get disableCheckScrollBounds() {
     return this.args.named.disableCheckScrollBounds != undefined ? this.args.named.disableCheckScrollBounds : isTesting;
@@ -242,8 +239,7 @@ export default class SortableItemModifier extends Modifier {
 
   @action
   keyDown(event) {
-    // Prevents keyboard sorting if group is disabled
-    if (this.disabled) { return; }
+    if (this.isDisabled) { return; }
 
     // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
     if (event.target === this.handleElement || event.target === this.element) {
@@ -302,13 +298,7 @@ export default class SortableItemModifier extends Modifier {
    * @private
    */
   _primeDrag(startEvent) {
-    // Prevent dragging if the entire group is disabled
-    if (this.disabled) { return; }
-
-    // Prevent dragging if the sortable-item is disabled.
-    if (this.isDraggingDisabled) {
-      return;
-    }
+    if (this.isDisabled) { return; }
 
     if (this.handleElement && !startEvent.target.closest(this.handle)) {
       return;

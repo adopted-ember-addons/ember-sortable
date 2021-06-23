@@ -138,7 +138,15 @@ export default Component.extend({
   spacing: 0,
 
   /**
-    Removes the ability for the current item to be dragged
+    Removes the ability for the current item to be reordered
+    @property disabled
+    @type Boolean
+    @default false
+  */
+  disabled: false,
+
+  /**
+    Deprecated. Removes the ability for the current item to be reordered
     @property isDraggingDisabled
     @type Boolean
     @default false
@@ -267,7 +275,7 @@ export default Component.extend({
    */
   _primeDrag(startEvent) {
     // Prevent dragging if the sortable-item is destroying or is disabled.
-    if (this.isDestroying || this.get('isDraggingDisabled')) {
+    if (this.isDestroying || this.isDisabled) {
       return;
     }
 
