@@ -326,8 +326,10 @@ Ensure that the same name is passed to both the group and the items, this would 
 
 
 ### Disabling Drag (Experimental)
-`sortable-item` (component and modifier) exposes an optional `disabled` (previously `isDraggingDisabled`) flag that you can use to disable reordering for that particular item.
+`sortable-item` (component and modifier) exposes an optional `disabled` (previously `isDraggingDisabled`) flag that you can use to disable reordering for that particular item. Disabling and item won't prevent it from changing position in the array. The user can still move other non-disabled items to over it.
+
 This flag is intended as an utility to make your life easier with 3 main benefits:
+
 1. You can now specify which `sortable-item` are not intended to be draggable/sortable.
 2. You do not have to duplicate the `sortable-item` UI just for the purpose of disabling the `sorting` behavior.
 3. Allows you to access the entire list of `models` for your `onChange` action, which can now be a mix of sortable and non-sortable items.
