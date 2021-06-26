@@ -102,7 +102,7 @@
 
       {{! template-lint-disable table-groups}}
       {{#sortable-group
-        tagName="tbody"
+        tagName="table"
         onChange=(action "update")
         a11yAnnouncementConfig=a11yAnnouncementConfig
         a11yItemName="spanish number"
@@ -111,13 +111,13 @@
         model=model.items
         as |group|
       }}
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>Item</th>
-            </tr>
-          </thead>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Item</th>
+          </tr>
+        </thead>
+        <tbody>
           {{#each group.model as |item|}}
             {{#group.item
               data-test-table-demo-item
@@ -137,7 +137,7 @@
               </td>
             {{/group.item}}
           {{/each}}
-        </table>
+        </tbody>
       {{/sortable-group}}
     </section>
 
