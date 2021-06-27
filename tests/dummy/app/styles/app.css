@@ -189,7 +189,6 @@
 .sortable-handle-down:after,
 .sortable-handle-left:before,
 .sortable-handle-right:after {
-  content: " ";
   position: absolute;
   left: 50%;
   margin-left: -4px;

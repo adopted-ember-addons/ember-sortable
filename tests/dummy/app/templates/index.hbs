@@ -122,14 +122,12 @@
             {{#group.item
               data-test-table-demo-item
               tagName="tr"
+              tabindex="0"
               model=item
-              as |groupItem|
             }}
               <td>
                 <span data-test-table-demo-handle data-item={{item}}>
-                  {{#groupItem.handle class="handle"}}
-                    &vArr;
-                  {{/groupItem.handle}}
+                  &vArr;
                 </span>
               </td>
               <td>

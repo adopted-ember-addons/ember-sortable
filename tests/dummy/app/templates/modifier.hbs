@@ -72,17 +72,17 @@
       <h3>Table</h3>
 
       {{! template-lint-disable table-groups}}
-      <table>
+      <table {{sortable-group onChange=this.update groupName="table"}}>
         <thead>
           <tr>
             <th></th>
             <th>Item</th>
           </tr>
         </thead>
-        <tbody {{sortable-group onChange=this.update groupName="table"}}>
+        <tbody>
           {{#each this.model.items as |item|}}
-            <tr data-test-table-demo-item class="handle" {{sortable-item model=item groupName="table"}}>
-              <td><span data-test-table-demo-handle data-item={{item}} class="handle">&vArr;</span></td>
+            <tr tabindex="0" data-test-table-demo-item {{sortable-item model=item groupName="table"}}>
+              <td><span data-test-table-demo-handle data-item={{item}}>&vArr;</span></td>
               <td>{{item}}</td>
             </tr>
           {{/each}}
