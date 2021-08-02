@@ -650,7 +650,7 @@ export default class SortableItemModifier extends Modifier {
 
   get isAnimated() {
     if (!this.element) {
-      return;
+      return undefined;
     }
 
     let el = this.element;
