@@ -1,6 +1,7 @@
 import { Promise, defer } from 'rsvp';
 import Component from '@ember/component';
-import { computed, defineProperty } from '@ember/object';
+import { defineProperty } from '@ember/object';
+import { or, readOnly } from '@ember/object/computed';
 import { run, throttle } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
 import scrollParent from '../system/scroll-parent';
@@ -118,7 +119,7 @@ export default Component.extend({
     @property isBusy
     @type Boolean
   */
-  isBusy: computed.or('isDragging', 'isDropping'),
+  isBusy: or('isDragging', 'isDropping'),
 
   /**
     The frequency with which the group is informed
@@ -150,7 +151,7 @@ export default Component.extend({
     Allows host instance to use the `group` property for something else with
     minimal overriding.
   */
-  _direction: computed.readOnly('direction'),
+  _direction: readOnly('direction'),
 
 
   disableCheckScrollBounds: isTesting,
