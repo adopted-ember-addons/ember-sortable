@@ -24,14 +24,14 @@
     "release": "release-it"
   },
   "dependencies": {
-    "@ember/render-modifiers": "^1.0.2",
-    "@ember/test-waiters": "^2.4.4",
+    "@ember/render-modifiers": "^2.0.0",
+    "@ember/test-waiters": "^3.0.0",
     "ember-cli-babel": "^7.26.6",
     "ember-cli-htmlbars": "^5.0.0",
     "ember-cli-version-checker": "^5.1.2",
     "ember-get-config": "^0.3.0",
     "ember-modifier": "^2.1.0",
-    "ember-test-selectors": "^5.0.0"
+    "ember-test-selectors": "^6.0.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^0.6.3",
@@ -64,7 +64,7 @@
     "release-it-lerna-changelog": "^1.0.3"
   },
   "engines": {
-    "node": "6.* || 8.* || >= 10.*"
+    "node": "12.* || 14.* || >= 16"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",

@@ -12,15 +12,6 @@ module.exports = function() {
       useYarn: true,
       scenarios: [
         {
-          name: 'ember-lts-3.8',
-          npm: {
-            devDependencies: {
-              'ember-source': '~3.8.0',
-              'ember-decorators-polyfill': '^1.1.1',
-            }
-          }
-        },
-        {
           name: 'ember-lts-3.12',
           npm: {
             devDependencies: {
@@ -41,6 +32,14 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.20.0'
+            }
+          }
+        },
+        {
+          name: 'ember-lts-3.24',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.24.0'
             }
           }
         },

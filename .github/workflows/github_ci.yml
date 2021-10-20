@@ -16,10 +16,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 10
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 14
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Running tests
@@ -34,13 +34,13 @@ jobs:
       fail-fast: false
       max-parallel: 1
       matrix:
-        scenario: [ember-lts-3.8, ember-lts-3.12, ember-lts-3.16, ember-lts-3.20]
+        scenario: [ember-lts-3.12, ember-lts-3.16, ember-lts-3.20, ember-lts-3.24]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 10
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 14
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Running test
@@ -58,10 +58,10 @@ jobs:
         scenario: [ember-beta, ember-release, ember-canary]
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 10
+      - name: Use Node.js 14
         uses: actions/setup-node@v1
         with:
-          node-version: 10
+          node-version: 14
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
       - name: Running test
