@@ -24,6 +24,7 @@
     "release": "release-it"
   },
   "dependencies": {
+    "@glimmer/tracking": "^1.0.4",
     "@ember/render-modifiers": "^1.0.2",
     "@ember/test-waiters": "^2.4.4",
     "ember-cli-babel": "^7.26.6",
