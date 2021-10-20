@@ -1,10 +1,8 @@
 import Controller from '@ember/controller';
 import { set, action } from '@ember/object';
-import { tracked } from '@glimmer/tracking'
-
 
 export default class ModifierController extends Controller {
-  @tracked disabled = false;
+  disabled = false;
 
   differentSizedModels =  [
     'A',
@@ -58,6 +56,6 @@ export default class ModifierController extends Controller {
 
   @action
   toggleDisabled() {
-    this.disabled = !this.disabled;
+    this.set('disabled', !this.disabled);
   }
 }
