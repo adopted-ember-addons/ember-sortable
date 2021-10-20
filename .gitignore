@@ -10,7 +10,9 @@
 
 # misc
 /.env*
+/.pnp*
 /.sass-cache
+/.eslintcache
 /connect.lock
 /coverage/
 /libpeerconnection.log
@@ -22,7 +24,3 @@
 /.node_modules.ember-try/
 /bower.json.ember-try
 /package.json.ember-try
-
-# Editor
-/jsconfig.json
-/.idea/
