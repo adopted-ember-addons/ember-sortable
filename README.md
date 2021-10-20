@@ -42,16 +42,16 @@ $ ember install ember-sortable
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-{{#sortable-group model=model.items onChange=(action "reorderItems") as |group|}}
+<SortableGroup @model={{this.model.items}} @onChange={{this.reorderItems}} as |group|}}
   {{#each group.model as |modelItem|}}
-    {{#group.item model=modelItem as |item|}}
+    <group.item @model={{modelItem}} as |item|}}
       {{modelItem.name}}
-      {{#item.handle}}
+      <item.handle>
         <span class="handle">&varr;</span>
-      {{/item.handle}}
-    {{/group.item}}
+      </item.handle>
+    </group.item>
   {{/each}}
-{{/sortable-group}}
+</SortableGroup>
 ```
 
 ### modifier

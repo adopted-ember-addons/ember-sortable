@@ -1,3 +1,8 @@
+* updated yarn.lock (ca925fa)
+* Fix deprecation warning `Importing from ember-test-waiters is deprecated` (#423) (f817c5d)
+* Require ember-decorators-polyfill to be installed by client app (#425) (f901543)
+* Set default values for itemVisualClass  and a11yAnnouncementConfig (#424) (436b7ac)
+
 * update yarn.lock (a18d3cb)
 * bump ember-get-config to version using babel v7 (#416) (92dd9b9)
 
