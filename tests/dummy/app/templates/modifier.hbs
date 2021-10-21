@@ -3,14 +3,6 @@
     <h2>Ember Sortable</h2>
   </header>
 
-  {{#link-to "index"}}
-    Components
-  {{/link-to}}
-  |
-  {{#link-to "modifier"}}
-    Modifiers
-  {{/link-to}}
-
   <main>
     <section class="vertical-demo">
       <h3>Vertical</h3>
@@ -179,7 +171,7 @@
     <h3>Disabled (group)</h3>
 
     <div>
-      <button {{on "click" this.toggleDisabled}}>
+      <button onclick={{this.toggleDisabled}}>
         Disabled: {{this.disabled}}
       </button>
     </div>
