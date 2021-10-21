@@ -165,3 +165,34 @@
 
   </section>
 </article>
+
+<article class="demo">
+  <section class="vertical-demo">
+    <h3>Disabled</h3>
+
+    <div>
+      <button onclick={{this.toggleDisabled}}>
+        Disabled: {{this.disabled}}
+      </button>
+    </div>
+
+    <ol
+      {{sortable-group
+        disabled=this.disabled
+        groupName="disabled"
+        onChange=this.update
+      }}
+    >
+      {{#each model.items as |item|}}
+        <li {{sortable-item model=item groupName="disabled"}}>
+          {{item}}
+          {{#unless this.disabled}}
+            <span class="handle" {{sortable-handle}} data-item={{item}}>
+              <span>&vArr;</span>
+            </span>
+          {{/unless}}
+        </li>
+      {{/each}}
+    </ol>
+  </section>
+</article>

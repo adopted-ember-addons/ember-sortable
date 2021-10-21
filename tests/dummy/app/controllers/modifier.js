@@ -1,8 +1,9 @@
 import Controller from '@ember/controller';
 import { set, action } from '@ember/object';
 
-
 export default class ModifierController extends Controller {
+  disabled = false;
+
   differentSizedModels =  [
     'A',
     'B'.repeat(100),
@@ -51,5 +52,10 @@ export default class ModifierController extends Controller {
   update(newOrder, draggedModel) {
     set(this, 'model.items', newOrder);
     set(this, 'model.dragged', draggedModel);
+  }
+
+  @action
+  toggleDisabled() {
+    this.set('disabled', !this.disabled);
   }
 }

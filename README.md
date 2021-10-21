@@ -180,6 +180,15 @@ modifier
 <li {{sortable-item distance=30}}>
 ```
 
+### Disabling reordering
+
+The `disabled` attribute allows you to disable sorting for the entire group and its child items.
+
+modifier
+```hbs
+<li {{sortable-group disabled=true}}>
+```
+
 ### CSS, Animation
 
 Sortable items can be in one of four states: default, dragging, dropping, and activated.

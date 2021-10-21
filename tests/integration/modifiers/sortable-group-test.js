@@ -54,6 +54,39 @@ module('Integration | Modifier | sortable-group', function(hooks) {
     assert.equal(contents('#test-list'), 'Tres Dos Uno');
   });
 
+  test('you can disabled a group', async function (assert) {
+    this.items = ['Uno', 'Dos', 'Tres', 'Quatro'];
+
+    this.update = () => {
+      assert.ok(false, 'onChange was called while group is disabled');
+    };
+
+    this.disabled = false;
+
+    await render(hbs`
+      <ol id="test-list" {{sortable-group disabled=this.disabled onChange=this.update}}>
+        {{#each this.items as |item|}}
+          <li {{sortable-item model=item}}>{{item}}</li>
+        {{/each}}
+      </ol>
+    `);
+
+    this.set('disabled', true);
+
+    let order = findAll('li');
+
+    await reorder(
+      'mouse',
+      'li',
+      order[3],
+      order[1],
+      order[0],
+      order[2],
+    );
+
+    assert.ok(true, 'Reorder prevented');
+  });
+
   test('Announcer has appropriate text for user actions', async function (assert) {
     this.items = ['Uno', 'Dos', 'Tres'];
 
