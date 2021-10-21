@@ -1,3 +1,15 @@
+## v2.2.6 (2021-10-21)
+
+#### :bug: Bug Fix
+* [#439](https://github.com/adopted-ember-addons/ember-sortable/pull/439) Resolve this-property-fallback deprecation ([@rmachielse](https://github.com/rmachielse))
+* [#434](https://github.com/adopted-ember-addons/ember-sortable/pull/434) Update ember-cli-babel to @7.26.6, update README example ([@charlesfries](https://github.com/charlesfries))
+
+#### Committers: 4
+- Charles Fries ([@charlesfries](https://github.com/charlesfries))
+- Jaco Joubert ([@jacojoubert](https://github.com/jacojoubert))
+- Richard Machielse ([@rmachielse](https://github.com/rmachielse))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+
 * updated yarn.lock (ca925fa)
 * Fix deprecation warning `Importing from ember-test-waiters is deprecated` (#423) (f817c5d)
 * Require ember-decorators-polyfill to be installed by client app (#425) (f901543)
