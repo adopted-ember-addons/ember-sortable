@@ -13,6 +13,7 @@ import {
   isRightArrowKey,
 } from '../utils/keyboard';
 import {  ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
+import { deprecate } from '@ember/debug';
 
 const a = A;
 const NO_MODEL = {};
@@ -129,6 +130,20 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+
+    deprecate(
+      'The <SortableGroup> component is deprecated.  Please use the modifier version {{sortable-group}}.',
+      false,
+      {
+        id: 'ember-sortable:sortable-group-component-deprecated',
+        until: '3.0.0',
+        for: 'ember-sortable',
+        since: {
+          available: '2.2.6',
+          enabled: '2.2.6',
+        },
+      }
+    );
 
     this._setGetterSetters();
     this.set('moves', []);
