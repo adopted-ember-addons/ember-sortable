@@ -12,6 +12,8 @@ import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/consta
 import { getX, getY } from '../utils/coordinate';
 import { buildWaiter } from '@ember/test-waiters';
 import config from 'ember-get-config';
+import { deprecate } from '@ember/debug';
+
 const { environment } = config;
 const isTesting = environment === 'test';
 
@@ -158,6 +160,20 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
+
+    deprecate(
+      'The <SortableItem> component is deprecated.  Please use the modifier version {{sortable-item}}.',
+      false,
+      {
+        id: 'ember-sortable:sortable-item-component-deprecated',
+        until: '3.0.0',
+        for: 'ember-sortable',
+        since: {
+          available: '2.2.6',
+          enabled: '2.2.6',
+        },
+      }
+    );
     this._setGetterSetters();
   },
 
