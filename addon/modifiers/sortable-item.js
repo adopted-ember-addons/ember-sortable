@@ -12,7 +12,7 @@ import scrollParent from "../system/scroll-parent";
 import {getBorderSpacing} from "../utils/css-calculation";
 import { buildWaiter } from '@ember/test-waiters';
 import {inject as service} from '@ember/service';
-import {assert} from '@ember/debug';
+import { assert, deprecate } from '@ember/debug';
 import config from 'ember-get-config';
 const { environment } = config;
 const isTesting = environment === 'test';
@@ -108,6 +108,20 @@ export default class SortableItemModifier extends Modifier {
    @default false
    */
   get isDisabled() {
+    deprecate(
+      '"isDraggingDisabled" is deprecated.  Please migrate to "disabled" named argument',
+      !("isDraggingDisabled" in this.args.named),
+      {
+        id: 'ember-sortable.is-dragging-disabled',
+        url: 'https://github.com/adopted-ember-addons/ember-sortable#readme',
+        until: '3.0.0',
+        for: 'ember-sortable',
+        since: {
+          available: '2.2.6',
+          enabled: '2.2.6',
+        },
+      });
+
     return this.groupDisabled || this.args.named.disabled || this.args.named.isDraggingDisabled || false;
   }
 
