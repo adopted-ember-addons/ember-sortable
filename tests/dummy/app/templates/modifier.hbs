@@ -168,7 +168,7 @@
 
 <article class="demo">
   <section class="vertical-demo">
-    <h3>Disabled</h3>
+    <h3>Disabled (group)</h3>
 
     <div>
       <button onclick={{this.toggleDisabled}}>
@@ -191,6 +191,33 @@
               <span>&vArr;</span>
             </span>
           {{/unless}}
+        </li>
+      {{/each}}
+    </ol>
+  </section>
+
+  <section class="vertical-demo">
+    <h3>Vertical (disabled items)</h3>
+
+    <ol data-test-vertical-disabled-item-demo-group
+      {{sortable-group
+        onChange=this.update
+        a11yAnnouncementConfig=this.a11yAnnouncementConfig
+        a11yItemName="spanish number"
+        itemVisualClass=this.itemVisualClass
+        handleVisualClass=this.handleVisualClass
+        groupName="vertical-disabled-item"
+      }}
+    >
+      {{#each model.items as |item|}}
+        <li data-test-vertical-disabled-item-demo-item {{sortable-item model=item groupName="vertical-disabled-item" disabled=(eq item "Dos")}}>
+          {{item}}
+          {{#if (eq item "Dos")}}
+            (disabled)
+          {{/if}}
+          <span class="handle" data-test-vertical-disabled-item-demo-handle {{sortable-handle}} data-item={{item}}>
+            <span>&vArr;</span>
+          </span>
         </li>
       {{/each}}
     </ol>
