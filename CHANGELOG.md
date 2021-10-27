@@ -1,3 +1,17 @@
+* Merge pull request #430 from jacojoubert/refactor-disabled (364fc80)
+*  (51ea46f)
+* Merge pull request #444 from snewcomer/sn/deprecate-components (b70d5cd)
+* Deprecate use of components (ffbd488)
+* Add deprecation warning for `isDraggingDisabled` (ad38e58)
+* Reset sortable-item (cebbe62)
+* Merge pull request #440 from ntnz/patch-2 (2cbc2b5)
+* Merge branch 'master' into refactor-disabled (0f315a6)
+* Merge branch 'master' into refactor-disabled (36aa312)
+* Fix syntax issues in readme (d2f8cc9)
+* Update README.md (c0e88e7)
+* Add disabled argument to sortable-item (888dc5c)
+* Add examples of disabled item (4db5107)
+
 ## v2.2.6 (2021-10-21)
 
 #### :bug: Bug Fix
