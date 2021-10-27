@@ -11,7 +11,7 @@ import {
 } from "../utils/keyboard";
 import {ANNOUNCEMENT_ACTION_TYPES} from "../utils/constant";
 import { defaultA11yAnnouncementConfig } from "../utils/defaults";
-import { run } from '@ember/runloop';
+import { next, schedule, scheduleOnce, later } from '@ember/runloop';
 import {inject as service} from '@ember/service';
 
 const NO_MODEL = {};
@@ -140,7 +140,7 @@ export default class SortableGroupModifier extends Modifier {
 
       this.isRetainingFocus = true;
 
-      run.scheduleOnce('render', () => {
+      scheduleOnce('render', () => {
         this.element.focus();
         this.isRetainingFocus = false;
       });
@@ -221,7 +221,7 @@ export default class SortableGroupModifier extends Modifier {
       this.confirmKeyboardSelection();
 
       this.isRetainingFocus = true;
-      run.scheduleOnce('render', () => this._focusItem(itemElement));
+      scheduleOnce('render', () => this._focusItem(itemElement));
     } else if (isEscapeKey(event)) {
       // cancel will reset the selectedItem, so caching it here before we remove it.
       const _selectedItemElement = selectedItem.element;
@@ -229,7 +229,7 @@ export default class SortableGroupModifier extends Modifier {
       this.cancelKeyboardSelection();
 
       this.isRetainingFocus = true;
-      run.scheduleOnce('render', () => {
+      scheduleOnce('render', () => {
         const moves = this.moves;
         if (moves && moves.length > 0) {
           const sortedItems = this.sortedItems;
@@ -262,7 +262,7 @@ export default class SortableGroupModifier extends Modifier {
     }
     this._announceAction(ANNOUNCEMENT_ACTION_TYPES.MOVE, delta);
     // Guarantees that the before the UI is fully rendered before we move again.
-    run.scheduleOnce('render', () => {
+    scheduleOnce('render', () => {
       this._move(sortedIndex, newSortedIndex);
       this._updateHandleVisualIndicators(item, true);
 
@@ -344,7 +344,7 @@ export default class SortableGroupModifier extends Modifier {
     announcer.textContent = message;
 
     // Reset the message after the message is announced.
-    run.later(() => {
+    later(() => {
       announcer.textContent = '';
     }, 1000);
   }
@@ -675,16 +675,16 @@ export default class SortableGroupModifier extends Modifier {
 
     delete this._firstItemPosition;
 
-    run.schedule('render', () => {
+    schedule('render', () => {
       items.forEach(item => item.freeze());
     });
 
-    run.schedule('afterRender', () => {
+    schedule('afterRender', () => {
       items.forEach(item => item.reset());
     });
 
-    run.next(() => {
-      run.schedule('render', () => {
+    next(() => {
+      schedule('render', () => {
         items.forEach(item => item.thaw());
       });
     });
