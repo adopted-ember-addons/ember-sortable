@@ -2,7 +2,7 @@ import { Promise, defer } from 'rsvp';
 import Component from '@ember/component';
 import { defineProperty } from '@ember/object';
 import { or, readOnly } from '@ember/object/computed';
-import { run, throttle } from '@ember/runloop';
+import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
 import scrollParent from '../system/scroll-parent';
 import ScrollContainer from '../system/scroll-container';
@@ -297,7 +297,7 @@ export default Component.extend({
     startEvent.preventDefault();
     startEvent.stopPropagation();
 
-    this._prepareDragListener = run.bind(this, this._prepareDrag, startEvent);
+    this._prepareDragListener = bind(this, this._prepareDrag, startEvent);
 
     DRAG_ACTIONS.forEach(event => window.addEventListener(event, this._prepareDragListener));
 
@@ -507,7 +507,7 @@ export default Component.extend({
     @private
   */
   _scheduleApplyPosition() {
-    run.scheduleOnce('render', this, '_applyPosition');
+    scheduleOnce('render', this, '_applyPosition');
   },
 
   /**
@@ -617,7 +617,7 @@ export default Component.extend({
       });
     } else {
       const duration = this.get('isAnimated') ? this.get('transitionDuration') : 200;
-      transitionPromise = new Promise((resolve) => run.later(resolve, duration));
+      transitionPromise = new Promise((resolve) => later(resolve, duration));
     }
 
     if (DEBUG) {
