@@ -1,7 +1,7 @@
 import { A } from '@ember/array';
 import Component from '@ember/component';
 import { set, get, computed, defineProperty } from '@ember/object';
-import { run } from '@ember/runloop';
+import { next, schedule, scheduleOnce, later } from '@ember/runloop';
 import layout from '../templates/components/sortable-group';
 import {
   isEnterKey,
@@ -183,7 +183,7 @@ export default Component.extend({
 
       this.set('isRetainingFocus', true);
 
-      run.scheduleOnce('render', () => {
+      scheduleOnce('render', () => {
         this.element.focus();
         this.set('isRetainingFocus', false);
       });
@@ -234,7 +234,7 @@ export default Component.extend({
     }
     this._announceAction(ANNOUNCEMENT_ACTION_TYPES.MOVE, delta);
     // Guarantees that the before the UI is fully rendered before we move again.
-    run.scheduleOnce('render', () => {
+    scheduleOnce('render', () => {
       this._move(sortedIndex, newSortedIndex);
       this._updateHandleVisualIndicators(item, true);
 
@@ -411,16 +411,16 @@ export default Component.extend({
 
     delete this._itemPosition;
 
-    run.schedule('render', () => {
+    schedule('render', () => {
       items.invoke('freeze');
     });
 
-    run.schedule('afterRender', () => {
+    schedule('afterRender', () => {
       items.invoke('reset');
     });
 
-    run.next(() => {
-      run.schedule('render', () => {
+    next(() => {
+      schedule('render', () => {
         items.invoke('thaw');
       });
     });
@@ -480,7 +480,7 @@ export default Component.extend({
       this.confirmKeyboardSelection();
 
       this.set('isRetainingFocus', true);
-      run.scheduleOnce('render', () => this._focusItem(itemElement));
+      scheduleOnce('render', () => this._focusItem(itemElement));
     } else if (isEscapeKey(event)) {
       // cancel will reset the _selectedItem, so caching it here before we remove it.
       const _selectedItemElement = this.get('_selectedItem.element');
@@ -488,7 +488,7 @@ export default Component.extend({
       this.cancelKeyboardSelection();
 
       this.set('isRetainingFocus', true);
-      run.scheduleOnce('render', () => {
+      scheduleOnce('render', () => {
         const moves = this.get('moves');
         if (moves && moves.length > 0) {
           const sortedItems = this.get('sortedItems');
@@ -582,7 +582,7 @@ export default Component.extend({
     announcer.textContent = message;
 
     // Reset the message after the message is announced.
-    run.later(() => {
+    later(() => {
       announcer.textContent = '';
     }, 1000);
   },

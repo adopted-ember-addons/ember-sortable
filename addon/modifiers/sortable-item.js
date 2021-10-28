@@ -4,7 +4,7 @@ import {action, set} from '@ember/object';
 import {reads} from '@ember/object/computed';
 import {or} from '@ember/object/computed';
 import {DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS} from "../utils/constant";
-import { run, throttle } from '@ember/runloop';
+import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
 import {getX, getY} from "../utils/coordinate";
 import ScrollContainer from "../system/scroll-container";
@@ -321,7 +321,7 @@ export default class SortableItemModifier extends Modifier {
     startEvent.preventDefault();
     startEvent.stopPropagation();
 
-    this._prepareDragListener = run.bind(this, this._prepareDrag, startEvent);
+    this._prepareDragListener = bind(this, this._prepareDrag, startEvent);
 
     DRAG_ACTIONS.forEach(event => window.addEventListener(event, this._prepareDragListener));
 
@@ -528,7 +528,7 @@ export default class SortableItemModifier extends Modifier {
    @private
    */
   _scheduleApplyPosition() {
-    run.scheduleOnce('render', this, '_applyPosition');
+    scheduleOnce('render', this, '_applyPosition');
   }
 
   /**
@@ -638,7 +638,7 @@ export default class SortableItemModifier extends Modifier {
       });
     } else {
       const duration = this.isAnimated ? this.transitionDuration : 200;
-      transitionPromise = new Promise((resolve) => run.later(resolve, duration));
+      transitionPromise = new Promise((resolve) => later(resolve, duration));
     }
 
     if (DEBUG) {
