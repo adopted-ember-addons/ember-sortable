@@ -1,3 +1,12 @@
+## v2.4.0 (2021-11-10)
+
+#### :rocket: Enhancement
+* [#445](https://github.com/adopted-ember-addons/ember-sortable/pull/445) Use direct imports from `@ember/runloop` ([@charlesfries](https://github.com/charlesfries))
+
+#### Committers: 2
+- Charles Fries ([@charlesfries](https://github.com/charlesfries))
+- Faith Or ([@faith-or](https://github.com/faith-or))
+
 * Merge pull request #430 from jacojoubert/refactor-disabled (364fc80)
 *  (51ea46f)
 * Merge pull request #444 from snewcomer/sn/deprecate-components (b70d5cd)
