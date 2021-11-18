@@ -12,8 +12,9 @@ Sortable UI primitives for Ember.
 
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
 
-## `2.2.0` modifier support
-*Note* `2.2.0` and above contains both component and modifiers invocation capabilities. This means that you will see a signficant size increase for `ember-sortable`, but it should help you with migrations to `modifier`, which is the path forward when we introduce  `v3.x.x`
+## v2 -> v3 Migration
+The component versions have been removed and you must use the modifier.
+The modifier version does not support `groupModel`, use the currying of the `fn` helper.
 
 ## v1 -> v2 Migration
 If you are migrating from `1.x.x` to `2.x.x`,
@@ -38,28 +39,11 @@ $ ember install ember-sortable
 
 ## Usage
 
-### component
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-<SortableGroup @model={{this.model.items}} @onChange={{this.reorderItems}} as |group|>
-  {{#each group.model as |modelItem|}}
-    <group.item @model={{modelItem}} as |item|>
-      {{modelItem.name}}
-      <item.handle>
-        <span class="handle">&varr;</span>
-      </item.handle>
-    </group.item>
-  {{/each}}
-</SortableGroup>
-```
-
-### modifier
-```hbs
-{{! app/templates/my-route.hbs }}
-
-<ol {{sortable-group onChange=(action "reorderItems")}}>
-  {{#each model.items as |modelItem|}}
+<ol {{sortable-group onChange=this.reorderItems}}>
+  {{#each @model.items as |modelItem|}}
     <li {{sortable-item model=modelItem}}>
       {{modelItem.name}}
       <span class="handle" {{sortable-handle}}>&varr;</span>
@@ -76,46 +60,13 @@ The `onChange` action is called with two arguments:
 ```js
 // app/routes/my-route.js
 
-export default Ember.Route.extend({
-  actions: {
-    reorderItems(itemModels, draggedModel) {
-      this.set('currentModel.items', itemModels);
-      this.set('currentModel.justDragged', draggedModel);
-    }
+export default class MyRoute extends Route {
+  @action
+  reorderItems(itemModels, draggedModel) {
+    this.currentModel.items, itemModels);
+    this.currentModel.justDragged, draggedModel);
   }
-});
-```
-
-### Declaring a “group model”
-
-When `groupModel` is set on the `sortable-group`, the `onChange` action is called
-with that group model as the first argument:
-
-```hbs
-{{! app/templates/my-route.hbs }}
-
-{{#sortable-group groupModel=model model=model.items onChange=(action "reorderItems") as |group|}}
-  {{#each group.model as |modelItem|}}
-    {{#group.item model=modelItem as |item|}}
-      {{modelItem.name}}
-      {{#item.handle}}
-        <span class="handle">&varr;</span>
-      {{/item.handle}}
-    {{/group.item}}
-  {{/each}}
-{{/sortable-group}}
-```
-
-```js
-// app/routes/my-route.js
-
-export default Ember.Route.extend({
-  actions: {
-    reorderItems(groupModel, itemModels, draggedModel) {
-      groupModel.set('items', itemModels);
-    }
-  }
-});
+}
 ```
 
 The modifier version does not support `groupModel`, use the currying of `action` or the `fn` helper.
@@ -123,8 +74,8 @@ The modifier version does not support `groupModel`, use the currying of `action`
 ```hbs
 {{! app/templates/my-route.hbs }}
 
-<ol {{sortable-group onChange=(action "reorderItems" model)}}>
-  {{#each model.items as |modelItem|}}
+<ol {{sortable-group onChange=(fn this.reorderItems model)}}>
+  {{#each @model.items as |modelItem|}}
     <li {{sortable-item model=modelItem}}>
       {{modelItem.name}}
       <span class="handle" {{sortable-handle}}>&varr;</span>
@@ -138,11 +89,6 @@ The modifier version does not support `groupModel`, use the currying of `action`
 
 To change sort direction, define `direction` on `sortable-group` (default is `y`):
 
-component
-```hbs
-{{#sortable-group direction="x" onChange=(action "reorderItems") as |group|}}
-```
-modifier
 ```hbs
 <ol {{sortable-group direction="x" onChange=(action "reorderItems")}>
 ```
@@ -156,11 +102,6 @@ In `x` case: elements before current one jump to the left, and elements after cu
 
 To change this property, define `spacing` on `sortable-item` (default is `0`):
 
-component
-```hbs
-{{#sortable-item spacing=15}}
-```
-modifier
 ```hbs
 <li {{sortable-item spacing=15}}>
 ```
@@ -171,11 +112,6 @@ modifier
 If specified, sorting will not start until after mouse is dragged beyond distance.
 Can be used to allow for clicks on elements within a handle.
 
-component
-```hbs
-{{#sortable-item distance=30}}
-```
-modifier
 ```hbs
 <li {{sortable-item distance=30}}>
 ```
@@ -184,7 +120,6 @@ modifier
 
 The `disabled` attribute allows you to disable sorting for the entire group and its child items.
 
-modifier
 ```hbs
 <li {{sortable-group disabled=true}}>
 ```
@@ -253,37 +188,22 @@ argument.
 ```js
 // app/routes/my-route.js
 
-export default Ember.Route.extend({
-  actions: {
-    dragStarted(item) {
-      console.log(`Item started dragging: ${item.get('name')}`);
-    },
-    dragStopped(item) {
-      console.log(`Item stopped dragging: ${item.get('name')}`);
-    }
+export default class MyRoute extends Route {
+  @action
+  dragStarted(item) {
+    console.log(`Item started dragging: ${item.get('name')}`);
+  },
+  @action
+  dragStopped(item) {
+    console.log(`Item stopped dragging: ${item.get('name')}`);
   }
-});
+}
 ```
 
-component
-```hbs
-  {{#sortable-item
-    onDragStart=(action "dragStarted")
-    onDragStop=(action "dragStopped")
-    model=modelItem
-    as |item|
-  }}
-    {{modelItem.name}}
-    {{#item.handle}}
-      <span class="handle">&varr;</span>
-    {{/item.handle}}
-  {{/sortable-item}}
-```
-modifier
 ```hbs
   <li {{#sortable-item
-    onDragStart=(action "dragStarted")
-    onDragStop=(action "dragStopped")
+    onDragStart=this.dragStarted
+    onDragStop=this.dragStopped
     model=modelItem
     }}
   >
@@ -292,15 +212,15 @@ modifier
   </li>
 ```
 
-### Multiple Ember-Sortables renders simultaneously (Modifier version)
+### Multiple Ember-Sortables renders simultaneously
 
-The modifier version uses a service behind the scenes for communication between the group and the items and to maintain state. It does this seemlessly when the elements are rendered on the screen. However, if there are two sortables rendered at the same time, either in the same component or different components, the state management does not know which items belong to which group.
+There is a service behind the scenes for communication between the group and the items and to maintain state. It does this seemlessly when the elements are rendered on the screen. However, if there are two sortables rendered at the same time, either in the same component or different components, the state management does not know which items belong to which group.
 
 Both the `{{sortable-group}}` and `{{sortable-item}}` take an additional argument `groupName`. Should you encounter this conflict, assign a `groupName` to the group and items. You only need to do this for one of the sortables in conflict, but you can on both if you wish.
 
 ```hbs
-<ol {{sortable-group groupName="products" onChange=(action "reorderItems" model)}}>
-  {{#each model.items as |modelItem|}}
+<ol {{sortable-group groupName="products" onChange=this.reorderItems}}>
+  {{#each @model.items as |modelItem|}}
     <li {{sortable-item groupName="products" model=modelItem}}>
       {{modelItem.name}}
       <span class="handle" {{sortable-handle}}>&varr;</span>
@@ -313,8 +233,8 @@ Ensure that the same name is passed to both the group and the items, this would 
 
 ```hbs
 {{#let "products" as | myGroupName |}}
-  <ol {{sortable-group groupName=myGroupName onChange=(action "reorderItems" model)}}>
-    {{#each model.items as |modelItem|}}
+  <ol {{sortable-group groupName=myGroupName onChange=this.reorderItems}}>
+    {{#each @model.items as |modelItem|}}
       <li {{sortable-item groupName=myGroupName model=modelItem}}>
         {{modelItem.name}}
         <span class="handle" {{sortable-handle}}>&varr;</span>
@@ -326,7 +246,7 @@ Ensure that the same name is passed to both the group and the items, this would 
 
 
 ### Disabling Drag (Experimental)
-`sortable-item` (component and modifier) exposes an optional `disabled` (previously `isDraggingDisabled`) flag that you can use to disable reordering for that particular item. Disabling and item won't prevent it from changing position in the array. The user can still move other non-disabled items to over it.
+`sortable-item` exposes an optional `disabled` (previously `isDraggingDisabled`) flag that you can use to disable reordering for that particular item. Disabling and item won't prevent it from changing position in the array. The user can still move other non-disabled items to over it.
 
 This flag is intended as an utility to make your life easier with 3 main benefits:
 
@@ -344,16 +264,6 @@ Each item takes a `model` property. This should be fairly self-explanatory but i
 The `sortable-group` has support for the following accessibility functionality:
 
 #### Built-in Functionalities
-
-##### Semantic HTML
-
-component
-- `sortable-group`
-  an ordered list, `ol`, by default.
-- `sortable-item`
-  a list item, `li`, by default.
-
-The modifier version can be attached to to any element that makes sense,
 
 ##### Keyboard Navigation
 There are 4 modes during keyboard navigation:
