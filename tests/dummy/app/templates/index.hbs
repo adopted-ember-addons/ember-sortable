@@ -7,213 +7,136 @@
     <section class="vertical-demo">
       <h3>Vertical</h3>
 
-      {{#sortable-group
-        data-test-vertical-demo-group
-        tagName="ol"
-        a11yAnnouncementConfig=a11yAnnouncementConfig
-        a11yItemName="spanish number"
-        itemVisualClass=itemVisualClass
-        handleVisualClass=handleVisualClass
-        onChange=(action "update")
-        model=model.items
-        as |group|
-      }}
-        {{#each group.model as |item|}}
-          {{#group.item
-            data-test-vertical-demo-item
-            tagName="li"
-            model=item
-            as |groupItem|
-          }}
+      <ol data-test-vertical-demo-group
+        {{sortable-group
+          onChange=this.update
+          a11yAnnouncementConfig=this.a11yAnnouncementConfig
+          a11yItemName="spanish number"
+          itemVisualClass=this.itemVisualClass
+          handleVisualClass=this.handleVisualClass
+        }}
+      >
+        {{#each model.items as |item|}}
+          <li data-test-vertical-demo-item {{sortable-item model=item}}>
             {{item}}
-            {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
-              <span data-item={{item}}>
-                <span>&vArr;</span>
-              </span>
-            {{/groupItem.handle}}
-          {{/group.item}}
+            <span class="handle" data-test-vertical-demo-handle {{sortable-handle}} data-item={{item}}>
+              <span>&vArr;</span>
+            </span>
+          </li>
         {{/each}}
-      {{/sortable-group}}
+      </ol>
     </section>
 
     <section class="vertical-demo">
       <h3>Vertical with different sized models and inputs</h3>
 
-      {{#sortable-group
-        data-test-vertical-demo-group
-        tagName="ol"
-        a11yAnnouncementConfig=a11yAnnouncementConfig
-        a11yItemName="spanish number"
-        itemVisualClass=itemVisualClass
-        handleVisualClass=handleVisualClass
-        onChange=(action "updateDifferentSizedModels")
-        model=differentSizedModels
-        as |group|
-      }}
-        {{#each group.model as |item|}}
-          {{#group.item
-            data-test-vertical-demo-item
-            class="word-break"
-            tagName="li"
-            model=item
-            as |groupItem|
-          }}
+      <ol data-test-vertical-demo-group
+        {{sortable-group
+          onChange=this.updateDifferentSizedModels
+          groupName="verticle-size"
+        }}
+      >
+        {{#each this.differentSizedModels as |item|}}
+          <li data-test-vertical-demo-item class="word-break" {{sortable-item model=item groupName="verticle-size"}}>
             <label for="demo-input">{{item}}</label>
             <input id="demo-input" type="text">
-            {{#groupItem.handle data-test-vertical-demo-handle class="handle"}}
-              <span data-item={{item}}>
-                <span>&vArr;</span>
-              </span>
-            {{/groupItem.handle}}
-          {{/group.item}}
+            <span data-item={{item}} data-test-vertical-demo-handle class="handle" {{sortable-handle}}>
+              <span>&vArr;</span>
+            </span>
+          </li>
         {{/each}}
-      {{/sortable-group}}
+      </ol>
     </section>
 
     <section class="horizontal-demo">
       <h3>Horizontal</h3>
 
-      {{#sortable-group
-        data-test-horizontal-demo-group
-        tagName="ol"
-        itemVisualClass=itemVisualClass
-        handleVisualClass=handleVisualClass
-        direction="x"
-        onChange=(action "update")
-        model=model.items
-        as |group|
-      }}
-        {{#each group.model as |item|}}
-          {{#group.item
-            data-test-horizontal-demo-handle
-            tabindex="0"
-            tagName="li"
-            model=item
-          }}
+      <ol data-test-horizontal-demo-group
+        {{sortable-group
+          direction="x"
+          onChange=this.update
+          itemVisualClass=this.itemVisualClass
+          handleVisualClass=this.handleVisualClass
+          groupName="horizontal"
+        }}
+      >
+        {{#each this.model.items as |item|}}
+          <li data-test-horizontal-demo-handle tabindex={{"0"}} {{sortable-item model=item groupName="horizontal"}}>
             {{item-presenter item=item}}
-          {{/group.item}}
+          </li>
         {{/each}}
-      {{/sortable-group}}
-
+      </ol>
     </section>
 
     <section class="table-demo">
       <h3>Table</h3>
 
       {{! template-lint-disable table-groups}}
-      {{#sortable-group
-        tagName="table"
-        onChange=(action "update")
-        a11yAnnouncementConfig=a11yAnnouncementConfig
-        a11yItemName="spanish number"
-        itemVisualClass=itemVisualClass
-        handleVisualClass=handleVisualClass
-        model=model.items
-        as |group|
-      }}
+      <table>
         <thead>
           <tr>
             <th></th>
             <th>Item</th>
           </tr>
         </thead>
-        <tbody>
-          {{#each group.model as |item|}}
-            {{#group.item
-              data-test-table-demo-item
-              tagName="tr"
-              tabindex="0"
-              model=item
-            }}
-              <td>
-                <span data-test-table-demo-handle data-item={{item}}>
-                  &vArr;
-                </span>
-              </td>
-              <td>
-                {{item}}
-              </td>
-            {{/group.item}}
+        <tbody {{sortable-group onChange=this.update groupName="table"}}>
+          {{#each this.model.items as |item|}}
+            <tr data-test-table-demo-item class="handle" {{sortable-item model=item groupName="table"}}>
+              <td><span data-test-table-demo-handle data-item={{item}} class="handle">&vArr;</span></td>
+              <td>{{item}}</td>
+            </tr>
           {{/each}}
         </tbody>
-      {{/sortable-group}}
+      </table>
     </section>
 
     <section class="vertical-spacing-demo">
       <h3>Vertical with 15px spacing</h3>
 
-      {{#sortable-group
-        tagName="ol"
-        onChange=(action "update")
-        model=model.items
-        as |group|
-      }}
-        {{#each group.model as |item|}}
-          {{#group.item tabindex="0" tagName="li" model=item spacing=15}}
+      <ol {{sortable-group onChange=this.update groupName="verticle-15"}}>
+        {{#each this.model.items as |item|}}
+          <li {{sortable-item model=item spacing=15 groupName="verticle-15"}} tabindex="0">
             {{item}}
             <span data-test-vertical-spacing-demo-handle data-item={{item}}>
             </span>
-          {{/group.item}}
+          </li>
         {{/each}}
-      {{/sortable-group}}
+      </ol>
     </section>
 
     <section class="vertical-distance-demo">
       <h3>Vertical with distance set to 15</h3>
 
-      {{#sortable-group
-        tagName="ol"
-        onChange=(action "update")
-        model=model.items
-        as |group|
-      }}
-        {{#each group.model as |item|}}
-          {{#group.item
-            data-test-vertical-distance-demo-handle
-            tagName="li"
-            tabindex="0"
-            model=item
-            distance=15
-          }}
+      <ol {{sortable-group onChange=this.update groupName="verticle-15d"}}>
+        {{#each this.model.items as |item|}}
+          <li data-test-vertical-distance-demo-handle {{sortable-item model=item distance=15 groupName="verticle-15d"}} tabindex="0">
             {{item}}
             <span data-item={{item}}>
             </span>
-          {{/group.item}}
+          </li>
         {{/each}}
-      {{/sortable-group}}
+      </ol>
     </section>
 
     <section class="scrollable-demo">
       <h3>Scrollable</h3>
 
       <div class="sortable-container">
-        {{#sortable-group
-          tagName="ol"
-          onChange=(action "update")
-          model=model.items
-          as |group|
-        }}
-          {{#each group.model as |item|}}
-            {{#group.item
-              data-test-scrollable-demo-handle
-              tagName="li"
-              model=item
-              as |groupItem|
-            }}
+        <ol {{sortable-group onChange=this.update groupName="scrollable"}}>
+          {{#each this.model.items as |item|}}
+            <li data-test-scrollable-demo-handle {{sortable-item model=item groupName="scrollable"}}>
               {{item}}
-              {{#groupItem.handle}}
-                <span class="handle" data-item={{item}}>
-                  <span>&vArr;</span>
-                </span>
-              {{/groupItem.handle}}
-            {{/group.item}}
+              <span class="handle" data-item={{item}} {{sortable-handle}}>
+                <span>&vArr;</span>
+              </span>
+            </li>
           {{/each}}
-        {{/sortable-group}}
+        </ol>
       </div>
     </section>
 
     {{#if model.dragged}}
-      <p>Just dragged {{model.dragged}}</p>
+      <p>Just dragged <span data-test-just-dragged>{{this.model.dragged}}</span></p>
     {{/if}}
   </main>
 
@@ -229,32 +152,19 @@
   <section class="vertical-demo">
     <h3>Vertical</h3>
 
-    {{#sortable-group
-      data-test-vertical-demo-group-no-css
-      handleVisualClass=handleVisualClass
-      onChange=(action "update")
-      model=model.items
-      as |group|
-    }}
-      {{#each group.model as |item|}}
-        {{#group.item
-          data-test-vertical-demo-item-no-css
-          tagName="li"
-          model=item
-          as |groupItem|
-        }}
+    <ol {{sortable-group data-test-vertical-demo-group-no-css
+                         onChange=this.update handleVisualClass=handleVisualClass
+                         groupName="verticle-no-css"}}>
+      {{#each this.model.items as |item|}}
+        <li data-test-scrollable-demo-handle-item-no-css {{sortable-item model=item groupName="verticle-no-css"}}>
           {{item}}
-          {{#groupItem.handle
-            data-test-vertical-demo-handle-no-css
-            class="handle"
-          }}
-            <span data-item={{item}}>
-              <span>&vArr;</span>
-            </span>
-          {{/groupItem.handle}}
-        {{/group.item}}
+          <span class="handle" data-test-vertical-demo-handle-no-css data-item={{item}} {{sortable-handle}}>
+            <span>&vArr;</span>
+          </span>
+        </li>
       {{/each}}
-    {{/sortable-group}}
+    </ol>
+
   </section>
 </article>
 
