@@ -2,7 +2,7 @@ import { find, findAll } from '@ember/test-helpers';
 import { drag } from './drag';
 import { getOffset } from '../utils/offset';
 
-const OVERSHOOT = 1;
+const OVERSHOOT = 2;
 
 /**
   Reorders elements to the specified state.
