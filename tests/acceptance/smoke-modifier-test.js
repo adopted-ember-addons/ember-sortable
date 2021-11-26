@@ -17,19 +17,7 @@ module('Acceptance | smoke modifier', function(hooks) {
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
 
-    let order = findAll('[data-test-vertical-demo-item]').reverse();
-    await reorder(
-      'mouse',
-      '[data-test-vertical-demo-item]',
-      ...order
-    );
-
-    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
-
-    order = findAll('[data-test-vertical-demo-handle]').reverse();
+    let order = findAll('[data-test-vertical-demo-handle]').reverse();
     await reorder(
       'mouse',
       '[data-test-vertical-demo-handle]',
@@ -41,37 +29,25 @@ module('Acceptance | smoke modifier', function(hooks) {
     assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
 
-    order = findAll('[data-test-horizontal-demo-handle]');
+    order = findAll('[data-test-vertical-demo-handle');
     await reorder(
       'mouse',
-      '[data-test-horizontal-demo-handle]',
+      '[data-test-vertical-demo-handle]',
+      order[4],
+      order[3],
+      order[2],
       order[1],
-      order[0],
-      order[3],
-      order[4],
-      order[2],
-    );
-
-    assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
-
-    order = findAll('[data-test-table-demo-handle');
-    await reorder(
-      'mouse',
-      '[data-test-table-demo-handle]',
-      order[3],
-      order[2],
-      order[4],
-      order[0],
-      order[1]
+      order[0]
     );
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+  });
+
+  test('reordering with mouse events scrollable', async function(assert) {
+    await visit('/');
 
     let itemHeight = () => {
       let item = find('[data-test-scrollable-demo-handle]');
@@ -81,16 +57,13 @@ module('Acceptance | smoke modifier', function(hooks) {
 
     await drag('mouse', '[data-test-scrollable-demo-handle] .handle', () => { return {dy: itemHeight() * 2 + 1, dx: undefined}});
 
-    assert.equal(verticalContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Dos Tres Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Dos Tres Uno Cuatro Cinco');
     assert.equal(scrollableContents(), 'Dos Tres Uno Cuatro Cinco');
 
-    order = findAll('[data-test-vertical-distance-demo-handle]');
+    let order = findAll('[data-test-scrollable-demo-handle] .handle');
 
     await reorder(
       'mouse',
-      '[data-test-vertical-distance-demo-handle]',
+      '[data-test-scrollable-demo-handle] .handle',
       order[1],
       order[0],
       order[2],
@@ -98,9 +71,6 @@ module('Acceptance | smoke modifier', function(hooks) {
       order[4]
     );
 
-    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco', "25");
-    assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
     assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
   });
 
@@ -159,55 +129,60 @@ module('Acceptance | smoke modifier', function(hooks) {
     assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
 
-    order = findAll('[data-test-horizontal-demo-handle]');
+    order = findAll('[data-test-vertical-demo-handle]');
 
     await reorder(
       'touch',
-      '[data-test-horizontal-demo-handle]',
+      '[data-test-vertical-demo-handle]',
+      order[4],
+      order[3],
+      order[2],
       order[1],
-      order[0],
-      order[3],
-      order[4],
-      order[2],
-    );
-
-    assert.equal(verticalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(horizontalContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(tableContents(), 'Cuatro Cinco Dos Uno Tres');
-    assert.equal(scrollableContents(), 'Cuatro Cinco Dos Uno Tres');
-
-    order = findAll('[data-test-table-demo-handle]');
-
-    await reorder(
-      'touch',
-      '[data-test-table-demo-handle]',
-      order[3],
-      order[2],
-      order[4],
-      order[0],
-      order[1]
+      order[0]
     );
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+  });
 
-    order = findAll('[data-test-vertical-distance-demo-handle]');
+  test('reordering with touch events scrollable', async function(assert) {
+    await visit('/');
+
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    let order = findAll('[data-test-scrollable-demo-handle] .handle').reverse();
     await reorder(
       'touch',
-      '[data-test-vertical-distance-demo-handle]',
-      order[2],
-      order[1],
-      order[0],
-      order[3],
-      order[4],
+      '[data-test-scrollable-demo-handle] .handle',
+      ...order
     );
 
-    assert.equal(verticalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(horizontalContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(tableContents(), 'Tres Dos Uno Cuatro Cinco');
-    assert.equal(scrollableContents(), 'Tres Dos Uno Cuatro Cinco');
+    assert.equal(verticalContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(horizontalContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
+    assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
+
+    order = findAll('[data-test-scrollable-demo-handle] .handle');
+
+    await reorder(
+      'touch',
+      '[data-test-scrollable-demo-handle] .handle',
+      order[4],
+      order[3],
+      order[2],
+      order[1],
+      order[0]
+    );
+
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
   });
 
   test('Touch event onChange has correct dragged item', async function(assert) {

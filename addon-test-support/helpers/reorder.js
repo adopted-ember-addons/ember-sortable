@@ -1,11 +1,7 @@
 import { find, findAll } from '@ember/test-helpers';
 import { drag } from './drag';
 import { getOffset } from '../utils/offset';
-/**
-  In tests, the dummy app is rendered at half size.
-  To avoid rounding errors, we must therefore double
-  the overshoot.
-*/
+
 const OVERSHOOT = 2;
 
 /**
