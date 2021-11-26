@@ -12,6 +12,6 @@ export function getBorderSpacing(el) {
 
   return {
     horizontal: parseFloat(horizontal),
-    vertical: parseFloat(vertical)
+    vertical: parseFloat(vertical),
   };
 }

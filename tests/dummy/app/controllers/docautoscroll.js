@@ -9,6 +9,6 @@ export default Controller.extend({
   actions: {
     updateItems(newOrder) {
       set(this, 'model.items', newOrder);
-    }
-  }
-})
+    },
+  },
+});

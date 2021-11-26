@@ -1,4 +1,4 @@
-import { triggerEvent, find, settled, } from '@ember/test-helpers';
+import { triggerEvent, find, settled } from '@ember/test-helpers';
 import { getOffset } from '../utils/offset';
 
 /**
@@ -26,12 +26,7 @@ import { getOffset } from '../utils/offset';
   @return {Promise}
 */
 
-export async function drag(
-  mode,
-  itemSelector,
-  offsetFn,
-  callbacks = {}
-) {
+export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   let start;
   let move;
   let end;

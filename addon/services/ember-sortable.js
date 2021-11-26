@@ -1,7 +1,6 @@
 import Service from '@ember/service';
 
 export default class EmberSortableService extends Service {
-
   /**
    * Internal State for any groups currently in DOM
    *
@@ -13,9 +12,7 @@ export default class EmberSortableService extends Service {
    * }
    * @type {{}}
    */
-  groups = {
-
-  };
+  groups = {};
 
   /**
    * Register a new group with the service
@@ -27,8 +24,8 @@ export default class EmberSortableService extends Service {
     if (this.groups[groupName] === undefined) {
       this.groups[groupName] = {
         groupModifier: groupModifier,
-        items: []
-      }
+        items: [],
+      };
     } else {
       this.groups[groupName].groupModifier = groupModifier;
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   const ENV = {
     environment,
 
@@ -20,7 +20,7 @@ module.exports = function(environment) {
         },
       },
     },
-  }
+  };
 
   return ENV;
 };

@@ -1,5 +1,5 @@
 import Modifier from 'ember-modifier';
-import {action, computed, set} from '@ember/object';
+import { action, computed, set } from '@ember/object';
 import {
   isDownArrowKey,
   isEnterKey,
@@ -7,12 +7,12 @@ import {
   isLeftArrowKey,
   isRightArrowKey,
   isSpaceKey,
-  isUpArrowKey
-} from "../utils/keyboard";
-import {ANNOUNCEMENT_ACTION_TYPES} from "../utils/constant";
-import { defaultA11yAnnouncementConfig } from "../utils/defaults";
+  isUpArrowKey,
+} from '../utils/keyboard';
+import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
+import { defaultA11yAnnouncementConfig } from '../utils/defaults';
 import { next, schedule, scheduleOnce, later } from '@ember/runloop';
-import {inject as service} from '@ember/service';
+import { inject as service } from '@ember/service';
 
 const NO_MODEL = {};
 
@@ -37,7 +37,6 @@ const NO_MODEL = {};
  *    </ol>
  */
 export default class SortableGroupModifier extends Modifier {
-
   /** Primary keyboard utils */
   // Tracks the currently selected item
   _selectedItem = null;
@@ -87,11 +86,13 @@ export default class SortableGroupModifier extends Modifier {
    * }
    */
   get a11yAnnouncementConfig() {
-    return this.args.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig;
+    return (
+      this.args.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig
+    );
   }
 
   get itemVisualClass() {
-    return this.args.named.itemVisualClass || "is-activated";
+    return this.args.named.itemVisualClass || 'is-activated';
   }
 
   get a11yItemName() {
@@ -108,7 +109,10 @@ export default class SortableGroupModifier extends Modifier {
    */
   @action
   focusOut() {
-    if (!this.isRetainingFocus && !this._isElementWithinHandle(document.activeElement)) {
+    if (
+      !this.isRetainingFocus &&
+      !this._isElementWithinHandle(document.activeElement)
+    ) {
       this.cancelKeyboardSelection();
     }
   }
@@ -132,7 +136,10 @@ export default class SortableGroupModifier extends Modifier {
     const isKeyboardReorderModeEnabled = this.isKeyboardReorderModeEnabled;
     const _selectedItem = this._selectedItem;
 
-    if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
+    if (
+      !isKeyboardReorderModeEnabled &&
+      (isEnterKey(event) || isSpaceKey(event))
+    ) {
       this._prepareKeyboardReorderMode();
       this._announceAction(ANNOUNCEMENT_ACTION_TYPES.ACTIVATE);
       this._updateItemVisualIndicators(_selectedItem, true);
@@ -179,16 +186,24 @@ export default class SortableGroupModifier extends Modifier {
 
     // switch direction values to notify sortedItems to update, so it sorts by direction.
     let value;
-    const dimension = direction === "y" ? "height" : "width";
+    const dimension = direction === 'y' ? 'height' : 'width';
     // DOWN or RIGHT
     if (toIndex > fromIndex) {
       value = item[direction];
-      set(item, direction, nextItem[direction] + (nextItem[dimension] - item[dimension]));
+      set(
+        item,
+        direction,
+        nextItem[direction] + (nextItem[dimension] - item[dimension])
+      );
       set(nextItem, direction, value);
       // UP or LEFT
     } else {
       value = nextItem[direction];
-      set(nextItem, direction, item[direction] + (item[dimension] - nextItem[dimension]));
+      set(
+        nextItem,
+        direction,
+        item[direction] + (item[dimension] - nextItem[dimension])
+      );
       set(item, direction, value);
     }
   }
@@ -206,13 +221,13 @@ export default class SortableGroupModifier extends Modifier {
     const direction = this.direction;
     const selectedItem = this._selectedItem;
 
-    if (direction === "y" && isDownArrowKey(event)) {
+    if (direction === 'y' && isDownArrowKey(event)) {
       this.moveItem(selectedItem, 1);
-    } else if (direction === "y" && isUpArrowKey(event)) {
+    } else if (direction === 'y' && isUpArrowKey(event)) {
       this.moveItem(selectedItem, -1);
-    } else if (direction === "x" && isLeftArrowKey(event)) {
+    } else if (direction === 'x' && isLeftArrowKey(event)) {
       this.moveItem(selectedItem, -1);
-    } else if (direction === "x" && isRightArrowKey(event)) {
+    } else if (direction === 'x' && isRightArrowKey(event)) {
       this.moveItem(selectedItem, 1);
     } else if (isEnterKey(event) || isSpaceKey(event)) {
       // confirm will reset the selectedItem, so caching it here before we remove it.
@@ -233,7 +248,7 @@ export default class SortableGroupModifier extends Modifier {
         const moves = this.moves;
         if (moves && moves.length > 0) {
           const sortedItems = this.sortedItems;
-          const itemElement = sortedItems[moves[0].fromIndex].element
+          const itemElement = sortedItems[moves[0].fromIndex].element;
           this._focusItem(itemElement);
         } else {
           this._focusItem(_selectedItemElement);
@@ -285,7 +300,7 @@ export default class SortableGroupModifier extends Modifier {
     const moves = this.moves;
     while (moves.length > 0) {
       const move = moves.pop();
-      this._move(move[1], move[0])
+      this._move(move[1], move[0]);
     }
     this._tearDownA11yApplicationContainer();
     this._updateItemVisualIndicators(_selectedItem, false);
@@ -306,7 +321,7 @@ export default class SortableGroupModifier extends Modifier {
     this.moves = [];
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
-    set(_selectedItem, "wasDropped", true);
+    set(_selectedItem, 'wasDropped', true);
     this.commit();
     this._updateItemVisualIndicators(_selectedItem, false);
     this._updateHandleVisualIndicators(_selectedItem, false);
@@ -335,7 +350,7 @@ export default class SortableGroupModifier extends Modifier {
     const config = {
       a11yItemName,
       index: index,
-      maxLength : sortedItems.length,
+      maxLength: sortedItems.length,
       direction: this.direction,
       delta,
     };
@@ -363,7 +378,6 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Boolean} isActive to activate or deactivate the class.
    */
   _updateItemVisualIndicators(item, isActive) {
-
     const itemVisualClass = this.itemVisualClass;
 
     if (!itemVisualClass || !item) {
@@ -397,7 +411,7 @@ export default class SortableGroupModifier extends Modifier {
     const visualHandle = handle ? handle : item.element;
     const visualKeys = direction === 'y' ? ['UP', 'DOWN'] : ['LEFT', 'RIGHT'];
 
-    visualKeys.forEach(visualKey => {
+    visualKeys.forEach((visualKey) => {
       visualHandle.classList.remove(handleVisualClass[visualKey]);
     });
 
@@ -447,7 +461,7 @@ export default class SortableGroupModifier extends Modifier {
    * Sets up the group as an application and make it programmatically focusable.
    */
   _setupA11yApplicationContainer() {
-    this.element.setAttribute("role", "application");
+    this.element.setAttribute('role', 'application');
     this.element.tabIndex = -1;
   }
 
@@ -455,8 +469,8 @@ export default class SortableGroupModifier extends Modifier {
    * Tears down the `role=application` container.
    */
   _tearDownA11yApplicationContainer() {
-    this.element.removeAttribute("role");
-    this.element.removeAttribute("tabIndex");
+    this.element.removeAttribute('role');
+    this.element.removeAttribute('tabIndex');
   }
 
   _prepareKeyboardReorderMode() {
@@ -472,7 +486,7 @@ export default class SortableGroupModifier extends Modifier {
    @default y
    */
   get direction() {
-    return this.args.named.direction || "y";
+    return this.args.named.direction || 'y';
   }
 
   /**
@@ -499,7 +513,7 @@ export default class SortableGroupModifier extends Modifier {
    * @returns {*|string}
    */
   get groupName() {
-    return this.args.named.groupName || "_EmberSortableGroup";
+    return this.args.named.groupName || '_EmberSortableGroup';
   }
 
   _groupDef = this.sortableService.fetchGroup(this.groupName);
@@ -530,7 +544,7 @@ export default class SortableGroupModifier extends Modifier {
    @property firstItemPosition
    @type Number
    */
-  @computed("direction", "sortedItems")
+  @computed('direction', 'sortedItems')
   get firstItemPosition() {
     const direction = this.direction;
     const sortedItems = this.sortedItems;
@@ -552,7 +566,7 @@ export default class SortableGroupModifier extends Modifier {
    * Enables keyboard navigation
    */
   @action
-  activateKeyDown(selectedItem){
+  activateKeyDown(selectedItem) {
     this._selectedItem = selectedItem;
     this.isKeyDownEnabled = true;
   }
@@ -616,7 +630,7 @@ export default class SortableGroupModifier extends Modifier {
       position = this.firstItemPosition;
     }
 
-    sortedItems.forEach(item => {
+    sortedItems.forEach((item) => {
       let dimension;
       let direction = this.direction;
 
@@ -646,8 +660,8 @@ export default class SortableGroupModifier extends Modifier {
   @action
   commit() {
     const items = this.sortedItems;
-    const itemModels = items.map(item => item.model);
-    const draggedItem = items.find(item => item.wasDropped);
+    const itemModels = items.map((item) => item.model);
+    const draggedItem = items.find((item) => item.wasDropped);
     let draggedModel;
 
     if (draggedItem) {
@@ -676,16 +690,16 @@ export default class SortableGroupModifier extends Modifier {
     delete this._firstItemPosition;
 
     schedule('render', () => {
-      items.forEach(item => item.freeze());
+      items.forEach((item) => item.freeze());
     });
 
     schedule('afterRender', () => {
-      items.forEach(item => item.reset());
+      items.forEach((item) => item.reset());
     });
 
     next(() => {
       schedule('render', () => {
-        items.forEach(item => item.thaw());
+        items.forEach((item) => item.thaw());
       });
     });
   }
@@ -701,13 +715,13 @@ export default class SortableGroupModifier extends Modifier {
   // end of API
 
   addEventListener() {
-    this.element.addEventListener("keydown", this.keyDown);
-    this.element.addEventListener("focusout", this.focusOut);
+    this.element.addEventListener('keydown', this.keyDown);
+    this.element.addEventListener('focusout', this.focusOut);
   }
 
   removeEventListener() {
-    this.element.removeEventListener("keydown", this.keyDown);
-    this.element.removeEventListener("focusout", this.focusOut);
+    this.element.removeEventListener('keydown', this.keyDown);
+    this.element.removeEventListener('focusout', this.focusOut);
   }
 
   didReceiveArguments() {
@@ -720,8 +734,7 @@ export default class SortableGroupModifier extends Modifier {
     this.addEventListener();
   }
 
-  didUpdateArguments() {
-  }
+  didUpdateArguments() {}
 
   didInstall() {
     this.announcer = this._createAnnouncer();
@@ -732,12 +745,11 @@ export default class SortableGroupModifier extends Modifier {
 
   willRemove() {
     // todo cleanup the announcer
-    if(this.announcer.parentNode) {
+    if (this.announcer.parentNode) {
       this.announcer.parentNode.removeChild(this.announcer);
     }
     this.removeEventListener();
 
     this.sortableService.deregisterGroup(this.groupName, this);
   }
-
 }

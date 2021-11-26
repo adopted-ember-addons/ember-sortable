@@ -1,9 +1,9 @@
 module.exports = {
   env: {
-    embertest: true
+    embertest: true,
   },
   globals: {
     drag: true,
-    reorder: true
-  }
+    reorder: true,
+  },
 };

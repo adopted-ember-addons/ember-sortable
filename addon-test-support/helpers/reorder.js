@@ -27,13 +27,21 @@ const OVERSHOOT = 2;
   @return {Promise}
 */
 export async function reorder(mode, itemSelector, ...resultSelectors) {
-  for (let targetIndex = 0; targetIndex < resultSelectors.length; targetIndex++) {
+  for (
+    let targetIndex = 0;
+    targetIndex < resultSelectors.length;
+    targetIndex++
+  ) {
     const items = findAll(itemSelector);
     const sourceElement = find(resultSelectors[targetIndex]);
     const targetElement = items[targetIndex];
-    const dx = getOffset(targetElement).left - OVERSHOOT - getOffset(sourceElement).left;
-    const dy = getOffset(targetElement).top - OVERSHOOT - getOffset(sourceElement).top;
+    const dx =
+      getOffset(targetElement).left - OVERSHOOT - getOffset(sourceElement).left;
+    const dy =
+      getOffset(targetElement).top - OVERSHOOT - getOffset(sourceElement).top;
 
-    await drag(mode, sourceElement, () => { return { dx: dx, dy: dy }; });
+    await drag(mode, sourceElement, () => {
+      return { dx: dx, dy: dy };
+    });
   }
 }
