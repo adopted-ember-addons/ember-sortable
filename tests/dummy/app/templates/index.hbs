@@ -62,7 +62,7 @@
       >
         {{#each this.model.items as |item|}}
           <li data-test-horizontal-demo-handle tabindex={{"0"}} {{sortable-item model=item groupName="horizontal"}}>
-            {{item-presenter item=item}}
+            <ItemPresenter @item={{item}} />
           </li>
         {{/each}}
       </ol>
@@ -152,9 +152,12 @@
   <section class="vertical-demo">
     <h3>Vertical</h3>
 
-    <ol {{sortable-group data-test-vertical-demo-group-no-css
-                         onChange=this.update handleVisualClass=handleVisualClass
-                         groupName="verticle-no-css"}}>
+    <ol 
+      data-test-vertical-demo-group-no-css
+      {{sortable-group
+        onChange=this.update 
+        handleVisualClass=handleVisualClass
+        groupName="verticle-no-css"}}>
       {{#each this.model.items as |item|}}
         <li data-test-scrollable-demo-handle-item-no-css {{sortable-item model=item groupName="verticle-no-css"}}>
           {{item}}
