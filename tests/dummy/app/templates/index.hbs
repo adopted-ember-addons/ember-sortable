@@ -17,7 +17,7 @@
           handleVisualClass=this.handleVisualClass
         }}
       >
-        {{#each model.items as |item|}}
+        {{#each @model.items as |item|}}
           <li data-test-vertical-demo-item {{sortable-item model=item}}>
             {{item}}
             <span class='handle' data-test-vertical-demo-handle {{sortable-handle}} data-item={{item}}>
@@ -80,7 +80,7 @@
           </tr>
         </thead>
         <tbody {{sortable-group onChange=this.update groupName='table'}}>
-          {{#each this.model.items as |item|}}
+          {{#each @model.items as |item|}}
             <tr data-test-table-demo-item class='handle' {{sortable-item model=item groupName='table'}}>
               <td><span data-test-table-demo-handle data-item={{item}} class='handle'>&vArr;</span></td>
               <td>{{item}}</td>
@@ -94,7 +94,7 @@
       <h3>Vertical with 15px spacing</h3>
 
       <ol {{sortable-group onChange=this.update groupName='verticle-15'}}>
-        {{#each this.model.items as |item|}}
+        {{#each @model.items as |item|}}
           <li {{sortable-item model=item spacing=15 groupName='verticle-15'}} tabindex='0'>
             {{item}}
             <span data-test-vertical-spacing-demo-handle data-item={{item}}>
@@ -108,7 +108,7 @@
       <h3>Vertical with distance set to 15</h3>
 
       <ol {{sortable-group onChange=this.update groupName='verticle-15d'}}>
-        {{#each this.model.items as |item|}}
+        {{#each @model.items as |item|}}
           <li
             data-test-vertical-distance-demo-handle
             {{sortable-item model=item distance=15 groupName='verticle-15d'}}
@@ -127,7 +127,7 @@
 
       <div class='sortable-container'>
         <ol {{sortable-group onChange=this.update groupName='scrollable'}}>
-          {{#each this.model.items as |item|}}
+          {{#each @model.items as |item|}}
             <li data-test-scrollable-demo-handle {{sortable-item model=item groupName='scrollable'}}>
               {{item}}
               <span class='handle' data-item={{item}} {{sortable-handle}}>
@@ -139,8 +139,8 @@
       </div>
     </section>
 
-    {{#if model.dragged}}
-      <p>Just dragged <span data-test-just-dragged>{{this.model.dragged}}</span></p>
+    {{#if @model.dragged}}
+      <p>Just dragged <span data-test-just-dragged>{{@model.dragged}}</span></p>
     {{/if}}
   </main>
 
@@ -158,9 +158,9 @@
 
     <ol
       data-test-vertical-demo-group-no-css
-      {{sortable-group onChange=this.update handleVisualClass=handleVisualClass groupName='verticle-no-css'}}
+      {{sortable-group onChange=this.update handleVisualClass=@handleVisualClass groupName='verticle-no-css'}}
     >
-      {{#each this.model.items as |item|}}
+      {{#each @model.items as |item|}}
         <li data-test-scrollable-demo-handle-item-no-css {{sortable-item model=item groupName='verticle-no-css'}}>
           {{item}}
           <span class='handle' data-test-vertical-demo-handle-no-css data-item={{item}} {{sortable-handle}}>

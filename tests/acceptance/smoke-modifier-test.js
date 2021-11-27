@@ -30,7 +30,7 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(tableContents(), 'Cinco Cuatro Tres Dos Uno');
     assert.equal(scrollableContents(), 'Cinco Cuatro Tres Dos Uno');
 
-    order = findAll('[data-test-vertical-demo-handle');
+    order = findAll('[data-test-vertical-demo-handle]');
     await reorder('mouse', '[data-test-vertical-demo-handle]', order[4], order[3], order[2], order[1], order[0]);
 
     assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
@@ -181,7 +181,7 @@ module('Acceptance | smoke modifier', function (hooks) {
       const handle = find('[data-test-vertical-demo-handle]');
       await focus(handle);
       await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
-      assert.dom('[data-test-vertical-demo-item').hasClass('sortable-item--active');
+      assert.dom('[data-test-vertical-demo-item]').hasClass('sortable-item--active');
       assert.dom(handle).doesNotHaveClass('sortable-handle-up');
       assert.dom(handle).hasClass('sortable-handle-down');
 

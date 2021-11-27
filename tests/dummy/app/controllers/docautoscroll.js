@@ -1,12 +1,13 @@
 import Controller from '@ember/controller';
-import { equal } from '@ember/object/computed';
 import { action, set } from '@ember/object';
 
 export default class DocAutoScroll extends Controller {
   queryParams = ['direction'];
   direction = 'y';
 
-  @equal('direction', 'y') isVertical;
+  get isVertical() {
+    return this.direction === this.y;
+  }
 
   @action
   updateItems(newOrder) {

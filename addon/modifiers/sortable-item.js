@@ -1,7 +1,7 @@
+/* eslint-disable ember/no-computed-properties-in-native-classes */
 import Modifier from 'ember-modifier';
 import { Promise, defer } from 'rsvp';
 import { action, set } from '@ember/object';
-import { reads } from '@ember/object/computed';
 import { or } from '@ember/object/computed';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
@@ -14,6 +14,7 @@ import { buildWaiter } from '@ember/test-waiters';
 import { inject as service } from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
 import config from 'ember-get-config';
+
 const { environment } = config;
 const isTesting = environment === 'test';
 
@@ -41,6 +42,8 @@ const sortableItemWaiter = buildWaiter('sortable-item-waiter');
 export default class SortableItemModifier extends Modifier {
   className = 'sortable-item';
 
+  @service('ember-sortable@ember-sortable') sortableService;
+
   _sortableGroup;
   /**
    * The SortableGroupModifier this item belongs to. Assigned by the group
@@ -59,17 +62,17 @@ export default class SortableItemModifier extends Modifier {
     return this._sortableGroup.groupModifier;
   }
 
-  @reads('args.named.model')
-  model;
+  get model() {
+    return this.args.named.model;
+  }
 
-  @reads('sortableGroup.direction')
-  direction;
+  get direction() {
+    return this.sortableGroup.direction;
+  }
 
-  @reads('sortableGroup.disabled')
-  groupDisabled;
-
-  @service('ember-sortable@ember-sortable')
-  sortableService;
+  get groupDisabled() {
+    return this.sortableGroup.disabled;
+  }
 
   /**
    * This is the group name used to keep groups separate if there are more than one on the screen at a time.
@@ -234,7 +237,9 @@ export default class SortableItemModifier extends Modifier {
    @type Boolean
    */
   @or('isDragging', 'isDropping')
-  isBusy;
+  get isBusy() {
+    return this.isDragging || this.isDropping;
+  }
 
   /**
    @property disableCheckScrollBounds

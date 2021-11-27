@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-computed-properties-in-native-classes */
+/* eslint-disable ember/no-incorrect-calls-with-inline-anonymous-functions */
 import Modifier from 'ember-modifier';
 import { action, computed, set } from '@ember/object';
 import {
