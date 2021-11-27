@@ -2,7 +2,6 @@
 import Modifier from 'ember-modifier';
 import { Promise, defer } from 'rsvp';
 import { action, set } from '@ember/object';
-import { or } from '@ember/object/computed';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
@@ -236,7 +235,6 @@ export default class SortableItemModifier extends Modifier {
    @property isBusy
    @type Boolean
    */
-  @or('isDragging', 'isDropping')
   get isBusy() {
     return this.isDragging || this.isDropping;
   }
