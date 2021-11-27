@@ -57,10 +57,7 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   // https://stackoverflow.com/a/5042051
   const dx = offset.dx || 0;
   const dy = offset.dy || 0;
-  const clientHeight =
-    itemElement.clientHeight ||
-    itemElement.offsetHeight ||
-    itemElement.parentNode.offsetHeight;
+  const clientHeight = itemElement.clientHeight || itemElement.offsetHeight || itemElement.parentNode.offsetHeight;
   const scale = clientHeight / (rect.bottom - rect.top);
   const halfwayX = itemOffset.left + (dx * scale) / 2;
   const halfwayY = itemOffset.top + (dy * scale) / 2;

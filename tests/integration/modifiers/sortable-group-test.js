@@ -1,13 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import {
-  settled,
-  find,
-  findAll,
-  render,
-  triggerKeyEvent,
-  waitUntil,
-} from '@ember/test-helpers';
+import { settled, find, findAll, render, triggerKeyEvent, waitUntil } from '@ember/test-helpers';
 import { set } from '@ember/object';
 import { reorder } from 'ember-sortable/test-support/helpers';
 import hbs from 'htmlbars-inline-precompile';
@@ -109,9 +102,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     await announcerHasText();
     assert
       .dom(announcerSelector)
-      .hasText(
-        'item is moved to position, 2 of 3. Press Space to confirm new position, Escape to cancel.'
-      );
+      .hasText('item is moved to position, 2 of 3. Press Space to confirm new position, Escape to cancel.');
 
     triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
 
@@ -126,11 +117,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
   });
 
   function contents(selector) {
-    return find(selector)
-      .textContent.replace(/⇕/g, '')
-      .replace(/\s+/g, ' ')
-      .replace(/^\s+/, '')
-      .replace(/\s+$/, '');
+    return find(selector).textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
   }
 
   let announcerSelector = '#test-list + .visually-hidden';

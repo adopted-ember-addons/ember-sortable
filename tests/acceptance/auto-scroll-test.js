@@ -25,16 +25,11 @@ function fakeDocumentContainer() {
   document.getElementById('ember-testing').style.height = 'auto';
 
   return () => {
-    document.getElementById('ember-testing-container').style.height =
-      originalStyle.containerHeight;
-    document.getElementById('ember-testing-container').style.width =
-      originalStyle.containerWidth;
-    document.getElementById('ember-testing-container').style.overflow =
-      originalStyle.containerOverflow;
-    document.getElementById('ember-testing').style.height =
-      originalStyle.appHeight;
-    document.getElementById('ember-testing').style.height =
-      originalStyle.appWidth;
+    document.getElementById('ember-testing-container').style.height = originalStyle.containerHeight;
+    document.getElementById('ember-testing-container').style.width = originalStyle.containerWidth;
+    document.getElementById('ember-testing-container').style.overflow = originalStyle.containerOverflow;
+    document.getElementById('ember-testing').style.height = originalStyle.appHeight;
+    document.getElementById('ember-testing').style.height = originalStyle.appWidth;
   };
 }
 
@@ -58,10 +53,7 @@ module('Acceptance | container auto scroll', function (hooks) {
     await drag('mouse', '[data-test-doc-auto-scroll-demo-item]', () => {
       return { dy: itemHeight() * 30 + 1, dx: undefined };
     });
-    assert.ok(
-      document.getElementById('ember-testing-container').scrollTop,
-      'The container has scroll (top)'
-    );
+    assert.ok(document.getElementById('ember-testing-container').scrollTop, 'The container has scroll (top)');
   });
 
   test('horizontaly reordering can scroll his parent container (not document)', async function (assert) {
@@ -76,10 +68,7 @@ module('Acceptance | container auto scroll', function (hooks) {
     await drag('mouse', '[data-test-doc-auto-scroll-demo-item]', () => {
       return { dy: undefined, dx: itemWidth() * 30 + 1 };
     });
-    assert.ok(
-      document.getElementById('ember-testing-container').scrollLeft,
-      'The container has scroll (left)'
-    );
+    assert.ok(document.getElementById('ember-testing-container').scrollLeft, 'The container has scroll (left)');
   });
 
   test('verticaly reordering can scroll his parent container (document)', async function (assert) {
@@ -96,10 +85,7 @@ module('Acceptance | container auto scroll', function (hooks) {
     await drag('mouse', '[data-test-doc-auto-scroll-demo-item]', () => {
       return { dy: itemHeight() * 30 + 1, dx: undefined };
     });
-    assert.ok(
-      document.documentElement.scrollTop,
-      'The document has scroll (top)'
-    );
+    assert.ok(document.documentElement.scrollTop, 'The document has scroll (top)');
     restoreTestingContainer();
   });
 
@@ -117,10 +103,7 @@ module('Acceptance | container auto scroll', function (hooks) {
     await drag('mouse', '[data-test-doc-auto-scroll-demo-item]', () => {
       return { dy: undefined, dx: itemWidth() * 30 + 1 };
     });
-    assert.ok(
-      document.documentElement.scrollLeft,
-      'The document has scroll (left)'
-    );
+    assert.ok(document.documentElement.scrollLeft, 'The document has scroll (left)');
     restoreTestingContainer();
   });
 });

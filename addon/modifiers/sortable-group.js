@@ -86,9 +86,7 @@ export default class SortableGroupModifier extends Modifier {
    * }
    */
   get a11yAnnouncementConfig() {
-    return (
-      this.args.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig
-    );
+    return this.args.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig;
   }
 
   get itemVisualClass() {
@@ -109,10 +107,7 @@ export default class SortableGroupModifier extends Modifier {
    */
   @action
   focusOut() {
-    if (
-      !this.isRetainingFocus &&
-      !this._isElementWithinHandle(document.activeElement)
-    ) {
+    if (!this.isRetainingFocus && !this._isElementWithinHandle(document.activeElement)) {
       this.cancelKeyboardSelection();
     }
   }
@@ -136,10 +131,7 @@ export default class SortableGroupModifier extends Modifier {
     const isKeyboardReorderModeEnabled = this.isKeyboardReorderModeEnabled;
     const _selectedItem = this._selectedItem;
 
-    if (
-      !isKeyboardReorderModeEnabled &&
-      (isEnterKey(event) || isSpaceKey(event))
-    ) {
+    if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
       this._prepareKeyboardReorderMode();
       this._announceAction(ANNOUNCEMENT_ACTION_TYPES.ACTIVATE);
       this._updateItemVisualIndicators(_selectedItem, true);
@@ -190,20 +182,12 @@ export default class SortableGroupModifier extends Modifier {
     // DOWN or RIGHT
     if (toIndex > fromIndex) {
       value = item[direction];
-      set(
-        item,
-        direction,
-        nextItem[direction] + (nextItem[dimension] - item[dimension])
-      );
+      set(item, direction, nextItem[direction] + (nextItem[dimension] - item[dimension]));
       set(nextItem, direction, value);
       // UP or LEFT
     } else {
       value = nextItem[direction];
-      set(
-        nextItem,
-        direction,
-        item[direction] + (item[dimension] - nextItem[dimension])
-      );
+      set(nextItem, direction, item[direction] + (item[dimension] - nextItem[dimension]));
       set(item, direction, value);
     }
   }

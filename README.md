@@ -13,10 +13,12 @@ Sortable UI primitives for Ember.
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
 
 ## v2 -> v3 Migration
+
 The component versions have been removed and you must use the modifier.
 The modifier version does not support `groupModel`, use the currying of the `fn` helper.
 
 ## v1 -> v2 Migration
+
 If you are migrating from `1.x.x` to `2.x.x`,
 For components, please read this [migration guide](/MIGRATION_GUIDE_V2.md).
 For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md).
@@ -46,7 +48,7 @@ $ ember install ember-sortable
   {{#each @model.items as |modelItem|}}
     <li {{sortable-item model=modelItem}}>
       {{modelItem.name}}
-      <span class="handle" {{sortable-handle}}>&varr;</span>
+      <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
 </ol>
@@ -78,12 +80,11 @@ The modifier version does not support `groupModel`, use the currying of `action`
   {{#each @model.items as |modelItem|}}
     <li {{sortable-item model=modelItem}}>
       {{modelItem.name}}
-      <span class="handle" {{sortable-handle}}>&varr;</span>
+      <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
 </ol>
 ```
-
 
 ### Changing sort direction
 
@@ -145,7 +146,7 @@ transition of `.125s` in the default case:
 
 ```css
 .sortable-item {
-  transition: all .125s;
+  transition: all 0.125s;
 }
 ```
 
@@ -219,11 +220,11 @@ There is a service behind the scenes for communication between the group and the
 Both the `{{sortable-group}}` and `{{sortable-item}}` take an additional argument `groupName`. Should you encounter this conflict, assign a `groupName` to the group and items. You only need to do this for one of the sortables in conflict, but you can on both if you wish.
 
 ```hbs
-<ol {{sortable-group groupName="products" onChange=this.reorderItems}}>
+<ol {{sortable-group groupName='products' onChange=this.reorderItems}}>
   {{#each @model.items as |modelItem|}}
-    <li {{sortable-item groupName="products" model=modelItem}}>
+    <li {{sortable-item groupName='products' model=modelItem}}>
       {{modelItem.name}}
-      <span class="handle" {{sortable-handle}}>&varr;</span>
+      <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
 </ol>
@@ -232,20 +233,20 @@ Both the `{{sortable-group}}` and `{{sortable-item}}` take an additional argumen
 Ensure that the same name is passed to both the group and the items, this would be best accomplished by creating property on the component and referring to that property. If you are able to use the `{{#let}}` helper (useful in template only components), using `{{#let}}` makes the usage clearer.
 
 ```hbs
-{{#let "products" as | myGroupName |}}
+{{#let 'products' as |myGroupName|}}
   <ol {{sortable-group groupName=myGroupName onChange=this.reorderItems}}>
     {{#each @model.items as |modelItem|}}
       <li {{sortable-item groupName=myGroupName model=modelItem}}>
         {{modelItem.name}}
-        <span class="handle" {{sortable-handle}}>&varr;</span>
+        <span class='handle' {{sortable-handle}}>&varr;</span>
       </li>
     {{/each}}
   </ol>
 {{/let}}
 ```
 
-
 ### Disabling Drag (Experimental)
+
 `sortable-item` exposes an optional `disabled` (previously `isDraggingDisabled`) flag that you can use to disable reordering for that particular item. Disabling and item won't prevent it from changing position in the array. The user can still move other non-disabled items to over it.
 
 This flag is intended as an utility to make your life easier with 3 main benefits:
@@ -261,30 +262,35 @@ No data is mutated by `sortable-group` or `sortable-item`. In the spirit of “d
 Each item takes a `model` property. This should be fairly self-explanatory but it’s important to note that it doesn’t do anything with this object besides keeping a reference for later use in `onChange`.
 
 ### Accessibility
+
 The `sortable-group` has support for the following accessibility functionality:
 
 #### Built-in Functionalities
 
 ##### Keyboard Navigation
+
 There are 4 modes during keyboard navigation:
+
 - **ACTIVATE**
   enables the keyboard navigation.
-  Activate via  `ENTER/SPACE`
+  Activate via `ENTER/SPACE`
 - **MOVE**
   enables item(s) to be moved up, down, left, or right based on `direction`.
-  Activate via  `ARROW UP/DOWN/LEFT/RIGHT`
+  Activate via `ARROW UP/DOWN/LEFT/RIGHT`
 - **CONFIRM**
   submits the new sort order, invokes the `onChange` action.
-  Activate via  `ENTER/SPACE`.
+  Activate via `ENTER/SPACE`.
 - **CANCEL**
   cancels the new sort order, reverts back to the old sort order.
-  Activate via  `ESCAPE` or when `focus` is lost.
+  Activate via `ESCAPE` or when `focus` is lost.
 
 ##### Focus Management
+
 - When `focus` is on a `item` or `handle`, user can effectively select the `item` via `ENTER/SPACE`. This is the `ACTIVATE` mode.
 - While `ACTIVATE`, the `focus` is locked on `sortable-group` container and will not be lost until `CONFIRM`, `CANCEL`, or `focus` is lost.
 
 #### User configurable
+
 ##### Screen Reader
 
 The default language for `ember-sortable` is English. Any language can be supported by passing in the configuration below in the appropriate language.
@@ -293,6 +299,7 @@ The default language for `ember-sortable` is English. Any language can be suppor
   a name for the item. Defaults to `item`.
 - **a11yAnnouncementConfig**
   a map of `action enums` to `functions` that takes the following `config`, which is exposed by `sortable-group`.
+
 ```javascript
 a11yAnnounceConfig = {
   a11yItemName, // name associated with the name
@@ -300,11 +307,13 @@ a11yAnnounceConfig = {
   maxLength, // length of the items
   direction, // x or y
   delta, // +1 means down or right, -1 means up or left
-}
+};
 ```
+
 and returns a `string` constructed from the `config`.
 
 **Default value**
+
 ```javascript
 {
   ACTIVATE: function({ a11yItemName, index, maxLength, direction }) {
@@ -332,6 +341,7 @@ and returns a `string` constructed from the `config`.
 ```
 
 ##### Visual Indicator
+
 - **handleVisualClass**
   This class will be added to the `sortable-handle` during `ACTIVATE` and `MOVE` operations. This allows you to add custom styles such as `visual arrows` via `pseudo` classes.
 
@@ -342,9 +352,9 @@ and returns a `string` constructed from the `config`.
 
 `ember-sortable` exposes some acceptance test helpers:
 
-* [`drag`][drag]: Drags elements by an offset specified in pixels.
-* [`reorder`][reorder]: Reorders elements to the specified state.
-* [`keyboard`][keyboard]: Keycode constants for quick.
+- [`drag`][drag]: Drags elements by an offset specified in pixels.
+- [`reorder`][reorder]: Reorders elements to the specified state.
+- [`keyboard`][keyboard]: Keycode constants for quick.
 
 [drag]: addon-test-support/helpers/drag.js
 [reorder]: addon-test-support/helpers/reorder.js
@@ -353,32 +363,35 @@ and returns a `string` constructed from the `config`.
 To include them in your application, you can import them:
 
 ```js
-import { drag, reorder }  from 'ember-sortable/test-support/helpers';
-import { ENTER_KEY_CODE, SPACE_KEY_CODE, ESCAPE_KEY_CODE, ARROW_KEY_CODES } from "ember-sortable/test-support/utils/keyboard";
+import { drag, reorder } from 'ember-sortable/test-support/helpers';
+import {
+  ENTER_KEY_CODE,
+  SPACE_KEY_CODE,
+  ESCAPE_KEY_CODE,
+  ARROW_KEY_CODES,
+} from 'ember-sortable/test-support/utils/keyboard';
 ```
 
 ### Examples
+
 `Reorder`
+
 ```js
-await reorder(
-  'mouse',
-  '[data-test-vertical-demo-handle]',
-  ...order
-);
+await reorder('mouse', '[data-test-vertical-demo-handle]', ...order);
 ```
 
 `Drag`
+
 ```js
-await drag('mouse', '[data-test-scrollable-demo-handle] .handle', () => { return {dy: itemHeight() * 2 + 1, dx: undefined}});
+await drag('mouse', '[data-test-scrollable-demo-handle] .handle', () => {
+  return { dy: itemHeight() * 2 + 1, dx: undefined };
+});
 ```
 
 `Keyboard`
+
 ```js
-await triggerKeyEvent(
-  '[data-test-vertical-demo-handle]',
-  'keydown',
-  ENTER_KEY_CODE
-);
+await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
 ```
 
 ## Developing

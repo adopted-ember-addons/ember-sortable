@@ -26,16 +26,7 @@ function createKeyTest(key, keyCode) {
 export const isEnterKey = createKeyTest(ENTER_KEY, ENTER_KEY_CODE);
 export const isEscapeKey = createKeyTest(ESCAPE_KEY, ESCAPE_KEY_CODE);
 export const isSpaceKey = createKeyTest(SPACE_KEY, SPACE_KEY_CODE);
-export const isLeftArrowKey = createKeyTest(
-  ARROW_KEYS.LEFT,
-  ARROW_KEY_CODES.LEFT
-);
+export const isLeftArrowKey = createKeyTest(ARROW_KEYS.LEFT, ARROW_KEY_CODES.LEFT);
 export const isUpArrowKey = createKeyTest(ARROW_KEYS.UP, ARROW_KEY_CODES.UP);
-export const isRightArrowKey = createKeyTest(
-  ARROW_KEYS.RIGHT,
-  ARROW_KEY_CODES.RIGHT
-);
-export const isDownArrowKey = createKeyTest(
-  ARROW_KEYS.DOWN,
-  ARROW_KEY_CODES.DOWN
-);
+export const isRightArrowKey = createKeyTest(ARROW_KEYS.RIGHT, ARROW_KEY_CODES.RIGHT);
+export const isDownArrowKey = createKeyTest(ARROW_KEYS.DOWN, ARROW_KEY_CODES.DOWN);

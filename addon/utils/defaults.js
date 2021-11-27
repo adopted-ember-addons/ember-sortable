@@ -1,8 +1,6 @@
 export const defaultA11yAnnouncementConfig = {
   ACTIVATE({ a11yItemName, index, maxLength, direction }) {
-    let message = `${a11yItemName} at position, ${
-      index + 1
-    } of ${maxLength}, is activated to be repositioned.`;
+    let message = `${a11yItemName} at position, ${index + 1} of ${maxLength}, is activated to be repositioned.`;
 
     if (direction === 'y') {
       message += 'Press up and down keys to change position,';

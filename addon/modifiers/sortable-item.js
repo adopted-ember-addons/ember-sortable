@@ -3,11 +3,7 @@ import { Promise, defer } from 'rsvp';
 import { action, set } from '@ember/object';
 import { reads } from '@ember/object/computed';
 import { or } from '@ember/object/computed';
-import {
-  DRAG_ACTIONS,
-  ELEMENT_CLICK_ACTION,
-  END_ACTIONS,
-} from '../utils/constant';
+import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
 import { getX, getY } from '../utils/coordinate';
@@ -129,12 +125,7 @@ export default class SortableItemModifier extends Modifier {
       }
     );
 
-    return (
-      this.groupDisabled ||
-      this.args.named.disabled ||
-      this.args.named.isDraggingDisabled ||
-      false
-    );
+    return this.groupDisabled || this.args.named.disabled || this.args.named.isDraggingDisabled || false;
   }
 
   /**
@@ -249,9 +240,7 @@ export default class SortableItemModifier extends Modifier {
    @property disableCheckScrollBounds
    */
   get disableCheckScrollBounds() {
-    return this.args.named.disableCheckScrollBounds != undefined
-      ? this.args.named.disableCheckScrollBounds
-      : isTesting;
+    return this.args.named.disableCheckScrollBounds != undefined ? this.args.named.disableCheckScrollBounds : isTesting;
   }
 
   /**
@@ -351,26 +340,18 @@ export default class SortableItemModifier extends Modifier {
 
     this._prepareDragListener = bind(this, this._prepareDrag, startEvent);
 
-    DRAG_ACTIONS.forEach((event) =>
-      window.addEventListener(event, this._prepareDragListener)
-    );
+    DRAG_ACTIONS.forEach((event) => window.addEventListener(event, this._prepareDragListener));
 
     this._cancelStartDragListener = () => {
-      DRAG_ACTIONS.forEach((event) =>
-        window.removeEventListener(event, this._prepareDragListener)
-      );
+      DRAG_ACTIONS.forEach((event) => window.removeEventListener(event, this._prepareDragListener));
     };
 
     const selfCancellingCallback = () => {
-      END_ACTIONS.forEach((event) =>
-        window.removeEventListener(event, selfCancellingCallback)
-      );
+      END_ACTIONS.forEach((event) => window.removeEventListener(event, selfCancellingCallback));
       this._cancelStartDragListener();
     };
 
-    END_ACTIONS.forEach((event) =>
-      window.addEventListener(event, selfCancellingCallback)
-    );
+    END_ACTIONS.forEach((event) => window.addEventListener(event, selfCancellingCallback));
   }
 
   /**
@@ -387,9 +368,7 @@ export default class SortableItemModifier extends Modifier {
     let dy = Math.abs(getY(startEvent) - getY(event));
 
     if (distance <= dx || distance <= dy) {
-      DRAG_ACTIONS.forEach((event) =>
-        window.removeEventListener(event, this._prepareDragListener)
-      );
+      DRAG_ACTIONS.forEach((event) => window.removeEventListener(event, this._prepareDragListener));
       this._startDrag(startEvent);
     }
   }
@@ -410,9 +389,7 @@ export default class SortableItemModifier extends Modifier {
     let dragThrottled = (ev) => throttle(this, drag, ev, 16, false);
 
     let drop = () => {
-      DRAG_ACTIONS.forEach((event) =>
-        window.removeEventListener(event, dragThrottled)
-      );
+      DRAG_ACTIONS.forEach((event) => window.removeEventListener(event, dragThrottled));
       END_ACTIONS.forEach((event) => window.removeEventListener(event, drop));
 
       run(() => {
@@ -420,9 +397,7 @@ export default class SortableItemModifier extends Modifier {
       });
     };
 
-    DRAG_ACTIONS.forEach((event) =>
-      window.addEventListener(event, dragThrottled)
-    );
+    DRAG_ACTIONS.forEach((event) => window.addEventListener(event, dragThrottled));
     END_ACTIONS.forEach((event) => window.addEventListener(event, drop));
 
     this.sortableGroup.prepare();
@@ -590,10 +565,7 @@ export default class SortableItemModifier extends Modifier {
 
     if (groupDirection === 'x') {
       let x = this.x;
-      let dx =
-        x -
-        this.element.offsetLeft +
-        parseFloat(getComputedStyle(this.element).marginLeft);
+      let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
 
       this.element.style.transform = `translateX(${dx}px)`;
     }
@@ -652,10 +624,7 @@ export default class SortableItemModifier extends Modifier {
    */
   _preventClick() {
     const selfCancellingCallback = (event) => {
-      this.element.removeEventListener(
-        ELEMENT_CLICK_ACTION,
-        selfCancellingCallback
-      );
+      this.element.removeEventListener(ELEMENT_CLICK_ACTION, selfCancellingCallback);
       this._preventClickHandler(event);
     };
 
@@ -725,9 +694,7 @@ export default class SortableItemModifier extends Modifier {
     let el = this.element;
     let transitionProperty = getComputedStyle(el).transitionProperty;
 
-    return (
-      /all|transform/.test(transitionProperty) && this.transitionDuration > 0
-    );
+    return /all|transform/.test(transitionProperty) && this.transitionDuration > 0;
   }
 
   /**

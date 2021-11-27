@@ -21,12 +21,12 @@
 
 .demo footer {
   margin-top: 2em;
-  font-size: .5em;
+  font-size: 0.5em;
 }
 
 .demo .sortable-item {
   padding: 4px;
-  transition: all .125s;
+  transition: all 0.125s;
 }
 
 .demo .sortable-item.is-dragging {
@@ -35,13 +35,12 @@
 }
 
 .demo .sortable-item .handle {
-  padding: 0 .5em;
+  padding: 0 0.5em;
   cursor: move;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 
 .vertical-demo .sortable-item {
   display: block;
@@ -62,23 +61,28 @@
 .vertical-demo .sortable-item .handle {
   display: block;
   position: absolute;
-  top: 0; right: 0; bottom: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(71, 1, 1, 0.5);
   color: pink;
 }
 
-.vertical-spacing-demo .sortable-item, .vertical-distance-demo .sortable-item, .vertical-doc-auto-scroll-demo .sortable-item {
+.vertical-spacing-demo .sortable-item,
+.vertical-distance-demo .sortable-item,
+.vertical-doc-auto-scroll-demo .sortable-item {
   display: block;
   position: relative;
-  background: #58D3F7;
+  background: #58d3f7;
   width: 50%;
   line-height: 50px;
   margin: 5px auto;
   text-align: center;
 }
 
-.vertical-spacing-demo .sortable-item.is-dragging, .vertical-distance-demo .sortable-item.is-dragging {
-  background: #A9E2F3;
+.vertical-spacing-demo .sortable-item.is-dragging,
+.vertical-distance-demo .sortable-item.is-dragging {
+  background: #a9e2f3;
 }
 
 .horizontal-demo {
@@ -89,14 +93,15 @@
 .horizontal-doc-auto-scroll-demo {
   white-space: nowrap;
 }
-.horizontal-doc-auto-scroll-demo ol{
+.horizontal-doc-auto-scroll-demo ol {
   padding-left: 0px;
 }
-.horizontal-doc-auto-scroll-demo .sortable-item{
+.horizontal-doc-auto-scroll-demo .sortable-item {
   width: 70px;
 }
 
-.horizontal-demo .sortable-item, .horizontal-doc-auto-scroll-demo .sortable-item{
+.horizontal-demo .sortable-item,
+.horizontal-doc-auto-scroll-demo .sortable-item {
   display: inline-block;
   position: relative;
   cursor: move;
@@ -136,7 +141,6 @@
   color: black;
 }
 
-
 .scrollable-demo .sortable-container {
   height: 300px;
   overflow-y: auto;
@@ -165,7 +169,9 @@
 .scrollable-demo .sortable-item .handle {
   display: block;
   position: absolute;
-  top: 0; right: 0; bottom: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(71, 1, 1, 0.5);
   color: pink;
 }
