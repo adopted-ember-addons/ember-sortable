@@ -39,6 +39,23 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
   });
 
+  test('reordering with mouse events horizontal', async function (assert) {
+    await visit('/');
+
+    assert.equal(verticalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Uno Dos Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Uno Dos Tres Cuatro Cinco');
+
+    let order = findAll('[data-test-horizontal-demo-handle]');
+    await reorder('mouse', '[data-test-horizontal-demo-handle]', order[1], order[0], order[2], order[3], order[4]);
+
+    assert.equal(verticalContents(), 'Dos Uno Tres Cuatro Cinco');
+    assert.equal(horizontalContents(), 'Dos Uno Tres Cuatro Cinco');
+    assert.equal(tableContents(), 'Dos Uno Tres Cuatro Cinco');
+    assert.equal(scrollableContents(), 'Dos Uno Tres Cuatro Cinco');
+  });
+
   test('reordering with mouse events scrollable', async function (assert) {
     await visit('/');
 
