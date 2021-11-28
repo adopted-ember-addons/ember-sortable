@@ -35,10 +35,10 @@
         data-test-vertical-demo-group
         {{sortable-group onChange=this.updateDifferentSizedModels groupName='verticle-size'}}
       >
-        {{#each this.differentSizedModels as |item|}}
+        {{#each this.differentSizedModels as |item index|}}
           <li data-test-vertical-demo-item class='word-break' {{sortable-item model=item groupName='verticle-size'}}>
-            <label for='demo-input'>{{item}}</label>
-            <input id='demo-input' type='text' />
+            <label for={{concat 'demo-input-' index}}>{{item}}</label>
+            <input id={{concat 'demo-input-' index}} type='text' />
             <span data-item={{item}} data-test-vertical-demo-handle class='handle' {{sortable-handle}}>
               <span>&vArr;</span>
             </span>
