@@ -4,8 +4,7 @@ export const defaultA11yAnnouncementConfig = {
 
     if (direction === 'y') {
       message += 'Press up and down keys to change position,';
-    }
-    else {
+    } else {
       message += 'Press left and right keys to change position,';
     }
 
@@ -14,7 +13,9 @@ export const defaultA11yAnnouncementConfig = {
     return message;
   },
   MOVE({ a11yItemName, index, maxLength, delta }) {
-    return `${a11yItemName} is moved to position, ${index + 1 + delta} of ${maxLength}. Press Space to confirm new position, Escape to cancel.`;
+    return `${a11yItemName} is moved to position, ${
+      index + 1 + delta
+    } of ${maxLength}. Press Space to confirm new position, Escape to cancel.`;
   },
   CONFIRM({ a11yItemName }) {
     return `${a11yItemName} is successfully repositioned.`;

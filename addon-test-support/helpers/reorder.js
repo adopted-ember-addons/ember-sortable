@@ -34,6 +34,8 @@ export async function reorder(mode, itemSelector, ...resultSelectors) {
     const dx = getOffset(targetElement).left - OVERSHOOT - getOffset(sourceElement).left;
     const dy = getOffset(targetElement).top - OVERSHOOT - getOffset(sourceElement).top;
 
-    await drag(mode, sourceElement, () => { return { dx: dx, dy: dy }; });
+    await drag(mode, sourceElement, () => {
+      return { dx: dx, dy: dy };
+    });
   }
 }

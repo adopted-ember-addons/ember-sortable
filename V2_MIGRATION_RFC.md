@@ -1,15 +1,18 @@
-# Ember Sortable  V2 Migration RFC  #
+# Ember Sortable V2 Migration RFC
 
-## Author ##
+## Author
+
 [ygongdev](https://github.com/ygongdev)
 
-## Credits ##
-* [jgwhite](https://github.com/jgwhite)
-* [H1D](https://github.com/H1D)
-* [chriskrycho](https://github.com/chriskrycho)
-* [Andrew Lee](https://github.com/drewlee)
+## Credits
 
-## Table of Content ##
+- [jgwhite](https://github.com/jgwhite)
+- [H1D](https://github.com/H1D)
+- [chriskrycho](https://github.com/chriskrycho)
+- [Andrew Lee](https://github.com/drewlee)
+
+## Table of Content
+
 1. [Problem Statement](#problem-statement)
 2. [Features](#features)
 3. [Design/Architecture](#designarchitecture)
@@ -18,51 +21,61 @@
 6. [Release Plan](#release-plan)
 7. [Questions to be addressed](#questions-to-be-addressed)
 
-## Problem Statement ##
+## Problem Statement
+
 `ember-sortable` has been falling behind in the adoption of the on-going `Ember` upgrades. It is currently not in the right condition, in which we can upgrade the `addon` without many blockers.
 
 This RFC is meant to describe a high level overview of a new `ember-sortable`, which will help push us adopt many of the new `Ember` features.
 
 This RFC is **NOT** meant to show the final implementation details as implementation will be re-iterated and improved over time.
 
-## Features ##
-* Baked in accessibility support
-  * Up/down and left/right keyboard navigation
-  * Screen reader announcement
-  * Focus management
-  * Visual indicators
-* Direction-agnostic (in terms of mouse drag)
-  * Keyboard navigation is limited to up/down/left/right
-* Allows nested sortable elements
-* Adoption of modern Ember testing infrastructure
-* Animation
-* Built with composability and customizability in mind
+## Features
 
-## Design/Architecture ##
-### 1. Contextual Components ###
+- Baked in accessibility support
+  - Up/down and left/right keyboard navigation
+  - Screen reader announcement
+  - Focus management
+  - Visual indicators
+- Direction-agnostic (in terms of mouse drag)
+  - Keyboard navigation is limited to up/down/left/right
+- Allows nested sortable elements
+- Adoption of modern Ember testing infrastructure
+- Animation
+- Built with composability and customizability in mind
+
+## Design/Architecture
+
+### 1. Contextual Components
+
 The new ember sortable will be designed using contextual components.
 It will be made up of 3 main components:
 
-#### Sortable-group ###
+#### Sortable-group
+
 Represents the entire sortable component.
-* requires a group of models to sort. The model will be a shallow copy and will not modify the given group of models.
-* contains all of main logic that makes `ember-sortable` work.
-* yields `sortable-item` and other properties as needed.
 
-#### Sortable-item ####
+- requires a group of models to sort. The model will be a shallow copy and will not modify the given group of models.
+- contains all of main logic that makes `ember-sortable` work.
+- yields `sortable-item` and other properties as needed.
+
+#### Sortable-item
+
 Represents the individual `model` of the group of models.
-* yields `sortable-handle` and other properties as needed.
 
-#### Sortable-handle ####
+- yields `sortable-handle` and other properties as needed.
+
+#### Sortable-handle
+
 Represents the handle of each `sortable-item`.
 
 This is the bread and butter of the entire component because it is the entrypoint that allows us to start sorting.
 
 This component hooks up your custom handle to the mainframe, `sortable-group`.
 
-* yields other properties as needed.
+- yields other properties as needed.
 
-#### Conceptual Example ####
+#### Conceptual Example
+
 ```javascript
 {{#ember-sortable::sortable-group
   modelGroup=modelGroup
@@ -87,73 +100,91 @@ This component hooks up your custom handle to the mainframe, `sortable-group`.
 {{/ember-sortable::sortable-group}}
 ```
 
-### 2. Event driven ###
+### 2. Event driven
+
 Similar to the current `ember-sortable`, the sorting behavior is going to be mainly based on `events`. `Animation` might be an exception.
 We will utilize the [Drag and Drop API](https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API), [Keyboard Event API](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent), and/or [Mouse Event API](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent).
 
-### 3. Animation ###
-For `animation`, we can explore different methods, e.g custom implementation, external animation library. However, the final decision will hopefully satisify the following:
-* minimize expensive DOM operations, e.g `getComputedStyle`, `Ember runloop scheduling`.
-* If we want to test animations, the `animation` have to be deterministic enough for us to test reliably.
+### 3. Animation
 
-### 4. Accessibility ###
+For `animation`, we can explore different methods, e.g custom implementation, external animation library. However, the final decision will hopefully satisify the following:
+
+- minimize expensive DOM operations, e.g `getComputedStyle`, `Ember runloop scheduling`.
+- If we want to test animations, the `animation` have to be deterministic enough for us to test reliably.
+
+### 4. Accessibility
+
 This section provides a high level overview of how we will address the issue of `accessibility`.
 
 **The accessibility solutions described are directly referenced from this awesome [codepen demo](https://codepen.io/drewlee/project/full/XWNLeE) made by Andrew Lee.**
 
-#### Keyboard Navigation ####
+#### Keyboard Navigation
+
 **1. Keyboard Reorder Mode**
-* To initiate `keyboardReorderMode`, a `sortable-handle` must be `focused` and an `Enter/Space` must be pressed.
-* This operation selects `sortable-item` parent of the `sortable-handle` and enable sorting the `sortable-item` within the `sortable-group` via up/down/left/right arrow keys.
-* We will set `sortable-group` as a dedicated `container`  by adding `role` attribute and programmatically set the `focus` onto it.
-* We will create a `visual color indicator` around the selected `sortable-item`. A screen reader announcement will also be made to inform the user that the `sortable-item` has been selected and `sorting` has been enabled.
-* To create `visual indicators`, `sortable-item` will append some `classes`, which by default tries to create `arrow` visual indcators around `sortable-item`. However, consumers are free to override the `class` to customize their own. `Visual indicators` will move as the`sortable-item` moves.
+
+- To initiate `keyboardReorderMode`, a `sortable-handle` must be `focused` and an `Enter/Space` must be pressed.
+- This operation selects `sortable-item` parent of the `sortable-handle` and enable sorting the `sortable-item` within the `sortable-group` via up/down/left/right arrow keys.
+- We will set `sortable-group` as a dedicated `container` by adding `role` attribute and programmatically set the `focus` onto it.
+- We will create a `visual color indicator` around the selected `sortable-item`. A screen reader announcement will also be made to inform the user that the `sortable-item` has been selected and `sorting` has been enabled.
+- To create `visual indicators`, `sortable-item` will append some `classes`, which by default tries to create `arrow` visual indcators around `sortable-item`. However, consumers are free to override the `class` to customize their own. `Visual indicators` will move as the`sortable-item` moves.
 
 **2. Commit**
-* Every navigation will reorder the components in the UI. However, the reorder will not be `committed` until an `Enter/Space` key has been pressed. If committed, the `focus` will move from the `sortable-group` back to the `sortable-handle`. `role` will be removed.
+
+- Every navigation will reorder the components in the UI. However, the reorder will not be `committed` until an `Enter/Space` key has been pressed. If committed, the `focus` will move from the `sortable-group` back to the `sortable-handle`. `role` will be removed.
 
 **3. Reset**
-* The user can also exit `keyboardReorderMode` via `Escape` key or on focus lost. This will reset the reordering back to its initial state and `focus` is retained on the `sortable-handle`.  `role` will be removed.
-* We should not need animation for this.
 
-#### Drag Drop ####
+- The user can also exit `keyboardReorderMode` via `Escape` key or on focus lost. This will reset the reordering back to its initial state and `focus` is retained on the `sortable-handle`. `role` will be removed.
+- We should not need animation for this.
+
+#### Drag Drop
+
 Drag drop will retain the same behavior as the current `ember-sortable`.
 
-#### Screen Reader Announcements #####
-* Internally, we can use a `announceActionConfig` object to map an `action` to a `text`. We can have some default texts.
-* To support `i18n`, the consumer can supply their own `announceActionConfig` with their translated strings.
+#### Screen Reader Announcements
 
-### 5. Utility Classes and Functions ###
+- Internally, we can use a `announceActionConfig` object to map an `action` to a `text`. We can have some default texts.
+- To support `i18n`, the consumer can supply their own `announceActionConfig` with their translated strings.
+
+### 5. Utility Classes and Functions
+
 We should create a utility class to abstract as much work as we can from the components.
 
 For example, a `keyboardManager` class can be used to maintain a history of our operations as well as provide the functionalities to perform the reordering logic during `keyboard navigation`.
 
-### 6. Testing ###
+### 6. Testing
+
 The current `ember-sortable` implements two test helpers
- * reorder
- * drag
+
+- reorder
+- drag
 
 Both are heavily DOM calculation driven and can sometimes be hard and unreliable to use.
 
 I propose new `event driven` test helpers and perhaps remove `reorder` as it is just a combination of `drag`. Internally, these would be just triggering `events`, which should be determinstic to test.
- * drag (for mouse)
- * move (for keyboard)
- * reorder?
+
+- drag (for mouse)
+- move (for keyboard)
+- reorder?
 
 We can implement another `drag` that is dedicated to testing `animation`.
 
-## API ###
+## API
+
 TBD
 
-## Implementation ##
+## Implementation
+
 **NOTE**
 This is an example to help give an idea of what it could look like.
 This is **NOT** meant to be the final implementation.
 This example does **NOT** contain how we would handle animation and horizontal keyboard sorting.
 While creating this, I used the name `draggable` instead of `ember-sortable`.
 
-### draggable-group ###
-#### hbs ####
+### draggable-group
+
+#### hbs
+
 ```javascript
 {{yield
   (hash
@@ -172,7 +203,8 @@ While creating this, I used the name `draggable` instead of `ember-sortable`.
 }}
 ```
 
-#### js ####
+#### js
+
 ```javascript
 /**
  * This component supports re-ordering items in a group via drag-drop and keyboard navigation.
@@ -210,11 +242,7 @@ While creating this, I used the name `draggable` instead of `ember-sortable`.
  */
 export default Component.extend({
   layout,
-  attributeBindings: [
-    'tabindex',
-    'role',
-    'dataTestDragDropDraggableGroup:data-test-drag-drop-draggable-group',
-  ],
+  attributeBindings: ['tabindex', 'role', 'dataTestDragDropDraggableGroup:data-test-drag-drop-draggable-group'],
   // data-test selector
   dataTestDragDropDraggableGroup: true,
   /**
@@ -264,10 +292,7 @@ export default Component.extend({
    * @param {Event} evt a HTML event
    */
   keyDown(evt) {
-    const isKeyboardReorderModeEnabled = get(
-      this,
-      'isKeyboardReorderModeEnabled'
-    );
+    const isKeyboardReorderModeEnabled = get(this, 'isKeyboardReorderModeEnabled');
 
     if (!isKeyboardReorderModeEnabled && (isEnterKey(evt) || isSpaceKey(evt))) {
       this._enableKeyboardReorderMode();
@@ -286,11 +311,7 @@ export default Component.extend({
     }
 
     if (isKeyboardReorderModeEnabled) {
-      const { selectedModelIndex, maxIndex } = getProperties(
-        this,
-        'selectedModelIndex',
-        'maxIndex'
-      );
+      const { selectedModelIndex, maxIndex } = getProperties(this, 'selectedModelIndex', 'maxIndex');
       if (isDownArrowKey(evt)) {
         const newIndex = Math.min(selectedModelIndex + 1, maxIndex - 1);
         this._moveItem(selectedModelIndex, newIndex);
@@ -321,9 +342,7 @@ export default Component.extend({
 
         readDOM(() => {
           if (IS_BROWSER) {
-            this.element
-              .querySelectorAll(`[${DRAGGABLE_HANDLE_ATTRIBUTE}]`)
-              [selectedModelIndex].focus();
+            this.element.querySelectorAll(`[${DRAGGABLE_HANDLE_ATTRIBUTE}]`)[selectedModelIndex].focus();
             set(this, 'isRetainingFocus', false);
           }
         });
@@ -339,9 +358,7 @@ export default Component.extend({
 
         readDOM(() => {
           if (IS_BROWSER) {
-            this.element
-              .querySelectorAll(`[${DRAGGABLE_HANDLE_ATTRIBUTE}]`)
-              [lastIndex].focus();
+            this.element.querySelectorAll(`[${DRAGGABLE_HANDLE_ATTRIBUTE}]`)[lastIndex].focus();
             set(this, 'isRetainingFocus', false);
           }
         });
@@ -357,11 +374,7 @@ export default Component.extend({
    * If focus management is not finished and the current focused element is not the handle or descendant of the handle: Cancel
    */
   focusOut(evt) {
-    if (
-      IS_BROWSER &&
-      !get(this, 'isRetainingFocus') &&
-      !this._isElementWithinHandle(document.activeElement)
-    ) {
+    if (IS_BROWSER && !get(this, 'isRetainingFocus') && !this._isElementWithinHandle(document.activeElement)) {
       this._cancelKeyboardSelection();
     }
     evt.stopPropagation();
@@ -414,27 +427,17 @@ export default Component.extend({
     const dropTarget = evt.target;
     evt.preventDefault();
     if (this._isElementWithinDrop(dropTarget)) {
-      const {
-        keyboardReorderManager,
-        selectedModel,
-        selectedModelIndex,
-        targetModel,
-        targetModelIndex,
-      } = getProperties(
-        this,
-        'keyboardReorderManager',
-        'selectedModel',
-        'selectedModelIndex',
-        'targetModel',
-        'targetModelIndex'
-      );
+      const { keyboardReorderManager, selectedModel, selectedModelIndex, targetModel, targetModelIndex } =
+        getProperties(
+          this,
+          'keyboardReorderManager',
+          'selectedModel',
+          'selectedModelIndex',
+          'targetModel',
+          'targetModelIndex'
+        );
       this._moveItem(selectedModelIndex, targetModelIndex);
-      tryInvoke(this, 'onSubmit', [
-        selectedModel,
-        selectedModelIndex,
-        targetModel,
-        targetModelIndex,
-      ]);
+      tryInvoke(this, 'onSubmit', [selectedModel, selectedModelIndex, targetModel, targetModelIndex]);
       keyboardReorderManager.clearRecord();
     }
     this._resetModelSelection();
@@ -452,13 +455,7 @@ export default Component.extend({
    * 6. Announce the change.
    */
   _confirmKeyboardSelection() {
-    const {
-      keyboardReorderManager,
-      selectedModel,
-      selectedModelIndex,
-      targetModel,
-      targetModelIndex,
-    } = getProperties(
+    const { keyboardReorderManager, selectedModel, selectedModelIndex, targetModel, targetModelIndex } = getProperties(
       this,
       'keyboardReorderManager',
       'selectedModel',
@@ -471,12 +468,7 @@ export default Component.extend({
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
 
-    tryInvoke(this, 'onSubmit', [
-      selectedModel,
-      selectedModelIndex,
-      targetModel,
-      targetModelIndex,
-    ]);
+    tryInvoke(this, 'onSubmit', [selectedModel, selectedModelIndex, targetModel, targetModelIndex]);
 
     this._resetModelSelection();
     this._announceAction(ANNOUNCEMENT_ACTION_TYPES.CONFIRM);
@@ -576,9 +568,7 @@ export default Component.extend({
    * @param {Element} element a DOM element.
    */
   _isElementWithinHandle(element) {
-    return element.closest(
-      `#${this.element.id} [${DRAGGABLE_HANDLE_ATTRIBUTE}]`
-    );
+    return element.closest(`#${this.element.id} [${DRAGGABLE_HANDLE_ATTRIBUTE}]`);
   },
 
   /**
@@ -599,10 +589,7 @@ export default Component.extend({
    * @return {Function}
    */
   _geti18nMessage(key, data) {
-    const messageRenderer = get(this, 'i18n').getMessageRenderer(
-      get(this, 'layout'),
-      key
-    );
+    const messageRenderer = get(this, 'i18n').getMessageRenderer(get(this, 'layout'), key);
     return messageRenderer([data]);
   },
 
@@ -703,8 +690,10 @@ export default Component.extend({
 });
 ```
 
-### draggable-item ###
-#### hbs ####
+### draggable-item
+
+#### hbs
+
 ```javascript
 {{yield
   (hash
@@ -721,7 +710,8 @@ export default Component.extend({
 }}
 ```
 
-#### js ####
+#### js
+
 ```javascript
 /**
  * This private component represents the individual model of `draggable-group`.
@@ -762,11 +752,7 @@ export default Component.extend({
    * @param {Integer} index the position of this model in the DOM.
    */
   isSelected: computed('selectedModelIndex', 'index', function getIsSelected() {
-    const { selectedModelIndex, index } = getProperties(
-      this,
-      'selectedModelIndex',
-      'index'
-    );
+    const { selectedModelIndex, index } = getProperties(this, 'selectedModelIndex', 'index');
 
     return selectedModelIndex === index;
   }),
@@ -790,12 +776,7 @@ export default Component.extend({
    * @param {Event} evt a HTML event.
    */
   keyDown(evt) {
-    const {
-      isKeyboardReorderModeEnabled,
-      model,
-      selectedModelIndex,
-      index,
-    } = getProperties(
+    const { isKeyboardReorderModeEnabled, model, selectedModelIndex, index } = getProperties(
       this,
       'isKeyboardReorderModeEnabled',
       'model',
@@ -805,8 +786,7 @@ export default Component.extend({
 
     if (
       selectedModelIndex < 0 &&
-      (isKeyboardReorderModeEnabled ||
-        (!isKeyboardReorderModeEnabled && (isEnterKey(evt) || isSpaceKey(evt))))
+      (isKeyboardReorderModeEnabled || (!isKeyboardReorderModeEnabled && (isEnterKey(evt) || isSpaceKey(evt))))
     ) {
       this.onSelect(model, index);
     }
@@ -837,14 +817,8 @@ export default Component.extend({
    * Asserts that required properties are defined correctly.
    */
   _assertProperties() {
-    assert(
-      'isKeyboardReorderModeEnabled is required',
-      get(this, 'isKeyboardReorderModeEnabled') !== undefined
-    );
-    assert(
-      'selectedModelIndex is required',
-      get(this, 'selectedModelIndex') !== undefined
-    );
+    assert('isKeyboardReorderModeEnabled is required', get(this, 'isKeyboardReorderModeEnabled') !== undefined);
+    assert('selectedModelIndex is required', get(this, 'selectedModelIndex') !== undefined);
     assert('maxIndex is required', get(this, 'maxIndex') !== undefined);
     assert('itemName is required', get(this, 'itemName') !== undefined);
   },
@@ -881,13 +855,21 @@ export default Component.extend({
 });
 ```
 
-### draggable-handle ###
-#### hbs ####
+### draggable-handle
+
+#### hbs
+
 ```javascript
-{{yield}}
-<span class="visually-hidden">{{a11yText}}</span>
+{
+  {
+    yield;
+  }
+}
+<span class="visually-hidden">{{ a11yText }}</span>;
 ```
-#### js #####
+
+#### js
+
 ```javascript
 /**
  * This private component represents the `handle` for each `draggable-item` of a `draggable-group`.
@@ -908,10 +890,7 @@ export default Component.extend({
    */
   tagName: 'div',
   tabindex: 0,
-  classNameBindings: [
-    'showA11yPreviousArrow:drag-drop__handle-previous',
-    'showA11yNextArrow:drag-drop__handle-next',
-  ],
+  classNameBindings: ['showA11yPreviousArrow:drag-drop__handle-previous', 'showA11yNextArrow:drag-drop__handle-next'],
   attributeBindings: [
     `dataDragDropHandle:${DRAGGABLE_HANDLE_ATTRIBUTE}`,
     'tabindex',
@@ -937,19 +916,13 @@ export default Component.extend({
     'selectedIndex',
     'isKeyboardReorderModeEnabled',
     function getShowA11yPreviousArrow() {
-      const {
-        index,
-        selectedIndex,
-        isKeyboardReorderModeEnabled,
-      } = getProperties(
+      const { index, selectedIndex, isKeyboardReorderModeEnabled } = getProperties(
         this,
         'index',
         'selectedIndex',
         'isKeyboardReorderModeEnabled'
       );
-      return (
-        isKeyboardReorderModeEnabled && selectedIndex === index && index > 0
-      );
+      return isKeyboardReorderModeEnabled && selectedIndex === index && index > 0;
     }
   ),
 
@@ -969,23 +942,14 @@ export default Component.extend({
     'maxIndex',
     'isKeyboardReorderModeEnabled',
     function getShowA11yNextArrow() {
-      const {
-        index,
-        selectedIndex,
-        maxIndex,
-        isKeyboardReorderModeEnabled,
-      } = getProperties(
+      const { index, selectedIndex, maxIndex, isKeyboardReorderModeEnabled } = getProperties(
         this,
         'index',
         'maxIndex',
         'selectedIndex',
         'isKeyboardReorderModeEnabled'
       );
-      return (
-        isKeyboardReorderModeEnabled &&
-        selectedIndex === index &&
-        index < maxIndex - 1
-      );
+      return isKeyboardReorderModeEnabled && selectedIndex === index && index < maxIndex - 1;
     }
   ),
 
@@ -1010,14 +974,8 @@ export default Component.extend({
     assert(`a11yText is required`, get(this, 'a11yText'));
     assert(`index is required`, get(this, 'index') !== undefined);
     assert(`maxIndex is required`, get(this, 'maxIndex') !== undefined);
-    assert(
-      `selectedIndex is required`,
-      get(this, 'selectedIndex') !== undefined
-    );
-    assert(
-      `isKeyboardReorderModeEnabled is required`,
-      get(this, 'isKeyboardReorderModeEnabled') !== undefined
-    );
+    assert(`selectedIndex is required`, get(this, 'selectedIndex') !== undefined);
+    assert(`isKeyboardReorderModeEnabled is required`, get(this, 'isKeyboardReorderModeEnabled') !== undefined);
   },
 
   /**
@@ -1036,19 +994,21 @@ export default Component.extend({
 });
 ```
 
-### utils/constants.js ###
+### utils/constants.js
+
 ```javascript
-export const DRAGGABLE_HANDLE_ATTRIBUTE  = 'data-drag-drop-draggable-handle';
-export const DRAGGABLE_ITEM_ATTRIBUTE =  'data-drag-drop-draggable-item';
+export const DRAGGABLE_HANDLE_ATTRIBUTE = 'data-drag-drop-draggable-handle';
+export const DRAGGABLE_ITEM_ATTRIBUTE = 'data-drag-drop-draggable-item';
 export const ANNOUNCEMENT_ACTION_TYPES = {
   ACTIVATE: true,
   MOVE: true,
   CONFIRM: true,
   CANCEL: true,
-}
+};
 ```
 
-### utils/keyboard-reorder-manager.js ###
+### utils/keyboard-reorder-manager.js
+
 ```javascript
 class ReorderRecord {
   constructor(fromIndex, toIndex) {
@@ -1100,35 +1060,41 @@ export default class KeyboardReorderManager {
 }
 ```
 
-## Release Plan ##
-### 2.0 ###
-* New API with backward incompatible changes
-  * Drag drop
-  * Animation
-  * Test helper
-* Test Infrastructure Modernization
-  * remove `registerAsyncHelper`
-  * `module` and `setupHooks` syntax
-* Remove `jQuery` in favor of vanilla.
-* Migration Guide
-  * 1.x.x -> 2.x.x
+## Release Plan
 
-### 2.1 ###
-* Keyboard support
-  * Keyboard navigation (left/right/up/down)
-  * Commit
-  * Reset
+### 2.0
 
-### 2.2 ###
-* Accessibility support
-  * Screen reader announcements
-  * Focus management
-  * Semantic markup and attributes
+- New API with backward incompatible changes
+  - Drag drop
+  - Animation
+  - Test helper
+- Test Infrastructure Modernization
+  - remove `registerAsyncHelper`
+  - `module` and `setupHooks` syntax
+- Remove `jQuery` in favor of vanilla.
+- Migration Guide
+  - 1.x.x -> 2.x.x
 
-### 2.3 ###
-* Nesting support
+### 2.1
 
-## Questions to be addressed ##
+- Keyboard support
+  - Keyboard navigation (left/right/up/down)
+  - Commit
+  - Reset
+
+### 2.2
+
+- Accessibility support
+  - Screen reader announcements
+  - Focus management
+  - Semantic markup and attributes
+
+### 2.3
+
+- Nesting support
+
+## Questions to be addressed
+
 1. With the introduction of Ember Octane and glimmer components, should we use any of their features? How backward compatible should this be?
 
 2. Will an external animation library be of high value to us? If so, will the extra overhead be problematic?

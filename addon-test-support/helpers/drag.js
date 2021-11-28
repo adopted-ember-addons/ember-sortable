@@ -1,4 +1,4 @@
-import { triggerEvent, find, settled, } from '@ember/test-helpers';
+import { triggerEvent, find, settled } from '@ember/test-helpers';
 import { getOffset } from '../utils/offset';
 
 /**
@@ -26,12 +26,7 @@ import { getOffset } from '../utils/offset';
   @return {Promise}
 */
 
-export async function drag(
-  mode,
-  itemSelector,
-  offsetFn,
-  callbacks = {}
-) {
+export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   let start;
   let move;
   let end;
@@ -62,10 +57,7 @@ export async function drag(
   // https://stackoverflow.com/a/5042051
   const dx = offset.dx || 0;
   const dy = offset.dy || 0;
-  const clientHeight =
-    itemElement.clientHeight ||
-    itemElement.offsetHeight ||
-    itemElement.parentNode.offsetHeight;
+  const clientHeight = itemElement.clientHeight || itemElement.offsetHeight || itemElement.parentNode.offsetHeight;
   const scale = clientHeight / (rect.bottom - rect.top);
   const halfwayX = itemOffset.left + (dx * scale) / 2;
   const halfwayY = itemOffset.top + (dy * scale) / 2;

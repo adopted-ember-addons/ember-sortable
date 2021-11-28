@@ -1,14 +1,16 @@
 ## v2.4.0 (2021-11-10)
 
 #### :rocket: Enhancement
-* [#445](https://github.com/adopted-ember-addons/ember-sortable/pull/445) Use direct imports from `@ember/runloop` ([@charlesfries](https://github.com/charlesfries))
+
+- [#445](https://github.com/adopted-ember-addons/ember-sortable/pull/445) Use direct imports from `@ember/runloop` ([@charlesfries](https://github.com/charlesfries))
 
 #### Committers: 2
+
 - Charles Fries ([@charlesfries](https://github.com/charlesfries))
 - Faith Or ([@faith-or](https://github.com/faith-or))
 
 * Merge pull request #430 from jacojoubert/refactor-disabled (364fc80)
-*  (51ea46f)
+* (51ea46f)
 * Merge pull request #444 from snewcomer/sn/deprecate-components (b70d5cd)
 * Deprecate use of components (ffbd488)
 * Add deprecation warning for `isDraggingDisabled` (ad38e58)
@@ -24,10 +26,12 @@
 ## v2.2.6 (2021-10-21)
 
 #### :bug: Bug Fix
-* [#439](https://github.com/adopted-ember-addons/ember-sortable/pull/439) Resolve this-property-fallback deprecation ([@rmachielse](https://github.com/rmachielse))
-* [#434](https://github.com/adopted-ember-addons/ember-sortable/pull/434) Update ember-cli-babel to @7.26.6, update README example ([@charlesfries](https://github.com/charlesfries))
+
+- [#439](https://github.com/adopted-ember-addons/ember-sortable/pull/439) Resolve this-property-fallback deprecation ([@rmachielse](https://github.com/rmachielse))
+- [#434](https://github.com/adopted-ember-addons/ember-sortable/pull/434) Update ember-cli-babel to @7.26.6, update README example ([@charlesfries](https://github.com/charlesfries))
 
 #### Committers: 4
+
 - Charles Fries ([@charlesfries](https://github.com/charlesfries))
 - Jaco Joubert ([@jacojoubert](https://github.com/jacojoubert))
 - Richard Machielse ([@rmachielse](https://github.com/rmachielse))
@@ -36,7 +40,7 @@
 * updated yarn.lock (ca925fa)
 * Fix deprecation warning `Importing from ember-test-waiters is deprecated` (#423) (f817c5d)
 * Require ember-decorators-polyfill to be installed by client app (#425) (f901543)
-* Set default values for itemVisualClass  and a11yAnnouncementConfig (#424) (436b7ac)
+* Set default values for itemVisualClass and a11yAnnouncementConfig (#424) (436b7ac)
 
 * update yarn.lock (a18d3cb)
 * bump ember-get-config to version using babel v7 (#416) (92dd9b9)
@@ -47,32 +51,37 @@ Must provide GITHUB_AUTH
 
 Must provide GITHUB_AUTH
 
-* Use a service to track group/item state (#361) (68c12b6)
-* Correct typos in modifier examples (#365) (17ecd1d)
-* fixes parentNode of null (#370) (#371) (87953ce)
-* fixes handle when using modifiers (#349) (81320bd)
-* Merge pull request #357 from alexabreu/patch-1 (b6f0b97)
-* Bumping travis node to 10 (#358) (5360e49)
-* Actually use `onDragStop` argument rather then re-using `onDragStart`. (88b9562)
+- Use a service to track group/item state (#361) (68c12b6)
+- Correct typos in modifier examples (#365) (17ecd1d)
+- fixes parentNode of null (#370) (#371) (87953ce)
+- fixes handle when using modifiers (#349) (81320bd)
+- Merge pull request #357 from alexabreu/patch-1 (b6f0b97)
+- Bumping travis node to 10 (#358) (5360e49)
+- Actually use `onDragStop` argument rather then re-using `onDragStart`. (88b9562)
 
 ## v2.2.0-beta.0 (2020-01-31)
 
 #### :rocket: Enhancement
-* [#345](https://github.com/adopted-ember-addons/ember-sortable/pull/345) Create a modifier version - Part 2 - more streamlined ([@cah-briangantzler](https://github.com/cah-briangantzler))
+
+- [#345](https://github.com/adopted-ember-addons/ember-sortable/pull/345) Create a modifier version - Part 2 - more streamlined ([@cah-briangantzler](https://github.com/cah-briangantzler))
 
 #### :house: Internal
-* [#348](https://github.com/adopted-ember-addons/ember-sortable/pull/348) [Ember try] Adding 3.15 to list of scenarios ([@ygongdev](https://github.com/ygongdev))
+
+- [#348](https://github.com/adopted-ember-addons/ember-sortable/pull/348) [Ember try] Adding 3.15 to list of scenarios ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 2
+
 - Brian Gantzler ([@cah-briangantzler](https://github.com/cah-briangantzler))
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.1.3 (2020-01-29)
 
 #### :bug: Bug Fix
-* [#347](https://github.com/adopted-ember-addons/ember-sortable/pull/347) [BUGFIX] Fixes scrolling outside of an overflow container's boundaries resolves#346 ([@validkeys](https://github.com/validkeys))
+
+- [#347](https://github.com/adopted-ember-addons/ember-sortable/pull/347) [BUGFIX] Fixes scrolling outside of an overflow container's boundaries resolves#346 ([@validkeys](https://github.com/validkeys))
 
 #### Committers: 1
+
 - Kyle Davis ([@validkeys](https://github.com/validkeys))
 
 * Added check for transitionDuration to isAnimated (#343) (b0597db)
@@ -80,257 +89,301 @@ Must provide GITHUB_AUTH
 * [A11y enhancement] Adding role=button to sortable-handle (828cace)
 * [Bugfix] Use deregisterItem instead of registerItem on destroy [Feature] Adding isDraggingDisabled flag to allow specifying a sortable-item to be non-sortable (29fc641)
 
-
 ## v2.1.0-beta.0 (2019-11-22)
 
 #### :rocket: Enhancement
-* [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
+
+- [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
 
 #### :bug: Bug Fix
-* [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
+
+- [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
 
 #### :house: Internal
-* [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
+
+- [#335](https://github.com/adopted-ember-addons/ember-sortable/pull/335) Refactoring group into actions and pass actions instead ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.6 (2019-11-19)
 
 #### :rocket: Enhancement
-* [#334](https://github.com/adopted-ember-addons/ember-sortable/pull/334) Updating README regarding polyfill breaking production build ([@ygongdev](https://github.com/ygongdev))
+
+- [#334](https://github.com/adopted-ember-addons/ember-sortable/pull/334) Updating README regarding polyfill breaking production build ([@ygongdev](https://github.com/ygongdev))
 
 #### :bug: Bug Fix
-* [#332](https://github.com/adopted-ember-addons/ember-sortable/pull/332) Mitigate vendor build error ([@ygongdev](https://github.com/ygongdev))
+
+- [#332](https://github.com/adopted-ember-addons/ember-sortable/pull/332) Mitigate vendor build error ([@ygongdev](https://github.com/ygongdev))
 
 #### :house: Internal
-* [#332](https://github.com/adopted-ember-addons/ember-sortable/pull/332) Mitigate vendor build error ([@ygongdev](https://github.com/ygongdev))
+
+- [#332](https://github.com/adopted-ember-addons/ember-sortable/pull/332) Mitigate vendor build error ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.6-1 (2019-11-19)
 
 #### :bug: Bug Fix
-* [#331](https://github.com/adopted-ember-addons/ember-sortable/pull/331) Attempt to fix vendor on consuming again again haha ([@ygongdev](https://github.com/ygongdev))
+
+- [#331](https://github.com/adopted-ember-addons/ember-sortable/pull/331) Attempt to fix vendor on consuming again again haha ([@ygongdev](https://github.com/ygongdev))
 
 #### :house: Internal
-* [#331](https://github.com/adopted-ember-addons/ember-sortable/pull/331) Attempt to fix vendor on consuming again again haha ([@ygongdev](https://github.com/ygongdev))
+
+- [#331](https://github.com/adopted-ember-addons/ember-sortable/pull/331) Attempt to fix vendor on consuming again again haha ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.6-0 (2019-11-19)
 
 #### :bug: Bug Fix
-* [#330](https://github.com/adopted-ember-addons/ember-sortable/pull/330) Attempt to fix vendor on consuming app again ([@ygongdev](https://github.com/ygongdev))
+
+- [#330](https://github.com/adopted-ember-addons/ember-sortable/pull/330) Attempt to fix vendor on consuming app again ([@ygongdev](https://github.com/ygongdev))
 
 #### :house: Internal
-* [#330](https://github.com/adopted-ember-addons/ember-sortable/pull/330) Attempt to fix vendor on consuming app again ([@ygongdev](https://github.com/ygongdev))
+
+- [#330](https://github.com/adopted-ember-addons/ember-sortable/pull/330) Attempt to fix vendor on consuming app again ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.5 (2019-11-19)
 
 #### :bug: Bug Fix
-* [#329](https://github.com/adopted-ember-addons/ember-sortable/pull/329) Attempt to fix vendor on consuming app production build ([@ygongdev](https://github.com/ygongdev))
-* [#328](https://github.com/adopted-ember-addons/ember-sortable/pull/328) Correcting test-support helper extraction ([@ygongdev](https://github.com/ygongdev))
+
+- [#329](https://github.com/adopted-ember-addons/ember-sortable/pull/329) Attempt to fix vendor on consuming app production build ([@ygongdev](https://github.com/ygongdev))
+- [#328](https://github.com/adopted-ember-addons/ember-sortable/pull/328) Correcting test-support helper extraction ([@ygongdev](https://github.com/ygongdev))
 
 #### :house: Internal
-* [#329](https://github.com/adopted-ember-addons/ember-sortable/pull/329) Attempt to fix vendor on consuming app production build ([@ygongdev](https://github.com/ygongdev))
-* [#328](https://github.com/adopted-ember-addons/ember-sortable/pull/328) Correcting test-support helper extraction ([@ygongdev](https://github.com/ygongdev))
+
+- [#329](https://github.com/adopted-ember-addons/ember-sortable/pull/329) Attempt to fix vendor on consuming app production build ([@ygongdev](https://github.com/ygongdev))
+- [#328](https://github.com/adopted-ember-addons/ember-sortable/pull/328) Correcting test-support helper extraction ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.4 (2019-11-19)
 
 #### :bug: Bug Fix
-* [#327](https://github.com/adopted-ember-addons/ember-sortable/pull/327) Adding ember-sortable to the yield scope ([@ygongdev](https://github.com/ygongdev))
+
+- [#327](https://github.com/adopted-ember-addons/ember-sortable/pull/327) Adding ember-sortable to the yield scope ([@ygongdev](https://github.com/ygongdev))
 
 #### :house: Internal
-* [#327](https://github.com/adopted-ember-addons/ember-sortable/pull/327) Adding ember-sortable to the yield scope ([@ygongdev](https://github.com/ygongdev))
-* [#325](https://github.com/adopted-ember-addons/ember-sortable/pull/325) Adding nested model integration test ([@ygongdev](https://github.com/ygongdev))
+
+- [#327](https://github.com/adopted-ember-addons/ember-sortable/pull/327) Adding ember-sortable to the yield scope ([@ygongdev](https://github.com/ygongdev))
+- [#325](https://github.com/adopted-ember-addons/ember-sortable/pull/325) Adding nested model integration test ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 2
+
 - Cory Forsyth ([@bantic](https://github.com/bantic))
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.3 (2019-11-10)
 
 #### :rocket: Enhancement
-* [#324](https://github.com/adopted-ember-addons/ember-sortable/pull/324) Removing @ember/jquery and updating tests ([@ygongdev](https://github.com/ygongdev))
-* [#322](https://github.com/adopted-ember-addons/ember-sortable/pull/322) Deprecating volatile in favor of native getter and setter ([@ygongdev](https://github.com/ygongdev))
-* [#321](https://github.com/adopted-ember-addons/ember-sortable/pull/321) Updated demo example and added a few more code docs ([@ygongdev](https://github.com/ygongdev))
-* [#318](https://github.com/adopted-ember-addons/ember-sortable/pull/318) Update README.md ([@2hu12](https://github.com/2hu12))
+
+- [#324](https://github.com/adopted-ember-addons/ember-sortable/pull/324) Removing @ember/jquery and updating tests ([@ygongdev](https://github.com/ygongdev))
+- [#322](https://github.com/adopted-ember-addons/ember-sortable/pull/322) Deprecating volatile in favor of native getter and setter ([@ygongdev](https://github.com/ygongdev))
+- [#321](https://github.com/adopted-ember-addons/ember-sortable/pull/321) Updated demo example and added a few more code docs ([@ygongdev](https://github.com/ygongdev))
+- [#318](https://github.com/adopted-ember-addons/ember-sortable/pull/318) Update README.md ([@2hu12](https://github.com/2hu12))
 
 #### :house: Internal
-* [#324](https://github.com/adopted-ember-addons/ember-sortable/pull/324) Removing @ember/jquery and updating tests ([@ygongdev](https://github.com/ygongdev))
-* [#322](https://github.com/adopted-ember-addons/ember-sortable/pull/322) Deprecating volatile in favor of native getter and setter ([@ygongdev](https://github.com/ygongdev))
+
+- [#324](https://github.com/adopted-ember-addons/ember-sortable/pull/324) Removing @ember/jquery and updating tests ([@ygongdev](https://github.com/ygongdev))
+- [#322](https://github.com/adopted-ember-addons/ember-sortable/pull/322) Deprecating volatile in favor of native getter and setter ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 2
+
 - 2hu ([@2hu12](https://github.com/2hu12))
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.2 (2019-11-08)
 
 #### :rocket: Enhancement
-* [#317](https://github.com/adopted-ember-addons/ember-sortable/pull/317) Bug fixes ([@ygongdev](https://github.com/ygongdev))
+
+- [#317](https://github.com/adopted-ember-addons/ember-sortable/pull/317) Bug fixes ([@ygongdev](https://github.com/ygongdev))
 
 #### :bug: Bug Fix
-* [#317](https://github.com/adopted-ember-addons/ember-sortable/pull/317) Bug fixes ([@ygongdev](https://github.com/ygongdev))
+
+- [#317](https://github.com/adopted-ember-addons/ember-sortable/pull/317) Bug fixes ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.1 (2019-10-31)
 
 #### :bug: Bug Fix
-* [#305](https://github.com/adopted-ember-addons/ember-sortable/pull/305) [Bugfix] ember-test-waiters ([@ygongdev](https://github.com/ygongdev))
+
+- [#305](https://github.com/adopted-ember-addons/ember-sortable/pull/305) [Bugfix] ember-test-waiters ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 1
+
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
 
 ## v2.0.0 (2019-10-31)
 
 #### :rocket: Enhancement
-* [#295](https://github.com/adopted-ember-addons/ember-sortable/pull/295) Updating README.md and adding migration guide ([@ygongdev](https://github.com/ygongdev))
-* [#294](https://github.com/adopted-ember-addons/ember-sortable/pull/294) add aria-live announcement ([@ygongdev](https://github.com/ygongdev))
-* [#293](https://github.com/adopted-ember-addons/ember-sortable/pull/293) Visual Indicators ([@ygongdev](https://github.com/ygongdev))
-* [#290](https://github.com/adopted-ember-addons/ember-sortable/pull/290) Adding built-in keyboard support and focus management ([@ygongdev](https://github.com/ygongdev))
-* [#289](https://github.com/adopted-ember-addons/ember-sortable/pull/289) Adding sortable-handle ([@ygongdev](https://github.com/ygongdev))
-* [#287](https://github.com/adopted-ember-addons/ember-sortable/pull/287) Contextual components ([@ygongdev](https://github.com/ygongdev))
-* [#282](https://github.com/adopted-ember-addons/ember-sortable/pull/282) Deprecating sendAction ([@ygongdev](https://github.com/ygongdev))
-* [#271](https://github.com/adopted-ember-addons/ember-sortable/pull/271) Modernizing test suite ([@ygongdev](https://github.com/ygongdev))
-* [#286](https://github.com/adopted-ember-addons/ember-sortable/pull/286) Removing matches polyfill from closest polyfill ([@ygongdev](https://github.com/ygongdev))
-* [#280](https://github.com/adopted-ember-addons/ember-sortable/pull/280) Closest polyfill ([@ygongdev](https://github.com/ygongdev))
+
+- [#295](https://github.com/adopted-ember-addons/ember-sortable/pull/295) Updating README.md and adding migration guide ([@ygongdev](https://github.com/ygongdev))
+- [#294](https://github.com/adopted-ember-addons/ember-sortable/pull/294) add aria-live announcement ([@ygongdev](https://github.com/ygongdev))
+- [#293](https://github.com/adopted-ember-addons/ember-sortable/pull/293) Visual Indicators ([@ygongdev](https://github.com/ygongdev))
+- [#290](https://github.com/adopted-ember-addons/ember-sortable/pull/290) Adding built-in keyboard support and focus management ([@ygongdev](https://github.com/ygongdev))
+- [#289](https://github.com/adopted-ember-addons/ember-sortable/pull/289) Adding sortable-handle ([@ygongdev](https://github.com/ygongdev))
+- [#287](https://github.com/adopted-ember-addons/ember-sortable/pull/287) Contextual components ([@ygongdev](https://github.com/ygongdev))
+- [#282](https://github.com/adopted-ember-addons/ember-sortable/pull/282) Deprecating sendAction ([@ygongdev](https://github.com/ygongdev))
+- [#271](https://github.com/adopted-ember-addons/ember-sortable/pull/271) Modernizing test suite ([@ygongdev](https://github.com/ygongdev))
+- [#286](https://github.com/adopted-ember-addons/ember-sortable/pull/286) Removing matches polyfill from closest polyfill ([@ygongdev](https://github.com/ygongdev))
+- [#280](https://github.com/adopted-ember-addons/ember-sortable/pull/280) Closest polyfill ([@ygongdev](https://github.com/ygongdev))
 
 #### :bug: Bug Fix
-* [#265](https://github.com/adopted-ember-addons/ember-sortable/pull/265) Properly convert ScrollContainer width and height to integers ([@benedikt](https://github.com/benedikt))
+
+- [#265](https://github.com/adopted-ember-addons/ember-sortable/pull/265) Properly convert ScrollContainer width and height to integers ([@benedikt](https://github.com/benedikt))
 
 #### :house: Internal
-* [#289](https://github.com/adopted-ember-addons/ember-sortable/pull/289) Adding sortable-handle ([@ygongdev](https://github.com/ygongdev))
-* [#282](https://github.com/adopted-ember-addons/ember-sortable/pull/282) Deprecating sendAction ([@ygongdev](https://github.com/ygongdev))
-* [#286](https://github.com/adopted-ember-addons/ember-sortable/pull/286) Removing matches polyfill from closest polyfill ([@ygongdev](https://github.com/ygongdev))
-* [#280](https://github.com/adopted-ember-addons/ember-sortable/pull/280) Closest polyfill ([@ygongdev](https://github.com/ygongdev))
+
+- [#289](https://github.com/adopted-ember-addons/ember-sortable/pull/289) Adding sortable-handle ([@ygongdev](https://github.com/ygongdev))
+- [#282](https://github.com/adopted-ember-addons/ember-sortable/pull/282) Deprecating sendAction ([@ygongdev](https://github.com/ygongdev))
+- [#286](https://github.com/adopted-ember-addons/ember-sortable/pull/286) Removing matches polyfill from closest polyfill ([@ygongdev](https://github.com/ygongdev))
+- [#280](https://github.com/adopted-ember-addons/ember-sortable/pull/280) Closest polyfill ([@ygongdev](https://github.com/ygongdev))
 
 #### Committers: 2
+
 - Benedikt Deicke ([@benedikt](https://github.com/benedikt))
 - Yicheng (Jerry) Gong ([@ygongdev](https://github.com/ygongdev))
-
 
 ## 1.12.10 (2019-09-24)
 
 #### :bug: Bug Fix
-* [#275](https://github.com/adopted-ember-addons/ember-sortable/pull/275) [BUGFIX] fixes bug when sorting to the beginning of list ([@ryanholte](https://github.com/ryanholte))
+
+- [#275](https://github.com/adopted-ember-addons/ember-sortable/pull/275) [BUGFIX] fixes bug when sorting to the beginning of list ([@ryanholte](https://github.com/ryanholte))
 
 #### :house: Internal
-* [#268](https://github.com/adopted-ember-addons/ember-sortable/pull/268) Bump mixin-deep from 1.3.0 to 1.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
-* [#267](https://github.com/adopted-ember-addons/ember-sortable/pull/267) Bump eslint-utils from 1.3.1 to 1.4.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
-* [#258](https://github.com/adopted-ember-addons/ember-sortable/pull/258) First pass at upgrading to new QUnit syntax ([@nlfurniss](https://github.com/nlfurniss))
+
+- [#268](https://github.com/adopted-ember-addons/ember-sortable/pull/268) Bump mixin-deep from 1.3.0 to 1.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+- [#267](https://github.com/adopted-ember-addons/ember-sortable/pull/267) Bump eslint-utils from 1.3.1 to 1.4.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+- [#258](https://github.com/adopted-ember-addons/ember-sortable/pull/258) First pass at upgrading to new QUnit syntax ([@nlfurniss](https://github.com/nlfurniss))
 
 #### Committers: 4
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
 - Ryan Holte ([@ryanholte](https://github.com/ryanholte))
 - [@stephencattaneo](https://github.com/stephencattaneo)
 
-
 ## 1.12.9 (2019-06-11)
 
 #### :rocket: Enhancement
-* [#259](https://github.com/adopted-ember-addons/ember-sortable/pull/259) Expect native events instead of jQuery wrapped events ([@stephencattaneo](https://github.com/stephencattaneo))
+
+- [#259](https://github.com/adopted-ember-addons/ember-sortable/pull/259) Expect native events instead of jQuery wrapped events ([@stephencattaneo](https://github.com/stephencattaneo))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - [@stephencattaneo](https://github.com/stephencattaneo)
-
 
 ## 1.12.8 (2019-05-22)
 
 #### :bug: Bug Fix
-* [#249](https://github.com/adopted-ember-addons/ember-sortable/pull/249) move @ember/jquery to devDependency ([@fran-worley](https://github.com/fran-worley))
-* [#251](https://github.com/adopted-ember-addons/ember-sortable/pull/251) Add warning to polyfill `Element.closest()` ([@samhogg](https://github.com/samhogg))
+
+- [#249](https://github.com/adopted-ember-addons/ember-sortable/pull/249) move @ember/jquery to devDependency ([@fran-worley](https://github.com/fran-worley))
+- [#251](https://github.com/adopted-ember-addons/ember-sortable/pull/251) Add warning to polyfill `Element.closest()` ([@samhogg](https://github.com/samhogg))
 
 #### :house: Internal
-* [#245](https://github.com/adopted-ember-addons/ember-sortable/pull/245) Add Ember 2.8, 2.12 to testing. Test Node 8. ([@mixonic](https://github.com/mixonic))
+
+- [#245](https://github.com/adopted-ember-addons/ember-sortable/pull/245) Add Ember 2.8, 2.12 to testing. Test Node 8. ([@mixonic](https://github.com/mixonic))
 
 #### Committers: 4
+
 - Fran Worley ([@fran-worley](https://github.com/fran-worley))
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - Matthew Beale ([@mixonic](https://github.com/mixonic))
 - Sam Hogg ([@samhogg](https://github.com/samhogg))
 
-
 ## 1.12.7 (2019-04-24)
 
 #### :bug: Bug Fix
-* [#227](https://github.com/adopted-ember-addons/ember-sortable/pull/227) Tweak clientHeight calculation in drag helper ([@jgwhite](https://github.com/jgwhite))
-* [#244](https://github.com/adopted-ember-addons/ember-sortable/pull/244) Fix subtle bug in sortable-item#thaw ([@jgwhite](https://github.com/jgwhite))
-* [#242](https://github.com/adopted-ember-addons/ember-sortable/pull/242) Runloop tweaks ([@mixonic](https://github.com/mixonic))
+
+- [#227](https://github.com/adopted-ember-addons/ember-sortable/pull/227) Tweak clientHeight calculation in drag helper ([@jgwhite](https://github.com/jgwhite))
+- [#244](https://github.com/adopted-ember-addons/ember-sortable/pull/244) Fix subtle bug in sortable-item#thaw ([@jgwhite](https://github.com/jgwhite))
+- [#242](https://github.com/adopted-ember-addons/ember-sortable/pull/242) Runloop tweaks ([@mixonic](https://github.com/mixonic))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - Matthew Beale ([@mixonic](https://github.com/mixonic))
-
 
 ## 1.12.6 (2019-02-25)
 
 #### :bug: Bug Fix
-* [#236](https://github.com/adopted-ember-addons/ember-sortable/pull/236) getX and getY methods do provide now for non-wrapped events too (fixe… ([@froskos](https://github.com/froskos))
+
+- [#236](https://github.com/adopted-ember-addons/ember-sortable/pull/236) getX and getY methods do provide now for non-wrapped events too (fixe… ([@froskos](https://github.com/froskos))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - [@froskos](https://github.com/froskos)
-
 
 ## 1.12.5 (2019-02-15)
 
 #### :bug: Bug Fix
-* [#229](https://github.com/adopted-ember-addons/ember-sortable/pull/229) inline `touch-action:none` not being properly applied ([@froskos](https://github.com/froskos))
+
+- [#229](https://github.com/adopted-ember-addons/ember-sortable/pull/229) inline `touch-action:none` not being properly applied ([@froskos](https://github.com/froskos))
 
 #### :house: Internal
-* [#228](https://github.com/adopted-ember-addons/ember-sortable/pull/228) Upgrade to 3.7.x family ([@jgwhite](https://github.com/jgwhite))
+
+- [#228](https://github.com/adopted-ember-addons/ember-sortable/pull/228) Upgrade to 3.7.x family ([@jgwhite](https://github.com/jgwhite))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - [@froskos](https://github.com/froskos)
-
 
 ## 1.12.4 (2019-01-04)
 
 #### :bug: Bug Fix
-* [#224](https://github.com/adopted-ember-addons/ember-sortable/pull/224) [bugfix] default `dx` and `dy` to 0 for drag helper ([@fivetanley](https://github.com/fivetanley))
-* [#223](https://github.com/adopted-ember-addons/ember-sortable/pull/223) fixes for Firefox ([@fivetanley](https://github.com/fivetanley))
+
+- [#224](https://github.com/adopted-ember-addons/ember-sortable/pull/224) [bugfix] default `dx` and `dy` to 0 for drag helper ([@fivetanley](https://github.com/fivetanley))
+- [#223](https://github.com/adopted-ember-addons/ember-sortable/pull/223) fixes for Firefox ([@fivetanley](https://github.com/fivetanley))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
-
 
 ## 1.12.3 (2018-12-19)
 
 #### :bug: Bug Fix
-* [#216](https://github.com/adopted-ember-addons/ember-sortable/pull/216) Fix incorrect ScrollContainer dimension calcs ([@nlfurniss](https://github.com/nlfurniss))
-* [#220](https://github.com/adopted-ember-addons/ember-sortable/pull/220) replace window.releaseEvents with window.removeEventListener ([@fonkgoku](https://github.com/fonkgoku))
-* [#221](https://github.com/adopted-ember-addons/ember-sortable/pull/221) Pass event to _preventClickHandler ([@fonkgoku](https://github.com/fonkgoku))
+
+- [#216](https://github.com/adopted-ember-addons/ember-sortable/pull/216) Fix incorrect ScrollContainer dimension calcs ([@nlfurniss](https://github.com/nlfurniss))
+- [#220](https://github.com/adopted-ember-addons/ember-sortable/pull/220) replace window.releaseEvents with window.removeEventListener ([@fonkgoku](https://github.com/fonkgoku))
+- [#221](https://github.com/adopted-ember-addons/ember-sortable/pull/221) Pass event to \_preventClickHandler ([@fonkgoku](https://github.com/fonkgoku))
 
 #### Committers: 3
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
 - Paul Csapak ([@fonkgoku](https://github.com/fonkgoku))
 
-
 ## 1.12.2 (2018-12-07)
 
 #### :rocket: Enhancement
-* [#212](https://github.com/adopted-ember-addons/ember-sortable/pull/212) Replace jQuery with vanilla JS ([@nlfurniss](https://github.com/nlfurniss))
+
+- [#212](https://github.com/adopted-ember-addons/ember-sortable/pull/212) Replace jQuery with vanilla JS ([@nlfurniss](https://github.com/nlfurniss))
 
 #### :house: Internal
-* [#214](https://github.com/adopted-ember-addons/ember-sortable/pull/214) add lerna changelog for generating changelogs ([@fivetanley](https://github.com/fivetanley))
+
+- [#214](https://github.com/adopted-ember-addons/ember-sortable/pull/214) add lerna changelog for generating changelogs ([@fivetanley](https://github.com/fivetanley))
 
 #### Committers: 3
+
 - Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
 - Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
 - Todd Evanoff ([@tevanoff](https://github.com/tevanoff))
@@ -340,14 +393,17 @@ Must provide GITHUB_AUTH
 ## 1.12.10 (2019-09-24)
 
 #### :bug: Bug Fix
-* [#275](https://github.com/adopted-ember-addons/ember-sortable/pull/275) [BUGFIX] fixes bug when sorting to the beginning of list ([@ryanholte](https://github.com/ryanholte))
+
+- [#275](https://github.com/adopted-ember-addons/ember-sortable/pull/275) [BUGFIX] fixes bug when sorting to the beginning of list ([@ryanholte](https://github.com/ryanholte))
 
 #### :house: Internal
-* [#268](https://github.com/adopted-ember-addons/ember-sortable/pull/268) Bump mixin-deep from 1.3.0 to 1.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
-* [#267](https://github.com/adopted-ember-addons/ember-sortable/pull/267) Bump eslint-utils from 1.3.1 to 1.4.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
-* [#258](https://github.com/adopted-ember-addons/ember-sortable/pull/258) First pass at upgrading to new QUnit syntax ([@nlfurniss](https://github.com/nlfurniss))
+
+- [#268](https://github.com/adopted-ember-addons/ember-sortable/pull/268) Bump mixin-deep from 1.3.0 to 1.3.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+- [#267](https://github.com/adopted-ember-addons/ember-sortable/pull/267) Bump eslint-utils from 1.3.1 to 1.4.2 ([@dependabot[bot]](https://github.com/apps/dependabot))
+- [#258](https://github.com/adopted-ember-addons/ember-sortable/pull/258) First pass at upgrading to new QUnit syntax ([@nlfurniss](https://github.com/nlfurniss))
 
 #### Committers: 2
+
 - Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
 - Ryan Holte ([@ryanholte](https://github.com/ryanholte))
 - [@dependabot](https://github.com/apps/dependabot)
@@ -355,21 +411,26 @@ Must provide GITHUB_AUTH
 ## 1.12.9 (2019-06-11)
 
 #### :rocket: Enhancement
-* [#259](https://github.com/adopted-ember-addons/ember-sortable/pull/259) Expect native events instead of jQuery wrapped events ([@stephencattaneo](https://github.com/stephencattaneo))
+
+- [#259](https://github.com/adopted-ember-addons/ember-sortable/pull/259) Expect native events instead of jQuery wrapped events ([@stephencattaneo](https://github.com/stephencattaneo))
 
 #### Committers: 1
+
 - [@stephencattaneo](https://github.com/stephencattaneo)
 
 ## 1.12.8 (2019-05-22)
 
 #### :bug: Bug Fix
-* [#249](https://github.com/adopted-ember-addons/ember-sortable/pull/249) move @ember/jquery to devDependency ([@fran-worley](https://github.com/fran-worley))
-* [#251](https://github.com/adopted-ember-addons/ember-sortable/pull/251) Add warning to polyfill `Element.closest()` ([@samhogg](https://github.com/samhogg))
+
+- [#249](https://github.com/adopted-ember-addons/ember-sortable/pull/249) move @ember/jquery to devDependency ([@fran-worley](https://github.com/fran-worley))
+- [#251](https://github.com/adopted-ember-addons/ember-sortable/pull/251) Add warning to polyfill `Element.closest()` ([@samhogg](https://github.com/samhogg))
 
 #### :house: Internal
-* [#245](https://github.com/adopted-ember-addons/ember-sortable/pull/245) Add Ember 2.8, 2.12 to testing. Test Node 8. ([@mixonic](https://github.com/mixonic))
+
+- [#245](https://github.com/adopted-ember-addons/ember-sortable/pull/245) Add Ember 2.8, 2.12 to testing. Test Node 8. ([@mixonic](https://github.com/mixonic))
 
 #### Committers: 3
+
 - Fran Worley ([@fran-worley](https://github.com/fran-worley))
 - Matthew Beale ([@mixonic](https://github.com/mixonic))
 - Sam Hogg ([@samhogg](https://github.com/samhogg))
@@ -377,63 +438,77 @@ Must provide GITHUB_AUTH
 ## 1.12.7 (2019-04-24)
 
 #### :bug: Bug Fix
-* [#227](https://github.com/adopted-ember-addons/ember-sortable/pull/227) Tweak clientHeight calculation in drag helper ([@jgwhite](https://github.com/jgwhite))
-* [#244](https://github.com/adopted-ember-addons/ember-sortable/pull/244) Fix subtle bug in sortable-item#thaw ([@jgwhite](https://github.com/jgwhite))
-* [#242](https://github.com/adopted-ember-addons/ember-sortable/pull/242) Runloop tweaks ([@mixonic](https://github.com/mixonic))
+
+- [#227](https://github.com/adopted-ember-addons/ember-sortable/pull/227) Tweak clientHeight calculation in drag helper ([@jgwhite](https://github.com/jgwhite))
+- [#244](https://github.com/adopted-ember-addons/ember-sortable/pull/244) Fix subtle bug in sortable-item#thaw ([@jgwhite](https://github.com/jgwhite))
+- [#242](https://github.com/adopted-ember-addons/ember-sortable/pull/242) Runloop tweaks ([@mixonic](https://github.com/mixonic))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - Matthew Beale ([@mixonic](https://github.com/mixonic))
 
 ## 1.12.6 (2019-02-25)
 
 #### :bug: Bug Fix
-* [#236](https://github.com/adopted-ember-addons/ember-sortable/pull/236) getX and getY methods do provide now for non-wrapped events too (fixe… ([@froskos](https://github.com/froskos))
+
+- [#236](https://github.com/adopted-ember-addons/ember-sortable/pull/236) getX and getY methods do provide now for non-wrapped events too (fixe… ([@froskos](https://github.com/froskos))
 
 #### Committers: 1
+
 - [@froskos](https://github.com/froskos)
 
 ## 1.12.5 (2019-02-15)
 
 #### :bug: Bug Fix
-* [#229](https://github.com/adopted-ember-addons/ember-sortable/pull/229) inline `touch-action:none` not being properly applied ([@froskos](https://github.com/froskos))
+
+- [#229](https://github.com/adopted-ember-addons/ember-sortable/pull/229) inline `touch-action:none` not being properly applied ([@froskos](https://github.com/froskos))
 
 #### :house: Internal
-* [#228](https://github.com/adopted-ember-addons/ember-sortable/pull/228) Upgrade to 3.7.x family ([@jgwhite](https://github.com/jgwhite))
+
+- [#228](https://github.com/adopted-ember-addons/ember-sortable/pull/228) Upgrade to 3.7.x family ([@jgwhite](https://github.com/jgwhite))
 
 #### Committers: 2
+
 - Jamie White ([@jgwhite](https://github.com/jgwhite))
 - [@froskos](https://github.com/froskos)
 
 ## 1.12.4 (2019-01-03)
 
 #### :bug: Bug Fix
-* [#224](https://github.com/adopted-ember-addons/ember-sortable/pull/224) [bugfix] default `dx` and `dy` to 0 for drag helper ([@fivetanley](https://github.com/fivetanley))
-* [#223](https://github.com/adopted-ember-addons/ember-sortable/pull/223) fixes for Firefox ([@fivetanley](https://github.com/fivetanley))
+
+- [#224](https://github.com/adopted-ember-addons/ember-sortable/pull/224) [bugfix] default `dx` and `dy` to 0 for drag helper ([@fivetanley](https://github.com/fivetanley))
+- [#223](https://github.com/adopted-ember-addons/ember-sortable/pull/223) fixes for Firefox ([@fivetanley](https://github.com/fivetanley))
 
 #### Committers: 1
+
 - Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
 
 ## 1.12.3 (2018-12-19)
 
 #### :bug: Bug Fix
-* [#216](https://github.com/adopted-ember-addons/ember-sortable/pull/216) Fix incorrect ScrollContainer dimension calcs ([@nlfurniss](https://github.com/nlfurniss))
-* [#220](https://github.com/adopted-ember-addons/ember-sortable/pull/220) replace window.releaseEvents with window.removeEventListener ([@fonkgoku](https://github.com/fonkgoku))
-* [#221](https://github.com/adopted-ember-addons/ember-sortable/pull/221) Pass event to _preventClickHandler ([@fonkgoku](https://github.com/fonkgoku))
+
+- [#216](https://github.com/adopted-ember-addons/ember-sortable/pull/216) Fix incorrect ScrollContainer dimension calcs ([@nlfurniss](https://github.com/nlfurniss))
+- [#220](https://github.com/adopted-ember-addons/ember-sortable/pull/220) replace window.releaseEvents with window.removeEventListener ([@fonkgoku](https://github.com/fonkgoku))
+- [#221](https://github.com/adopted-ember-addons/ember-sortable/pull/221) Pass event to \_preventClickHandler ([@fonkgoku](https://github.com/fonkgoku))
 
 #### Committers: 2
+
 - Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
 - Paul Csapak ([@fonkgoku](https://github.com/fonkgoku))
 
 ## 1.12.2 (2018-12-06)
 
 #### :rocket: Enhancement
-* [#212](https://github.com/adopted-ember-addons/ember-sortable/pull/212) Replace jQuery with vanilla JS ([@nlfurniss](https://github.com/nlfurniss))
+
+- [#212](https://github.com/adopted-ember-addons/ember-sortable/pull/212) Replace jQuery with vanilla JS ([@nlfurniss](https://github.com/nlfurniss))
 
 #### :house: Internal
-* [#214](https://github.com/adopted-ember-addons/ember-sortable/pull/214) add lerna changelog for generating changelogs ([@fivetanley](https://github.com/fivetanley))
+
+- [#214](https://github.com/adopted-ember-addons/ember-sortable/pull/214) add lerna changelog for generating changelogs ([@fivetanley](https://github.com/fivetanley))
 
 #### Committers: 3
+
 - Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
 - Stanley Stuart ([@fivetanley](https://github.com/fivetanley))
 - Todd Evanoff ([@tevanoff](https://github.com/tevanoff))

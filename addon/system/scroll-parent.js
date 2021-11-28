@@ -17,7 +17,7 @@ function getParentElements(element) {
 export default function (element) {
   let position = getComputedStyle(element).position;
   let excludeStaticParent = position === 'absolute';
-  let scrollParent = getParentElements(element).filter(function(parent) {
+  let scrollParent = getParentElements(element).filter(function (parent) {
     let parentElemStyles = getComputedStyle(parent);
     if (excludeStaticParent && parentElemStyles.position === 'static') {
       return false;

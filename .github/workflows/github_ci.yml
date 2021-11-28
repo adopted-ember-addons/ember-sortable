@@ -6,9 +6,9 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   main-test:
@@ -34,11 +34,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        scenario: [
-          ember-lts-3.20,
-          ember-lts-3.24,
-          ember-lts-3.28,
-        ]
+        scenario: [ember-lts-3.20, ember-lts-3.24, ember-lts-3.28]
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 12
