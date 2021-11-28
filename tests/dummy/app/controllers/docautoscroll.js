@@ -6,7 +6,7 @@ export default class DocAutoScroll extends Controller {
   direction = 'y';
 
   get isVertical() {
-    return this.direction === this.y;
+    return this.direction === 'y';
   }
 
   @action
