@@ -1,3 +1,23 @@
+Version 9 of Highlight.js has reached EOL and is no longer supported.
+Please upgrade or ask whatever dependency you are using to upgrade.
+https://github.com/highlightjs/highlight.js/issues/2877
+
+## v3.0.0 (2021-11-29)
+
+#### :rocket: Enhancement
+* [#450](https://github.com/adopted-ember-addons/ember-sortable/pull/450) Add CI testing scenarios ([@snewcomer](https://github.com/snewcomer))
+* [#377](https://github.com/adopted-ember-addons/ember-sortable/pull/377) Removed the component version ([@cah-briangantzler](https://github.com/cah-briangantzler))
+* [#447](https://github.com/adopted-ember-addons/ember-sortable/pull/447) [breaking]: support node 12 and above ([@snewcomer](https://github.com/snewcomer))
+
+#### :house: Internal
+* [#449](https://github.com/adopted-ember-addons/ember-sortable/pull/449) relax `@ember/render-modifiers` dependency ([@miguelcobain](https://github.com/miguelcobain))
+
+#### Committers: 4
+- Brian Gantzler ([@cah-briangantzler](https://github.com/cah-briangantzler))
+- Dave Laird ([@kiwiupover](https://github.com/kiwiupover))
+- Miguel Andrade ([@miguelcobain](https://github.com/miguelcobain))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+
 ## v2.4.0 (2021-11-10)
 
 #### :rocket: Enhancement
