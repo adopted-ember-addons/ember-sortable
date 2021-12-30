@@ -31,7 +31,7 @@
     "ember-cli-version-checker": "^5.1.2",
     "ember-get-config": "^0.3.0",
     "ember-modifier": "^2.1.0",
-    "ember-test-selectors": "^5.0.0"
+    "ember-test-selectors": "^6.0.0"
   },
   "devDependencies": {
     "@ember/optional-features": "^2.0.0",
