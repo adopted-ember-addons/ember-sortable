@@ -570,7 +570,7 @@ export default class SortableItemModifier extends Modifier {
       let x = this.x;
       let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
 
-      this.element.style.transform = `translateX(${Math.max(0, dx)}px)`;
+      this.element.style.transform = `translateX(${dx}px)`;
     }
     if (groupDirection === 'y') {
       let y = this.y;
