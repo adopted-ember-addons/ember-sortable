@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 
 VERSION=`yarn version --non-interactive 2>/dev/null | grep 'Current version' | awk '{ print $4 }'`
 if [[ ! -z "{$PR_NUMBER}" ]]; then
