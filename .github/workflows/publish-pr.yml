@@ -1,0 +1,24 @@
+"jobs":
+  "publish":
+    "container":
+      "image": "node:14-slim"
+    "runs-on":
+    - "ubuntu-latest"
+    "steps":
+    - "name": "Check out repository code"
+      "uses": "actions/checkout@v2"
+      "with":
+        "ref": "${{ github.event.pull_request.head.sha }}"
+    - "env":
+        "NPM_TOKEN": "${{ secrets.npm_token }}"
+      "name": "npm"
+      "run": "bash ./ci/npm.sh"
+    - "name": "yarn"
+      "run": "yarn --frozen-lockfile || yarn --frozen-lockfile"
+    - "env":
+        "PR_NUMBER": "${{ github.event.number }}"
+      "name": "publish"
+      "run": "bash ./ci/publish.sh"
+    "timeout-minutes": 30
+"name": "publish-pr"
+"on": "pull_request"
