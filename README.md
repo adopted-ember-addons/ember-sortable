@@ -202,7 +202,7 @@ export default class MyRoute extends Route {
 ```
 
 ```hbs
-  <li {{#sortable-item
+  <li {{sortable-item
     onDragStart=this.dragStarted
     onDragStop=this.dragStopped
     model=modelItem
