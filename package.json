@@ -18,7 +18,7 @@
     "lint:hbs": "ember-template-lint .",
     "lint:js": "eslint .",
     "start": "ember serve",
-    "test": "ember test",
+    "test:ember": "ember test",
     "test:all": "ember try:each",
     "lint": "yarn lint:hbs && yarn lint:js",
     "release": "release-it"
