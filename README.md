@@ -65,8 +65,8 @@ The `onChange` action is called with two arguments:
 export default class MyRoute extends Route {
   @action
   reorderItems(itemModels, draggedModel) {
-    this.currentModel.items, itemModels);
-    this.currentModel.justDragged, draggedModel);
+    this.currentModel.items = itemModels;
+    this.currentModel.justDragged = draggedModel;
   }
 }
 ```
