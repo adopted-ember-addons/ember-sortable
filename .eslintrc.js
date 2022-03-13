@@ -41,7 +41,7 @@ module.exports = {
       plugins: ['node'],
     },
     {
-      // Test files:
+      // test files
       files: ['tests/**/*-test.{js,ts}'],
     },
   ],
