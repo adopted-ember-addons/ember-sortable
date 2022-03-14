@@ -488,7 +488,7 @@ export default class SortableGroupModifier extends Modifier {
     return this.args.named.onChange;
   }
 
-  @service('ember-sortable@ember-sortable')
+  @service('ember-sortable-internal-state')
   sortableService;
 
   /**
