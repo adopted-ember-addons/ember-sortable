@@ -2,6 +2,24 @@ Version 9 of Highlight.js has reached EOL and is no longer supported.
 Please upgrade or ask whatever dependency you are using to upgrade.
 https://github.com/highlightjs/highlight.js/issues/2877
 
+
+## v3.0.1 (2022-03-16)
+
+#### :bug: Bug Fix
+* [#461](https://github.com/adopted-ember-addons/ember-sortable/pull/461) bugfix: Ensure horizontal scrolling can go negative ([@snewcomer](https://github.com/snewcomer))
+
+#### :memo: Documentation
+* [#458](https://github.com/adopted-ember-addons/ember-sortable/pull/458) Fix README.md typo ([@charlesfries](https://github.com/charlesfries))
+
+#### :house: Internal
+* [#456](https://github.com/adopted-ember-addons/ember-sortable/pull/456) Upgrade `release-it` packages ([@alexlafroscia](https://github.com/alexlafroscia))
+* [#446](https://github.com/adopted-ember-addons/ember-sortable/pull/446) Bump ember-test-selectors v6.0.0 ([@snewcomer](https://github.com/snewcomer))
+
+#### Committers: 3
+- Alex LaFroscia ([@alexlafroscia](https://github.com/alexlafroscia))
+- Charles Fries ([@charlesfries](https://github.com/charlesfries))
+- Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
+
 ## v3.0.0 (2021-11-29)
 
 #### :rocket: Enhancement
