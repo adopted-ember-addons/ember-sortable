@@ -41,7 +41,7 @@ const sortableItemWaiter = buildWaiter('sortable-item-waiter');
 export default class SortableItemModifier extends Modifier {
   className = 'sortable-item';
 
-  @service('ember-sortable@ember-sortable') sortableService;
+  @service('ember-sortable-internal-state') sortableService;
 
   _sortableGroup;
   /**

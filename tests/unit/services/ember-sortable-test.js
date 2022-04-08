@@ -6,7 +6,7 @@ module('Unit | Service | ember-sortable', function (hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function () {
-    this.sortableService = this.owner.lookup('service:ember-sortable@ember-sortable');
+    this.sortableService = this.owner.lookup('service:ember-sortable-internal-state');
 
     // While not truly a group modifier, the service just registers whatever object is passed
     this.groupModifier = {
