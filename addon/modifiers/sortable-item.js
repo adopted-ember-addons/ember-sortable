@@ -66,11 +66,11 @@ export default class SortableItemModifier extends Modifier {
   }
 
   get direction() {
-    return this.sortableGroup.direction;
+    return this.sortableGroup?.direction;
   }
 
   get groupDisabled() {
-    return this.sortableGroup.disabled;
+    return this.sortableGroup?.disabled;
   }
 
   /**
