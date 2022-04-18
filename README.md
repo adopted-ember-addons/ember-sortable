@@ -42,16 +42,18 @@ $ ember install ember-sortable
 ## Usage
 
 ```hbs
-{{! app/templates/my-route.hbs }}
+{{! app/components/my-list/template.hbs }}
 
 <ol {{sortable-group onChange=this.reorderItems}}>
-  {{#each @model.items as |modelItem|}}
-    <li {{sortable-item model=modelItem}}>
-      {{modelItem.name}}
+  {{#each this.items as |item|}}
+    <li {{sortable-item model=item}}>
+      {{item}}
       <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
 </ol>
+
+<p>The last dragged item was: {{this.lastDragged}}</p>
 ```
 
 The `onChange` action is called with two arguments:
@@ -60,13 +62,16 @@ The `onChange` action is called with two arguments:
 - The model you just dragged
 
 ```js
-// app/routes/my-route.js
+// app/components/my-list/component.js
 
-export default class MyRoute extends Route {
+export default class MyList extends Component {
+  @tracked lastDragged;
+  @tracked items = ['Coal Ila', 'Askaig', 'Bowmore'];
+
   @action
   reorderItems(itemModels, draggedModel) {
-    this.currentModel.items, itemModels);
-    this.currentModel.justDragged, draggedModel);
+    this.items = itemModels;
+    this.lastDragged = draggedModel;
   }
 }
 ```
@@ -74,12 +79,12 @@ export default class MyRoute extends Route {
 The modifier version does not support `groupModel`, use the currying of `action` or the `fn` helper.
 
 ```hbs
-{{! app/templates/my-route.hbs }}
+{{! app/components/my-list/template.hbs }}
 
 <ol {{sortable-group onChange=(fn this.reorderItems model)}}>
-  {{#each @model.items as |modelItem|}}
-    <li {{sortable-item model=modelItem}}>
-      {{modelItem.name}}
+  {{#each this.items as |item|}}
+    <li {{sortable-item model=item}}>
+      {{item}}
       <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
@@ -187,16 +192,16 @@ When the action is called, the item's model will be provided as the only
 argument.
 
 ```js
-// app/routes/my-route.js
+// app/components/my-list/component.js
 
 export default class MyRoute extends Route {
   @action
   dragStarted(item) {
-    console.log(`Item started dragging: ${item.get('name')}`);
+    console.log(`Item started dragging: ${item}`);
   },
   @action
   dragStopped(item) {
-    console.log(`Item stopped dragging: ${item.get('name')}`);
+    console.log(`Item stopped dragging: ${item}`);
   }
 }
 ```
@@ -205,10 +210,10 @@ export default class MyRoute extends Route {
   <li {{sortable-item
     onDragStart=this.dragStarted
     onDragStop=this.dragStopped
-    model=modelItem
+    model=item
     }}
   >
-    {{modelItem.name}}
+    {{item}}
     <span class="handle" {{sortable-handle}}>&varr;</span>
   </li>
 ```
@@ -221,9 +226,9 @@ Both the `{{sortable-group}}` and `{{sortable-item}}` take an additional argumen
 
 ```hbs
 <ol {{sortable-group groupName='products' onChange=this.reorderItems}}>
-  {{#each @model.items as |modelItem|}}
-    <li {{sortable-item groupName='products' model=modelItem}}>
-      {{modelItem.name}}
+  {{#each this.items as |item|}}
+    <li {{sortable-item groupName='products' model=item}}>
+      {{item}}
       <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
@@ -235,9 +240,9 @@ Ensure that the same name is passed to both the group and the items, this would 
 ```hbs
 {{#let 'products' as |myGroupName|}}
   <ol {{sortable-group groupName=myGroupName onChange=this.reorderItems}}>
-    {{#each @model.items as |modelItem|}}
-      <li {{sortable-item groupName=myGroupName model=modelItem}}>
-        {{modelItem.name}}
+    {{#each this.items as |item|}}
+      <li {{sortable-item groupName=myGroupName model=item}}>
+        {{item}}
         <span class='handle' {{sortable-handle}}>&varr;</span>
       </li>
     {{/each}}
