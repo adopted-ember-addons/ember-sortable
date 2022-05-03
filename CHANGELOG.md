@@ -1,7 +1,4 @@
-Version 9 of Highlight.js has reached EOL and is no longer supported.
-Please upgrade or ask whatever dependency you are using to upgrade.
-https://github.com/highlightjs/highlight.js/issues/2877
-
+# ember-sortable changelog
 
 ## v3.0.1 (2022-03-16)
 
@@ -21,6 +18,12 @@ https://github.com/highlightjs/highlight.js/issues/2877
 - Scott Newcomer ([@snewcomer](https://github.com/snewcomer))
 
 ## v3.0.0 (2021-11-29)
+
+#### :memo: Notes
+
+Version 9 of Highlight.js has reached EOL and is no longer supported.
+Please upgrade or ask whatever dependency you are using to upgrade.
+https://github.com/highlightjs/highlight.js/issues/2877
 
 #### :rocket: Enhancement
 * [#450](https://github.com/adopted-ember-addons/ember-sortable/pull/450) Add CI testing scenarios ([@snewcomer](https://github.com/snewcomer))
@@ -690,6 +693,6 @@ Must provide GITHUB_AUTH
 
 - [#28](https://github.com/jgwhite/ember-sortable/pull/28) Add `model` attr to `sortable-group` [@ujamer](https://github.com/ujamer)
 
-### 1.0.0 (2015-05-13)
+### 1.0.0 (2015-05-13)
 
 First stable release.
