@@ -13,6 +13,7 @@ import { buildWaiter } from '@ember/test-waiters';
 import { inject as service } from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
 import config from 'ember-get-config';
+import { registerDestructor } from '@ember/destroyable';
 
 const { environment } = config;
 const isTesting = environment === 'test';
@@ -810,27 +811,39 @@ export default class SortableItemModifier extends Modifier {
     this.element.removeEventListener('touchstart', this.touchStart);
   }
 
-  didReceiveArguments() {
+  element;
+  didSetup = false;
+
+  constructor(owner, args) {
+    super(owner, args);
+    registerDestructor(this, this.cleanup);
+  }
+
+  modify(element /*, positional, named*/) {
+    this.element = element;
+
     this.element.classList.add(this.className);
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
     this.handleElement = this.element.querySelector(this.handle);
+
     if (this.handleElement) {
       this.handleElement.style['touch-action'] = 'none';
     } else {
       this.element.style['touch-action'] = 'none';
     }
+
+    if (!this.didSetup) {
+      this.addEventListener();
+      this.element.dataset.sortableItem = true;
+      this.sortableService.registerItem(this.groupName, this);
+      this.didSetup = true;
+    }
   }
 
-  didInstall() {
-    this.addEventListener();
-    this.element.dataset.sortableItem = true;
-    this.sortableService.registerItem(this.groupName, this);
-  }
-
-  willRemove() {
-    this.removeEventListener();
-    this.sortableService.deregisterItem(this.groupName, this);
+  cleanup(instance) {
+    instance.removeEventListener();
+    instance.sortableService.deregisterItem(instance.groupName, instance);
   }
 }

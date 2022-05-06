@@ -78,7 +78,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     await render(hbs`
       <ol id="test-list" {{sortable-group onChange=this.update}}>
         {{#each this.items as |item|}}
-          <li {{sortable-item model=item}} >
+          <li {{sortable-item model=item}}>
             {{item}}
             <button data-test-handle={{item}} {{sortable-handle}}>
               handle
