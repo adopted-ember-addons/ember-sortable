@@ -15,6 +15,7 @@ import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
 import { defaultA11yAnnouncementConfig } from '../utils/defaults';
 import { next, schedule, scheduleOnce, later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
+import { registerDestructor, isDestroyed } from '@ember/destroyable';
 
 const NO_MODEL = {};
 
@@ -620,7 +621,7 @@ export default class SortableGroupModifier extends Modifier {
       let dimension;
       let direction = this.direction;
 
-      if (!item.isDragging) {
+      if (!isDestroyed(item) && !item.isDragging) {
         set(item, direction, position);
       }
 
@@ -710,8 +711,26 @@ export default class SortableGroupModifier extends Modifier {
     this.element.removeEventListener('focusout', this.focusOut);
   }
 
-  didReceiveArguments() {
+  element;
+  didSetup = false;
+
+  constructor(owner, args) {
+    super(owner, args);
+    registerDestructor(this, this.cleanup);
+  }
+
+  modify(element /*, positional, named*/) {
+    this.element = element;
+
     this.removeEventListener();
+
+    if (!this.didSetup) {
+      this.announcer = this._createAnnouncer();
+      this.element.insertAdjacentElement('afterend', this.announcer);
+      this.sortableService.registerGroup(this.groupName, this);
+
+      this.didSetup = true;
+    }
 
     if (this.disabled) {
       return;
@@ -720,22 +739,13 @@ export default class SortableGroupModifier extends Modifier {
     this.addEventListener();
   }
 
-  didUpdateArguments() {}
-
-  didInstall() {
-    this.announcer = this._createAnnouncer();
-    this.element.insertAdjacentElement('afterend', this.announcer);
-
-    this.sortableService.registerGroup(this.groupName, this);
-  }
-
-  willRemove() {
+  cleanup(instance) {
     // todo cleanup the announcer
-    if (this.announcer.parentNode) {
-      this.announcer.parentNode.removeChild(this.announcer);
+    if (instance.announcer.parentNode) {
+      instance.announcer.parentNode.removeChild(instance.announcer);
     }
-    this.removeEventListener();
+    instance.removeEventListener();
 
-    this.sortableService.deregisterGroup(this.groupName, this);
+    instance.sortableService.deregisterGroup(instance.groupName, instance);
   }
 }

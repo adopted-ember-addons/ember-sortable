@@ -15,10 +15,15 @@ import Modifier from 'ember-modifier';
  *    </ol>
  */
 export default class SortableHandleModifier extends Modifier {
-  didInstall() {
-    // take the model and look up the registered element, the tell that element you are the handle
-    this.element.dataset.sortableHandle = true;
-    this.element.tabIndex = '0';
-    this.element.setAttribute('role', 'button');
+  didSetup = false;
+
+  modify(element /*, positional, named*/) {
+    if (!this.didSetup) {
+      // take the model and look up the registered element, the tell that element you are the handle
+      element.dataset.sortableHandle = true;
+      element.tabIndex = '0';
+      element.setAttribute('role', 'button');
+      this.didSetup = true;
+    }
   }
 }
