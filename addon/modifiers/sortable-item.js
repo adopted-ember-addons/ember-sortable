@@ -816,7 +816,7 @@ export default class SortableItemModifier extends Modifier {
 
   constructor(owner, args) {
     super(owner, args);
-    registerDestructor(this, this.cleanup);
+    registerDestructor(this, cleanup);
   }
 
   modify(element /*, positional, named*/) {
@@ -841,9 +841,13 @@ export default class SortableItemModifier extends Modifier {
       this.didSetup = true;
     }
   }
+}
 
-  cleanup(instance) {
-    instance.removeEventListener();
-    instance.sortableService.deregisterItem(instance.groupName, instance);
-  }
+/**
+ *
+ * @param {SortableItemModifier} instance
+ */
+function cleanup(instance) {
+  instance.removeEventListener();
+  instance.sortableService.deregisterItem(instance.groupName, instance);
 }
