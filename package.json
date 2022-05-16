@@ -6,13 +6,13 @@
     "ember-addon",
     "sortable"
   ],
+  "repository": "https://github.com/adopted-ember-addons/ember-sortable",
   "license": "MIT",
   "author": "",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "https://github.com/adopted-ember-addons/ember-sortable",
   "scripts": {
     "build": "ember build",
     "lint:hbs": "ember-template-lint .",
@@ -77,6 +77,9 @@
   "engines": {
     "node": "12.* || 14.* || >= 16"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "ember": {
     "edition": "octane"
   },
@@ -87,14 +90,16 @@
   "release-it": {
     "plugins": {
       "release-it-lerna-changelog": {
-        "infile": "CHANGELOG.md"
+        "infile": "CHANGELOG.md",
+        "launchEditor": false
       }
     },
     "git": {
       "tagName": "v${version}"
     },
     "github": {
-      "release": true
+      "release": true,
+      "tokenRef": "GITHUB_AUTH"
     }
   }
 }
