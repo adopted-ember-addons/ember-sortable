@@ -1,4 +1,4 @@
-# Ember-sortable
+# ember-sortable
 
 [![npm version](https://badge.fury.io/js/ember-sortable.svg)](http://badge.fury.io/js/ember-sortable)
 [![Build Status](https://github.com/adopted-ember-addons/ember-sortable/workflows/build/badge.svg?branch=master)](https://github.com/adopted-ember-addons/ember-sortable/actions?query=branch%3Amaster+workflow%3A%22build%22)
@@ -379,7 +379,7 @@ await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_C
 
 ## Migrating
 
-### v3 - v4
+### v3 -> v4
 
 None, just make sure Node v14+ and Ember is v3.24+. Although older versions might work, but are no longer tested against. Specifically ember-modifier dropped support for older versions of Ember.
 
