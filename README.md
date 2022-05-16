@@ -25,6 +25,8 @@ For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md)
 
 ## Requirements
 
+In version 3.0.0+, Node.js v12 or above And Ember.js v3.24 or above
+
 In version 2.0.0+, our `closest` polyfill seems to break some app's `production` build. To mitigate this, the `closest` polyfill will only enabled if it doesn't break the `production` build (if the `polyfill` file is recognized by the build). Affected apps will need to supply their own [closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill) polyfill to ensure compatibility with IE. This issue is tracked [here](https://github.com/adopted-ember-addons/ember-sortable/issues/333).
 
 We require the `ember-decorators-polyfill` to be installed if you are using this addon with versions of Ember < 3.10.0.
@@ -207,15 +209,10 @@ export default class MyRoute extends Route {
 ```
 
 ```hbs
-  <li {{sortable-item
-    onDragStart=this.dragStarted
-    onDragStop=this.dragStopped
-    model=item
-    }}
-  >
-    {{item}}
-    <span class="handle" {{sortable-handle}}>&varr;</span>
-  </li>
+<li {{sortable-item onDragStart=this.dragStarted onDragStop=this.dragStopped model=item}}>
+  {{item}}
+  <span class='handle' {{sortable-handle}}>&varr;</span>
+</li>
 ```
 
 ### Multiple Ember-Sortables renders simultaneously
