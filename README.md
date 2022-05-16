@@ -12,28 +12,9 @@ Sortable UI primitives for Ember.
 
 [Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
 
-## v2 -> v3 Migration
-
-The component versions have been removed and you must use the modifier.
-The modifier version does not support `groupModel`, use the currying of the `fn` helper.
-
-## v1 -> v2 Migration
-
-If you are migrating from `1.x.x` to `2.x.x`,
-For components, please read this [migration guide](/MIGRATION_GUIDE_V2.md).
-For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md).
-
 ## Requirements
 
 In version 3.0.0+, Node.js v12 or above And Ember.js v3.24 or above
-
-In version 2.0.0+, our `closest` polyfill seems to break some app's `production` build. To mitigate this, the `closest` polyfill will only enabled if it doesn't break the `production` build (if the `polyfill` file is recognized by the build). Affected apps will need to supply their own [closest](https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill) polyfill to ensure compatibility with IE. This issue is tracked [here](https://github.com/adopted-ember-addons/ember-sortable/issues/333).
-
-We require the `ember-decorators-polyfill` to be installed if you are using this addon with versions of Ember < 3.10.0.
-
-Version 1.0 depends upon the availability of 2D CSS transforms.
-Check [the matrix on caniuse.com](http://caniuse.com/#feat=transforms2d)
-to see if your target browsers are compatible.
 
 ## Installation
 
@@ -395,6 +376,23 @@ await drag('mouse', '[data-test-scrollable-demo-handle] .handle', () => {
 ```js
 await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
 ```
+
+## Migrating
+
+### v3 - v4
+
+None, just make sure Node v14+ and Ember is v3.24+. Although older versions might work, but are no longer tested against. Specifically ember-modifier dropped support for older versions of Ember.
+
+### v2 -> v3
+
+The component versions have been removed and you must use the modifier.
+The modifier version does not support `groupModel`, use the currying of the `fn` helper.
+
+### v1 -> v2
+
+If you are migrating from `1.x.x` to `2.x.x`,
+For components, please read this [migration guide](/MIGRATION_GUIDE_V2.md).
+For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md).
 
 ## Developing
 
