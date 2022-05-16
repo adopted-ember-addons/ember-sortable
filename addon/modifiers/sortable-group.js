@@ -716,7 +716,7 @@ export default class SortableGroupModifier extends Modifier {
 
   constructor(owner, args) {
     super(owner, args);
-    registerDestructor(this, this.cleanup);
+    registerDestructor(this, cleanup);
   }
 
   modify(element /*, positional, named*/) {
@@ -738,14 +738,17 @@ export default class SortableGroupModifier extends Modifier {
 
     this.addEventListener();
   }
+}
 
-  cleanup(instance) {
-    // todo cleanup the announcer
-    if (instance.announcer.parentNode) {
-      instance.announcer.parentNode.removeChild(instance.announcer);
-    }
-    instance.removeEventListener();
-
-    instance.sortableService.deregisterGroup(instance.groupName, instance);
+/**
+ *
+ * @param {SortableGroupModifier} instance
+ */
+function cleanup(instance) {
+  // todo cleanup the announcer
+  if (instance.announcer.parentNode) {
+    instance.announcer.parentNode.removeChild(instance.announcer);
   }
+  instance.removeEventListener();
+  instance.sortableService.deregisterGroup(instance.groupName, instance);
 }
