@@ -3,6 +3,24 @@ Please upgrade or ask whatever dependency you are using to upgrade.
 https://github.com/highlightjs/highlight.js/issues/2877
 
 
+
+## v4.0.0 (2022-05-16)
+
+#### :boom: Breaking Change
+* [#479](https://github.com/adopted-ember-addons/ember-sortable/pull/479) Drop node 12 and Ember 3.20 support ([@BnitoBzh](https://github.com/BnitoBzh))
+* [#476](https://github.com/adopted-ember-addons/ember-sortable/pull/476) Update ember-modifier to 3.2.0 (drop Ember < 3.24) ([@BnitoBzh](https://github.com/BnitoBzh))
+
+#### :rocket: Enhancement
+* [#477](https://github.com/adopted-ember-addons/ember-sortable/pull/477) perf: avoid creating callbacks for the destructor ([@BnitoBzh](https://github.com/BnitoBzh))
+
+#### :house: Internal
+* [#478](https://github.com/adopted-ember-addons/ember-sortable/pull/478) chore: update release process to match adopted standards ([@knownasilya](https://github.com/knownasilya))
+
+#### Committers: 3
+- Ewan McDougall ([@mrloop](https://github.com/mrloop))
+- Ilya Radchenko ([@knownasilya](https://github.com/knownasilya))
+- [@BnitoBzh](https://github.com/BnitoBzh)
+
 ## v3.0.1 (2022-03-16)
 
 #### :bug: Bug Fix
