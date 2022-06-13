@@ -19,12 +19,6 @@
 
 ## v3.0.0 (2021-11-29)
 
-#### :memo: Notes
-
-Version 9 of Highlight.js has reached EOL and is no longer supported.
-Please upgrade or ask whatever dependency you are using to upgrade.
-https://github.com/highlightjs/highlight.js/issues/2877
-
 #### :rocket: Enhancement
 * [#450](https://github.com/adopted-ember-addons/ember-sortable/pull/450) Add CI testing scenarios ([@snewcomer](https://github.com/snewcomer))
 * [#377](https://github.com/adopted-ember-addons/ember-sortable/pull/377) Removed the component version ([@cah-briangantzler](https://github.com/cah-briangantzler))
