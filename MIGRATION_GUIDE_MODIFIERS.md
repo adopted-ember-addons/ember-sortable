@@ -32,7 +32,7 @@ To use modifiers, you must use angle-bracket syntax
 {{#sortable-group model=model.items onChange=(action 'reorderItems') as |group|}}
   {{#each group.model as |item|}}
     {{#group.item model=item}}
-      {{tem.name}}
+      {{item.name}}
     {{/group.item}}
   {{/each}}
 {{/sortable-group}}
@@ -44,7 +44,7 @@ To use modifiers, you must use angle-bracket syntax
 <ol {{sortable-group onChange=(action 'reorderItems')}}>
   {{#each model.items as |item|}}
     <li {{sortable-item model=item}}>
-      {{tem.name}}
+      {{item.name}}
     </li>
   {{/each}}
 </ol>
@@ -73,7 +73,7 @@ To use modifiers, you must use angle-bracket syntax
 <ol {{sortable-group onChange=(action 'reorderItems')}}>
   {{#each model.items as |item|}}
     <li {{sortable-item model=item}}>
-      {{tem.name}}
+      {{item.name}}
       <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
@@ -87,7 +87,7 @@ To use modifiers, you must use angle-bracket syntax
 <ol {{sortable-group onChange=(action 'reorderItems' model)}}>
   {{#each model.items as |item|}}
     <li {{sortable-item model=item}}>
-      {{tem.name}}
+      {{item.name}}
       <span class='handle' {{sortable-handle}}>&varr;</span>
     </li>
   {{/each}}
