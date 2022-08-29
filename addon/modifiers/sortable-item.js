@@ -816,7 +816,6 @@ export default class SortableItemModifier extends Modifier {
   element;
   didSetup = false;
 
-
   /**
    * tracks if event listeners have been registered. Registering event handlers is unnecessary if item is disabled.
    */
