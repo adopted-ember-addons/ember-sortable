@@ -57,7 +57,7 @@ export default class SortableGroupModifier extends Modifier {
   /** End of keyboard utils */
 
   get disabled() {
-    return this.args.named.disabled || false;
+    return this.named.disabled || false;
   }
 
   /** Start of a11y properties */
@@ -74,7 +74,7 @@ export default class SortableGroupModifier extends Modifier {
    * }
    */
   get handleVisualClass() {
-    return this.args.named.handleVisualClass || NO_MODEL;
+    return this.named.handleVisualClass || NO_MODEL;
   }
 
   /**
@@ -89,15 +89,15 @@ export default class SortableGroupModifier extends Modifier {
    * }
    */
   get a11yAnnouncementConfig() {
-    return this.args.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig;
+    return this.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig;
   }
 
   get itemVisualClass() {
-    return this.args.named.itemVisualClass || 'is-activated';
+    return this.named.itemVisualClass || 'is-activated';
   }
 
   get a11yItemName() {
-    return this.args.named.a11yItemName || 'item';
+    return this.named.a11yItemName || 'item';
   }
   /** End of a11y properties */
 
@@ -473,7 +473,7 @@ export default class SortableGroupModifier extends Modifier {
    @default y
    */
   get direction() {
-    return this.args.named.direction || 'y';
+    return this.named.direction || 'y';
   }
 
   /**
@@ -486,7 +486,7 @@ export default class SortableGroupModifier extends Modifier {
    @default null
    */
   get onChange() {
-    return this.args.named.onChange;
+    return this.named.onChange;
   }
 
   @service('ember-sortable-internal-state')
@@ -500,10 +500,8 @@ export default class SortableGroupModifier extends Modifier {
    * @returns {*|string}
    */
   get groupName() {
-    return this.args.named.groupName || '_EmberSortableGroup';
+    return this.named.groupName || '_EmberSortableGroup';
   }
-
-  _groupDef = this.sortableService.fetchGroup(this.groupName);
 
   /**
    This is an array of SortableItemModifiers
@@ -719,12 +717,14 @@ export default class SortableGroupModifier extends Modifier {
     registerDestructor(this, cleanup);
   }
 
-  modify(element /*, positional, named*/) {
+  modify(element, _positional, named) {
     this.element = element;
+    this.named = named;
 
     this.removeEventListener();
 
     if (!this.didSetup) {
+      this._groupDef = this.sortableService.fetchGroup(this.groupName);
       this.announcer = this._createAnnouncer();
       this.element.insertAdjacentElement('afterend', this.announcer);
       this.sortableService.registerGroup(this.groupName, this);
