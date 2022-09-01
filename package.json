@@ -27,7 +27,6 @@
     "@ember/test-waiters": "^3.0.1",
     "ember-cli-babel": "^7.26.11",
     "ember-cli-htmlbars": "^6.0.1",
-    "ember-cli-version-checker": "^5.1.2",
     "ember-get-config": "^2.0.0",
     "ember-modifier": "^3.2.0",
     "ember-test-selectors": "^6.0.0"
