@@ -847,7 +847,7 @@ export default class SortableItemModifier extends Modifier {
       this.didSetup = true;
     }
 
-    if (this.args.named.disabled && this.listenersRegistered) {
+    if (this.named.disabled && this.listenersRegistered) {
       this.removeEventListener();
     } else if (!this.args.named.disabled && !this.listenersRegistered) {
       this.addEventListener();
