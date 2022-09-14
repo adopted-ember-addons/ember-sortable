@@ -63,7 +63,7 @@ export default class SortableItemModifier extends Modifier {
   }
 
   get model() {
-    return this.args.named.model;
+    return this.named.model;
   }
 
   get direction() {
@@ -82,7 +82,7 @@ export default class SortableItemModifier extends Modifier {
    * @returns {*|string}
    */
   get groupName() {
-    return this.args.named.groupName || '_EmberSortableGroup';
+    return this.named.groupName || '_EmberSortableGroup';
   }
 
   /**
@@ -93,7 +93,7 @@ export default class SortableItemModifier extends Modifier {
    @default 125
    */
   get updateInterval() {
-    return this.args.named.updateInterval || 125;
+    return this.named.updateInterval || 125;
   }
 
   /**
@@ -103,7 +103,7 @@ export default class SortableItemModifier extends Modifier {
    @default 0[px]
    */
   get spacing() {
-    return this.args.named.spacing || 0;
+    return this.named.spacing || 0;
   }
 
   /**
@@ -115,7 +115,7 @@ export default class SortableItemModifier extends Modifier {
   get isDisabled() {
     deprecate(
       '"isDraggingDisabled" is deprecated.  Please migrate to "disabled" named argument',
-      !('isDraggingDisabled' in this.args.named),
+      !('isDraggingDisabled' in this.named),
       {
         id: 'ember-sortable.is-dragging-disabled',
         url: 'https://github.com/adopted-ember-addons/ember-sortable#readme',
@@ -128,7 +128,7 @@ export default class SortableItemModifier extends Modifier {
       }
     );
 
-    return this.groupDisabled || this.args.named.disabled || this.args.named.isDraggingDisabled || false;
+    return this.groupDisabled || this.named.disabled || this.named.isDraggingDisabled || false;
   }
 
   /**
@@ -143,7 +143,7 @@ export default class SortableItemModifier extends Modifier {
    @default "[data-sortable-handle]"
    */
   get handle() {
-    return this.args.named.handle || '[data-sortable-handle]';
+    return this.named.handle || '[data-sortable-handle]';
   }
 
   handleElement;
@@ -159,7 +159,7 @@ export default class SortableItemModifier extends Modifier {
    * @default 0
    */
   get distance() {
-    return this.args.named.distance || 0;
+    return this.named.distance || 0;
   }
 
   /**
@@ -191,7 +191,7 @@ export default class SortableItemModifier extends Modifier {
    @default null
    */
   get onDragStart() {
-    return this.args.named.onDragStart || ((item) => item);
+    return this.named.onDragStart || ((item) => item);
   }
 
   /**
@@ -202,7 +202,7 @@ export default class SortableItemModifier extends Modifier {
    @default null
    */
   get onDragStop() {
-    return this.args.named.onDragStop || ((item) => item);
+    return this.named.onDragStop || ((item) => item);
   }
 
   /**
@@ -244,7 +244,7 @@ export default class SortableItemModifier extends Modifier {
    @property disableCheckScrollBounds
    */
   get disableCheckScrollBounds() {
-    return this.args.named.disableCheckScrollBounds != undefined ? this.args.named.disableCheckScrollBounds : isTesting;
+    return this.named.disableCheckScrollBounds != undefined ? this.named.disableCheckScrollBounds : isTesting;
   }
 
   /**
@@ -826,8 +826,9 @@ export default class SortableItemModifier extends Modifier {
     registerDestructor(this, cleanup);
   }
 
-  modify(element /*, positional, named*/) {
+  modify(element, _positional, named) {
     this.element = element;
+    this.named = named;
 
     this.element.classList.add(this.className);
 
