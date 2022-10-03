@@ -1,6 +1,21 @@
 # ember-sortable changelog
 
 
+
+## v4.0.1 (2022-10-03)
+
+#### :memo: Documentation
+* [#480](https://github.com/adopted-ember-addons/ember-sortable/pull/480) fix type in modifier migration doc ([@nlfurniss](https://github.com/nlfurniss))
+* [#475](https://github.com/adopted-ember-addons/ember-sortable/pull/475) Update CHANGELOG.md ([@sandstrom](https://github.com/sandstrom))
+
+#### :house: Internal
+* [#487](https://github.com/adopted-ember-addons/ember-sortable/pull/487) Resolve `ember-modifier.no-args-property` deprecation warnings ([@bertdeblock](https://github.com/bertdeblock))
+
+#### Committers: 3
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Nathaniel Furniss ([@nlfurniss](https://github.com/nlfurniss))
+- [@sandstrom](https://github.com/sandstrom)
+
 ## v4.0.0 (2022-05-16)
 
 #### :boom: Breaking Change
