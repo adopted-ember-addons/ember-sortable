@@ -1,0 +1,9 @@
+<tr ...attributes>
+  {{#if this.isEven}}
+    <this.SortableCell @index={{@index}} />
+  {{else}}
+    <this.SortableCell @index={{@index}} class="odd-class"/>
+  {{/if}}
+  <this.FruitCell @record={{@record}} />
+  <this.DayOfWeekCell @record={{@record}}/>
+</tr>
