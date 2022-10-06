@@ -2,6 +2,15 @@
 
 
 
+
+## v4.0.2 (2022-10-06)
+
+#### :bug: Bug Fix
+* [#493](https://github.com/adopted-ember-addons/ember-sortable/pull/493) fix: Handle element in sortable item should be the most recent ([@nicolechung](https://github.com/nicolechung))
+
+#### Committers: 1
+- nicole chung ([@nicolechung](https://github.com/nicolechung))
+
 ## v4.0.1 (2022-10-03)
 
 #### :memo: Documentation
