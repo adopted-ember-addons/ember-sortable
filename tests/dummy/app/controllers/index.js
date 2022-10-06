@@ -1,8 +1,23 @@
 import Controller from '@ember/controller';
 import { set, action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class ModifierController extends Controller {
   differentSizedModels = ['A', 'B'.repeat(100), 'D'.repeat(50), 'C'.repeat(20)];
+
+  @tracked records = [
+    { fruit: 'avocado', day: 'Monday' },
+    { fruit: 'banana', day: 'Tuesday' },
+    { fruit: 'cashew', day: 'Wednesday' },
+    { fruit: 'watermelon', day: 'Thursday' },
+    { fruit: 'durian', day: 'Friday' },
+    { fruit: 'apple', day: 'Saturday' },
+    { fruit: 'lemon', day: 'Sunday' },
+  ];
+
+  @action handleDragChange(reordered) {
+    this.records = reordered;
+  }
 
   handleVisualClass = {
     UP: 'sortable-handle-up',
@@ -43,6 +58,7 @@ export default class ModifierController extends Controller {
   updateDifferentSizedModels(newOrder) {
     set(this, 'differentSizedModels', newOrder);
   }
+
   @action
   update(newOrder, draggedModel) {
     set(this, 'model.items', newOrder);

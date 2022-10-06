@@ -433,6 +433,51 @@ module('Acceptance | smoke modifier', function (hooks) {
       await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ENTER_KEY_CODE);
 
       assert.equal(justDraggedContents(), 'Zero');
+
+      assert.equal(tableConditionalCellContents(), 'avocado banana cashew watermelon durian apple lemon ');
+      await focus('[data-test-table-conditional-cell-handle]');
+
+      await triggerKeyEvent('[data-test-table-conditional-cell-handle]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+
+      assert.equal(tableConditionalCellContents(), 'banana avocado cashew watermelon durian apple lemon ');
+    });
+
+    test('Keyboard selection works multiple times for conditionally rendered sort-handle', async function (assert) {
+      await visit('/');
+
+      assert.equal(tableConditionalCellContents(), 'avocado banana cashew watermelon durian apple lemon ');
+
+      await focus('[data-test-table-conditional-cell-handle]');
+
+      await triggerKeyEvent('[data-test-table-conditional-cell-handle]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+
+      assert.equal(tableConditionalCellContents(), 'banana avocado cashew watermelon durian apple lemon ');
+
+      const moveHandle = findAll('[data-test-table-conditional-cell-handle]')[4];
+      await focus(moveHandle);
+
+      await triggerKeyEvent(moveHandle, 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.UP);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.UP);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+
+      assert.equal(tableConditionalCellContents(), 'banana avocado durian cashew watermelon apple lemon ');
+
+      const moveHandle1 = findAll('[data-test-table-conditional-cell-handle]')[0];
+      await focus(moveHandle1);
+
+      await triggerKeyEvent(moveHandle1, 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+
+      assert.equal(tableConditionalCellContents(), 'avocado durian cashew watermelon banana apple lemon ');
     });
   });
 
@@ -458,5 +503,16 @@ module('Acceptance | smoke modifier', function (hooks) {
 
   function contents(selector) {
     return find(selector).textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+  }
+
+  function tableConditionalCellContents() {
+    const elements = findAll('[data-test-fruits]');
+    let result = '';
+    for (const index in elements) {
+      const element = elements[index];
+      result += element.textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+      result += ' ';
+    }
+    return result;
   }
 });

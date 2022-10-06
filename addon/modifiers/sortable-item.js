@@ -268,6 +268,8 @@ export default class SortableItemModifier extends Modifier {
       return;
     }
 
+    this.setupHandleElement();
+
     // If the event is coming from within the item, we do not want to activate keyboard reorder mode.
     if (event.target === this.handleElement || event.target === this.element) {
       this.sortableGroup.activateKeyDown(this);
@@ -811,6 +813,16 @@ export default class SortableItemModifier extends Modifier {
     this.element.removeEventListener('touchstart', this.touchStart);
   }
 
+  setupHandleElement() {
+    this.handleElement = this.element.querySelector(this.handle);
+
+    if (this.handleElement) {
+      this.handleElement.style['touch-action'] = 'none';
+    } else {
+      this.element.style['touch-action'] = 'none';
+    }
+  }
+
   element;
   didSetup = false;
 
@@ -827,13 +839,7 @@ export default class SortableItemModifier extends Modifier {
 
     // Instead of using `event.preventDefault()` in the 'primeDrag' event,
     // (doesn't work in Chrome 56), we set touch-action: none as a workaround.
-    this.handleElement = this.element.querySelector(this.handle);
-
-    if (this.handleElement) {
-      this.handleElement.style['touch-action'] = 'none';
-    } else {
-      this.element.style['touch-action'] = 'none';
-    }
+    this.setupHandleElement();
 
     if (!this.didSetup) {
       this.addEventListener();
