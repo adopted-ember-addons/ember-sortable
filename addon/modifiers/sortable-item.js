@@ -12,11 +12,8 @@ import { getBorderSpacing } from '../utils/css-calculation';
 import { buildWaiter } from '@ember/test-waiters';
 import { inject as service } from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
-import config from 'ember-get-config';
 import { registerDestructor } from '@ember/destroyable';
-
-const { environment } = config;
-const isTesting = environment === 'test';
+import { isTesting } from '@embroider/macros';
 
 const sortableItemWaiter = buildWaiter('sortable-item-waiter');
 
@@ -244,7 +241,7 @@ export default class SortableItemModifier extends Modifier {
    @property disableCheckScrollBounds
    */
   get disableCheckScrollBounds() {
-    return this.named.disableCheckScrollBounds != undefined ? this.named.disableCheckScrollBounds : isTesting;
+    return this.named.disableCheckScrollBounds != undefined ? this.named.disableCheckScrollBounds : isTesting();
   }
 
   /**

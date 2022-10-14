@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@ember/test-waiters": "^3.0.1",
+    "@embroider/macros": "^1.9.0",
     "ember-cli-babel": "^7.26.11",
-    "ember-get-config": "^2.0.0",
     "ember-modifier": "^3.2.0"
   },
   "devDependencies": {
