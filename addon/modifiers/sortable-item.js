@@ -802,12 +802,14 @@ export default class SortableItemModifier extends Modifier {
     this.element.addEventListener('keydown', this.keyDown);
     this.element.addEventListener('mousedown', this.mouseDown);
     this.element.addEventListener('touchstart', this.touchStart);
+    this.listenersRegistered = true;
   }
 
   removeEventListener() {
     this.element.removeEventListener('keydown', this.keyDown);
     this.element.removeEventListener('mousedown', this.mouseDown);
     this.element.removeEventListener('touchstart', this.touchStart);
+    this.listenersRegistered = false;
   }
 
   setupHandleElement() {
@@ -822,6 +824,11 @@ export default class SortableItemModifier extends Modifier {
 
   element;
   didSetup = false;
+
+  /**
+   * tracks if event listeners have been registered. Registering event handlers is unnecessary if item is disabled.
+   */
+  listenersRegistered = false;
 
   constructor(owner, args) {
     super(owner, args);
@@ -839,10 +846,15 @@ export default class SortableItemModifier extends Modifier {
     this.setupHandleElement();
 
     if (!this.didSetup) {
-      this.addEventListener();
       this.element.dataset.sortableItem = true;
       this.sortableService.registerItem(this.groupName, this);
       this.didSetup = true;
+    }
+
+    if (this.named.disabled && this.listenersRegistered) {
+      this.removeEventListener();
+    } else if (!this.named.disabled && !this.listenersRegistered) {
+      this.addEventListener();
     }
   }
 }
