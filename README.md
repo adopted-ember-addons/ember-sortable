@@ -14,7 +14,10 @@ Sortable UI primitives for Ember.
 
 ## Requirements
 
-In version 3.0.0+, Node.js v12 or above And Ember.js v3.24 or above
+| Ember Sortable | Ember | Node |
+|----------------|-------|------|
+| 3.0.0          | 3.24+ | 12+  |
+| 4.0.0          | 3.24+ | 14+  |
 
 ## Installation
 
