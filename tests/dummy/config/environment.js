@@ -21,6 +21,23 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+
+    'ember-a11y-testing': {
+      componentOptions: {
+        turnAuditOff: true,
+        excludeAxeCore: true,
+        axeOptions: {
+          iframes: false,
+          reporter: 'v2',
+          resultTypes: ['violations'],
+          rules: {
+            'duplicate-id': { enabled: false },
+            'duplicate-id-active': { enabled: false },
+            'duplicate-id-aria': { enabled: false },
+          },
+        },
+      },
+    },
   };
 
   if (environment === 'development') {
