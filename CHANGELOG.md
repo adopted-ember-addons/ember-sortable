@@ -3,6 +3,27 @@
 
 
 
+
+## v4.0.3 (2022-10-14)
+
+#### :bug: Bug Fix
+* [#485](https://github.com/adopted-ember-addons/ember-sortable/pull/485) when item is disabled, do not add event listeners ([@st-h](https://github.com/st-h))
+* [#472](https://github.com/adopted-ember-addons/ember-sortable/pull/472) sortableGroup may be undefined ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### :house: Internal
+* [#490](https://github.com/adopted-ember-addons/ember-sortable/pull/490) Bump parse-url from 6.0.0 to 6.0.5 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#491](https://github.com/adopted-ember-addons/ember-sortable/pull/491) Bump vm2 from 3.9.9 to 3.9.11 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#496](https://github.com/adopted-ember-addons/ember-sortable/pull/496) Bump terser from 5.13.1 to 5.15.1 ([@dependabot[bot]](https://github.com/apps/dependabot))
+* [#494](https://github.com/adopted-ember-addons/ember-sortable/pull/494) Move test config to the dummy app ([@Windvis](https://github.com/Windvis))
+* [#495](https://github.com/adopted-ember-addons/ember-sortable/pull/495) Use the `isTesting` macro ([@Windvis](https://github.com/Windvis))
+* [#488](https://github.com/adopted-ember-addons/ember-sortable/pull/488) Remove unused dependencies ([@bertdeblock](https://github.com/bertdeblock))
+
+#### Committers: 4
+- Bert De Block ([@bertdeblock](https://github.com/bertdeblock))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+- Steve ([@st-h](https://github.com/st-h))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## v4.0.2 (2022-10-06)
 
 #### :bug: Bug Fix
