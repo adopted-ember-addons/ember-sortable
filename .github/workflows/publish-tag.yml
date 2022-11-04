@@ -8,7 +8,7 @@
     - "name": "Check out repository code"
       "uses": "actions/checkout@v2"
     - "env":
-        "NPM_TOKEN": "${{ secrets.npm_token }}"
+        "NPM_TOKEN": "${{ secrets.NPM_TOKEN }}"
       "name": "npm"
       "run": "bash ./ci/npm.sh"
     - "name": "yarn"
