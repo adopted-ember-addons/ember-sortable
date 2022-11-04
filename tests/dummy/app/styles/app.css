@@ -9,7 +9,7 @@
 
 .demo h3 {
   font-size: 1em;
-  color: #aaa;
+  color: gray;
 }
 
 .demo ol {
@@ -21,12 +21,12 @@
 
 .demo footer {
   margin-top: 2em;
-  font-size: .5em;
+  font-size: 0.5em;
 }
 
 .demo .sortable-item {
   padding: 4px;
-  transition: all .125s;
+  transition: all 0.125s;
 }
 
 .demo .sortable-item.is-dragging {
@@ -35,13 +35,12 @@
 }
 
 .demo .sortable-item .handle {
-  padding: 0 .5em;
+  padding: 0 0.5em;
   cursor: move;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
 
 .vertical-demo .sortable-item {
   display: block;
@@ -62,23 +61,28 @@
 .vertical-demo .sortable-item .handle {
   display: block;
   position: absolute;
-  top: 0; right: 0; bottom: 0;
-  background: rgba(127, 0, 0, .5);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(71, 1, 1, 0.5);
   color: pink;
 }
 
-.vertical-spacing-demo .sortable-item, .vertical-distance-demo .sortable-item {
+.vertical-spacing-demo .sortable-item,
+.vertical-distance-demo .sortable-item,
+.vertical-doc-auto-scroll-demo .sortable-item {
   display: block;
   position: relative;
-  background: #58D3F7;
+  background: #58d3f7;
   width: 50%;
   line-height: 50px;
   margin: 5px auto;
   text-align: center;
 }
 
-.vertical-spacing-demo .sortable-item.is-dragging, .vertical-distance-demo .sortable-item.is-dragging {
-  background: #A9E2F3;
+.vertical-spacing-demo .sortable-item.is-dragging,
+.vertical-distance-demo .sortable-item.is-dragging {
+  background: #a9e2f3;
 }
 
 .horizontal-demo {
@@ -86,7 +90,18 @@
   white-space: nowrap;
 }
 
-.horizontal-demo .sortable-item {
+.horizontal-doc-auto-scroll-demo {
+  white-space: nowrap;
+}
+.horizontal-doc-auto-scroll-demo ol {
+  padding-left: 0px;
+}
+.horizontal-doc-auto-scroll-demo .sortable-item {
+  width: 70px;
+}
+
+.horizontal-demo .sortable-item,
+.horizontal-doc-auto-scroll-demo .sortable-item {
   display: inline-block;
   position: relative;
   cursor: move;
@@ -101,7 +116,6 @@
   background: hsl(197, 100%, 40%);
   z-index: 10;
 }
-
 
 .table-demo table {
   position: relative;
@@ -126,7 +140,6 @@
   background: transparent;
   color: black;
 }
-
 
 .scrollable-demo .sortable-container {
   height: 300px;
@@ -156,11 +169,64 @@
 .scrollable-demo .sortable-item .handle {
   display: block;
   position: absolute;
-  top: 0; right: 0; bottom: 0;
-  background: rgba(127, 0, 0, .5);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(71, 1, 1, 0.5);
   color: pink;
 }
 
 #ember-testing {
   transform: none !important;
+}
+
+.sortable-item--active {
+  outline: 2px solid purple;
+}
+
+.sortable-handle-up,
+.sortable-handle-down,
+.sortable-handle-left,
+.sortable-handle-right {
+  position: relative;
+}
+
+.sortable-handle-up:before,
+.sortable-handle-down:after,
+.sortable-handle-left:before,
+.sortable-handle-right:after {
+  position: absolute;
+  left: 50%;
+  margin-left: -4px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-color: transparent;
+  border-width: 4px;
+}
+
+.sortable-handle-up:before {
+  top: -10px;
+  border-bottom-color: #000;
+}
+
+.sortable-handle-down:after {
+  bottom: -10px;
+  border-top-color: #000;
+}
+
+.sortable-handle-left:before {
+  top: 50%;
+  left: -10px;
+  border-right-color: #000;
+}
+
+.sortable-handle-right:after {
+  top: 50%;
+  left: calc(100% + 10px);
+  border-left-color: #000;
+}
+
+.word-break {
+  word-wrap: break-word;
 }
