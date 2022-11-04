@@ -738,7 +738,7 @@ export default class SortableItemModifier extends Modifier {
     return this._x;
   }
   set x(value) {
-    if (value !== this._x) {
+    if (value !== this._x && Math.abs(value - this._x) >= 5) {
       this._x = value;
       this._scheduleApplyPosition();
     }
