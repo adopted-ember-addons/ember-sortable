@@ -1,1 +1,1 @@
-export { default } from 'ember-sortable/modifiers/sortable-item';
+export { default } from '@gynzy/ember-sortable/modifiers/sortable-item';
