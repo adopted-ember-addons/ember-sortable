@@ -3,7 +3,7 @@ demo:
 	@echo "===> Checking out gh-pages"
 	@echo ""
 	git checkout gh-pages
-	git reset --hard 1.x
+	git reset --hard master
 	@echo ""
 	@echo "===> Building demo"
 	@echo ""
@@ -12,13 +12,13 @@ demo:
 	@echo "===> Committing demo"
 	@echo ""
 	git add demo
-	git commit -m "Build demo"
+	git commit -m "Build demo" --no-verify
 	@echo ""
 	@echo "===> Pushing gh-pages"
 	@echo ""
-	git push origin gh-pages -f
+	git push origin gh-pages -f --no-verify
 	@echo ""
 	@echo "===> Cleaning up"
 	@echo ""
-	git checkout 1.x
+	git checkout master
 	rm -rf demo

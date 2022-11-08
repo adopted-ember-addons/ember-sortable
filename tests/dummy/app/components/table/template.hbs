@@ -1,0 +1,11 @@
+<table data-test-table-conditional-cell-demo-group {{sortable-group onChange=@handleDragChange groupName="table-tracked" }} >
+  <thead> 
+    <td>Order</td>
+    <td>Fruit</td>
+    <td>Day of Week</td> </thead>
+  <tbody>
+    {{#each @records as |record index|}}
+      <Row @record={{record}} @index={{index}} {{sortable-item model=record groupName="table-tracked"}}  />
+    {{/each}}
+  </tbody>
+</table>
