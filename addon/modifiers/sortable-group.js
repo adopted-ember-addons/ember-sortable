@@ -13,9 +13,9 @@ import {
 } from '../utils/keyboard';
 import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
 import { defaultA11yAnnouncementConfig } from '../utils/defaults';
-import { next, schedule, scheduleOnce, later } from '@ember/runloop';
+import { schedule, scheduleOnce, later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
-import { registerDestructor, isDestroyed } from '@ember/destroyable';
+import { registerDestructor, isDestroyed, isDestroying } from '@ember/destroyable';
 
 const NO_MODEL = {};
 
@@ -654,8 +654,9 @@ export default class SortableGroupModifier extends Modifier {
       draggedModel = draggedItem.model;
     }
 
-    this._updateItems();
-    this._onChange(itemModels, draggedModel);
+    this._updateItems(() => {
+      this._onChange(itemModels, draggedModel);
+    });
   }
 
   @action
@@ -665,14 +666,31 @@ export default class SortableGroupModifier extends Modifier {
     }
   }
 
+  _getTransitionDuration(item) {
+    const transitionDuration = window.getComputedStyle(item.element).transitionDuration;
+    let time = 0;
+
+    if (transitionDuration) {
+      if (transitionDuration.endsWith('ms')) {
+        time = Number.parseFloat(transitionDuration);
+      } else if (transitionDuration.endsWith('s')) {
+        time = Number.parseFloat(transitionDuration) * 1000;
+      }
+    }
+
+    return Number.isNaN(time) ? 0 : time;
+  }
+
   /**
    * Keeps the UI in sync with actual changes.
    * Needed for drag and keyboard operations.
    */
-  _updateItems() {
+  _updateItems(afterRenderHandler) {
     const items = this.sortedItems;
 
     delete this._firstItemPosition;
+
+    const times = new Map(items.map((item) => [item, this._getTransitionDuration(item)]));
 
     schedule('render', () => {
       items.forEach((item) => item.freeze());
@@ -680,11 +698,24 @@ export default class SortableGroupModifier extends Modifier {
 
     schedule('afterRender', () => {
       items.forEach((item) => item.reset());
-    });
 
-    next(() => {
-      schedule('render', () => {
-        items.forEach((item) => item.thaw());
+      // Trigger the onChange handler after the transforms have been removed in
+      // order to prevent the items to be displayed on incorrect positions (e.g.
+      // left or right from their target locations).
+      afterRenderHandler();
+
+      // Do not restore transition until after it would have been done.
+      // Without this delay, it happens (depending on time) that the reordered
+      // items make a jump before the go to their new location.
+      items.forEach((item) => {
+        const time = times.get(item) ?? 0;
+        later(() => {
+          if (isDestroying(item)) {
+            return;
+          }
+
+          item.thaw();
+        }, time);
       });
     });
   }
