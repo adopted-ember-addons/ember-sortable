@@ -338,7 +338,10 @@ export default class SortableItemModifier extends Modifier {
       return;
     }
 
-    startEvent.preventDefault();
+    if (startEvent.type !== 'touchstart') {
+      //click event of child elements is prevented by the following line
+      startEvent.preventDefault();
+    }
     startEvent.stopPropagation();
 
     this._prepareDragListener = bind(this, this._prepareDrag, startEvent);
