@@ -633,6 +633,7 @@ export default class SortableItemModifier extends Modifier {
       this.element.removeEventListener(ELEMENT_CLICK_ACTION, selfCancellingCallback);
       this._preventClickHandler(event);
     };
+
     this.element.addEventListener(ELEMENT_CLICK_ACTION, selfCancellingCallback);
   }
 
