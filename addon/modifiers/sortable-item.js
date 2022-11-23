@@ -339,7 +339,7 @@ export default class SortableItemModifier extends Modifier {
     }
 
     if (startEvent.type !== 'touchstart') {
-      //click event of child elements is prevented by the following line
+      //click event (touch) of child elements is prevented by the following line
       startEvent.preventDefault();
     }
     startEvent.stopPropagation();
@@ -399,7 +399,9 @@ export default class SortableItemModifier extends Modifier {
       END_ACTIONS.forEach((event) => window.removeEventListener(event, drop));
 
       run(() => {
-        this._drop();
+        // Click event is not triggered on mobile after drop and causes next click to fail
+        const isTouch = event.type === 'touchstart';
+        this._drop(isTouch);
       });
     };
 
@@ -608,14 +610,16 @@ export default class SortableItemModifier extends Modifier {
    @method _drop
    @private
    */
-  _drop() {
+  _drop(isTouch) {
     if (!this.element) {
       return;
     }
 
     let transitionPromise = this._waitForTransition();
 
-    this._preventClick();
+    if (!isTouch) {
+      this._preventClick();
+    }
 
     set(this, 'isDragging', false);
     set(this, 'isDropping', true);
