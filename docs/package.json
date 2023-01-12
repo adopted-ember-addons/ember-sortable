@@ -1,5 +1,5 @@
 {
-  "name": "test-app",
+  "name": "docs",
   "version": "4.0.3",
   "description": "Sortable UI primitives for Ember.",
   "keywords": [
@@ -13,10 +13,11 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "ember build",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:hbs": "ember-template-lint .",
     "lint:hbs:fix": "ember-template-lint . --fix",
-    "lint:js": "eslint . --cache",
+    "lint:js": "eslint .",
     "lint:js:fix": "eslint . --fix",
     "start": "ember serve",
     "test:ember": "ember test",
@@ -32,6 +33,7 @@
     "@glimmer/tracking": "^1.0.4",
     "babel-eslint": "^10.0.3",
     "broccoli-asset-rev": "^3.0.0",
+    "ember-a11y-testing": "^5.0.0",
     "ember-auto-import": "^2.4.0",
     "ember-cli": "^4.2.0",
     "ember-cli-babel": "^7.26.11",
@@ -69,6 +71,9 @@
   },
   "engines": {
     "node": "14.* || >= 16"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   },
   "ember": {
     "edition": "octane"

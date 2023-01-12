@@ -1,6 +1,6 @@
 {
   "private": true,
-  "workspaces": ["addon", "test-app"],
+  "workspaces": ["addon", "docs", "test-app"],
   "volta": {
     "node": "14.19.2",
     "yarn": "1.22.18"

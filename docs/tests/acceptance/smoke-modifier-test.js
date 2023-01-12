@@ -8,6 +8,7 @@ import {
   ESCAPE_KEY_CODE,
   ARROW_KEY_CODES,
 } from 'ember-sortable/test-support/utils/keyboard';
+import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
 module('Acceptance | smoke modifier', function (hooks) {
   setupApplicationTest(hooks);
@@ -180,7 +181,15 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(justDraggedContents(), 'One');
   });
 
-  module('Reordering with keyboard events', function () {
+  module('[A11y] Reordering with keyboard events', function () {
+    test('A11yAudit', async function (assert) {
+      assert.expect(1);
+
+      await visit('/');
+      await a11yAudit();
+      assert.ok(true, 'no a11y errors found!');
+    });
+
     test('Keyboard selection shows UP and DOWN visual indicators on vertical sort', async function (assert) {
       assert.expect(8);
 
