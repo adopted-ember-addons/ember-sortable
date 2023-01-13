@@ -72,7 +72,7 @@
       "./modifiers/sortable-group.js": "./dist/_app_/modifiers/sortable-group.js",
       "./modifiers/sortable-handle.js": "./dist/_app_/modifiers/sortable-handle.js",
       "./modifiers/sortable-item.js": "./dist/_app_/modifiers/sortable-item.js",
-      "./services/ember-sortable.js": "./dist/_app_/services/ember-sortable.js"
+      "./services/ember-sortable-internal-state.js": "./dist/_app_/services/ember-sortable-internal-state.js"
     }
   },
   "volta": {
