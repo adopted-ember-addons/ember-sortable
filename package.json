@@ -1,8 +1,58 @@
 {
   "private": true,
   "workspaces": ["addon", "docs", "test-app"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adopted-ember-addons/ember-sortable"
+  },
+  "scripts": {
+    "prepare": "cd addon && yarn build",
+    "release": "release-it",
+    "test": "cd test-app && yarn test:ember"
+  },
+  "devDependencies": {
+    "@release-it-plugins/lerna-changelog": "^5.0.0",
+    "@release-it-plugins/workspaces": "^3.2.0",
+    "release-it": "^15.6.0"
+  },
   "volta": {
     "node": "14.19.2",
     "yarn": "1.22.18"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": "cp README.md LICENSE.md addon/"
+    },
+    "plugins": {
+      "@release-it-plugins/lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": false
+      },
+      "@release-it-plugins/workspaces": {
+        "workspaces": [
+          "addon"
+        ],
+        "additionalManifests": {
+          "dependencyUpdates": [
+            "test-app/package.json"
+          ],
+          "versionUpdates": [
+            "package.json",
+            "test-app/package.json"
+          ]
+        }
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "releaseName": "v${version}",
+      "tokenRef": "GITHUB_AUTH"
+    }
   }
 }

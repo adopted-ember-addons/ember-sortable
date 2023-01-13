@@ -24,7 +24,7 @@ module.exports = {
         './.prettierrc.js',
         './.template-lintrc.js',
         './ember-cli-build.js',
-        './index.js',
+        './addon-main.js',
         './blueprints/*/index.js',
         './config/**/*.js',
       ],
