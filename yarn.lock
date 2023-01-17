@@ -4947,6 +4947,16 @@ ember-router-generator@^2.0.0:
     "@babel/traverse" "^7.4.5"
     recast "^0.18.1"
 
+ember-sortable@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/ember-sortable/-/ember-sortable-4.0.3.tgz#6dc5f4c57bb44a75dd91c51569a896117802b928"
+  integrity sha512-iZ898uEXhIe/ywmhU8ASJPOHU9HV77cCRcnls0QtFIdwHV6hOc5+yoNaySMsud563gPdo1kXbVClot30y9RCUQ==
+  dependencies:
+    "@ember/test-waiters" "^3.0.1"
+    "@embroider/macros" "^1.9.0"
+    ember-cli-babel "^7.26.11"
+    ember-modifier "^3.2.0"
+
 ember-source-channel-url@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ember-source-channel-url/-/ember-source-channel-url-3.0.0.tgz#bcd5be72c63fa0b8c390b3121783b462063e2a1b"
