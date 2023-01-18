@@ -38,11 +38,13 @@
         ],
         "additionalManifests": {
           "dependencyUpdates": [
-            "test-app/package.json"
+            "test-app/package.json",
+            "docs/package.json"
           ],
           "versionUpdates": [
             "package.json",
-            "test-app/package.json"
+            "test-app/package.json",
+            "docs/package.json"
           ]
         }
       }
