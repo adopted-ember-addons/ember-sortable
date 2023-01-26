@@ -53,7 +53,6 @@
     "ember-sortable": "5.0.0",
     "ember-template-lint": "^4.2.0",
     "ember-test-selectors": "^6.0.0",
-    "ember-try": "^2.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-ember": "^10.5.9",
