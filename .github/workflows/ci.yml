@@ -18,13 +18,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install Node
-      uses: actions/setup-node@v3
-      with:
-        node-version: 14.x
-        cache: yarn
-    - name: Install Dependencies
-      run: yarn install --frozen-lockfile
+    - uses: ./.github/actions/setup-job
     - name: Lint Addon
       run: yarn lint
       working-directory: addon
@@ -42,13 +36,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+      - uses: ./.github/actions/setup-job
       - name: Run Tests
         run: yarn test:ember
         working-directory: test-app
@@ -60,13 +48,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+      - uses: ./.github/actions/setup-job
       - name: Run Tests
         run: yarn test:ember
         working-directory: docs
@@ -79,9 +61,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
-          cache: yarn
       - name: Install Dependencies
         run: yarn install --no-lockfile
       - name: Run Tests
@@ -109,13 +88,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 14.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+      - uses: ./.github/actions/setup-job
       - name: Run Tests
         run: ../node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
         working-directory: test-app
