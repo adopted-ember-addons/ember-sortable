@@ -7,7 +7,7 @@ runs:
     shell: bash
     run: |-
       echo '
-        target: ./addon/
+        target: ./addon/dist
         setup:
           run: pnpm build
           cwd: ./addon/
@@ -27,4 +27,4 @@ runs:
     uses: actions/upload-artifact@v3
     with:
       name: dist
-      path: ./addon/
+      path: ./addon/dist
