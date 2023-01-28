@@ -30,15 +30,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/setup-job
-    - name: Lint Addon
+    - name: Lint
       run: pnpm lint
-      working-directory: addon
-    - name: Lint Test App
-      run: pnpm lint
-      working-directory: test-app
-    - name: Lint Docs
-      run: pnpm lint
-      working-directory: docs
 
   test:
     name: "Tests"

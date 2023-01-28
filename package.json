@@ -6,9 +6,12 @@
     "url": "https://github.com/adopted-ember-addons/ember-sortable"
   },
   "scripts": {
-    "prepare": "cd addon && pnpm build",
+    "prepare": "pnpm build",
+    "build": "pnpm --filter 'ember-sortable' build",
     "release": "cd addon && release-it",
-    "test": "cd test-app && pnpm test:ember"
+    "test": "cd test-app && pnpm test:ember",
+    "lint": "pnpm --filter '*' lint",
+    "lint:fix": "pnpm --filter '*' lint:fix"
   },
   "volta": {
     "node": "16.19.0"
