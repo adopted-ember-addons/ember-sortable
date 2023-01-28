@@ -18,9 +18,9 @@ Sortable UI primitives for Ember.
 |----------------|-------|------|
 | 3.0.0          | 3.24+ | 12+  |
 | 4.0.0          | 3.24+ | 14+  |
-| 5.0.0          | 3.28+ | n/a[^]  |
+| 5.0.0          | 3.28+ | n/a[^1]  |
 
-[^]: Node is not relevant for v2 addons. Ember-sortable is for browser-only contexts, which is different from v1 addons, which are node programs which emit browser code to the consuming app at app-build time.
+[^1]: Node is not relevant for v2 addons. Ember-sortable is for browser-only contexts, which is different from v1 addons, which are node programs which emit browser code to the consuming app at app-build time.
 
 ## Installation
 
