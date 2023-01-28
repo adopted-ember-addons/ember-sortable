@@ -64,9 +64,6 @@
     "node": "14.* || >= 16"
   },
   "release-it": {
-    "hooks": {
-      "before:init": "cp README.md LICENSE.md addon/"
-    },
     "plugins": {
       "@release-it-plugins/lerna-changelog": {
         "infile": "CHANGELOG.md",
