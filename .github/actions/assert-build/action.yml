@@ -1,0 +1,30 @@
+name: Build and Assert Assets Exists
+description: Build the package and assert that file contents exist as we expect
+runs:
+  using: "composite"
+  steps:
+  - name: Build and Assert Output
+    shell: bash
+    run: |-
+      echo '
+        target: ./addon/
+        setup:
+          run: pnpm build
+          cwd: ./addon/
+        expect: |
+          modifiers/sortable-group.js
+          modifiers/sortable-group.js.map
+          modifiers/sortable-handle.js
+          modifiers/sortable-handle.js.map
+          modifiers/sortable-item.js
+          modifiers/sortable-item.js.map
+          test-support/index.js
+          test-support/index.js.map
+      ' >> assert-contents.config.yml
+      npx assert-folder-contents
+
+  - name: Upload dist assets to cache
+    uses: actions/upload-artifact@v3
+    with:
+      name: dist
+      path: ./addon/

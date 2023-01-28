@@ -12,15 +12,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # This job does nothing on its own, other than warm up the cache to use in
-  # subsequent jobs. The theory here is that by trading 30s slower "get to the good stuff"
-  # time, we do overall less work on hardware (use less energy), especially when dependencies change.
   setup:
     name: Setup
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/assert-build
 
   lint:
     name: Lint
@@ -41,6 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Run Tests
         run: pnpm test:ember
         working-directory: test-app
@@ -55,6 +54,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Run Tests
         run: pnpm test:ember
         working-directory: docs
@@ -67,6 +67,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Install Dependencies
         run: |
           rm pnpm-lock.yaml
@@ -97,6 +98,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Run Tests
         run: pnpm ember try:one ${{ matrix.try-scenario }}
         working-directory: test-app
