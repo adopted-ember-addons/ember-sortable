@@ -24,6 +24,7 @@
     "test:all": "ember try:each"
   },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@ember/test-waiters": "^3.0.1",
@@ -48,9 +49,9 @@
     "ember-modifier": "^3.2.0",
     "ember-qunit": "mydea/ember-qunit#fn/ember-auto-import-v2-node-12",
     "ember-resolver": "^8.0.3",
+    "ember-sortable": "workspace:../ember-sortable",
     "ember-source": "^4.2.0",
     "ember-source-channel-url": "^3.0.0",
-    "ember-sortable": "*",
     "ember-template-lint": "^4.2.0",
     "ember-test-selectors": "^6.0.0",
     "eslint": "^7.32.0",

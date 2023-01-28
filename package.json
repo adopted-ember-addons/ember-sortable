@@ -1,18 +1,17 @@
 {
   "version": "0.0.0",
   "private": true,
-  "workspaces": ["addon", "docs", "test-app"],
   "repository": {
     "type": "git",
     "url": "https://github.com/adopted-ember-addons/ember-sortable"
   },
   "scripts": {
-    "prepare": "cd addon && yarn build",
+    "prepare": "cd addon && pnpm build",
     "release": "cd addon && release-it",
-    "test": "cd test-app && yarn test:ember"
+    "test": "cd test-app && pnpm test:ember"
   },
   "volta": {
-    "node": "14.19.2",
+    "node": "16.19.0",
     "yarn": "1.22.18"
   }
 }

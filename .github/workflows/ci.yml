@@ -20,13 +20,13 @@ jobs:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/setup-job
     - name: Lint Addon
-      run: yarn lint
+      run: pnpm lint
       working-directory: addon
     - name: Lint Test App
-      run: yarn lint
+      run: pnpm lint
       working-directory: test-app
     - name: Lint Docs
-      run: yarn lint
+      run: pnpm lint
       working-directory: docs
 
   test:
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
       - name: Run Tests
-        run: yarn test:ember
+        run: pnpm test:ember
         working-directory: test-app
 
   docs:
@@ -50,7 +50,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
       - name: Run Tests
-        run: yarn test:ember
+        run: pnpm test:ember
         working-directory: docs
 
   floating:
@@ -62,9 +62,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
       - name: Install Dependencies
-        run: yarn install --no-lockfile
+        run: |
+          rm pnpm-lock.yaml
+          pnpm install
       - name: Run Tests
-        run: yarn test:ember
+        run: pnpm test:ember
         working-directory: test-app
 
   try-scenarios:
@@ -90,5 +92,5 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/setup-job
       - name: Run Tests
-        run: ../node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        run: pnpm ember try:one ${{ matrix.try-scenario }}
         working-directory: test-app
