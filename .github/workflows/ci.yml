@@ -100,5 +100,5 @@ jobs:
       - uses: ./.github/actions/setup-job
       - uses: ./.github/actions/download-built-package
       - name: Run Tests
-        run: pnpm ember try:one ${{ matrix.try-scenario }}
+        run: node_modules/.bin/ember try:one ${{ matrix.try-scenario }} --skip-cleanup
         working-directory: test-app
