@@ -12,9 +12,20 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # This job does nothing on its own, other than warm up the cache to use in
+  # subsequent jobs. The theory here is that by trading 30s slower "get to the good stuff"
+  # time, we do overall less work on hardware (use less energy), especially when dependencies change.
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-job
+
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    needs: [setup]
 
     steps:
     - uses: actions/checkout@v3
@@ -32,7 +43,7 @@ jobs:
   test:
     name: "Tests"
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [setup]
 
     steps:
       - uses: actions/checkout@v3
@@ -44,7 +55,9 @@ jobs:
   docs:
     name: "Docs App"
     runs-on: ubuntu-latest
-    needs: lint
+    # This isn't a strict requirement, but it doesn't make
+    # sense to test the docs app if the main tests are not passing
+    needs: [test]
 
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +69,7 @@ jobs:
   floating:
     name: "Floating Dependencies"
     runs-on: ubuntu-latest
-    needs: lint
+    needs: [test]
 
     steps:
       - uses: actions/checkout@v3
@@ -72,7 +85,7 @@ jobs:
   try-scenarios:
     name: ${{ matrix.try-scenario }}
     runs-on: ubuntu-latest
-    needs: test
+    needs: [test]
 
     strategy:
       fail-fast: false
