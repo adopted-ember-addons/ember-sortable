@@ -24,6 +24,7 @@
     "dist"
   ],
   "scripts": {
+    "release": "release-it",
     "build": "rollup --config",
     "prepublishOnly": "rollup --config",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
@@ -41,6 +42,9 @@
     "@embroider/addon-shim": "^1.8.4"
   },
   "devDependencies": {
+    "@release-it-plugins/lerna-changelog": "^5.0.0",
+    "@release-it-plugins/workspaces": "^3.2.0",
+    "release-it": "^15.6.0",
     "@babel/core": "^7.20.12",
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-decorators": "^7.20.7",
@@ -59,6 +63,41 @@
   },
   "engines": {
     "node": "14.* || >= 16"
+  },
+  "release-it": {
+    "hooks": {
+      "before:init": "cp README.md LICENSE.md addon/"
+    },
+    "plugins": {
+      "@release-it-plugins/lerna-changelog": {
+        "infile": "CHANGELOG.md",
+        "launchEditor": false
+      },
+      "@release-it-plugins/workspaces": {
+        "workspaces": [
+          "addon"
+        ],
+        "additionalManifests": {
+          "dependencyUpdates": [
+            "test-app/package.json",
+            "docs/package.json"
+          ],
+          "versionUpdates": [
+            "package.json",
+            "test-app/package.json",
+            "docs/package.json"
+          ]
+        }
+      }
+    },
+    "git": {
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true,
+      "releaseName": "v${version}",
+      "tokenRef": "GITHUB_AUTH"
+    }
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
