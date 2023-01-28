@@ -50,7 +50,8 @@ yarn install
 * And last (but not least 😁) do your release.
 
 ```sh
-npx release-it
+# optionally cd to the addon directory
+yarn release-it
 ```
 
 [release-it](https://github.com/release-it/release-it/) manages the actual
