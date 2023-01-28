@@ -345,20 +345,20 @@ and returns a `string` constructed from the `config`.
 - [`reorder`][reorder]: Reorders elements to the specified state.
 - [`keyboard`][keyboard]: Keycode constants for quick.
 
-[drag]: addon-test-support/helpers/drag.js
-[reorder]: addon-test-support/helpers/reorder.js
-[keyboard]: addon-test-support/utils/kebyoard.js
+[drag]: addon/src/test-support/helpers/drag.js
+[reorder]: addon/src/test-support/helpers/reorder.js
+[keyboard]: addon/src/test-support/utils/kebyoard.js
 
 To include them in your application, you can import them:
 
 ```js
-import { drag, reorder } from 'ember-sortable/test-support/helpers';
-import {
+import { 
+  drag, reorder,
   ENTER_KEY_CODE,
   SPACE_KEY_CODE,
   ESCAPE_KEY_CODE,
   ARROW_KEY_CODES,
-} from 'ember-sortable/test-support/utils/keyboard';
+} from 'ember-sortable/test-support';
 ```
 
 ### Examples

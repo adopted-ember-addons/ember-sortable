@@ -75,7 +75,7 @@ importers:
       ember-modifier: ^3.2.0
       ember-qunit: mydea/ember-qunit#fn/ember-auto-import-v2-node-12
       ember-resolver: ^8.0.3
-      ember-sortable: workspace:../ember-sortable
+      ember-sortable: workspace:../addon
       ember-source: ^4.2.0
       ember-source-channel-url: ^3.0.0
       ember-template-lint: ^4.2.0
@@ -94,6 +94,8 @@ importers:
       qunit: ^2.18.0
       qunit-dom: ^2.0.0
       webpack: ^5.69.1
+    dependencies:
+      ember-sortable: link:../addon
     devDependencies:
       '@babel/core': 7.20.12
       '@ember/optional-features': 2.0.0
@@ -120,7 +122,6 @@ importers:
       ember-modifier: 3.2.7_@babel+core@7.20.12
       ember-qunit: github.com/mydea/ember-qunit/3806e10dd847f2cf2a10447fee86b25a7572b2bc_dvame2fsqhpslri2nygrxd77tm
       ember-resolver: 8.1.0_@babel+core@7.20.12
-      ember-sortable: link:../ember-sortable
       ember-source: 4.10.0_ipwtokbwlukr3yko7oz5lbj6xy
       ember-source-channel-url: 3.0.0
       ember-template-lint: 4.18.2_ember-cli-htmlbars@6.2.0
@@ -166,7 +167,7 @@ importers:
       ember-modifier: ^3.2.0
       ember-qunit: mydea/ember-qunit#fn/ember-auto-import-v2-node-12
       ember-resolver: ^8.0.3
-      ember-sortable: workspace:../ember-sortable
+      ember-sortable: workspace:../addon
       ember-source: ^4.2.0
       ember-source-channel-url: ^3.0.0
       ember-template-lint: ^4.2.0
@@ -186,6 +187,8 @@ importers:
       qunit: ^2.18.0
       qunit-dom: ^2.0.0
       webpack: ^5.69.1
+    dependencies:
+      ember-sortable: link:../addon
     devDependencies:
       '@babel/core': 7.20.12
       '@ember/optional-features': 2.0.0
@@ -211,7 +214,6 @@ importers:
       ember-modifier: 3.2.7_@babel+core@7.20.12
       ember-qunit: github.com/mydea/ember-qunit/3806e10dd847f2cf2a10447fee86b25a7572b2bc_dvame2fsqhpslri2nygrxd77tm
       ember-resolver: 8.1.0_@babel+core@7.20.12
-      ember-sortable: link:../ember-sortable
       ember-source: 4.10.0_ipwtokbwlukr3yko7oz5lbj6xy
       ember-source-channel-url: 3.0.0
       ember-template-lint: 4.18.2_ember-cli-htmlbars@6.2.0
