@@ -11,7 +11,6 @@
     "test": "cd test-app && pnpm test:ember"
   },
   "volta": {
-    "node": "16.19.0",
-    "yarn": "1.22.18"
+    "node": "16.19.0"
   }
 }
