@@ -32,11 +32,13 @@
     "start": "rollup --config --watch",
     "test": "echo 'Addon does not have tests, run tests in test-app'"
   },
+  "peerDependencies": {
+    "ember-modifier": "^3.2.0 || ^4.0.0",
+    "@ember/test-helpers": "^2.6.0",
+    "@ember/test-waiters": "^3.0.1"
+  },
   "dependencies": {
-    "@ember/test-waiters": "^3.0.1",
-    "@embroider/addon-shim": "^1.8.4",
-    "ember-modifier": "^3.2.0",
-    "@ember/test-helpers": "^2.6.0"
+    "@embroider/addon-shim": "^1.8.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
