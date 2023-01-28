@@ -8,3 +8,8 @@ runs:
     with:
       name: dist
       path: ./addon/dist
+
+  # https://github.com/pnpm/pnpm/issues/4965
+  - name: 'Install dependencies'
+    shell: 'bash'
+    run: pnpm install --force
