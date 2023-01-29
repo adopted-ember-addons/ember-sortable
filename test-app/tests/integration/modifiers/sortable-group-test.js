@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { settled, find, findAll, render, triggerKeyEvent, waitUntil } from '@ember/test-helpers';
 import { set } from '@ember/object';
-import { reorder } from 'ember-sortable/test-support/helpers';
+import { reorder } from 'ember-sortable/test-support';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Modifier | sortable-group', function (hooks) {

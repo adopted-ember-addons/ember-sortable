@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { visit, find } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import { drag } from 'ember-sortable/test-support/helpers';
+import { drag } from 'ember-sortable/test-support';
 
 module('Acceptance | container auto scroll', function (hooks) {
   setupApplicationTest(hooks);

@@ -1,17 +1,11 @@
 {
   "name": "docs",
-  "version": "5.0.0",
-  "description": "Sortable UI primitives for Ember.",
-  "keywords": [
-    "sortable"
-  ],
+  "version": "0.0.0",
+  "private": true,
+  "description": "Docs app for ember-sortable",
   "repository": "https://github.com/adopted-ember-addons/ember-sortable",
   "license": "MIT",
   "author": "",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
   "scripts": {
     "build": "ember build",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
@@ -23,7 +17,11 @@
     "test:ember": "ember test",
     "test:all": "ember try:each"
   },
+  "dependencies": {
+    "ember-sortable": "workspace:../addon"
+  },
   "devDependencies": {
+    "@babel/core": "^7.20.12",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@ember/test-waiters": "^3.0.1",
@@ -50,7 +48,6 @@
     "ember-resolver": "^8.0.3",
     "ember-source": "^4.2.0",
     "ember-source-channel-url": "^3.0.0",
-    "ember-sortable": "5.0.0",
     "ember-template-lint": "^4.2.0",
     "ember-test-selectors": "^6.0.0",
     "eslint": "^7.32.0",
@@ -67,12 +64,6 @@
     "qunit": "^2.18.0",
     "qunit-dom": "^2.0.0",
     "webpack": "^5.69.1"
-  },
-  "engines": {
-    "node": "14.* || >= 16"
-  },
-  "publishConfig": {
-    "registry": "https://registry.npmjs.org"
   },
   "ember": {
     "edition": "octane"

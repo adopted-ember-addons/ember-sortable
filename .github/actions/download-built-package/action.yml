@@ -1,0 +1,15 @@
+name: Download built package from cache
+description: Download built package from cache
+runs:
+  using: "composite"
+  steps:
+  - name: Download built package from cache
+    uses: actions/download-artifact@v3
+    with:
+      name: dist
+      path: ./addon/dist
+
+  # https://github.com/pnpm/pnpm/issues/4965
+  - name: 'Install dependencies'
+    shell: 'bash'
+    run: pnpm install --force

@@ -1,13 +1,14 @@
 import { module, test } from 'qunit';
 import { visit, find, findAll, triggerKeyEvent, focus, blur } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
-import { drag, reorder } from 'ember-sortable/test-support/helpers';
 import {
+  drag,
+  reorder,
   ENTER_KEY_CODE,
   SPACE_KEY_CODE,
   ESCAPE_KEY_CODE,
   ARROW_KEY_CODES,
-} from 'ember-sortable/test-support/utils/keyboard';
+} from 'ember-sortable/test-support';
 
 module('Acceptance | smoke modifier', function (hooks) {
   setupApplicationTest(hooks);
