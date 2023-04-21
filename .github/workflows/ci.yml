@@ -8,69 +8,97 @@ on:
   pull_request: {}
 
 concurrency:
-   group: ci-${{ github.head_ref || github.ref }}
-   cancel-in-progress: true
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/assert-build
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    needs: [setup]
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/setup-job
+    - name: Lint
+      run: pnpm lint
+
   test:
     name: "Tests"
     runs-on: ubuntu-latest
+    needs: [setup]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-      - name: Lint
-        run: yarn lint
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Run Tests
-        run: yarn test:ember
+        run: pnpm test:ember
+        working-directory: test-app
+
+  docs:
+    name: "Docs App"
+    runs-on: ubuntu-latest
+    # This isn't a strict requirement, but it doesn't make
+    # sense to test the docs app if the main tests are not passing
+    needs: [test]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
+      - name: Run Tests
+        run: pnpm test:ember
+        working-directory: docs
 
   floating:
     name: "Floating Dependencies"
     runs-on: ubuntu-latest
+    needs: [test]
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-          cache: yarn
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Install Dependencies
-        run: yarn install --no-lockfile
+        run: |
+          rm pnpm-lock.yaml
+          pnpm install
       - name: Run Tests
-        run: yarn test:ember
+        run: pnpm test:ember
+        working-directory: test-app
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
     runs-on: ubuntu-latest
-    needs: 'test'
+    needs: [test]
 
     strategy:
       fail-fast: false
       matrix:
         try-scenario:
-          - ember-lts-3.24
           - ember-lts-3.28
+          - ember-lts-4.4
+          - ember-lts-4.8
           - ember-release
           - ember-beta
           - ember-canary
-          - ember-classic
+          - ember-modifier-4
           - embroider-safe
           - embroider-optimized
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14.x
-          cache: yarn
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/setup-job
+      - uses: ./.github/actions/download-built-package
       - name: Run Tests
-        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }}
+        run: node_modules/.bin/ember try:one ${{ matrix.try-scenario }} --skip-cleanup
+        working-directory: test-app

@@ -18,6 +18,9 @@ Sortable UI primitives for Ember.
 |----------------|-------|------|
 | 3.0.0          | 3.24+ | 12+  |
 | 4.0.0          | 3.24+ | 14+  |
+| 5.0.0          | 3.28+ | n/a[^1]  |
+
+[^1]: Node is not relevant for v2 addons. As of v5.0.0, ember-sortable is a v2 addon. V2 addons don't have to be for browser-only contexts, but ember-sortable is -- so node is not relevant anymore. This is different from v1 addons, which are not browser libraries, but node programs that happen emit browser code to the consuming app at app-build time.
 
 ## Installation
 
@@ -342,20 +345,20 @@ and returns a `string` constructed from the `config`.
 - [`reorder`][reorder]: Reorders elements to the specified state.
 - [`keyboard`][keyboard]: Keycode constants for quick.
 
-[drag]: addon-test-support/helpers/drag.js
-[reorder]: addon-test-support/helpers/reorder.js
-[keyboard]: addon-test-support/utils/kebyoard.js
+[drag]: addon/src/test-support/helpers/drag.js
+[reorder]: addon/src/test-support/helpers/reorder.js
+[keyboard]: addon/src/test-support/utils/kebyoard.js
 
 To include them in your application, you can import them:
 
 ```js
-import { drag, reorder } from 'ember-sortable/test-support/helpers';
-import {
+import { 
+  drag, reorder,
   ENTER_KEY_CODE,
   SPACE_KEY_CODE,
   ESCAPE_KEY_CODE,
   ARROW_KEY_CODES,
-} from 'ember-sortable/test-support/utils/keyboard';
+} from 'ember-sortable/test-support';
 ```
 
 ### Examples

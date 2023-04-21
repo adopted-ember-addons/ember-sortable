@@ -1,0 +1,14 @@
+name: Setup node and package manager
+description: Setup node and install dependencies using the package manager
+runs:
+  using: "composite"
+  steps:
+    - uses: pnpm/action-setup@v2.2.4
+      with:
+        version: 7
+    - uses: actions/setup-node@v3
+      with:
+        cache: 'pnpm'
+    - name: 'Install dependencies'
+      shell: 'bash'
+      run: pnpm install
