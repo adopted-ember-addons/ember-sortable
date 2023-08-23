@@ -1,6 +1,7 @@
 {
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@7.33.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/adopted-ember-addons/ember-sortable"
