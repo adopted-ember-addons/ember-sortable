@@ -145,6 +145,7 @@ importers:
     specifiers:
       '@babel/core': ^7.20.12
       '@ember/optional-features': ^2.0.0
+      '@ember/string': ^3.1.1
       '@ember/test-helpers': ^2.6.0
       '@ember/test-waiters': ^3.0.1
       '@embroider/macros': ^1.9.0
@@ -185,6 +186,7 @@ importers:
       qunit-dom: ^2.0.0
       webpack: ^5.69.1
     dependencies:
+      '@ember/string': 3.1.1
       '@ember/test-helpers': 2.9.3_2lbu44dmrdozuoe4jwbycbgazy
       '@ember/test-waiters': 3.0.2
       ember-modifier: 3.2.7_@babel+core@7.20.12
@@ -1418,6 +1420,15 @@ packages:
       - supports-color
     dev: true
 
+  /@ember/string/3.1.1:
+    resolution: {integrity: sha512-UbXJ+k3QOrYN4SRPHgXCqYIJ+yWWUg1+vr0H4DhdQPTy8LJfyqwZ2tc5uqpSSnEXE+/1KopHBE5J8GDagAg5cg==}
+    engines: {node: 12.* || 14.* || >= 16}
+    dependencies:
+      ember-cli-babel: 7.26.11
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@ember/test-helpers/2.9.3_2lbu44dmrdozuoe4jwbycbgazy:
     resolution: {integrity: sha512-ejVg4Dj+G/6zyLvQsYOvmGiOLU6AS94tY4ClaO1E2oVvjjtVJIRmVLFN61I+DuyBg9hS3cFoPjQRTZB9MRIbxQ==}
     engines: {node: 10.* || 12.* || 14.* || 15.* || >= 16.*}
@@ -1476,6 +1487,17 @@ packages:
     engines: {node: 12.* || 14.* || >= 16}
     dependencies:
       '@embroider/shared-internals': 2.0.0
+      broccoli-funnel: 3.0.8
+      semver: 7.3.8
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@embroider/addon-shim/1.8.6:
+    resolution: {integrity: sha512-siC9kP78uucEbpDcVyxjkwa76pcs5rVzDVpWO4PDc9EAXRX+pzmUuSTLAK3GztUwx7/PWhz1BenAivqdSvSgfg==}
+    engines: {node: 12.* || 14.* || >= 16}
+    dependencies:
+      '@embroider/shared-internals': 2.4.0
       broccoli-funnel: 3.0.8
       semver: 7.3.8
     transitivePeerDependencies:
@@ -1549,6 +1571,23 @@ packages:
       resolve-package-path: 4.0.3
       semver: 7.3.8
       typescript-memoize: 1.1.1
+
+  /@embroider/shared-internals/2.4.0:
+    resolution: {integrity: sha512-pFE05ebenWMC9XAPRjadYCXXb6VmqjkhYN5uqkhPo+VUmMHnx7sZYYxqGjxfVuhC/ghS/BNlOffOCXDOoE7k7g==}
+    engines: {node: 12.* || 14.* || >= 16}
+    dependencies:
+      babel-import-util: 2.0.0
+      debug: 4.3.4
+      ember-rfc176-data: 0.3.18
+      fs-extra: 9.1.0
+      js-string-escape: 1.0.1
+      lodash: 4.17.21
+      resolve-package-path: 4.0.3
+      semver: 7.3.8
+      typescript-memoize: 1.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
 
   /@embroider/test-setup/1.8.3:
     resolution: {integrity: sha512-BCCbBG7UWkCw+cQ401Ip6LnqTRaQDeKImxR+e7Q4oP6H4EBj7p4iGR1z6fhMy4NNyXKPB6jk3bGa9bTiiNoEAw==}
@@ -2831,6 +2870,11 @@ packages:
     resolution: {integrity: sha512-PPzUT17eAI18zn6ek1R3sB4Krc/MbnmT1MkZQFmyhjoaEGBVwNABhfVU9+EKcDSKrrOm9OIpGhjxukx1GCiy1g==}
     engines: {node: '>= 12.*'}
 
+  /babel-import-util/2.0.0:
+    resolution: {integrity: sha512-pkWynbLwru0RZmA9iKeQL63+CkkW0RCP3kL5njCtudd6YPUKb5Pa0kL4fb3bmuKn2QDBFwY5mvvhEK/+jv2Ynw==}
+    engines: {node: '>= 12.*'}
+    dev: false
+
   /babel-loader/8.3.0_la66t7xldg4uecmyawueag5wkm:
     resolution: {integrity: sha512-H8SvsMF+m9t15HNLMipppzkC+Y2Yq+v3SonZyU70RBL/h1gxPkH08Ot8pEE9Z4Kd+czyWJClmFS8qzIP9OZ04Q==}
     engines: {node: '>= 8.9'}
@@ -3689,7 +3733,7 @@ packages:
       minipass-pipeline: 1.2.4
       mkdirp: 1.0.4
       p-map: 4.0.0
-      promise-inflight: 1.0.1_bluebird@3.7.2
+      promise-inflight: 1.0.1
       rimraf: 3.0.2
       ssri: 8.0.1
       tar: 6.1.13
@@ -5136,8 +5180,8 @@ packages:
       - supports-color
     dev: true
 
-  /ember-cli-test-loader/3.0.0:
-    resolution: {integrity: sha512-wfFRBrfO9gaKScYcdQxTfklx9yp1lWK6zv1rZRpkas9z2SHyJojF7NOQRWQgSB3ypm7vfpiF8VsFFVVr7VBzAQ==}
+  /ember-cli-test-loader/3.1.0:
+    resolution: {integrity: sha512-0aocZV9SIoOHiU3hrH3IuLR6busWhTX6UVXgd490hmJkIymmOXNH2+jJoC7Ebkeo3PiOfAdjqhb765QDlHSJOw==}
     engines: {node: 10.* || >= 12}
     dependencies:
       ember-cli-babel: 7.26.11
@@ -10435,6 +10479,15 @@ packages:
     engines: {node: '>=0.4.0'}
     dev: true
 
+  /promise-inflight/1.0.1:
+    resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
+    peerDependencies:
+      bluebird: '*'
+    peerDependenciesMeta:
+      bluebird:
+        optional: true
+    dev: true
+
   /promise-inflight/1.0.1_bluebird@3.7.2:
     resolution: {integrity: sha512-6zWPyEOFaQBJYcGMHBKTKJ3u6TBsnMFOIZSa6ce1e/ZrrsOlnHRHbabMjLiBYKp+n44X9eUI6VUPaukCXHuG4g==}
     peerDependencies:
@@ -13157,17 +13210,17 @@ packages:
     resolution: {directory: addon, type: directory}
     id: file:addon
     name: ember-sortable
-    version: 4.0.3
+    version: 5.0.0
     engines: {node: 14.* || >= 16}
     peerDependencies:
-      '@ember/test-helpers': ^2.6.0
+      '@ember/test-helpers': ^2.6.0 || ^3.0.0
       '@ember/test-waiters': ^3.0.1
       ember-modifier: ^3.2.0 || ^4.0.0
       ember-source: ^3.28.0 || ^4.0.0
     dependencies:
       '@ember/test-helpers': 2.9.3_2lbu44dmrdozuoe4jwbycbgazy
       '@ember/test-waiters': 3.0.2
-      '@embroider/addon-shim': 1.8.4
+      '@embroider/addon-shim': 1.8.6
       ember-modifier: 3.2.7_@babel+core@7.20.12
       ember-source: 4.10.0_ipwtokbwlukr3yko7oz5lbj6xy
     transitivePeerDependencies:
@@ -13190,7 +13243,7 @@ packages:
       common-tags: 1.8.2
       ember-auto-import: 2.6.0_webpack@5.75.0
       ember-cli-babel: 7.26.11
-      ember-cli-test-loader: 3.0.0
+      ember-cli-test-loader: 3.1.0
       qunit: 2.19.4
       resolve-package-path: 3.1.0
       silent-error: 1.1.1
