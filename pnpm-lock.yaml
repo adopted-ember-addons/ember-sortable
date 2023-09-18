@@ -161,7 +161,6 @@ importers:
       ember-cli-htmlbars: ^6.0.1
       ember-cli-inject-live-reload: ^2.0.0
       ember-disable-prototype-extensions: ^1.1.3
-      ember-export-application-global: ^2.0.0
       ember-load-initializers: ^2.1.2
       ember-modifier: ^3.2.0
       ember-qunit: mydea/ember-qunit#fn/ember-auto-import-v2-node-12
@@ -207,7 +206,6 @@ importers:
       ember-cli-htmlbars: 6.2.0
       ember-cli-inject-live-reload: 2.1.0
       ember-disable-prototype-extensions: 1.1.3
-      ember-export-application-global: 2.0.1
       ember-load-initializers: 2.1.2_@babel+core@7.20.12
       ember-qunit: github.com/mydea/ember-qunit/3806e10dd847f2cf2a10447fee86b25a7572b2bc_dvame2fsqhpslri2nygrxd77tm
       ember-resolver: 8.1.0_@babel+core@7.20.12
