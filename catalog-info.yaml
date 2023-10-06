@@ -9,6 +9,7 @@ metadata:
   - frontend
   - ember
   - sortable
+  - fork
   annotations:
     backstage.io/source-location: url:https://github.com/gynzy/ember-sortable
     backstage.io/edit-url: https://github.com/gynzy/ember-sortable/tree/master/catalog-info.yaml
