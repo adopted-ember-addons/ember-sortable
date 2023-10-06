@@ -4,8 +4,7 @@ metadata:
   name: ember-sortable
   description: |
     Ember addon for sortable UI primitives.
-    This fork fixes many issues we experienced over the past years with ember-sortable.
-    The initial reason why we created this fork is a bit difficult to track down since we did not document it.
+    This fork fixes a number of issues we experienced over the past years with ember-sortable.
   tags:
   - frontend
   - ember
