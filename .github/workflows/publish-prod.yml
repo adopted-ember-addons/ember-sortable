@@ -1,0 +1,74 @@
+"jobs":
+  "yarn-publish":
+    "container":
+      "image": "node:18"
+    "permissions":
+      "contents": "read"
+      "packages": "write"
+      "pull-requests": "read"
+    "runs-on": "ubuntu-latest"
+    "steps":
+    - "name": "Check out repository code"
+      "uses": "actions/checkout@v3"
+      "with":
+        "ref": "${{ github.sha }}"
+    - "env":
+        "NPM_TOKEN": "${{ secrets.npm_token }}"
+      "name": "set gynzy npm_token"
+      "run": |
+        cat <<EOF > .npmrc
+        registry=https://npm.gynzy.net/
+        always-auth="true"
+        "//npm.gynzy.net/:_authToken"="${NPM_TOKEN}"
+        EOF
+    - "name": "yarn"
+      "run": "yarn --cache-folder .yarncache --frozen-lockfile --prefer-offline || yarn --cache-folder .yarncache --frozen-lockfile --prefer-offline"
+    - "name": "build"
+      "run": "yarn build"
+    - "env":
+        "NPM_TOKEN": "${{ secrets.npm_token }}"
+      "name": "set gynzy npm_token"
+      "run": |
+        cat <<EOF > .npmrc
+        registry=https://npm.gynzy.net/
+        always-auth="true"
+        "//npm.gynzy.net/:_authToken"="${NPM_TOKEN}"
+        EOF
+    - "env": {}
+      "name": "publish"
+      "run": |
+        bash -c 'set -xeo pipefail;
+        
+        cp package.json package.json.bak;
+        
+        VERSION=$(yarn version --non-interactive 2>/dev/null | grep "Current version" | grep -o -P '[0-9a-zA-Z_.-]+$' );
+        if [[ ! -z "${PR_NUMBER}" ]]; then
+          echo "Setting tag/version for pr build.";
+          TAG=pr-$PR_NUMBER;
+          PUBLISHVERSION="$VERSION-pr$PR_NUMBER.$GITHUB_RUN_NUMBER";
+        elif [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+          if [[ "${GITHUB_REF_NAME}" != "${VERSION}" ]]; then
+            echo "Tag version does not match package version. They should match. Exiting";
+            exit 1;
+          fi
+          echo "Setting tag/version for release/tag build.";
+          PUBLISHVERSION=$VERSION;
+          TAG="latest";
+        elif [[ "${GITHUB_REF_TYPE}" == "branch" && "${GITHUB_REF_NAME}" == "main" ]]; then
+          echo "Setting tag/version for release/tag build.";
+          PUBLISHVERSION=$VERSION;
+          TAG="latest";
+        else
+          exit 1
+        fi
+        
+        yarn publish --non-interactive --no-git-tag-version --tag "$TAG" --new-version "$PUBLISHVERSION";
+        
+        mv package.json.bak package.json;
+        ';
+    "timeout-minutes": 30
+"name": "publish-prod"
+"on":
+  "push":
+    "branches":
+    - "${{ github.event.pull_request.base.ref }}"

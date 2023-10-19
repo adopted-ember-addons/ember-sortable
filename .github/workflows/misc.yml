@@ -1,0 +1,28 @@
+"jobs":
+  "verify-jsonnet-gh-actions":
+    "container":
+      "credentials":
+        "password": "${{ secrets.docker_gcr_io }}"
+        "username": "_json_key"
+      "image": "eu.gcr.io/unicorn-985/docker-images_jsonnet:v1"
+    "runs-on": "ubuntu-latest"
+    "steps":
+    - "name": "Check out repository code"
+      "uses": "actions/checkout@v3"
+      "with":
+        "ref": "${{ github.event.pull_request.head.sha }}"
+    - "name": "remove-workflows"
+      "run": "rm -f .github/workflows/*"
+    - "name": "generate-workflows"
+      "run": "jsonnet -m .github/workflows/ -S .github.jsonnet;"
+    - "name": "git workaround"
+      "run": "git config --global --add safe.directory $PWD"
+    - "name": "check-jsonnet-diff"
+      "run": "git diff --exit-code"
+    - "if": "failure()"
+      "name": "possible-causes-for-error"
+      "run": "echo \"Possible causes: \n1. You updated jsonnet files, but did not regenerate the workflows. \nTo fix, run 'yarn github:generate' locally and commit the changes. If this helps, check if your pre-commit hooks work.\n2. You used the wrong jsonnet binary. In this case, the newlines at the end of the files differ.\nTo fix, install the go binary. On mac, run 'brew uninstall jsonnet && brew install jsonnet-go'\""
+    "timeout-minutes": 30
+"name": "misc"
+"on":
+- "pull_request"
