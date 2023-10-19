@@ -2,8 +2,10 @@
   /*
     @param {string[]} repositories - The repositories to publish to
     @param {boolean} isPublicFork - Whether the repository is a public fork
+    @param {boolean} checkVersionBump - Whether to assert if the version was bumped (recommended)
+    @param {ghJob} testJob - a job to be ran during PR to assert tests. can be an array of jobs
   */
-  workflowJavascriptPackage(repositories=['gynzy'], isPublicFork=true, runTest=false, checkVersionBump=true)::
+  workflowJavascriptPackage(repositories=['gynzy'], isPublicFork=true, checkVersionBump=true, testJob=null)::
     local runsOn = (if isPublicFork then 'ubuntu-latest' else null);
 
     $.pipeline(
@@ -22,17 +24,8 @@
       [
         $.yarnPublishPreviewJob(repositories=repositories, runsOn=runsOn, checkVersionBump=checkVersionBump),
       ] +
-      (if runTest then
-         [$.ghJob(
-           'test',
-           runsOn=runsOn,
-           image='node:18',
-           useCredentials=false,
-           steps=[
-             $.checkoutAndYarn(ref='${{ github.event.pull_request.head.ref }}'),
-             $.step('test', 'yarn test'),
-           ]
-         )]
+      (if testJob != null then
+         [testJob]
        else [])
     ),
 }
