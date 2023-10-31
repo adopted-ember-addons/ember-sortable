@@ -1,3 +1,9 @@
+# Gynzy release procedure
+
+Step 1: create PR and bump version.
+Step 2: test provided PR package in your software
+Step 3: merge PR to release the version
+
 # ember-sortable
 
 [![npm version](https://badge.fury.io/js/ember-sortable.svg)](http://badge.fury.io/js/ember-sortable)
