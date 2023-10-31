@@ -201,7 +201,7 @@
   // if: steps.changes.outputs.app == 'true'
   //
   // See https://github.com/dorny/paths-filter for more information.
-  testForChangedFiles(changedFiles)::
+  testForChangedFiles(changedFiles, headRef=null, baseRef=null)::
     [
       $.step('git safe directory', 'git config --global --add safe.directory $PWD'),
       $.action(
@@ -209,11 +209,13 @@
         uses='dorny/paths-filter@v2',
         id='changes',
         with={
-          filters: |||
-            %s
-          ||| % std.manifestYamlDoc(changedFiles),
-          token: '${{ github.token }}',
-        }
+               filters: |||
+                 %s
+               ||| % std.manifestYamlDoc(changedFiles),
+               token: '${{ github.token }}',
+             } +
+             (if headRef != null then { ref: headRef } else {}) +
+             (if baseRef != null then { base: baseRef } else {}),
       ),
     ],
 

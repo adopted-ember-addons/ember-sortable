@@ -45,7 +45,7 @@
                       'auto-merge': 'false',
                       ref: '${{ github.event.pull_request.head.sha }}',
                       description: 'Auto deploy production on PR merge. pr: ${{ github.event.number }} ref: ${{ github.event.pull_request.head.sha }}',
-                      payload: '{ "pr" : ${{ github.event.number }}, "branch": "${{ github.head_ref }}" }',
+                      payload: '{ "pr" : ${{ github.event.number }}, "branch": "${{ github.head_ref }}", "base_ref": "${{ github.event.pull_request.base.sha }}", "head_ref": "${{ github.event.pull_request.head.sha }}" }',
                     }
                   ),
                   $.sendSlackMessage(
@@ -74,7 +74,7 @@
                          'auto-merge': 'false',
                          ref: '${{ github.event.pull_request.head.sha }}',
                          description: 'Auto deploy test on PR merge. pr: ${{ github.event.number }} ref: ${{ github.event.pull_request.head.sha }}',
-                         payload: '{ "pr" : ${{ github.event.number }}, "branch": "${{ github.head_ref }}" }',
+                         payload: '{ "pr" : ${{ github.event.number }}, "branch": "${{ github.head_ref }}", "base_ref": "${{ github.event.pull_request.base.sha }}", "head_ref": "${{ github.event.pull_request.head.sha }}" }',
                        }
                      ),
                    ],

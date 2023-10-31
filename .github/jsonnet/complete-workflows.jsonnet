@@ -4,8 +4,9 @@
     @param {boolean} isPublicFork - Whether the repository is a public fork
     @param {boolean} checkVersionBump - Whether to assert if the version was bumped (recommended)
     @param {ghJob} testJob - a job to be ran during PR to assert tests. can be an array of jobs
+    @param {string} branch - the branch to run the publish-prod job on
   */
-  workflowJavascriptPackage(repositories=['gynzy'], isPublicFork=true, checkVersionBump=true, testJob=null)::
+  workflowJavascriptPackage(repositories=['gynzy'], isPublicFork=true, checkVersionBump=true, testJob=null, branch='main')::
     local runsOn = (if isPublicFork then 'ubuntu-latest' else null);
 
     $.pipeline(
@@ -15,9 +16,9 @@
     $.pipeline(
       'publish-prod',
       [
-        $.yarnPublishJob(repositories, runsOn=runsOn),
+        $.yarnPublishJob(repositories=repositories, runsOn=runsOn),
       ],
-      event={ push: { branches: ['${{ github.event.pull_request.base.ref }}'] } },
+      event={ push: { branches: [ branch ] } },
     ) +
     $.pipeline(
       'pr',

@@ -156,7 +156,7 @@
           echo "Setting tag/version for release/tag build.";
           PUBLISHVERSION=$VERSION;
           TAG="latest";
-        elif [[ "${GITHUB_REF_TYPE}" == "branch" && "${GITHUB_REF_NAME}" == "main" ]]; then
+        elif [[ "${GITHUB_REF_TYPE}" == "branch" && "${GITHUB_REF_NAME}" == "main" ]] || [[ "${GITHUB_EVENT_NAME}" == "deployment" ]]; then
           echo "Setting tag/version for release/tag build.";
           PUBLISHVERSION=$VERSION;
           TAG="latest";
@@ -189,6 +189,8 @@
     checkVersionBump=true,
     repositories=['gynzy'],
     onChangedFiles=false,
+    changedFilesHeadRef=null,
+    changedFilesBaseRef=null,
     runsOn=null,
   ):
     local ifClause = (if onChangedFiles != false then "steps.changes.outputs.package == 'true'" else null);
@@ -199,7 +201,7 @@
       useCredentials=false,
       steps=
       [$.checkoutAndYarn(ref=gitCloneRef, fullClone=false)] +
-      (if onChangedFiles != false then $.testForChangedFiles({ package: onChangedFiles }) else []) +
+      (if onChangedFiles != false then $.testForChangedFiles({ package: onChangedFiles }, headRef=changedFilesHeadRef, baseRef=changedFilesBaseRef) else []) +
       (if checkVersionBump then [
          $.action('check-version-bump', uses='del-systems/check-if-version-bumped@v1', with={
            token: '${{ github.token }}',
@@ -217,6 +219,8 @@
     buildSteps=[$.step('build', 'yarn build')],
     repositories=['gynzy'],
     onChangedFiles=false,
+    changedFilesHeadRef=null,
+    changedFilesBaseRef=null,
     ifClause=null,
     runsOn=null,
   ):
@@ -228,7 +232,7 @@
       useCredentials=false,
       steps=
       [$.checkoutAndYarn(ref=gitCloneRef, fullClone=false)] +
-      (if onChangedFiles != false then $.testForChangedFiles({ package: onChangedFiles }) else []) +
+      (if onChangedFiles != false then $.testForChangedFiles({ package: onChangedFiles }, headRef=changedFilesHeadRef, baseRef=changedFilesBaseRef) else []) +
       (if onChangedFiles != false then std.map(function(step) std.map(function(s) s { 'if': stepIfClause }, step), buildSteps) else buildSteps) +
       $.yarnPublishToRepositories(isPr=false, repositories=repositories, ifClause=stepIfClause),
       permissions={ packages: 'write', contents: 'read', 'pull-requests': 'read' },
