@@ -24,11 +24,12 @@
     permissions=null,
     concurrency=null,
     continueOnError=null,
+    env=null,
   )::
     {
       [name]: {
                 'timeout-minutes': timeoutMinutes,
-                'runs-on': (if runsOn == null then ['self-hosted', 'runner-2'] else runsOn),
+                'runs-on': (if runsOn == null then 'arc-runner-2' else runsOn),
               } +
               (
                 if image == null then {} else
@@ -47,7 +48,8 @@
               (if services != null then { services: services } else {}) +
               (if permissions == null then {} else { permissions: permissions }) +
               (if concurrency == null then {} else { concurrency: concurrency }) +
-              (if continueOnError == null then {} else { 'continue-on-error': continueOnError }),
+              (if continueOnError == null then {} else { 'continue-on-error': continueOnError }) +
+              (if env == null then {} else { env: env })
     },
 
   ghExternalJob(
