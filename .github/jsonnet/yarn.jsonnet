@@ -156,7 +156,7 @@
           echo "Setting tag/version for release/tag build.";
           PUBLISHVERSION=$VERSION;
           TAG="latest";
-        elif [[ "${GITHUB_REF_TYPE}" == "branch" && "${GITHUB_REF_NAME}" == "main" ]] || [[ "${GITHUB_EVENT_NAME}" == "deployment" ]]; then
+        elif [[ "${GITHUB_REF_TYPE}" == "branch" && ( "${GITHUB_REF_NAME}" == "main" || "${GITHUB_REF_NAME}" == "master" ) ]] || [[ "${GITHUB_EVENT_NAME}" == "deployment" ]]; then
           echo "Setting tag/version for release/tag build.";
           PUBLISHVERSION=$VERSION;
           TAG="latest";

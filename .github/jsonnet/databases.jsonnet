@@ -31,6 +31,7 @@
       server: 'eu-w4-metrics-production',
       region: 'europe-west4',
       project: 'unicorn-985',
+      lifecycle: 'deprecated',
     },
     'gynzy-test': {
       type: 'mysql',
@@ -44,12 +45,6 @@
       server: 'gynzy-production',
       region: 'europe-west4',
       project: 'gynzy-1090',
-    },
-    'accounts-production': {
-      type: 'mysql',
-      server: 'eu-w4-accounts-production',
-      region: 'europe-west4',
-      project: 'unicorn-985',
     },
     'eu-w4-licenses-v8': {
       type: 'mysql',
@@ -75,7 +70,24 @@
       region: 'europe-west4',
       project: 'unicorn-985',
     },
-
+    'eu-w4-accounts-v8': {
+      type: 'mysql',
+      server: 'eu-w4-accounts-v8',
+      region: 'europe-west4',
+      project: 'unicorn-985',
+    },
+    'eu-w4-metrics-v8': {
+      type: 'mysql',
+      server: 'eu-w4-metrics-v8',
+      region: 'europe-west4',
+      project: 'unicorn-985',
+    },
+    'eu-w4-groups-v8': {
+      type: 'mysql',
+      server: 'eu-w4-groups-v8',
+      region: 'europe-west4',
+      project: 'unicorn-985',
+    },
   },
 
   copyDatabase(mysqlActionOptions)::
