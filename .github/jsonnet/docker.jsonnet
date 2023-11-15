@@ -7,6 +7,7 @@
     env={},
     build_args=null,
     registry='eu.gcr.io',
+    project='unicorn-985',
   )::
     $.action(
       'build-docker',
@@ -16,7 +17,7 @@
              gcloud_service_key: $.secret('docker_gcr_io_base64'),
              image_name: imageName,
              image_tag: imageTag,
-             project_id: 'unicorn-985',
+             project_id: project,
              registry: registry,
            } +
            (if build_args != null then { build_args: build_args } else {}) +
