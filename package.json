@@ -1,19 +1,22 @@
 {
   "version": "0.0.0",
   "private": true,
-  "packageManager": "pnpm@7.33.6",
   "repository": {
     "type": "git",
     "url": "https://github.com/adopted-ember-addons/ember-sortable"
   },
   "scripts": {
-    "prepare": "pnpm build",
     "build": "pnpm --filter 'ember-sortable' build",
-    "release": "cd addon && release-it",
-    "test": "cd test-app && pnpm test:ember",
     "lint": "pnpm --filter '*' lint",
-    "lint:fix": "pnpm --filter '*' lint:fix"
+    "lint:fix": "pnpm --filter '*' lint:fix",
+    "prepare": "pnpm build",
+    "release": "cd addon && release-it",
+    "test": "cd test-app && pnpm test:ember"
   },
+  "devDependencies": {
+    "release-plan": "^0.6.0"
+  },
+  "packageManager": "pnpm@7.33.6",
   "volta": {
     "node": "16.19.0"
   }
