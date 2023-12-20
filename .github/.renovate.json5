@@ -1,0 +1,13 @@
+// Docs:
+// https://docs.renovatebot.com/configuration-options/
+{
+  "extends": [
+    "github>NullVoxPopuli/renovate:npm.json5"
+  ],
+  "packageRules": [
+    {
+      "matchPaths": ["test-app/package.json", "docs/package.json"],
+      "enabled": false
+    }
+  ]
+}
