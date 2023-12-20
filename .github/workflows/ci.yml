@@ -8,28 +8,17 @@ on:
   pull_request: {}
 
 concurrency:
-  group: ci-${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
+   group: ci-${{ github.head_ref || github.ref }}
+   cancel-in-progress: true
 
 jobs:
+  # Fills the dep cache so parallel jobs can start faster
   setup:
-    name: Setup
+    name: "Setup"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-job
-      - uses: ./.github/actions/assert-build
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    needs: [setup]
-
-    steps:
-    - uses: actions/checkout@v4
-    - uses: ./.github/actions/setup-job
-    - name: Lint
-      run: pnpm lint
+      - uses: wyvox/action-setup-pnpm@v3
 
   test:
     name: "Tests"
@@ -38,26 +27,19 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-job
-      - uses: ./.github/actions/download-built-package
-      - name: Run Tests
-        run: pnpm test:ember
-        working-directory: test-app
+      - uses: wyvox/action-setup-pnpm@v3
+      - run: pnpm test
 
-  docs:
-    name: "Docs App"
+  lint:
+    name: "Lint"
     runs-on: ubuntu-latest
-    # This isn't a strict requirement, but it doesn't make
-    # sense to test the docs app if the main tests are not passing
-    needs: [test]
+    needs: [setup]
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-job
-      - uses: ./.github/actions/download-built-package
-      - name: Run Tests
-        run: pnpm test:ember
-        working-directory: docs
+      - uses: wyvox/action-setup-pnpm@v3
+      - name: Lint
+        run: pnpm lint
 
   floating:
     name: "Floating Dependencies"
@@ -66,15 +48,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-job
-      - uses: ./.github/actions/download-built-package
-      - name: Install Dependencies
-        run: |
-          rm pnpm-lock.yaml
-          pnpm install
-      - name: Run Tests
-        run: pnpm test:ember
-        working-directory: test-app
+      - uses: wyvox/action-setup-pnpm@v3
+        with:
+          args: '--no-lockfile'
+      - run: pnpm test
 
   try-scenarios:
     name: ${{ matrix.try-scenario }}
@@ -100,8 +77,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-job
-      - uses: ./.github/actions/download-built-package
+      - uses: wyvox/action-setup-pnpm@v3
       - name: Run Tests
-        run: node_modules/.bin/ember try:one ${{ matrix.try-scenario }} --skip-cleanup
+        run: ./node_modules/.bin/ember try:one ${{ matrix.try-scenario }} --skip-cleanup
         working-directory: test-app
