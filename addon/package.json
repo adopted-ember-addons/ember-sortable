@@ -25,7 +25,6 @@
     "dist"
   ],
   "scripts": {
-    "release": "release-it",
     "build": "rollup --config",
     "prepublishOnly": "rollup --config",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
@@ -48,7 +47,6 @@
     "@babel/plugin-proposal-class-properties": "^7.18.6",
     "@babel/plugin-proposal-decorators": "^7.20.7",
     "@embroider/addon-dev": "^3.0.0",
-    "@release-it-plugins/lerna-changelog": "^5.0.0",
     "@rollup/plugin-babel": "^6.0.3",
     "babel-eslint": "^10.0.3",
     "eslint": "^7.32.0",
@@ -59,27 +57,11 @@
     "eslint-plugin-qunit": "^7.2.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.5.1",
-    "release-it": "^15.6.0",
     "rollup": "^3.10.0",
     "rollup-plugin-copy": "^3.4.0"
   },
   "engines": {
     "node": "14.* || >= 16"
-  },
-  "release-it": {
-    "plugins": {
-      "@release-it-plugins/lerna-changelog": {
-        "infile": "CHANGELOG.md",
-        "launchEditor": false
-      }
-    },
-    "git": {
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true,
-      "tokenRef": "GITHUB_AUTH"
-    }
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
