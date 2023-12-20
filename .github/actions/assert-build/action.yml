@@ -24,7 +24,7 @@ runs:
       npx assert-folder-contents
 
   - name: Upload dist assets to cache
-    uses: actions/upload-artifact@v3
+    uses: actions/upload-artifact@v4
     with:
       name: dist
       path: ./addon/dist
