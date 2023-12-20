@@ -36,10 +36,10 @@ jobs:
     needs: [setup]
 
     steps:
-    - uses: actions/checkout@v4
-    - uses: ./.github/actions/setup-job
-    - name: Lint
-      run: pnpm lint
+      - uses: actions/checkout@v4
+      - uses: wyvox/action-setup-pnpm@v3
+      - name: Lint
+        run: pnpm lint
 
   floating:
     name: "Floating Dependencies"
