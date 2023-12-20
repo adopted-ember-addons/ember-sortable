@@ -15,6 +15,7 @@
   },
   "exports": {
     ".": "./dist/index.js",
+    "./_app_/*": "./dist/_app_/*.js",
     "./modifiers/*": "./dist/modifiers/*",
     "./services/*": "./dist/services/*",
     "./test-support": "./dist/test-support/index.js",
