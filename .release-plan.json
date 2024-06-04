@@ -2,20 +2,16 @@
   "solution": {
     "ember-sortable": {
       "impact": "patch",
-      "oldVersion": "5.0.0",
-      "newVersion": "5.0.1",
+      "oldVersion": "5.0.1",
+      "newVersion": "5.0.2",
       "constraints": [
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
-        },
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2023-12-20)\n\nember-sortable 5.0.1 (patch)\n\n#### :rocket: Enhancement\n* `test-app`\n  * [#524](https://github.com/adopted-ember-addons/ember-sortable/pull/524) Test against LTS 4.12 and 5.4 ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#521](https://github.com/adopted-ember-addons/ember-sortable/pull/521) importing from the _app_ directory was disallowed because of the exports config. ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#523](https://github.com/adopted-ember-addons/ember-sortable/pull/523) widen peer ranges ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#506](https://github.com/adopted-ember-addons/ember-sortable/pull/506) when sortable is disabled, scrolling is blocked on ios ([@st-h](https://github.com/st-h))\n* `ember-sortable`, `test-app`\n  * [#518](https://github.com/adopted-ember-addons/ember-sortable/pull/518) Allow @ember/test-helpers 3 ([@francois2metz](https://github.com/francois2metz))\n\n#### :house: Internal\n* Other\n  * [#533](https://github.com/adopted-ember-addons/ember-sortable/pull/533) Simplify CI ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n* `ember-sortable`\n  * [#522](https://github.com/adopted-ember-addons/ember-sortable/pull/522) Setup release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 3\n- François de Metz ([@francois2metz](https://github.com/francois2metz))\n- Steve ([@st-h](https://github.com/st-h))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2024-06-04)\n\nember-sortable 5.0.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#558](https://github.com/adopted-ember-addons/ember-sortable/pull/558) Add missing extensions to exports ([@deanylev](https://github.com/deanylev))\n\n#### Committers: 1\n- Dean Levinson ([@deanylev](https://github.com/deanylev))\n"
 }
