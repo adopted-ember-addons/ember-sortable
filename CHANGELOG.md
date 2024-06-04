@@ -1,4 +1,15 @@
 # Changelog
+
+## Release (2024-06-04)
+
+ember-sortable 5.0.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#558](https://github.com/adopted-ember-addons/ember-sortable/pull/558) Add missing extensions to exports ([@deanylev](https://github.com/deanylev))
+
+#### Committers: 1
+- Dean Levinson ([@deanylev](https://github.com/deanylev))
 ## Release (2023-12-20)
 
 ember-sortable 5.0.1 (patch)
