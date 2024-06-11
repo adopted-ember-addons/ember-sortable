@@ -181,6 +181,46 @@ export default class SortableItemModifier extends Modifier {
   }
 
   /**
+   * Gives info in which direction the element will be moved
+   *
+   * @property moveDirection
+   * @type Object
+   */
+  get moveDirection() {
+    const moveDirection = {
+      left: false,
+      right: false,
+      top: false,
+      bottom: false,
+    };
+
+    if (!this.isDragging) {
+      return moveDirection;
+    }
+
+    const dragOriginX = this._dragOriginX;
+    const dragOriginY = this._dragOriginY;
+
+    if (dragOriginX > this._pageX) {
+      moveDirection.left = true;
+    }
+
+    if (dragOriginX < this._pageX) {
+      moveDirection.right = true;
+    }
+
+    if (dragOriginY > this._pageY) {
+      moveDirection.top = true;
+    }
+
+    if (dragOriginY < this._pageY) {
+      moveDirection.bottom = true;
+    }
+
+    return moveDirection;
+  }
+
+  /**
    Action that fires when the item starts being dragged.
    @property onDragStart
    @type Function
@@ -440,7 +480,7 @@ export default class SortableItemModifier extends Modifier {
     };
 
     let leadingEdgeKey, trailingEdgeKey, scrollKey, pageKey;
-    if (groupDirection === 'x') {
+    if (groupDirection === 'grid' || groupDirection === 'x') {
       leadingEdgeKey = 'left';
       trailingEdgeKey = 'right';
       scrollKey = 'scrollLeft';
@@ -516,6 +556,33 @@ export default class SortableItemModifier extends Modifier {
     let scrollOrigin;
     let parentElement = this.element.parentNode;
 
+    if (groupDirection === 'grid') {
+      this.startEvent = startEvent;
+      const dragOriginX = getX(startEvent);
+      this._dragOriginX = getX(startEvent);
+      const elementOriginX = this.x;
+      const scrollOriginX = parentElement.getBoundingClientRect().left;
+
+      const dragOriginY = getY(startEvent);
+      this._dragOriginY = dragOriginY;
+      const elementOriginY = this.y;
+      const scrollOriginY = parentElement.getBoundingClientRect().top;
+
+      return (event) => {
+        this._pageX = getX(event);
+        let dx = this._pageX - dragOriginX;
+        let scrollX = parentElement.getBoundingClientRect().left;
+        let x = elementOriginX + dx + (scrollOriginX - scrollX);
+
+        this._pageY = getY(event);
+        let dy = this._pageY - dragOriginY;
+        let scrollY = parentElement.getBoundingClientRect().top;
+        let y = elementOriginY + dy + (scrollOriginY - scrollY);
+
+        this._drag(x, y);
+      };
+    }
+
     if (groupDirection === 'x') {
       dragOrigin = getX(startEvent);
       elementOrigin = this.x;
@@ -527,7 +594,7 @@ export default class SortableItemModifier extends Modifier {
         let scrollX = parentElement.getBoundingClientRect().left;
         let x = elementOrigin + dx + (scrollOrigin - scrollX);
 
-        this._drag(x);
+        this._drag(x, 0);
       };
     }
 
@@ -542,7 +609,7 @@ export default class SortableItemModifier extends Modifier {
         let scrollY = parentElement.getBoundingClientRect().top;
         let y = elementOrigin + dy + (scrollOrigin - scrollY);
 
-        this._drag(y);
+        this._drag(0, y);
       };
     }
   }
@@ -566,6 +633,15 @@ export default class SortableItemModifier extends Modifier {
 
     const groupDirection = this.direction;
 
+    if (groupDirection === 'grid') {
+      let x = this.x;
+      let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
+
+      let y = this.y;
+      let dy = y - this.element.offsetTop;
+
+      this.element.style.transform = `translate(${dx}px, ${dy}px)`;
+    }
     if (groupDirection === 'x') {
       let x = this.x;
       let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
@@ -584,19 +660,14 @@ export default class SortableItemModifier extends Modifier {
    @method _drag
    @private
    */
-  _drag(dimension) {
+  _drag(dimensionX, dimensionY) {
     if (!this.isDragging) {
       return;
     }
     let updateInterval = this.updateInterval;
-    const groupDirection = this.direction;
 
-    if (groupDirection === 'x') {
-      this.x = dimension;
-    }
-    if (groupDirection === 'y') {
-      this.y = dimension;
-    }
+    this.x = dimensionX;
+    this.y = dimensionY;
 
     throttle(this, this.sortableGroup.update, updateInterval);
   }
@@ -614,10 +685,15 @@ export default class SortableItemModifier extends Modifier {
 
     this._preventClick();
 
+    // Get sortableItems before making drop end and pass it to update function
+    // This is necessary for direction grid, otherwise ordering is not working correctly (because in sortedItems we check if item isDragged)
+    // Calling this getter here, makes no difference for other directions
+    const sortedItems = this.sortableGroup.sortedItems;
+
     set(this, 'isDragging', false);
     set(this, 'isDropping', true);
 
-    this.sortableGroup.update();
+    this.sortableGroup.update(sortedItems);
     transitionPromise.then(() => this._complete());
   }
 

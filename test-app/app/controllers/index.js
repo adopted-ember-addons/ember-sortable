@@ -64,4 +64,9 @@ export default class ModifierController extends Controller {
     set(this, 'model.items', newOrder);
     set(this, 'model.dragged', draggedModel);
   }
+
+  @action
+  updateGrid(newOrder) {
+    set(this, 'model.itemsGrid', newOrder);
+  }
 }
