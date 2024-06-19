@@ -1,4 +1,4 @@
-import { find, findAll } from '@ember/test-helpers';
+import { find, findAll, settled } from '@ember/test-helpers';
 import { drag } from './drag';
 import { getOffset } from '../utils/offset';
 
@@ -37,5 +37,7 @@ export async function reorder(mode, itemSelector, ...resultSelectors) {
     await drag(mode, sourceElement, () => {
       return { dx: dx, dy: dy };
     });
+
+    await settled();
   }
 }
