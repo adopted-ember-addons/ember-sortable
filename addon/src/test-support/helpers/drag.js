@@ -1,4 +1,4 @@
-import { triggerEvent, find, settled } from '@ember/test-helpers';
+import { triggerEvent, find, settled, waitUntil } from '@ember/test-helpers';
 import { getOffset } from '../utils/offset';
 
 /**
@@ -108,4 +108,11 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
     await callbacks.dragend();
     await settled();
   }
+
+  await waitUntil(
+    () => {
+      return !itemElement.parentElement.classList.contains('is-dropping');
+    },
+    { timeout: 2000 }
+  );
 }
