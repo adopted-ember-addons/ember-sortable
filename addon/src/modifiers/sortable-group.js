@@ -567,9 +567,12 @@ export default class SortableGroupModifier extends Modifier {
   get sortedItems() {
     const direction = this.direction;
 
+    const groupStyles = getComputedStyle(this.element);
+    const groupWidth = parseFloat(groupStyles.width);
+
     return this.items.sort((a, b) => {
       if (direction === 'grid') {
-        let { ax, ay, bx, by } = this._calculateGridPosition(a, b);
+        let { ax, ay, bx, by } = this._calculateGridPosition(a, b, groupWidth);
         if (ay == by) return ax - bx;
         return ay - by;
       }
@@ -764,8 +767,9 @@ export default class SortableGroupModifier extends Modifier {
     return announcer;
   }
 
-  _calculateGridPosition(a, b) {
+  _calculateGridPosition(a, b, groupWidth) {
     const groupTopPos = a.element.parentNode?.offsetTop ?? 0;
+    const groupLeftPos = a.element.parentNode?.offsetLeft ?? 0;
 
     const position = {
       ax: a.x,
@@ -783,7 +787,9 @@ export default class SortableGroupModifier extends Modifier {
         b.width,
         b.height,
         a.moveDirection,
-        groupTopPos
+        groupTopPos,
+        groupLeftPos,
+        groupWidth
       );
       position.ax = dragItemPos.x;
       position.ay = dragItemPos.y;
@@ -796,7 +802,9 @@ export default class SortableGroupModifier extends Modifier {
         a.width,
         a.height,
         b.moveDirection,
-        groupTopPos
+        groupTopPos,
+        groupLeftPos,
+        groupWidth
       );
       position.bx = dragItemPos.x;
       position.by = dragItemPos.y;
@@ -817,34 +825,44 @@ export default class SortableGroupModifier extends Modifier {
     return position;
   }
 
-  _calculateGridDragItemPos(x, y, _otherX, otherY, width, height, moveDirection, groupTopPos) {
+  _calculateGridDragItemPos(x, y, otherX, otherY, width, height, moveDirection, groupTopPos, groupLeftPos, groupWidth) {
+    const toleranceWidth = width / 4;
+    const initialX = x;
+
     if (moveDirection.left) {
-      x = x - width / 2;
+      x = x - toleranceWidth;
     }
 
     if (moveDirection.right) {
-      x = x + width / 2;
+      x = x + toleranceWidth;
+      // Calculate the maximum of items in row & the maximal x-position of last item
+      const itemsPerRow = Math.floor(groupWidth / width);
+      const possibleLastItemPos = (itemsPerRow - 1) * width + groupLeftPos;
+      if (otherX > initialX && x + width > possibleLastItemPos - 1) {
+        // Removing one pixel is necessary to move drag item before other element
+        x = possibleLastItemPos - 1;
+      }
     }
 
     if (y < groupTopPos) {
       y = groupTopPos;
     }
 
-    const tolerance = height / 4;
+    const toleranceHeight = height / 4;
 
     // When item is moved a quarter of height to top, user wants to move up
-    if (moveDirection.top && y - height + tolerance <= otherY && y >= otherY) {
+    if (moveDirection.top && y - height + toleranceHeight <= otherY && y >= otherY) {
       y = otherY;
       // tolerance that it doesn't jump directly in previews line
-    } else if (moveDirection.top && y >= otherY - tolerance && y < otherY) {
+    } else if (moveDirection.top && y >= otherY - toleranceHeight && y <= otherY) {
       y = otherY;
     }
 
     // When item is moved a quarter of height to bottom, user wants to move down
-    if (moveDirection.bottom && y <= otherY + height - tolerance && y >= otherY) {
+    if (moveDirection.bottom && y <= otherY + height - toleranceHeight && y >= otherY) {
       y = otherY;
       // tolerance that it doesn't jump directly in next line
-    } else if (moveDirection.bottom && y > otherY - tolerance && y < otherY) {
+    } else if (moveDirection.bottom && y > otherY - toleranceHeight && y <= otherY) {
       y = otherY;
     }
 
