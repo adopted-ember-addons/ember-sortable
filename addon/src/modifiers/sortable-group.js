@@ -187,8 +187,8 @@ export default class SortableGroupModifier extends Modifier {
       if (direction === 'grid') {
         const valueX = item.x;
         const valueY = item.y;
-        item.x = nextItem.x + (nextItem.x - item.x);
-        item.y = nextItem.y + (nextItem.y - item.y);
+        item.x = nextItem.x + (nextItem.width - item.width);
+        item.y = nextItem.y + (nextItem.height - item.height);
         nextItem.x = valueX;
         nextItem.y = valueY;
       } else {
@@ -201,8 +201,8 @@ export default class SortableGroupModifier extends Modifier {
       if (direction === 'grid') {
         const valueX = nextItem.x;
         const valueY = nextItem.y;
-        nextItem.x = item.x + (item.x - nextItem.x);
-        nextItem.y = item.y + (item.y - nextItem.y);
+        nextItem.x = item.x + (item.width - nextItem.width);
+        nextItem.y = item.y + (item.height - nextItem.height);
         item.x = valueX;
         item.y = valueY;
       } else {
