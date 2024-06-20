@@ -867,9 +867,9 @@ export default class SortableItemModifier extends Modifier {
     let height = el.offsetHeight;
     let elStyles = getComputedStyle(el);
 
-    // This is needed atm only for grid, so fix jumping on drag-start.
+    // This is needed atm only for grid, to fix jumping on drag-start.
     // In test-app it looks like there is a side-effect when we activate also for direction vertical.
-    // If any user will anytime report a jumping in vertical direction, just remove activate for every direction
+    // If any user will anytime report a jumping in vertical direction, we should activate for every direction and fix our test-app
     if (this.direction === 'grid') {
       height += parseFloat(elStyles.marginTop);
     }
