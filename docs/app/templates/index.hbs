@@ -67,6 +67,27 @@
         {{/each}}
       </ol>
     </section>
+    
+    <section class='grid-demo'>
+      <h3>Grid</h3>
+
+      <ol
+        data-test-grid-demo-group
+        {{sortable-group
+          direction='grid'
+          onChange=this.updateGrid
+          itemVisualClass=this.itemVisualClass
+          handleVisualClass=this.handleVisualClass
+          groupName='grid'
+        }}
+      >
+        {{#each @model.itemsGrid as |item|~}}
+          <li data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
+            <ItemPresenter @item={{item}} />
+          </li>
+        {{~/each}}
+      </ol>
+    </section>
 
     <section class='table-demo'>
       <h3>Table</h3>

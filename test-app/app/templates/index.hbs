@@ -60,11 +60,32 @@
           groupName='horizontal'
         }}
       >
-        {{#each @model.items as |item|}}
+        {{#each @model.items as |item|~}}
           <li data-test-horizontal-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='horizontal'}}>
             <ItemPresenter @item={{item}} />
           </li>
-        {{/each}}
+        {{~/each}}
+      </ol>
+    </section>
+    
+    <section class='grid-demo'>
+      <h3>Grid</h3>
+
+      <ol
+        data-test-grid-demo-group
+        {{sortable-group
+          direction='grid'
+          onChange=this.updateGrid
+          itemVisualClass=this.itemVisualClass
+          handleVisualClass=this.handleVisualClass
+          groupName='grid'
+        }}
+      >
+        {{#each @model.itemsGrid as |item|~}}
+          <li data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
+            <ItemPresenter @item={{item}} />
+          </li>
+        {{~/each}}
       </ol>
     </section>
 
