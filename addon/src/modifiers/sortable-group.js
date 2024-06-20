@@ -662,7 +662,7 @@ export default class SortableGroupModifier extends Modifier {
     if (direction === 'grid') {
       position = axis.x;
       lastTopOffset = axis.y;
-      const groupStyles = getComputedStyle(sortedItems[0].element.parentNode);
+      const groupStyles = getComputedStyle(this.element);
       groupPositionRight = position + parseFloat(groupStyles.width);
     } else {
       position = axis[direction];

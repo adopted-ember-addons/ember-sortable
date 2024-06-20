@@ -406,6 +406,9 @@ export default class SortableItemModifier extends Modifier {
    * @private
    */
   _prepareDrag(startEvent, event) {
+    if (this.sortableGroup.sortedItems.some((x) => x.isBusy)) {
+      return;
+    }
     let distance = this.distance;
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
@@ -694,7 +697,10 @@ export default class SortableItemModifier extends Modifier {
     set(this, 'isDropping', true);
 
     this.sortableGroup.update(sortedItems);
-    transitionPromise.then(() => this._complete());
+
+    let allTransitionPromise = this._waitForAllTransitions();
+
+    Promise.all([transitionPromise, allTransitionPromise]).then(() => this._complete());
   }
 
   /**
@@ -740,6 +746,42 @@ export default class SortableItemModifier extends Modifier {
       transitionPromise = deferred.promise.finally(() => {
         this.element.removeEventListener('transitionend', deferred.resolve);
       });
+    } else {
+      const duration = this.isAnimated ? this.transitionDuration : 200;
+      transitionPromise = new Promise((resolve) => later(resolve, duration));
+    }
+
+    if (DEBUG) {
+      transitionPromise = transitionPromise.finally(() => {
+        sortableItemWaiter.endAsync(waiterToken);
+      });
+    }
+
+    return transitionPromise;
+  }
+
+  /**
+   @method _waitForTransitions
+   @private
+   @return Promise
+   */
+  _waitForAllTransitions() {
+    let waiterToken;
+
+    if (DEBUG) {
+      waiterToken = sortableItemWaiter.beginAsync();
+    }
+
+    let transitionPromise;
+
+    if (this.isAnimated) {
+      const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
+
+      const animationPromises = animations.map((animation) => {
+        return animation.finished;
+      });
+
+      transitionPromise = Promise.all(animationPromises);
     } else {
       const duration = this.isAnimated ? this.transitionDuration : 200;
       transitionPromise = new Promise((resolve) => later(resolve, duration));
