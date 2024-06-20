@@ -406,6 +406,7 @@ export default class SortableItemModifier extends Modifier {
    * @private
    */
   _prepareDrag(startEvent, event) {
+    // Block drag start while any item has busy state
     if (this.sortableGroup.sortedItems.some((x) => x.isBusy)) {
       return;
     }
