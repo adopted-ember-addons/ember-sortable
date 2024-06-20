@@ -739,8 +739,6 @@ export default class SortableItemModifier extends Modifier {
       this.element.addEventListener('transitionend', deferred.resolve);
       transitionPromise = deferred.promise.finally(() => {
         this.element.removeEventListener('transitionend', deferred.resolve);
-        const duration = this.isAnimated ? this.transitionDuration : 200;
-        return new Promise((resolve) => later(resolve, duration));
       });
     } else {
       const duration = this.isAnimated ? this.transitionDuration : 200;
@@ -784,7 +782,8 @@ export default class SortableItemModifier extends Modifier {
    @type Number
    */
   get transitionDuration() {
-    let el = this.element;
+    const items = this.sortableGroup.sortedItems.filter((x) => !x.isDragging && !x.isDropping);
+    let el = items[0].element ?? this.element; // Fallback when only one element is present in list
     let rule = getComputedStyle(el).transitionDuration;
     let match = rule.match(/([\d.]+)([ms]*)/);
 
