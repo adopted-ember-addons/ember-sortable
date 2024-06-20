@@ -111,7 +111,7 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
 
   await waitUntil(
     () => {
-      return !itemElement.parentElement.classList.contains('is-dropping');
+      return !itemElement.classList.contains('is-dropping');
     },
     { timeout: 2000 }
   );
