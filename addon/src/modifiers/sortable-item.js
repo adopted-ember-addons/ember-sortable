@@ -14,6 +14,7 @@ import { inject as service } from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
 import { registerDestructor } from '@ember/destroyable';
 import { isTesting } from '@embroider/macros';
+import { getOwner } from '@ember/owner';
 
 const sortableItemWaiter = buildWaiter('sortable-item-waiter');
 
@@ -728,7 +729,9 @@ export default class SortableItemModifier extends Modifier {
   _waitForTransition() {
     let waiterToken;
 
-    if (DEBUG) {
+    const config = getOwner(this).resolveRegistration('config:environment');
+
+    if (DEBUG || config.environment === 'test') {
       waiterToken = sortableItemWaiter.beginAsync();
     }
 
@@ -745,7 +748,7 @@ export default class SortableItemModifier extends Modifier {
       transitionPromise = new Promise((resolve) => later(resolve, duration));
     }
 
-    if (DEBUG) {
+    if (DEBUG || config.environment === 'test') {
       transitionPromise = transitionPromise.finally(() => {
         sortableItemWaiter.endAsync(waiterToken);
       });
