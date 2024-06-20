@@ -366,6 +366,10 @@ export default class SortableItemModifier extends Modifier {
    * @private
    */
   _prepareDrag(startEvent, event) {
+    // Block drag start while any item has busy state
+    if (this.sortableGroup.sortedItems.some((x) => x.isBusy)) {
+      return;
+    }
     let distance = this.distance;
     let dx = Math.abs(getX(startEvent) - getX(event));
     let dy = Math.abs(getY(startEvent) - getY(event));
@@ -618,7 +622,10 @@ export default class SortableItemModifier extends Modifier {
     set(this, 'isDropping', true);
 
     this.sortableGroup.update();
-    transitionPromise.then(() => this._complete());
+
+    let allTransitionPromise = this._waitForAllTransitions();
+
+    Promise.all([transitionPromise, allTransitionPromise]).then(() => this._complete());
   }
 
   /**
@@ -679,6 +686,42 @@ export default class SortableItemModifier extends Modifier {
   }
 
   /**
+   @method _waitForTransitions
+   @private
+   @return Promise
+   */
+  _waitForAllTransitions() {
+    let waiterToken;
+
+    if (DEBUG) {
+      waiterToken = sortableItemWaiter.beginAsync();
+    }
+
+    let transitionPromise;
+
+    if (this.isAnimated) {
+      const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
+
+      const animationPromises = animations.map((animation) => {
+        return animation.finished;
+      });
+
+      transitionPromise = Promise.all(animationPromises);
+    } else {
+      const duration = this.isAnimated ? this.transitionDuration : 200;
+      transitionPromise = new Promise((resolve) => later(resolve, duration));
+    }
+
+    if (DEBUG) {
+      transitionPromise = transitionPromise.finally(() => {
+        sortableItemWaiter.endAsync(waiterToken);
+      });
+    }
+
+    return transitionPromise;
+  }
+
+  /**
    @method _complete
    @private
    */
@@ -706,7 +749,8 @@ export default class SortableItemModifier extends Modifier {
    @type Number
    */
   get transitionDuration() {
-    let el = this.element;
+    const items = this.sortableGroup.sortedItems.filter((x) => !x.isDragging && !x.isDropping);
+    let el = items[0].element ?? this.element; // Fallback when only one element is present in list
     let rule = getComputedStyle(el).transitionDuration;
     let match = rule.match(/([\d.]+)([ms]*)/);
 
