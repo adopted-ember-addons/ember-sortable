@@ -184,14 +184,32 @@ export default class SortableGroupModifier extends Modifier {
     const dimension = direction === 'y' ? 'height' : 'width';
     // DOWN or RIGHT
     if (toIndex > fromIndex) {
-      value = item[direction];
-      set(item, direction, nextItem[direction] + (nextItem[dimension] - item[dimension]));
-      set(nextItem, direction, value);
+      if (direction === 'grid') {
+        const valueX = item.x;
+        const valueY = item.y;
+        item.x = nextItem.x + (nextItem.width - item.width);
+        item.y = nextItem.y + (nextItem.height - item.height);
+        nextItem.x = valueX;
+        nextItem.y = valueY;
+      } else {
+        value = item[direction];
+        set(item, direction, nextItem[direction] + (nextItem[dimension] - item[dimension]));
+        set(nextItem, direction, value);
+      }
       // UP or LEFT
     } else {
-      value = nextItem[direction];
-      set(nextItem, direction, item[direction] + (item[dimension] - nextItem[dimension]));
-      set(item, direction, value);
+      if (direction === 'grid') {
+        const valueX = nextItem.x;
+        const valueY = nextItem.y;
+        nextItem.x = item.x + (item.width - nextItem.width);
+        nextItem.y = item.y + (item.height - nextItem.height);
+        item.x = valueX;
+        item.y = valueY;
+      } else {
+        value = nextItem[direction];
+        set(nextItem, direction, item[direction] + (item[dimension] - nextItem[dimension]));
+        set(item, direction, value);
+      }
     }
   }
 
@@ -212,9 +230,9 @@ export default class SortableGroupModifier extends Modifier {
       this.moveItem(selectedItem, 1);
     } else if (direction === 'y' && isUpArrowKey(event)) {
       this.moveItem(selectedItem, -1);
-    } else if (direction === 'x' && isLeftArrowKey(event)) {
+    } else if ((direction === 'x' || direction === 'grid') && isLeftArrowKey(event)) {
       this.moveItem(selectedItem, -1);
-    } else if (direction === 'x' && isRightArrowKey(event)) {
+    } else if ((direction === 'x' || direction === 'grid') && isRightArrowKey(event)) {
       this.moveItem(selectedItem, 1);
     } else if (isEnterKey(event) || isSpaceKey(event)) {
       // confirm will reset the selectedItem, so caching it here before we remove it.
@@ -531,10 +549,14 @@ export default class SortableGroupModifier extends Modifier {
    */
   @computed('direction', 'sortedItems')
   get firstItemPosition() {
-    const direction = this.direction;
     const sortedItems = this.sortedItems;
 
-    return sortedItems[0][`${direction}`] - sortedItems[0].spacing;
+    const item = sortedItems[0];
+
+    return {
+      x: item.x - item.spacing,
+      y: item.y - item.spacing,
+    };
   }
 
   /**
@@ -544,7 +566,18 @@ export default class SortableGroupModifier extends Modifier {
    */
   get sortedItems() {
     const direction = this.direction;
-    return this.items.sort((a, b) => a[direction] - b[direction]);
+
+    const groupStyles = getComputedStyle(this.element);
+    const groupWidth = parseFloat(groupStyles.width);
+
+    return this.items.sort((a, b) => {
+      if (direction === 'grid') {
+        let { ax, ay, bx, by } = this._calculateGridPosition(a, b, groupWidth);
+        if (ay == by) return ax - bx;
+        return ay - by;
+      }
+      return a[direction] - b[direction];
+    });
   }
 
   /**
@@ -603,24 +636,52 @@ export default class SortableGroupModifier extends Modifier {
   /**
    Update item positions (relatively to the first element position).
    @method update
+   @param {SortableItemModifier[]} sortedItems
    */
   @action
-  update() {
-    let sortedItems = this.sortedItems;
+  update(sortedItems) {
+    if (!sortedItems) {
+      sortedItems = this.sortedItems;
+    }
+
     // Position of the first element
-    let position = this._firstItemPosition;
+    let axis = this._firstItemPosition;
 
     // Just in case we haven’t called prepare first.
-    if (position === undefined) {
-      position = this.firstItemPosition;
+    if (axis === undefined) {
+      axis = this.firstItemPosition;
+    }
+
+    let direction = this.direction;
+
+    let position = 0;
+    let groupPositionRight = 0;
+    let lastTopOffset = 0;
+    let maxPrevHeight = 0;
+
+    if (direction === 'grid') {
+      position = axis.x;
+      lastTopOffset = axis.y;
+      const groupStyles = getComputedStyle(this.element);
+      groupPositionRight = position + parseFloat(groupStyles.width);
+    } else {
+      position = axis[direction];
     }
 
     sortedItems.forEach((item) => {
-      let dimension;
-      let direction = this.direction;
+      if (direction === 'grid' && position + item.width > groupPositionRight) {
+        lastTopOffset = lastTopOffset + maxPrevHeight;
+        position = axis.x;
+        maxPrevHeight = 0;
+      }
 
       if (!isDestroyed(item) && !item.isDragging) {
-        set(item, direction, position);
+        if (direction === 'grid') {
+          item.x = position;
+          item.y = lastTopOffset;
+        } else {
+          set(item, direction, position);
+        }
       }
 
       // add additional spacing around active element
@@ -628,6 +689,15 @@ export default class SortableGroupModifier extends Modifier {
         position += item.spacing * 2;
       }
 
+      let dimension;
+
+      if (direction === 'grid') {
+        dimension = 'width';
+
+        if (item.height > maxPrevHeight) {
+          maxPrevHeight = item.height;
+        }
+      }
       if (direction === 'x') {
         dimension = 'width';
       }
@@ -695,6 +765,111 @@ export default class SortableGroupModifier extends Modifier {
     announcer.setAttribute('aria-live', 'polite');
     announcer.classList.add('visually-hidden');
     return announcer;
+  }
+
+  _calculateGridPosition(a, b, groupWidth) {
+    const groupTopPos = a.element.parentNode?.offsetTop ?? 0;
+    const groupLeftPos = a.element.parentNode?.offsetLeft ?? 0;
+
+    const position = {
+      ax: a.x,
+      ay: a.y,
+      bx: b.x,
+      by: b.y,
+    };
+
+    if (a.isDragging) {
+      const dragItemPos = this._calculateGridDragItemPos(
+        position.ax,
+        position.ay,
+        position.bx,
+        position.by,
+        b.width,
+        b.height,
+        a.moveDirection,
+        groupTopPos,
+        groupLeftPos,
+        groupWidth
+      );
+      position.ax = dragItemPos.x;
+      position.ay = dragItemPos.y;
+    } else if (b.isDragging) {
+      const dragItemPos = this._calculateGridDragItemPos(
+        position.bx,
+        position.by,
+        position.ax,
+        position.ay,
+        a.width,
+        a.height,
+        b.moveDirection,
+        groupTopPos,
+        groupLeftPos,
+        groupWidth
+      );
+      position.bx = dragItemPos.x;
+      position.by = dragItemPos.y;
+    }
+
+    // Math.hypot needs always a positive number (-5 = 5 in hypot).
+    // As a negative number will be positive, we need to fake position from non dragged element
+    if (a.isDragging && position.ax <= 0) {
+      position.ax = 0;
+      position.bx += 1;
+    }
+
+    if (b.isDragging && position.bx <= 0) {
+      position.bx = 0;
+      position.ax += 1;
+    }
+
+    return position;
+  }
+
+  _calculateGridDragItemPos(x, y, otherX, otherY, width, height, moveDirection, groupTopPos, groupLeftPos, groupWidth) {
+    const toleranceWidth = width / 4;
+    const initialX = x;
+
+    if (moveDirection.left) {
+      x = x - toleranceWidth;
+    }
+
+    if (moveDirection.right) {
+      x = x + toleranceWidth;
+      // Calculate the maximum of items in row & the maximal x-position of last item
+      const itemsPerRow = Math.floor(groupWidth / width);
+      const possibleLastItemPos = (itemsPerRow - 1) * width + groupLeftPos;
+      if (otherX > initialX && x + width > possibleLastItemPos - 1) {
+        // Removing one pixel is necessary to move drag item before other element
+        x = possibleLastItemPos - 1;
+      }
+    }
+
+    if (y < groupTopPos) {
+      y = groupTopPos;
+    }
+
+    const toleranceHeight = height / 4;
+
+    // When item is moved a quarter of height to top, user wants to move up
+    if (moveDirection.top && y - height + toleranceHeight <= otherY && y >= otherY) {
+      y = otherY;
+      // tolerance that it doesn't jump directly in previews line
+    } else if (moveDirection.top && y >= otherY - toleranceHeight && y <= otherY) {
+      y = otherY;
+    }
+
+    // When item is moved a quarter of height to bottom, user wants to move down
+    if (moveDirection.bottom && y <= otherY + height - toleranceHeight && y >= otherY) {
+      y = otherY;
+      // tolerance that it doesn't jump directly in next line
+    } else if (moveDirection.bottom && y > otherY - toleranceHeight && y <= otherY) {
+      y = otherY;
+    }
+
+    return {
+      x: x,
+      y: y,
+    };
   }
 
   // end of API

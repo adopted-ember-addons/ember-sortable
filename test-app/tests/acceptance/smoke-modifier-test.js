@@ -19,6 +19,10 @@ module('Acceptance | smoke modifier', function (hooks) {
     // when a handle is present, the element itself shall not be draggable
     assert.equal(verticalContents(), 'Zero One Two Three Four');
     assert.equal(horizontalContents(), 'Zero One Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
     assert.equal(tableContents(), 'Zero One Two Three Four');
     assert.equal(scrollableContents(), 'Zero One Two Three Four');
 
@@ -27,6 +31,10 @@ module('Acceptance | smoke modifier', function (hooks) {
 
     assert.equal(verticalContents(), 'Four Three Two One Zero');
     assert.equal(horizontalContents(), 'Four Three Two One Zero');
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
     assert.equal(tableContents(), 'Four Three Two One Zero');
     assert.equal(scrollableContents(), 'Four Three Two One Zero');
 
@@ -35,6 +43,10 @@ module('Acceptance | smoke modifier', function (hooks) {
 
     assert.equal(verticalContents(), 'Zero One Two Three Four');
     assert.equal(horizontalContents(), 'Zero One Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
     assert.equal(tableContents(), 'Zero One Two Three Four');
     assert.equal(scrollableContents(), 'Zero One Two Three Four');
   });
@@ -44,6 +56,10 @@ module('Acceptance | smoke modifier', function (hooks) {
 
     assert.equal(verticalContents(), 'Zero One Two Three Four');
     assert.equal(horizontalContents(), 'Zero One Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
     assert.equal(tableContents(), 'Zero One Two Three Four');
     assert.equal(scrollableContents(), 'Zero One Two Three Four');
 
@@ -52,8 +68,50 @@ module('Acceptance | smoke modifier', function (hooks) {
 
     assert.equal(verticalContents(), 'One Zero Two Three Four');
     assert.equal(horizontalContents(), 'One Zero Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
     assert.equal(tableContents(), 'One Zero Two Three Four');
     assert.equal(scrollableContents(), 'One Zero Two Three Four');
+  });
+
+  test('reordering with mouse events grid', async function (assert) {
+    await visit('/');
+
+    // when a handle is present, the element itself shall not be draggable
+    assert.equal(verticalContents(), 'Zero One Two Three Four');
+    assert.equal(horizontalContents(), 'Zero One Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
+    assert.equal(tableContents(), 'Zero One Two Three Four');
+    assert.equal(scrollableContents(), 'Zero One Two Three Four');
+
+    let order = findAll('[data-test-grid-demo-handle]').reverse();
+    await reorder('mouse', '[data-test-grid-demo-handle]', ...order);
+
+    assert.equal(verticalContents(), 'Zero One Two Three Four');
+    assert.equal(horizontalContents(), 'Zero One Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 26 Item 25 Item 24 Item 23 Item 22 Item 21 Item 20 Item 19 Item 18 Item 17 Item 16 Item 15 Item 14 Item 13 Item 12 Item 11 Item 10 Item 9 Item 8 Item 7 Item 6 Item 5 Item 4 Item 3 Item 2 Item 1'
+    );
+    assert.equal(tableContents(), 'Zero One Two Three Four');
+    assert.equal(scrollableContents(), 'Zero One Two Three Four');
+
+    order = findAll('[data-test-grid-demo-handle]');
+    await reorder('mouse', '[data-test-grid-demo-handle]', order[4], order[3], order[2], order[1], order[0]);
+
+    assert.equal(verticalContents(), 'Zero One Two Three Four');
+    assert.equal(horizontalContents(), 'Zero One Two Three Four');
+    assert.equal(
+      gridContents(),
+      'Item 22 Item 23 Item 24 Item 25 Item 26 Item 21 Item 20 Item 19 Item 18 Item 17 Item 16 Item 15 Item 14 Item 13 Item 12 Item 11 Item 10 Item 9 Item 8 Item 7 Item 6 Item 5 Item 4 Item 3 Item 2 Item 1'
+    );
+    assert.equal(tableContents(), 'Zero One Two Three Four');
+    assert.equal(scrollableContents(), 'Zero One Two Three Four');
   });
 
   test('reordering with mouse events scrollable', async function (assert) {
@@ -138,6 +196,32 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(scrollableContents(), 'Zero One Two Three Four');
   });
 
+  test('reordering with touch events grid', async function (assert) {
+    await visit('/');
+
+    assert.equal(
+      gridContents(),
+      'Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+    );
+
+    let order = findAll('[data-test-grid-demo-handle]').reverse();
+    await reorder('touch', '[data-test-grid-demo-handle]', ...order);
+
+    assert.equal(
+      gridContents(),
+      'Item 26 Item 25 Item 24 Item 23 Item 22 Item 21 Item 20 Item 19 Item 18 Item 17 Item 16 Item 15 Item 14 Item 13 Item 12 Item 11 Item 10 Item 9 Item 8 Item 7 Item 6 Item 5 Item 4 Item 3 Item 2 Item 1'
+    );
+
+    order = findAll('[data-test-grid-demo-handle]');
+
+    await reorder('touch', '[data-test-grid-demo-handle]', order[4], order[3], order[2], order[1], order[0]);
+
+    assert.equal(
+      gridContents(),
+      'Item 22 Item 23 Item 24 Item 25 Item 26 Item 21 Item 20 Item 19 Item 18 Item 17 Item 16 Item 15 Item 14 Item 13 Item 12 Item 11 Item 10 Item 9 Item 8 Item 7 Item 6 Item 5 Item 4 Item 3 Item 2 Item 1'
+    );
+  });
+
   test('reordering with touch events scrollable', async function (assert) {
     await visit('/');
 
@@ -179,6 +263,11 @@ module('Acceptance | smoke modifier', function (hooks) {
     await reorder('touch', '[data-test-vertical-demo-handle]', order[1]);
 
     assert.equal(justDraggedContents(), 'One');
+
+    order = findAll('[data-test-grid-demo-handle]');
+    await reorder('touch', '[data-test-grid-demo-handle]', order[1]);
+
+    assert.equal(justDraggedContents(), 'Item 2');
   });
 
   module('Reordering with keyboard events', function () {
@@ -221,6 +310,28 @@ module('Acceptance | smoke modifier', function (hooks) {
       assert.dom(handle).hasClass('sortable-handle-right');
 
       await blur('[data-test-horizontal-demo-group]');
+      assert.dom(handle).doesNotHaveClass('sortable-item--active');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-left');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-right');
+    });
+
+    test('Keyboard selection shows LEFT and RIGHT visual indicators on grid sort', async function (assert) {
+      assert.expect(8);
+
+      await visit('/');
+
+      const handle = find('[data-test-grid-demo-handle]');
+      await focus(handle);
+      await triggerKeyEvent('[data-test-grid-demo-handle]', 'keydown', SPACE_KEY_CODE);
+      assert.dom(handle).hasClass('sortable-item--active');
+      assert.dom(handle).doesNotHaveClass('sortable-handle-left');
+      assert.dom(handle).hasClass('sortable-handle-right');
+
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
+      assert.dom(handle).hasClass('sortable-handle-left');
+      assert.dom(handle).hasClass('sortable-handle-right');
+
+      await blur('[data-test-grid-demo-group]');
       assert.dom(handle).doesNotHaveClass('sortable-item--active');
       assert.dom(handle).doesNotHaveClass('sortable-handle-left');
       assert.dom(handle).doesNotHaveClass('sortable-handle-right');
@@ -416,6 +527,46 @@ module('Acceptance | smoke modifier', function (hooks) {
       assert.equal(scrollableContents(), 'One Zero Two Three Four');
     });
 
+    test('Keyboard selection moves right on RIGHT and is confirmed on ENTER in grid', async function (assert) {
+      assert.expect(2);
+
+      await visit('/');
+
+      await focus('[data-test-grid-demo-handle]');
+      await triggerKeyEvent('[data-test-grid-demo-handle]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ENTER_KEY_CODE);
+
+      const movedHandle = findAll('[data-test-grid-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(
+        gridContents(),
+        'Item 2 Item 1 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+      );
+    });
+
+    test('Keyboard selection moves left on LEFT and is confirmed on ENTER in grid', async function (assert) {
+      assert.expect(2);
+
+      await visit('/');
+
+      await focus('[data-test-grid-demo-handle]');
+      await triggerKeyEvent('[data-test-grid-demo-handle]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ARROW_KEY_CODES.LEFT);
+      await triggerKeyEvent('[data-test-grid-demo-group]', 'keydown', ENTER_KEY_CODE);
+
+      const movedHandle = findAll('[data-test-grid-demo-handle]')[1];
+
+      assert.dom(movedHandle).isFocused();
+      assert.equal(
+        gridContents(),
+        'Item 2 Item 1 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Item 10 Item 11 Item 12 Item 13 Item 14 Item 15 Item 16 Item 17 Item 18 Item 19 Item 20 Item 21 Item 22 Item 23 Item 24 Item 25 Item 26'
+      );
+    });
+
     test('Keyboard event onChange has correct dragged item', async function (assert) {
       await visit('/');
 
@@ -479,6 +630,10 @@ module('Acceptance | smoke modifier', function (hooks) {
 
   function horizontalContents() {
     return contents('.horizontal-demo ol');
+  }
+
+  function gridContents() {
+    return contents('.grid-demo ol');
   }
 
   function tableContents() {
