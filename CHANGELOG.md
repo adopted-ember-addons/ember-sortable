@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2024-07-06)
+
+ember-sortable 5.1.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-sortable`, `docs`, `test-app`
+  * [#560](https://github.com/adopted-ember-addons/ember-sortable/pull/560) Add direction grid ([@mkszepp](https://github.com/mkszepp))
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#562](https://github.com/adopted-ember-addons/ember-sortable/pull/562) Fix: Block drag start while any item is busy & add wait for transition end in test helper `drop` ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2024-06-04)
 
 ember-sortable 5.0.2 (patch)

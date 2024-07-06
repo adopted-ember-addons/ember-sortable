@@ -1,10 +1,14 @@
 {
   "solution": {
     "ember-sortable": {
-      "impact": "patch",
-      "oldVersion": "5.0.1",
-      "newVersion": "5.0.2",
+      "impact": "minor",
+      "oldVersion": "5.0.2",
+      "newVersion": "5.1.0",
       "constraints": [
+        {
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
+        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
@@ -13,5 +17,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-06-04)\n\nember-sortable 5.0.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#558](https://github.com/adopted-ember-addons/ember-sortable/pull/558) Add missing extensions to exports ([@deanylev](https://github.com/deanylev))\n\n#### Committers: 1\n- Dean Levinson ([@deanylev](https://github.com/deanylev))\n"
+  "description": "## Release (2024-07-06)\n\nember-sortable 5.1.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-sortable`, `docs`, `test-app`\n  * [#560](https://github.com/adopted-ember-addons/ember-sortable/pull/560) Add direction grid ([@mkszepp](https://github.com/mkszepp))\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#562](https://github.com/adopted-ember-addons/ember-sortable/pull/562) Fix: Block drag start while any item is busy & add wait for transition end in test helper `drop` ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
 }
