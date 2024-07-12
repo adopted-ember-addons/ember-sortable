@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2024-07-12)
+
+ember-sortable 5.1.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`, `test-app`
+  * [#566](https://github.com/adopted-ember-addons/ember-sortable/pull/566) Fix grid direction, when group element has negative margin ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2024-07-06)
 
 ember-sortable 5.1.0 (minor)
