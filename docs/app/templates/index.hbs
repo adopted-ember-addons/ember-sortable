@@ -60,33 +60,40 @@
           groupName='horizontal'
         }}
       >
-        {{#each @model.items as |item|}}
+        {{#each @model.items as |item|~}}
           <li data-test-horizontal-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='horizontal'}}>
-            <ItemPresenter @item={{item}} />
-          </li>
-        {{/each}}
-      </ol>
-    </section>
-    
-    <section class='grid-demo'>
-      <h3>Grid</h3>
-
-      <ol
-        data-test-grid-demo-group
-        {{sortable-group
-          direction='grid'
-          onChange=this.updateGrid
-          itemVisualClass=this.itemVisualClass
-          handleVisualClass=this.handleVisualClass
-          groupName='grid'
-        }}
-      >
-        {{#each @model.itemsGrid as |item|~}}
-          <li data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
             <ItemPresenter @item={{item}} />
           </li>
         {{~/each}}
       </ol>
+    </section>
+    
+    <section class="grid-demo">
+      <div class="row">
+        <div class="col">
+          <h3>Grid</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="row" data-test-grid-demo-group
+          {{sortable-group
+            direction='grid'
+            onChange=this.updateGrid
+            itemVisualClass=this.itemVisualClass
+            handleVisualClass=this.handleVisualClass
+            groupName='grid'
+          }}>
+            {{#each @model.itemsGrid as |item|~}}
+              <div class="col-120" data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
+                <div class="card">
+                  <ItemPresenter @item={{item}} />
+                </div>
+              </div>
+            {{~/each}}
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class='table-demo'>
@@ -96,7 +103,7 @@
       <table>
         <thead>
           <tr>
-            <th>Handle</th>
+            <th>&vArr;</th>
             <th>Item</th>
           </tr>
         </thead>

@@ -633,7 +633,7 @@ module('Acceptance | smoke modifier', function (hooks) {
   }
 
   function gridContents() {
-    return contents('.grid-demo ol');
+    return contents('.grid-demo [data-test-grid-demo-group]');
   }
 
   function tableContents() {
