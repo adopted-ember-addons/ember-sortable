@@ -129,6 +129,7 @@
 }
 
 .grid-demo .sortable-item .card,
+.grid-demo-2 .sortable-item,
 .horizontal-demo .sortable-item,
 .horizontal-doc-auto-scroll-demo .sortable-item {
   display: inline-block;
@@ -139,11 +140,13 @@
 }
 
 .grid-demo .sortable-item.is-dragging .card,
+.grid-demo-2 .sortable-item.is-dragging,
 .horizontal-demo .sortable-item.is-dragging {
   background: hsl(197, 100%, 35%);
 }
 
 .grid-demo .sortable-item.is-dropping .card,
+.grid-demo-2 .sortable-item.is-dropping,
 .horizontal-demo .sortable-item.is-dropping {
   background: hsl(197, 100%, 40%);
   z-index: 10;
@@ -153,6 +156,21 @@
   width: 100%;
   height: 120px;
   background-color: hsl(197, 100%, 45%);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-demo-2 ol {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid-demo-2 .sortable-item {
+  width: 120px;
+  height: 120px;
+  margin: 4px;
   text-align: center;
   display: flex;
   align-items: center;
