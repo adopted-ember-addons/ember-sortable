@@ -68,21 +68,49 @@
       </ol>
     </section>
     
-    <section class='grid-demo'>
-      <h3>Grid</h3>
+    <section class="grid-demo">
+      <div class="row">
+        <div class="col">
+          <h3>Grid</h3>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="row" data-test-grid-demo-group
+          {{sortable-group
+            direction='grid'
+            onChange=this.updateGrid
+            itemVisualClass=this.itemVisualClass
+            handleVisualClass=this.handleVisualClass
+            groupName='grid'
+          }}>
+            {{#each @model.itemsGrid as |item|~}}
+              <div class="col-120" data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
+                <div class="card">
+                  <ItemPresenter @item={{item}} />
+                </div>
+              </div>
+            {{~/each}}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class='grid-demo-2'>
+      <h3>Grid demo 2 (no negative margin on group)</h3>
 
       <ol
-        data-test-grid-demo-group
+        data-test-grid-demo-2-group
         {{sortable-group
           direction='grid'
-          onChange=this.updateGrid
+          onChange=this.updateGrid2
           itemVisualClass=this.itemVisualClass
           handleVisualClass=this.handleVisualClass
-          groupName='grid'
+          groupName='grid-2'
         }}
       >
-        {{#each @model.itemsGrid as |item|~}}
-          <li data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
+        {{#each @model.itemsGrid2 as |item|~}}
+          <li data-test-grid-demo-2-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid-2'}}>
             <ItemPresenter @item={{item}} />
           </li>
         {{~/each}}

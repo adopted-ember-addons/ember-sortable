@@ -814,12 +814,12 @@ export default class SortableGroupModifier extends Modifier {
     // As a negative number will be positive, we need to fake position from non dragged element
     if (a.isDragging && position.ax <= 0) {
       position.ax = 0;
-      position.bx += 1;
+      position.bx = 1;
     }
 
     if (b.isDragging && position.bx <= 0) {
       position.bx = 0;
-      position.ax += 1;
+      position.ax = 1;
     }
 
     return position;
