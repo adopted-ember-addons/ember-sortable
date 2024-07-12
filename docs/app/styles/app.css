@@ -100,35 +100,7 @@
   width: 70px;
 }
 
-.grid-demo .row {
-  display: flex;
-  flex-wrap: wrap;
-}
-.grid-demo .row .row {
-  margin-left: -5px;
-  margin-right: -5px;
-}
-
-.grid-demo .row > .col {
-  padding: 0;
-}
-
-.grid-demo .col {
-  width: 100%;
-  min-height: 1px;
-  padding-right: 5px;
-  padding-left: 5px;
-  padding-bottom: 15px;
-  box-sizing: border-box;
-  position: relative;
-}
-
-.grid-demo .col-120 {
-  width: 120px;
-  flex: 0 0 auto;
-}
-
-.grid-demo .sortable-item .card,
+.grid-demo .sortable-item,
 .horizontal-demo .sortable-item,
 .horizontal-doc-auto-scroll-demo .sortable-item {
   display: inline-block;
@@ -138,25 +110,29 @@
   margin: 0 4px;
 }
 
-.grid-demo .sortable-item.is-dragging .card,
-.horizontal-demo .sortable-item.is-dragging {
-  background: hsl(197, 100%, 35%);
+.grid-demo ol {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.grid-demo .sortable-item.is-dropping .card,
-.horizontal-demo .sortable-item.is-dropping {
-  background: hsl(197, 100%, 40%);
-  z-index: 10;
-}
-
-.grid-demo .sortable-item .card {
-  width: 100%;
+.grid-demo .sortable-item {
+  width: 120px;
   height: 120px;
-  background-color: hsl(197, 100%, 45%);
+  margin: 4px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.grid-demo .sortable-item.is-dragging,
+.horizontal-demo .sortable-item.is-dragging {
+  background: hsl(197, 100%, 35%);
+}
+.grid-demo .sortable-item.is-dropping,
+.horizontal-demo .sortable-item.is-dropping {
+  background: hsl(197, 100%, 40%);
+  z-index: 10;
 }
 
 .table-demo table {
