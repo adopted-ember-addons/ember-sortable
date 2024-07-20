@@ -413,6 +413,7 @@ The specific versions you need, you can find [here](package.json#L19-L22)
 
 ```sh
 $ git clone git@github.com:adopted-ember-addons/ember-sortable
+$ cd ember-sortable
 $ pnpm install
 ```
 
