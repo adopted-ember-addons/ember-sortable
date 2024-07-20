@@ -92,7 +92,7 @@ Possible values are:
 
 ### Changing spacing between currently dragged element and the rest of the group
 
-When user starts to drag element, other elements jump back. Works both for the `x` and `y` direction option.
+When user starts to drag element, other elements jump back. Works for all direction option.
 
 In `y` case: elements above current one jump up, and elements below current one - jump down.
 In `x` / `grid` case: elements before current one jump to the left, and elements after current one - jump to the right.
