@@ -10,7 +10,7 @@ Sortable UI primitives for Ember.
 
 ![ember-sortable in action](/demo.gif)
 
-[Check out the demo](https://adopted-ember-addons.github.io/ember-sortable/demo/)
+[Check out the demo](https://ember-sortable.netlify.app/)
 
 ## Requirements
 

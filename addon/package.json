@@ -74,7 +74,7 @@
     "main": "addon-main.js",
     "type": "addon",
     "version": 2,
-    "demoURL": "https://adopted-ember-addons.github.io/ember-sortable/demo/",
+    "demoURL": "https://ember-sortable.netlify.app/",
     "app-js": {
       "./modifiers/sortable-group.js": "./dist/_app_/modifiers/sortable-group.js",
       "./modifiers/sortable-handle.js": "./dist/_app_/modifiers/sortable-handle.js",
