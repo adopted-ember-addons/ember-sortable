@@ -87,7 +87,7 @@ Possible values are:
 - `grid`: items can be moved in all directions inside a group
 
 ```hbs
-<ol {{sortable-group direction="x" onChange=this.reorderItems}>
+<ol {{sortable-group direction="x" onChange=this.reorderItems}}>
 ```
 
 ### Changing spacing between currently dragged element and the rest of the group
