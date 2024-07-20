@@ -406,7 +406,7 @@ For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md)
 
 ### Requirement
 
-You need to install nodejs and [pnpm](https://pnpm.io/installation)
+You need to install nodejs and [pnpm](https://pnpm.io/installation).
 The specific versions you need, you can find [here](package.json#L19-L22)
 
 ### Setup
