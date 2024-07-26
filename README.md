@@ -1,14 +1,12 @@
 # ember-sortable
 
 [![npm version](https://badge.fury.io/js/ember-sortable.svg)](http://badge.fury.io/js/ember-sortable)
-[![Build Status](https://github.com/adopted-ember-addons/ember-sortable/workflows/build/badge.svg?branch=master)](https://github.com/adopted-ember-addons/ember-sortable/actions?query=branch%3Amaster+workflow%3A%22build%22)
+[![Build Status](https://github.com/adopted-ember-addons/ember-sortable/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/adopted-ember-addons/ember-sortable/actions?query=branch%3Amaster)
 [![Downloads Weekly](https://img.shields.io/npm/dw/ember-sortable)](http://badge.fury.io/js/ember-sortable)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-sortable.svg)](http://emberobserver.com/addons/ember-sortable)
 [![Code Climate](https://codeclimate.com/github/jgwhite/ember-sortable/badges/gpa.svg)](https://codeclimate.com/github/jgwhite/ember-sortable)
 
 Sortable UI primitives for Ember.
-
-![ember-sortable in action](/demo.gif)
 
 [Check out the demo](https://ember-sortable.netlify.app/)
 
@@ -82,18 +80,22 @@ The modifier version does not support `groupModel`, use the currying of `action`
 
 ### Changing sort direction
 
-To change sort direction, define `direction` on `sortable-group` (default is `y`):
+To change sort direction, define `direction` on `sortable-group`
+Possible values are:
+- `y` (default): allowes to move items up/down
+- `x`: allowes to move items left/right
+- `grid`: items can be moved in all directions inside a group
 
 ```hbs
-<ol {{sortable-group direction="x" onChange=(action "reorderItems")}>
+<ol {{sortable-group direction="x" onChange=this.reorderItems}}>
 ```
 
 ### Changing spacing between currently dragged element and the rest of the group
 
-When user starts to drag element, other elements jump back. Works both for the `x` and `y` direction option.
+When user starts to drag element, other elements jump back. Works for all direction option.
 
 In `y` case: elements above current one jump up, and elements below current one - jump down.
-In `x` case: elements before current one jump to the left, and elements after current one - jump to the right.
+In `x` / `grid` case: elements before current one jump to the left, and elements after current one - jump to the right.
 
 To change this property, define `spacing` on `sortable-item` (default is `0`):
 
@@ -135,7 +137,7 @@ The classes look like this:
 <li class="sortable-item is-activated">...</li>
 ```
 
-In our [example app.css](tests/dummy/app/styles/app.css) we apply a
+In our [example app.css](docs/app/styles/app.css) we apply a
 transition of `.125s` in the default case:
 
 ```css
@@ -174,7 +176,7 @@ removed. Use this class to add a visual indicator that the item is selected and 
 ### Drag Actions
 
 The `onDragStart` and `onDragStop` actions are available for the
-`sortable-item`s. You can provide an action name to listen to these actions to
+`sortable-item`s. You can provide an action to listen to these actions to
 be notified when an item is being dragged or not.
 
 When the action is called, the item's model will be provided as the only
@@ -402,24 +404,30 @@ For modifiers, please read this [migration guide](/MIGRATION_GUIDE_MODIFIERS.md)
 
 ## Developing
 
+### Requirement
+
+You need to install nodejs and [pnpm](https://pnpm.io/installation).
+The specific versions you need, you can find [here](package.json#L19-L22)
+
 ### Setup
 
 ```sh
 $ git clone git@github.com:adopted-ember-addons/ember-sortable
 $ cd ember-sortable
-$ ember install
+$ pnpm install
 ```
 
 ### Dev Server
 
 ```sh
+$ cd test-app
 $ ember serve
 ```
 
 ### Running Tests
 
 ```sh
-$ npm test
+$ pnpm run test
 ```
 
 ### Publishing Demo
