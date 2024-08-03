@@ -1,6 +1,6 @@
 {
   "name": "ember-sortable",
-  "version": "5.1.1",
+  "version": "5.1.2",
   "description": "Sortable UI primitives for Ember.",
   "keywords": [
     "ember-addon",
