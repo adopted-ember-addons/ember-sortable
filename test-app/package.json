@@ -14,7 +14,7 @@
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
     "start": "concurrently 'ember serve' 'pnpm _syncPnpm --watch' --names 'tests serve,tests sync deps'",
-    "test:ember": "ember test",
+    "test:ember": "pnpm _syncPnpm && ember test",
     "test:all": "ember try:each"
   },
   "dependencies": {
