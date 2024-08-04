@@ -826,7 +826,7 @@ export default class SortableItemModifier extends Modifier {
    */
   get transitionDuration() {
     const items = this.sortableGroup.sortedItems.filter((x) => !x.isDragging && !x.isDropping);
-    let el = items[0].element ?? this.element; // Fallback when only one element is present in list
+    let el = items[0]?.element ?? this.element; // Fallback when only one element is present in list
     let rule = getComputedStyle(el).transitionDuration;
     let match = rule.match(/([\d.]+)([ms]*)/);
 
