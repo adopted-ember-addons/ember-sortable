@@ -2,13 +2,13 @@
 import Modifier from 'ember-modifier';
 import { Promise, defer } from 'rsvp';
 import { action, set } from '@ember/object';
-import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant';
+import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant.js';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { DEBUG } from '@glimmer/env';
-import { getX, getY } from '../utils/coordinate';
-import ScrollContainer from '../system/scroll-container';
-import scrollParent from '../system/scroll-parent';
-import { getBorderSpacing } from '../utils/css-calculation';
+import { getX, getY } from '../utils/coordinate.js';
+import ScrollContainer from '../system/scroll-container.js';
+import scrollParent from '../system/scroll-parent.js';
+import { getBorderSpacing } from '../utils/css-calculation.js';
 import { buildWaiter } from '@ember/test-waiters';
 import { inject as service } from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
@@ -53,7 +53,7 @@ export default class SortableItemModifier extends Modifier {
       this._sortableGroup = this.sortableService.fetchGroup(this.groupName);
       assert(
         `No sortable group named ${this.groupName} found. Please check that the groups and items have the same groupName`,
-        this._sortableGroup !== undefined
+        this._sortableGroup !== undefined,
       );
     }
     return this._sortableGroup.groupModifier;
@@ -122,7 +122,7 @@ export default class SortableItemModifier extends Modifier {
           available: '2.2.6',
           enabled: '2.2.6',
         },
-      }
+      },
     );
 
     return this.groupDisabled || this.named.disabled || this.named.isDraggingDisabled || false;

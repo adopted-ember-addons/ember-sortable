@@ -1,5 +1,5 @@
 import { triggerEvent, find, settled, waitUntil } from '@ember/test-helpers';
-import { getOffset } from '../utils/offset';
+import { getOffset } from '../utils/offset.js';
 
 /**
   Drags elements by an offset specified in pixels.
@@ -113,6 +113,6 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
     () => {
       return !find('.is-dropping');
     },
-    { timeout: 2000 }
+    { timeout: 2000 },
   );
 }

@@ -10,9 +10,9 @@ import {
   isRightArrowKey,
   isSpaceKey,
   isUpArrowKey,
-} from '../utils/keyboard';
-import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
-import { defaultA11yAnnouncementConfig } from '../utils/defaults';
+} from '../utils/keyboard.js';
+import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant.js';
+import { defaultA11yAnnouncementConfig } from '../utils/defaults.js';
 import { next, schedule, scheduleOnce, later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { registerDestructor, isDestroyed } from '@ember/destroyable';
@@ -789,7 +789,7 @@ export default class SortableGroupModifier extends Modifier {
         a.moveDirection,
         groupTopPos,
         groupLeftPos,
-        groupWidth
+        groupWidth,
       );
       position.ax = dragItemPos.x;
       position.ay = dragItemPos.y;
@@ -804,7 +804,7 @@ export default class SortableGroupModifier extends Modifier {
         b.moveDirection,
         groupTopPos,
         groupLeftPos,
-        groupWidth
+        groupWidth,
       );
       position.bx = dragItemPos.x;
       position.by = dragItemPos.y;
