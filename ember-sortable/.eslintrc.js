@@ -17,15 +17,12 @@ module.exports = {
         },
       },
       plugins: ['ember', 'import'],
-      extends: [
-        'eslint:recommended',
-        'plugin:ember/recommended',
-        'plugin:prettier/recommended',
-      ],
+      extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:prettier/recommended'],
       rules: {
         // require relative imports use full extensions
         'import/extensions': ['error', 'always', { ignorePackages: true }],
         // Add any custom rules here
+        'ember/no-runloop': 0,
       },
     },
     {
@@ -46,12 +43,7 @@ module.exports = {
     },
     // node files
     {
-      files: [
-        './.eslintrc.cjs',
-        './.prettierrc.cjs',
-        './.template-lintrc.cjs',
-        './addon-main.cjs',
-      ],
+      files: ['./.eslintrc.cjs', './.prettierrc.cjs', './.template-lintrc.cjs', './addon-main.cjs'],
       parserOptions: {
         sourceType: 'script',
       },
@@ -60,11 +52,7 @@ module.exports = {
         node: true,
       },
       plugins: ['n'],
-      extends: [
-        'eslint:recommended',
-        'plugin:n/recommended',
-        'plugin:prettier/recommended',
-      ],
+      extends: ['eslint:recommended', 'plugin:n/recommended', 'plugin:prettier/recommended'],
     },
   ],
 };

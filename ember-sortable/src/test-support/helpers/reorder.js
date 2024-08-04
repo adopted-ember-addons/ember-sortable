@@ -1,6 +1,6 @@
 import { find, findAll } from '@ember/test-helpers';
-import { drag } from './drag';
-import { getOffset } from '../utils/offset';
+import { drag } from './drag.js';
+import { getOffset } from '../utils/offset.js';
 
 const OVERSHOOT = 2;
 
