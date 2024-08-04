@@ -2,31 +2,55 @@
 
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
-  parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    ecmaFeatures: {
-      legacyDecorators: true,
-    },
-  },
-  plugins: ['ember'],
-  extends: ['eslint:recommended', 'plugin:ember/recommended', 'plugin:prettier/recommended'],
-  env: {
-    browser: true,
-  },
-  rules: {},
+  // Only use overrides
+  // https://github.com/ember-cli/eslint-plugin-ember?tab=readme-ov-file#gtsgjs
   overrides: [
+    {
+      files: ['**/*.js'],
+      env: { browser: true },
+      parser: '@babel/eslint-parser',
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        babelOptions: {
+          root: __dirname,
+        },
+      },
+      plugins: ['ember', 'import'],
+      extends: [
+        'eslint:recommended',
+        'plugin:ember/recommended',
+        'plugin:prettier/recommended',
+      ],
+      rules: {
+        // require relative imports use full extensions
+        'import/extensions': ['error', 'always', { ignorePackages: true }],
+        // Add any custom rules here
+      },
+    },
+    {
+      files: ['**/*.gjs'],
+      parser: 'ember-eslint-parser',
+      plugins: ['ember', 'import'],
+      extends: [
+        'eslint:recommended',
+        'plugin:ember/recommended',
+        'plugin:ember/recommended-gjs',
+        'plugin:prettier/recommended',
+      ],
+      rules: {
+        // require relative imports use full extensions
+        'import/extensions': ['error', 'always', { ignorePackages: true }],
+        // Add any custom rules here
+      },
+    },
     // node files
     {
       files: [
-        './.eslintrc.js',
-        './.prettierrc.js',
-        './.template-lintrc.js',
-        './ember-cli-build.js',
-        './addon-main.js',
-        './blueprints/*/index.js',
-        './config/**/*.js',
+        './.eslintrc.cjs',
+        './.prettierrc.cjs',
+        './.template-lintrc.cjs',
+        './addon-main.cjs',
       ],
       parserOptions: {
         sourceType: 'script',
@@ -35,7 +59,12 @@ module.exports = {
         browser: false,
         node: true,
       },
-      plugins: ['node'],
+      plugins: ['n'],
+      extends: [
+        'eslint:recommended',
+        'plugin:n/recommended',
+        'plugin:prettier/recommended',
+      ],
     },
   ],
 };

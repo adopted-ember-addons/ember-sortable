@@ -1,10 +1,10 @@
-﻿{
+{
   "schemaVersion": "1.0.0",
   "projectName": "ember-sortable",
   "packages": [
     {
       "name": "@embroider/addon-blueprint",
-      "version": "2.0.0",
+      "version": "2.17.0",
       "blueprints": [
         {
           "name": "@embroider/addon-blueprint",
