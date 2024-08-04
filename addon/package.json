@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "build": "rollup --config",
-    "prepublishOnly": "rollup --config",
+    "prepack": "rollup --config",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
