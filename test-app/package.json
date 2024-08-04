@@ -21,7 +21,7 @@
     "@ember/test-helpers": "^2.6.0",
     "@ember/test-waiters": "^3.0.1",
     "ember-modifier": "^3.2.0",
-    "ember-sortable": "workspace:../addon"
+    "ember-sortable": "workspace:*"
   },
   "dependenciesMeta": {
     "ember-sortable": {

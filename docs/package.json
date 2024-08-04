@@ -18,7 +18,7 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "ember-sortable": "workspace:../addon"
+    "ember-sortable": "workspace:*"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
