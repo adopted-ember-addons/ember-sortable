@@ -1,5 +1,24 @@
 # Changelog
 
+## Release (2024-08-03)
+
+ember-sortable 5.1.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`, `test-app`
+  * [#575](https://github.com/adopted-ember-addons/ember-sortable/pull/575) Fix error `TypeError: items[0] is undefined` in `sortable-item` modifier ([@mkszepp](https://github.com/mkszepp))
+
+#### :memo: Documentation
+* [#572](https://github.com/adopted-ember-addons/ember-sortable/pull/572) Add info about `grid` direction into readme and minimal fixes ([@mkszepp](https://github.com/mkszepp))
+
+#### :house: Internal
+* `ember-sortable`
+  * [#571](https://github.com/adopted-ember-addons/ember-sortable/pull/571) fix demo links and turn of github pages deploy ([@mansona](https://github.com/mansona))
+
+#### Committers: 2
+- Chris Manson ([@mansona](https://github.com/mansona))
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2024-07-12)
 
 ember-sortable 5.1.1 (patch)
