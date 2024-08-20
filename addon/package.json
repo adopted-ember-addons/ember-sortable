@@ -1,6 +1,6 @@
 {
   "name": "ember-sortable",
-  "version": "5.0.2",
+  "version": "5.1.2",
   "description": "Sortable UI primitives for Ember.",
   "keywords": [
     "ember-addon",
@@ -27,7 +27,7 @@
   ],
   "scripts": {
     "build": "rollup --config",
-    "prepublishOnly": "rollup --config",
+    "prepack": "rollup --config",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel \"lint:!(fix)\"",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
@@ -74,7 +74,7 @@
     "main": "addon-main.js",
     "type": "addon",
     "version": 2,
-    "demoURL": "https://adopted-ember-addons.github.io/ember-sortable/demo/",
+    "demoURL": "https://ember-sortable.netlify.app/",
     "app-js": {
       "./modifiers/sortable-group.js": "./dist/_app_/modifiers/sortable-group.js",
       "./modifiers/sortable-handle.js": "./dist/_app_/modifiers/sortable-handle.js",
