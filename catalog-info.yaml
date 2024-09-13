@@ -6,15 +6,13 @@ metadata:
     Ember addon for sortable UI primitives.
     This fork fixes a number of issues we experienced over the past years with ember-sortable.
   tags:
-  - frontend
   - ember
-  - sortable
   - fork
   annotations:
     backstage.io/source-location: url:https://github.com/gynzy/ember-sortable
-    backstage.io/edit-url: https://github.com/gynzy/ember-sortable/tree/master/catalog-info.yaml
+    backstage.io/edit-url: https://github.com/gynzy/ember-sortable/edit/master/catalog-info.yaml
     backstage.io/view-url: https://github.com/gynzy/ember-sortable/tree/master/catalog-info.yaml
 spec:
   type: library
   lifecycle: production
-  owner: guild-frontend
+  owner: platform
