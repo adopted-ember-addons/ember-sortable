@@ -20,11 +20,6 @@
   "dependencies": {
     "ember-sortable": "workspace:../addon"
   },
-  "dependenciesMeta": {
-    "ember-sortable": {
-      "injected": true
-    }
-  },
   "devDependencies": {
     "@babel/core": "^7.20.12",
     "@ember/optional-features": "^2.0.0",
