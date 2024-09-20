@@ -17,7 +17,7 @@ import { getOffset } from '../utils/offset.ts';
   @method drag
   @param {'mouse'|'touch'} [mode]
     event mode
-  @param {String|Element} [itemSelector]
+  @param {String} [itemSelector]
     selector for the element to drag
   @param {Function} [offsetFn]
     function returning the offset by which to drag
