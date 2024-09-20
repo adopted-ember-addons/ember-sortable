@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@ember/string": "^3.1.1",
-    "@ember/test-helpers": "^2.6.0",
+    "@ember/test-helpers": "^3.0.0",
     "@ember/test-waiters": "^3.0.1",
-    "ember-modifier": "^3.2.0",
+    "ember-modifier": "^4.2.0",
     "ember-sortable": "workspace:../addon"
   },
   "dependenciesMeta": {

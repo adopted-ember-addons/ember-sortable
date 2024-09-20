@@ -1020,7 +1020,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     }
   }
 
-  override element!: HTMLElement;
+  element!: HTMLElement;
   didSetup = false;
   named!: NamedArgs<SortableItemModifierSignature<T>>;
 

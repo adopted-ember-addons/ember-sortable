@@ -985,7 +985,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     this.element.removeEventListener('focusout', this.focusOut);
   }
 
-  override element!: HTMLElement;
+  element!: HTMLElement;
   didSetup = false;
   named!: NamedArgs<SortableGroupModifierSignature<T>>;
 
