@@ -26,7 +26,7 @@
     "@ember/test-helpers": "^3.0.0",
     "@ember/test-waiters": "^3.0.1",
     "@embroider/macros": "^1.9.0",
-    "@embroider/test-setup": "^1.2.0",
+    "@embroider/test-setup": "^2.1.1",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
     "babel-eslint": "^10.0.3",

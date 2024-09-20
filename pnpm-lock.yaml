@@ -209,8 +209,8 @@ importers:
         specifier: ^1.9.0
         version: 1.16.6(@glint/template@1.4.0)
       '@embroider/test-setup':
-        specifier: ^1.2.0
-        version: 1.8.3
+        specifier: ^2.1.1
+        version: 2.1.1
       '@glimmer/component':
         specifier: ^1.0.4
         version: 1.1.2(@babel/core@7.25.2)
@@ -1956,14 +1956,6 @@ packages:
       typescript-memoize: 1.1.1
     transitivePeerDependencies:
       - supports-color
-
-  /@embroider/test-setup@1.8.3:
-    resolution: {integrity: sha512-BCCbBG7UWkCw+cQ401Ip6LnqTRaQDeKImxR+e7Q4oP6H4EBj7p4iGR1z6fhMy4NNyXKPB6jk3bGa9bTiiNoEAw==}
-    engines: {node: 12.* || 14.* || >= 16}
-    dependencies:
-      lodash: 4.17.21
-      resolve: 1.22.8
-    dev: true
 
   /@embroider/test-setup@2.1.1:
     resolution: {integrity: sha512-t81a2z2OEFAOZVbV7wkgiDuCyZ3ajD7J7J+keaTfNSRiXoQgeFFASEECYq1TCsH8m/R+xHMRiY59apF2FIeFhw==}
