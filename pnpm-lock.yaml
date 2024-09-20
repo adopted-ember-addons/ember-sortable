@@ -191,7 +191,7 @@ importers:
     dependencies:
       ember-sortable:
         specifier: workspace:../addon
-        version: file:addon(@ember/test-helpers@3.3.1)(@ember/test-waiters@3.1.0)(ember-modifier@4.2.0)(ember-source@4.12.4)
+        version: link:../addon
     devDependencies:
       '@babel/core':
         specifier: ^7.20.12
@@ -316,9 +316,6 @@ importers:
       webpack:
         specifier: ^5.69.1
         version: 5.94.0
-    dependenciesMeta:
-      ember-sortable:
-        injected: true
 
   test-app:
     dependencies:
