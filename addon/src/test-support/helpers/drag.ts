@@ -1,5 +1,5 @@
 import { triggerEvent, find, settled, waitUntil } from '@ember/test-helpers';
-import { getOffset } from '../utils/offset';
+import { getOffset } from '../utils/offset.ts';
 
 /**
   Drags elements by an offset specified in pixels.
@@ -17,7 +17,7 @@ import { getOffset } from '../utils/offset';
   @method drag
   @param {'mouse'|'touch'} [mode]
     event mode
-  @param {String} [itemSelector]
+  @param {String|Element} [itemSelector]
     selector for the element to drag
   @param {Function} [offsetFn]
     function returning the offset by which to drag
@@ -26,7 +26,11 @@ import { getOffset } from '../utils/offset';
   @return {Promise}
 */
 
-export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
+export type TMode = 'mouse'|'touch';
+
+interface Callbacks { dragstart?: () => Promise<void>, dragmove?: () => Promise<void>, beforedragend?: () => Promise<void>, dragend?: () => Promise<void> }
+
+export async function drag(mode: TMode, itemSelector: string, offsetFn: () => { dx: number, dy: number }, callbacks: Callbacks = {}) {
   let start;
   let move;
   let end;
@@ -46,6 +50,11 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   }
 
   const itemElement = find(itemSelector);
+  
+  if (!itemElement) {
+    throw new Error(`Element not found!`);
+  }
+  
   const itemOffset = getOffset(itemElement);
   const offset = offsetFn();
   const rect = itemElement.getBoundingClientRect();
@@ -57,7 +66,7 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
   // https://stackoverflow.com/a/5042051
   const dx = offset.dx || 0;
   const dy = offset.dy || 0;
-  const clientHeight = itemElement.clientHeight || itemElement.offsetHeight || itemElement.parentNode.offsetHeight;
+  const clientHeight = itemElement.clientHeight || (itemElement as HTMLElement).offsetHeight || (itemElement.parentNode as HTMLElement | null)?.offsetHeight || 0;
   const scale = clientHeight / (rect.bottom - rect.top);
   const halfwayX = itemOffset.left + (dx * scale) / 2;
   const halfwayY = itemOffset.top + (dy * scale) / 2;

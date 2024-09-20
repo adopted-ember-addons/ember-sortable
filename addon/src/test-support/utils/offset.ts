@@ -4,7 +4,7 @@
  * @method getOffset
  * @param {Element} el an element
  */
-export function getOffset(el) {
+export function getOffset(el: Element) {
   const box = el.getBoundingClientRect();
 
   return {

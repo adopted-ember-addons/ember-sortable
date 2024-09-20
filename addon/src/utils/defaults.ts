@@ -1,4 +1,13 @@
-export const defaultA11yAnnouncementConfig = {
+import type { TDirection } from "../modifiers/sortable-group.ts";
+
+export interface A11yAnnouncementConfig {
+  ACTIVATE: ({ a11yItemName, index, maxLength, direction }: { a11yItemName: string, index: number, maxLength: number; direction: TDirection }) => string;
+  MOVE: ({ a11yItemName, index, maxLength, delta }: { a11yItemName: string, index: number, maxLength: number; delta: number }) => string,
+  CONFIRM: ({ a11yItemName }: { a11yItemName: string }) => string,
+  CANCEL: ({ a11yItemName }: { a11yItemName: string }) => string,
+}
+
+export const defaultA11yAnnouncementConfig: A11yAnnouncementConfig = {
   ACTIVATE({ a11yItemName, index, maxLength, direction }) {
     let message = `${a11yItemName} at position, ${index + 1} of ${maxLength}, is activated to be repositioned.`;
 

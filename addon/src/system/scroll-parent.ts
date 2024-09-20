@@ -1,5 +1,5 @@
-function getParentElements(element) {
-  const parentsArray = [];
+function getParentElements(element: HTMLElement): HTMLElement[] {
+  const parentsArray: HTMLElement[] = [];
 
   if (!element) {
     return parentsArray;
@@ -14,10 +14,10 @@ function getParentElements(element) {
   return parentsArray;
 }
 
-export default function (element) {
+export default function (element: HTMLElement): HTMLElement | Document {
   let position = getComputedStyle(element).position;
   let excludeStaticParent = position === 'absolute';
-  let scrollParent = getParentElements(element).filter(function (parent) {
+  let scrollParent: HTMLElement | Document | undefined = getParentElements(element).filter(function (parent) {
     let parentElemStyles = getComputedStyle(parent);
     if (excludeStaticParent && parentElemStyles.position === 'static') {
       return false;
@@ -29,5 +29,5 @@ export default function (element) {
   if (!scrollParent || scrollParent === document.body) {
     scrollParent = document;
   }
-  return position === 'fixed' || scrollParent;
+  return scrollParent;
 }

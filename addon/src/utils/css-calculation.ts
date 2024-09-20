@@ -6,12 +6,12 @@
   @return {Object}
   @private
 */
-export function getBorderSpacing(el) {
+export function getBorderSpacing(el: Element) {
   let css = getComputedStyle(el).borderSpacing; // '0px 0px'
   let [horizontal, vertical] = css.split(' ');
 
   return {
-    horizontal: parseFloat(horizontal),
-    vertical: parseFloat(vertical),
+    horizontal: parseFloat(horizontal ?? ''),
+    vertical: parseFloat(vertical ?? ''),
   };
 }
