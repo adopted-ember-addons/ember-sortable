@@ -124,9 +124,9 @@
     "edition": "octane"
   },
   "ember-addon": {
-    "main": "addon-main.js",
-    "type": "addon",
     "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs",
     "demoURL": "https://ember-sortable.netlify.app/",
     "app-js": {
       "./modifiers/sortable-group.js": "./dist/_app_/modifiers/sortable-group.js",
