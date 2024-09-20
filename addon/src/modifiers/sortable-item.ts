@@ -40,10 +40,10 @@ interface ItemContainer {
 }
 
 export interface FakeEvent {
-  pageX: number,
-  pageY: number,
-  clientX: number,
-  clientY: number,
+  pageX: number;
+  pageY: number;
+  clientX: number;
+  clientY: number;
 }
 
 export interface SortableItemModifierSignature<T> {
@@ -90,15 +90,15 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   @service('ember-sortable-internal-state') declare sortableService: EmberSortableService<T>;
 
   startEvent?: FakeEvent | Event;
-  
+
   _sortableGroup?: Group<T>;
-  _x?: number
-  _y?: number
-  _dragOriginX?: number
-  _dragOriginY?: number
-  _pageX?: number
-  _pageY?: number
-  
+  _x?: number;
+  _y?: number;
+  _dragOriginX?: number;
+  _dragOriginY?: number;
+  _pageX?: number;
+  _pageY?: number;
+
   /**
    * The SortableGroupModifier this item belongs to. Assigned by the group
    * when it inspects all the items in the list
@@ -110,7 +110,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       this._sortableGroup = this.sortableService.fetchGroup(this.groupName);
       assert(
         `No sortable group named ${this.groupName} found. Please check that the groups and items have the same groupName`,
-        this._sortableGroup !== undefined
+        this._sortableGroup !== undefined,
       );
     }
     return this._sortableGroup.groupModifier!;
@@ -179,7 +179,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
           available: '2.2.6',
           enabled: '2.2.6',
         },
-      }
+      },
     );
 
     return this.groupDisabled || this.named.disabled || this.named.isDraggingDisabled || false;
@@ -384,7 +384,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    @method freeze
    */
   freeze(): void {
-    let el = this.element;
+    const el = this.element;
     if (!el) {
       return;
     }
@@ -396,7 +396,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    @method reset
    */
   reset(): void {
-    let el = this.element;
+    const el = this.element;
     if (!el) {
       return;
     }
@@ -411,14 +411,14 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    @method thaw
    */
   thaw(): void {
-    let el = this.element;
+    const el = this.element;
     if (!el) {
       return;
     }
 
     el.style.transition = '';
   }
-  
+
   _prepareDragListener!: () => void;
   _cancelStartDragListener!: () => void;
 
@@ -470,9 +470,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     if (this.sortableGroup.sortedItems.some((x) => x.isBusy)) {
       return;
     }
-    let distance = this.distance;
-    let dx = Math.abs(getX(startEvent) - getX(event));
-    let dy = Math.abs(getY(startEvent) - getY(event));
+    const distance = this.distance;
+    const dx = Math.abs(getX(startEvent) - getX(event));
+    const dy = Math.abs(getY(startEvent) - getY(event));
 
     if (distance <= dx || distance <= dy) {
       DRAG_ACTIONS.forEach((event) => window.removeEventListener(event, this._prepareDragListener));
@@ -492,10 +492,10 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       return;
     }
 
-    let drag = this._makeDragHandler(event);
-    let dragThrottled = (ev: Event) => throttle(this, drag, ev, 16, false);
+    const drag = this._makeDragHandler(event);
+    const dragThrottled = (ev: Event) => throttle(this, drag, ev, 16, false);
 
-    let drop = () => {
+    const drop = () => {
       DRAG_ACTIONS.forEach((event) => window.removeEventListener(event, dragThrottled));
       END_ACTIONS.forEach((event) => window.removeEventListener(event, drop));
 
@@ -521,10 +521,10 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   maxScrollSpeed = 20;
 
   _scrollOnEdges(drag: (event: FakeEvent | Event) => void) {
-    let groupDirection = this.direction;
-    let element = this.element;
-    let scrollContainer = new ScrollContainer(scrollParent(element));
-    let itemContainer: ItemContainer = {
+    const groupDirection = this.direction;
+    const element = this.element;
+    const scrollContainer = new ScrollContainer(scrollParent(element));
+    const itemContainer: ItemContainer = {
       width: parseInt(getComputedStyle(element).width, 10),
       get height() {
         return parseInt(getComputedStyle(element).height, 10);
@@ -543,7 +543,10 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       },
     };
 
-    let leadingEdgeKey: keyof ItemContainer, trailingEdgeKey: keyof ItemContainer, scrollKey: keyof ScrollContainer, pageKey: keyof FakeEvent;
+    let leadingEdgeKey: keyof ItemContainer,
+      trailingEdgeKey: keyof ItemContainer,
+      scrollKey: keyof ScrollContainer,
+      pageKey: keyof FakeEvent;
     if (groupDirection === 'grid' || groupDirection === 'x') {
       leadingEdgeKey = 'left';
       trailingEdgeKey = 'right';
@@ -556,7 +559,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       pageKey = 'pageY';
     }
 
-    let createFakeEvent = (): FakeEvent | void => {
+    const createFakeEvent = (): FakeEvent | void => {
       if (this._pageX == null && this._pageY == null) {
         return;
       }
@@ -571,10 +574,10 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     // Set a trigger padding that will start scrolling
     // the box when the item reaches within padding pixels
     // of the edge of the scroll container.
-    let checkScrollBounds = () => {
-      let leadingEdge = itemContainer[leadingEdgeKey];
-      let trailingEdge = itemContainer[trailingEdgeKey];
-      let scroll = scrollContainer[scrollKey]();
+    const checkScrollBounds = () => {
+      const leadingEdge = itemContainer[leadingEdgeKey];
+      const trailingEdge = itemContainer[trailingEdgeKey];
+      const scroll = scrollContainer[scrollKey]();
 
       let delta = 0;
       if (trailingEdge >= scrollContainer[trailingEdgeKey]) {
@@ -584,12 +587,12 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       }
 
       if (delta !== 0) {
-        let speed = this.maxScrollSpeed;
+        const speed = this.maxScrollSpeed;
         delta = Math.min(Math.max(delta, -1 * speed), speed);
 
         delta = scrollContainer[scrollKey](scroll + delta) - scroll;
 
-        let event = createFakeEvent();
+        const event = createFakeEvent();
         if (event) {
           if (scrollContainer.isWindow) {
             event[pageKey] += delta;
@@ -618,8 +621,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     let dragOrigin: number;
     let elementOrigin: number;
     let scrollOrigin: number;
-    let parentElement = this.element.parentNode as HTMLElement | null;
-    
+    const parentElement = this.element.parentNode as HTMLElement | null;
+
     if (!parentElement) {
       return () => {};
     }
@@ -638,14 +641,14 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
 
       return (event) => {
         this._pageX = getX(event);
-        let dx = this._pageX - dragOriginX;
-        let scrollX = parentElement.getBoundingClientRect().left;
-        let x = elementOriginX + dx + (scrollOriginX - scrollX);
+        const dx = this._pageX - dragOriginX;
+        const scrollX = parentElement.getBoundingClientRect().left;
+        const x = elementOriginX + dx + (scrollOriginX - scrollX);
 
         this._pageY = getY(event);
-        let dy = this._pageY - dragOriginY;
-        let scrollY = parentElement.getBoundingClientRect().top;
-        let y = elementOriginY + dy + (scrollOriginY - scrollY);
+        const dy = this._pageY - dragOriginY;
+        const scrollY = parentElement.getBoundingClientRect().top;
+        const y = elementOriginY + dy + (scrollOriginY - scrollY);
 
         this._drag(x, y);
       };
@@ -658,9 +661,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
 
       return (event) => {
         this._pageX = getX(event);
-        let dx = this._pageX - dragOrigin;
-        let scrollX = parentElement.getBoundingClientRect().left;
-        let x = elementOrigin + dx + (scrollOrigin - scrollX);
+        const dx = this._pageX - dragOrigin;
+        const scrollX = parentElement.getBoundingClientRect().left;
+        const x = elementOrigin + dx + (scrollOrigin - scrollX);
 
         this._drag(x, 0);
       };
@@ -673,14 +676,14 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
 
       return (event) => {
         this._pageY = getY(event);
-        let dy = this._pageY - dragOrigin;
-        let scrollY = parentElement.getBoundingClientRect().top;
-        let y = elementOrigin + dy + (scrollOrigin - scrollY);
+        const dy = this._pageY - dragOrigin;
+        const scrollY = parentElement.getBoundingClientRect().top;
+        const y = elementOrigin + dy + (scrollOrigin - scrollY);
 
         this._drag(0, y);
       };
     }
-    
+
     return () => {};
   }
 
@@ -704,23 +707,23 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     const groupDirection = this.direction;
 
     if (groupDirection === 'grid') {
-      let x = this.x;
-      let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
+      const x = this.x;
+      const dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
 
-      let y = this.y;
-      let dy = y - this.element.offsetTop;
+      const y = this.y;
+      const dy = y - this.element.offsetTop;
 
       this.element.style.transform = `translate(${dx}px, ${dy}px)`;
     }
     if (groupDirection === 'x') {
-      let x = this.x;
-      let dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
+      const x = this.x;
+      const dx = x - this.element.offsetLeft + parseFloat(getComputedStyle(this.element).marginLeft);
 
       this.element.style.transform = `translateX(${dx}px)`;
     }
     if (groupDirection === 'y') {
-      let y = this.y;
-      let dy = y - this.element.offsetTop;
+      const y = this.y;
+      const dy = y - this.element.offsetTop;
 
       this.element.style.transform = `translateY(${dy}px)`;
     }
@@ -734,7 +737,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     if (!this.isDragging) {
       return;
     }
-    let updateInterval = this.updateInterval;
+    const updateInterval = this.updateInterval;
 
     this.x = dimensionX;
     this.y = dimensionY;
@@ -752,7 +755,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       return;
     }
 
-    let transitionPromise = this._waitForTransition();
+    const transitionPromise = this._waitForTransition();
 
     this._preventClick();
 
@@ -766,7 +769,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
 
     this.sortableGroup.update(sortedItems);
 
-    let allTransitionPromise = this._waitForAllTransitions();
+    const allTransitionPromise = this._waitForAllTransitions();
 
     Promise.all([transitionPromise, allTransitionPromise]).then(() => this._complete());
   }
@@ -846,7 +849,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
 
       const animationPromises = animations.map((animation) => {
-        return animation.every(x => x.finished);
+        return animation.every((x) => x.finished);
       });
 
       transitionPromise = Promise.all(animationPromises);
@@ -880,8 +883,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       return undefined;
     }
 
-    let el = this.element;
-    let transitionProperty = getComputedStyle(el).transitionProperty;
+    const el = this.element;
+    const transitionProperty = getComputedStyle(el).transitionProperty;
 
     return /all|transform/.test(transitionProperty) && this.transitionDuration > 0;
   }
@@ -893,13 +896,13 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    */
   get transitionDuration(): number {
     const items = this.sortableGroup.sortedItems.filter((x) => !x.isDragging && !x.isDropping);
-    let el = items[0]?.element ?? this.element; // Fallback when only one element is present in list
-    let rule = getComputedStyle(el).transitionDuration;
-    let match = rule.match(/([\d.]+)([ms]*)/);
+    const el = items[0]?.element ?? this.element; // Fallback when only one element is present in list
+    const rule = getComputedStyle(el).transitionDuration;
+    const match = rule.match(/([\d.]+)([ms]*)/);
 
     if (match) {
       let value = parseFloat(match[1] ?? '');
-      let unit = match[2];
+      const unit = match[2];
 
       if (unit === 's') {
         value = value * 1000;
@@ -918,7 +921,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    */
   get x(): number {
     if (this._x === undefined) {
-      let marginLeft = parseFloat(getComputedStyle(this.element).marginLeft);
+      const marginLeft = parseFloat(getComputedStyle(this.element).marginLeft);
       this._x = this.element.scrollLeft + this.element.offsetLeft - marginLeft;
     }
 
@@ -957,9 +960,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    @type Number
    */
   get width(): number {
-    let el = this.element;
+    const el = this.element;
     let width = el.offsetWidth;
-    let elStyles = getComputedStyle(el);
+    const elStyles = getComputedStyle(el);
 
     width += parseInt(elStyles.marginLeft) + parseInt(elStyles.marginRight); // equal to jQuery.outerWidth(true)
 
@@ -974,9 +977,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    @type Number
    */
   get height(): number {
-    let el = this.element;
+    const el = this.element;
     let height = el.offsetHeight;
-    let elStyles = getComputedStyle(el);
+    const elStyles = getComputedStyle(el);
 
     // This is needed atm only for grid, to fix jumping on drag-start.
     // In test-app it looks like there is a side-effect when we activate also for direction vertical.
@@ -1019,7 +1022,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
 
   override element!: HTMLElement;
   didSetup = false;
-  named!: NamedArgs<SortableItemModifierSignature<T>>
+  named!: NamedArgs<SortableItemModifierSignature<T>>;
 
   /**
    * tracks if event listeners have been registered. Registering event handlers is unnecessary if item is disabled.
@@ -1031,7 +1034,11 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     registerDestructor(this, cleanup);
   }
 
-  override modify(element: HTMLElement, _positional: PositionalArgs<SortableItemModifierSignature<T>>, named: NamedArgs<SortableItemModifierSignature<T>>) {
+  override modify(
+    element: HTMLElement,
+    _positional: PositionalArgs<SortableItemModifierSignature<T>>,
+    named: NamedArgs<SortableItemModifierSignature<T>>,
+  ) {
     this.element = element;
     this.named = named;
 

@@ -7,8 +7,8 @@
   @private
 */
 export function getBorderSpacing(el: Element) {
-  let css = getComputedStyle(el).borderSpacing; // '0px 0px'
-  let [horizontal, vertical] = css.split(' ');
+  const css = getComputedStyle(el).borderSpacing; // '0px 0px'
+  const [horizontal, vertical] = css.split(' ');
 
   return {
     horizontal: parseFloat(horizontal ?? ''),

@@ -26,11 +26,21 @@ import { getOffset } from '../utils/offset.ts';
   @return {Promise}
 */
 
-export type TMode = 'mouse'|'touch';
+export type TMode = 'mouse' | 'touch';
 
-interface Callbacks { dragstart?: () => Promise<void>, dragmove?: () => Promise<void>, beforedragend?: () => Promise<void>, dragend?: () => Promise<void> }
+interface Callbacks {
+  dragstart?: () => Promise<void>;
+  dragmove?: () => Promise<void>;
+  beforedragend?: () => Promise<void>;
+  dragend?: () => Promise<void>;
+}
 
-export async function drag(mode: TMode, itemSelector: string, offsetFn: () => { dx: number, dy: number }, callbacks: Callbacks = {}) {
+export async function drag(
+  mode: TMode,
+  itemSelector: string,
+  offsetFn: () => { dx: number; dy: number },
+  callbacks: Callbacks = {},
+) {
   let start;
   let move;
   let end;
@@ -50,11 +60,11 @@ export async function drag(mode: TMode, itemSelector: string, offsetFn: () => { 
   }
 
   const itemElement = find(itemSelector);
-  
+
   if (!itemElement) {
     throw new Error(`Element not found!`);
   }
-  
+
   const itemOffset = getOffset(itemElement);
   const offset = offsetFn();
   const rect = itemElement.getBoundingClientRect();
@@ -66,7 +76,11 @@ export async function drag(mode: TMode, itemSelector: string, offsetFn: () => { 
   // https://stackoverflow.com/a/5042051
   const dx = offset.dx || 0;
   const dy = offset.dy || 0;
-  const clientHeight = itemElement.clientHeight || (itemElement as HTMLElement).offsetHeight || (itemElement.parentNode as HTMLElement | null)?.offsetHeight || 0;
+  const clientHeight =
+    itemElement.clientHeight ||
+    (itemElement as HTMLElement).offsetHeight ||
+    (itemElement.parentNode as HTMLElement | null)?.offsetHeight ||
+    0;
   const scale = clientHeight / (rect.bottom - rect.top);
   const halfwayX = itemOffset.left + (dx * scale) / 2;
   const halfwayY = itemOffset.top + (dy * scale) / 2;
@@ -122,6 +136,6 @@ export async function drag(mode: TMode, itemSelector: string, offsetFn: () => { 
     () => {
       return !find('.is-dropping');
     },
-    { timeout: 2000 }
+    { timeout: 2000 },
   );
 }

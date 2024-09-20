@@ -15,14 +15,14 @@ function getParentElements(element: HTMLElement): HTMLElement[] {
 }
 
 export default function (element: HTMLElement): HTMLElement | Document {
-  let position = getComputedStyle(element).position;
-  let excludeStaticParent = position === 'absolute';
+  const position = getComputedStyle(element).position;
+  const excludeStaticParent = position === 'absolute';
   let scrollParent: HTMLElement | Document | undefined = getParentElements(element).filter(function (parent) {
-    let parentElemStyles = getComputedStyle(parent);
+    const parentElemStyles = getComputedStyle(parent);
     if (excludeStaticParent && parentElemStyles.position === 'static') {
       return false;
     }
-    let { overflow, overflowX, overflowY } = parentElemStyles;
+    const { overflow, overflowX, overflowY } = parentElemStyles;
     return /(auto|scroll)/.test(overflow + overflowX + overflowY);
   })[0];
 

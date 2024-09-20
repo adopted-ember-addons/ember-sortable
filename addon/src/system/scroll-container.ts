@@ -9,10 +9,10 @@ export default class ScrollContainer {
   scrollHeight: number;
   maxScrollTop: number;
   maxScrollLeft: number;
-  
+
   constructor(element: HTMLElement | Document) {
     this.isWindow = element === document;
-    this.element = this.isWindow ? document.documentElement : element as HTMLElement;
+    this.element = this.isWindow ? document.documentElement : (element as HTMLElement);
 
     if (this.isWindow) {
       this.top = 0;
@@ -21,7 +21,7 @@ export default class ScrollContainer {
       this.height = document.documentElement.clientHeight;
     } else {
       // Absolute position in document
-      let { top, left } = this.element.getBoundingClientRect();
+      const { top, left } = this.element.getBoundingClientRect();
       this.top = top;
       this.left = left;
       // Viewport size of the container element

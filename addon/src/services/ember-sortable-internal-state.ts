@@ -3,9 +3,9 @@ import type SortableGroupModifier from '../modifiers/sortable-group';
 import type SortableItemModifier from '../modifiers/sortable-item';
 
 export interface Group<T> {
-  groupModifier: SortableGroupModifier<T> | undefined,
-  items: SortableItemModifier<T>[],
-};
+  groupModifier: SortableGroupModifier<T> | undefined;
+  items: SortableItemModifier<T>[];
+}
 
 export default class EmberSortableService<T> extends Service {
   /**
@@ -55,12 +55,12 @@ export default class EmberSortableService<T> extends Service {
    * @param {SortableItemModifier} item
    */
   registerItem(groupName: string, item: SortableItemModifier<T>): void {
-    let groupDef = this.fetchGroup(groupName);
-    
+    const groupDef = this.fetchGroup(groupName);
+
     if (!groupDef) {
       return;
     }
-    
+
     let items = groupDef.items;
 
     if (items.indexOf(item) === -1) {
@@ -78,17 +78,17 @@ export default class EmberSortableService<T> extends Service {
    @param item
    */
   deregisterItem(groupName: string, item: SortableItemModifier<T>): void {
-    let groupDef = this.fetchGroup(groupName);
-    
+    const groupDef = this.fetchGroup(groupName);
+
     if (!groupDef) {
       return;
     }
-    
-    let items = groupDef.items;
+
+    const items = groupDef.items;
 
     const index = items.indexOf(item);
     if (index !== -1) {
-      let newItems = [...items.slice(0, index), ...items.slice(index + 1)];
+      const newItems = [...items.slice(0, index), ...items.slice(index + 1)];
       groupDef.items = newItems;
     }
   }

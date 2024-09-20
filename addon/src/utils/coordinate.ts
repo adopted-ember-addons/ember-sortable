@@ -1,4 +1,4 @@
-import type { FakeEvent } from "../modifiers/sortable-item";
+import type { FakeEvent } from '../modifiers/sortable-item';
 
 /**
   Gets the y offset for a given event.
@@ -8,8 +8,8 @@ import type { FakeEvent } from "../modifiers/sortable-item";
   @private
 */
 export function getY(event: FakeEvent | Event): number {
-  let touches = (event as TouchEvent).changedTouches;
-  let touch = touches && touches[0];
+  const touches = (event as TouchEvent).changedTouches;
+  const touch = touches && touches[0];
 
   if (touch) {
     return touch.screenY;
@@ -25,8 +25,8 @@ export function getY(event: FakeEvent | Event): number {
   @private
 */
 export function getX(event: FakeEvent | Event): number {
-  let touches = (event as TouchEvent).changedTouches;
-  let touch = touches && touches[0];
+  const touches = (event as TouchEvent).changedTouches;
+  const touch = touches && touches[0];
 
   if (touch) {
     return touch.screenX;

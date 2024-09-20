@@ -26,10 +26,10 @@ import type { MoveDirection } from './sortable-item.ts';
 const NO_MODEL: VisualClass = {};
 
 interface VisualClass {
-  UP?: string,
-  DOWN?: string,
-  LEFT?: string,
-  RIGHT?: string,
+  UP?: string;
+  DOWN?: string;
+  LEFT?: string;
+  RIGHT?: string;
 }
 
 interface Position {
@@ -82,8 +82,8 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
   _selectedItem: SortableItemModifier<T> | null = null;
   _group: SortableGroupModifier<T> | null = null;
   _firstItemPosition?: Position;
-  _groupDef!: Group<T>
-  
+  _groupDef!: Group<T>;
+
   // Tracks the current move
   move = null;
   moves: [number, number][] = [];
@@ -173,14 +173,14 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
 
     // Note: If handle is specified, we need to target the keyDown on the handle
     const isKeyboardReorderModeEnabled = this.isKeyboardReorderModeEnabled;
-    
+
     if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
       const _selectedItem = this._selectedItem;
-      
+
       if (!_selectedItem) {
         return;
       }
-      
+
       this._prepareKeyboardReorderMode();
       this._announceAction(ANNOUNCEMENT_ACTION_TYPES.ACTIVATE);
       this._updateItemVisualIndicators(_selectedItem, true);
@@ -224,7 +224,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     const sortedItems = this.sortedItems;
     const item = sortedItems[fromIndex];
     const nextItem = sortedItems[toIndex];
-    
+
     if (!nextItem || !item) {
       return;
     }
@@ -275,7 +275,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
   _handleKeyboardReorder(event: KeyboardEvent) {
     const direction = this.direction;
     const selectedItem = this._selectedItem;
-    
+
     if (!selectedItem) {
       return;
     }
@@ -357,11 +357,11 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
   @action
   cancelKeyboardSelection() {
     const _selectedItem = this._selectedItem;
-    
+
     if (!_selectedItem) {
       return;
     }
-    
+
     this._disableKeyboardReorderMode();
     // Revert the process by reversing the move.
     const moves = this.moves;
@@ -387,11 +387,11 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
    */
   confirmKeyboardSelection() {
     const _selectedItem = this._selectedItem;
-    
+
     if (!_selectedItem) {
       return;
     }
-    
+
     this.moves = [];
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
@@ -418,14 +418,14 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
 
     const sortedItems = this.sortedItems;
     const _selectedItem = this._selectedItem;
-    
+
     if (!_selectedItem) {
       return;
     }
-    
+
     const index = sortedItems.indexOf(_selectedItem);
     const announcer = this.announcer;
-    
+
     if (!announcer) {
       return;
     }
@@ -630,7 +630,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     const sortedItems = this.sortedItems;
 
     const item = sortedItems[0];
-    
+
     if (!item) {
       return {
         x: 0,
@@ -657,7 +657,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
 
     return this.items.sort((a, b) => {
       if (direction === 'grid') {
-        let { ax, ay, bx, by } = this._calculateGridPosition(a, b, groupWidth);
+        const { ax, ay, bx, by } = this._calculateGridPosition(a, b, groupWidth);
         if (ay == by) return ax - bx;
         return ay - by;
       }
@@ -737,7 +737,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
       axis = this.firstItemPosition;
     }
 
-    let direction = this.direction;
+    const direction = this.direction;
 
     let position = 0;
     let groupPositionRight = 0;
@@ -778,7 +778,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
         if (item.height > maxPrevHeight) {
           maxPrevHeight = item.height;
         }
-        
+
         position += item.width;
       }
       if (direction === 'x') {
@@ -848,11 +848,15 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     return announcer;
   }
 
-  _calculateGridPosition(a: SortableItemModifier<T>, b: SortableItemModifier<T>, groupWidth: number): {
-    ax: number,
-    ay: number,
-    bx: number,
-    by: number,
+  _calculateGridPosition(
+    a: SortableItemModifier<T>,
+    b: SortableItemModifier<T>,
+    groupWidth: number,
+  ): {
+    ax: number;
+    ay: number;
+    bx: number;
+    by: number;
   } {
     const groupTopPos = (a.element.parentNode as HTMLElement | null)?.offsetTop ?? 0;
     const groupLeftPos = (a.element.parentNode as HTMLElement | null)?.offsetLeft ?? 0;
@@ -875,7 +879,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
         a.moveDirection,
         groupTopPos,
         groupLeftPos,
-        groupWidth
+        groupWidth,
       );
       position.ax = dragItemPos.x;
       position.ay = dragItemPos.y;
@@ -890,7 +894,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
         b.moveDirection,
         groupTopPos,
         groupLeftPos,
-        groupWidth
+        groupWidth,
       );
       position.bx = dragItemPos.x;
       position.by = dragItemPos.y;
@@ -911,7 +915,18 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     return position;
   }
 
-  _calculateGridDragItemPos(x: number, y: number, otherX: number, otherY: number, width: number, height: number, moveDirection: MoveDirection, groupTopPos: number, groupLeftPos: number, groupWidth: number): Position {
+  _calculateGridDragItemPos(
+    x: number,
+    y: number,
+    otherX: number,
+    otherY: number,
+    width: number,
+    height: number,
+    moveDirection: MoveDirection,
+    groupTopPos: number,
+    groupLeftPos: number,
+    groupWidth: number,
+  ): Position {
     const toleranceWidth = width / 4;
     const initialX = x;
 
@@ -972,14 +987,18 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
 
   override element!: HTMLElement;
   didSetup = false;
-  named!: NamedArgs<SortableGroupModifierSignature<T>>
+  named!: NamedArgs<SortableGroupModifierSignature<T>>;
 
   constructor(owner: Owner, args: ArgsFor<SortableGroupModifierSignature<T>>) {
     super(owner, args);
     registerDestructor(this, cleanup);
   }
 
-  override modify(element: HTMLElement, _positional: PositionalArgs<SortableGroupModifierSignature<T>>, named: NamedArgs<SortableGroupModifierSignature<T>>) {
+  override modify(
+    element: HTMLElement,
+    _positional: PositionalArgs<SortableGroupModifierSignature<T>>,
+    named: NamedArgs<SortableGroupModifierSignature<T>>,
+  ) {
     this.element = element;
     this.named = named;
 
