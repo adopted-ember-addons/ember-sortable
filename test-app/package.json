@@ -33,7 +33,7 @@
     "@babel/core": "^7.20.12",
     "@ember/optional-features": "^2.0.0",
     "@embroider/macros": "^1.9.0",
-    "@embroider/test-setup": "^2.1.1",
+    "@embroider/test-setup": "^4.0.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
     "babel-eslint": "^10.0.3",
