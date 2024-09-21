@@ -53,7 +53,7 @@ export default class SortableItemModifier extends Modifier {
       this._sortableGroup = this.sortableService.fetchGroup(this.groupName);
       assert(
         `No sortable group named ${this.groupName} found. Please check that the groups and items have the same groupName`,
-        this._sortableGroup !== undefined
+        this._sortableGroup !== undefined,
       );
     }
     return this._sortableGroup.groupModifier;
@@ -122,7 +122,7 @@ export default class SortableItemModifier extends Modifier {
           available: '2.2.6',
           enabled: '2.2.6',
         },
-      }
+      },
     );
 
     return this.groupDisabled || this.named.disabled || this.named.isDraggingDisabled || false;

@@ -61,7 +61,7 @@
         }}
       >
         {{#each @model.items as |item|}}
-          <li data-test-horizontal-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='horizontal'}}>
+          <li data-test-horizontal-demo-handle tabindex='0' {{sortable-item model=item groupName='horizontal'}}>
             <ItemPresenter @item={{item}} />
           </li>
         {{/each}}
@@ -82,7 +82,7 @@
         }}
       >
         {{#each @model.itemsGrid as |item|~}}
-          <li data-test-grid-demo-handle tabindex={{'0'}} {{sortable-item model=item groupName='grid'}}>
+          <li data-test-grid-demo-handle tabindex='0' {{sortable-item model=item groupName='grid'}}>
             <ItemPresenter @item={{item}} />
           </li>
         {{~/each}}

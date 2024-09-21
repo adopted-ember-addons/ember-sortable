@@ -789,7 +789,7 @@ export default class SortableGroupModifier extends Modifier {
         a.moveDirection,
         groupTopPos,
         groupLeftPos,
-        groupWidth
+        groupWidth,
       );
       position.ax = dragItemPos.x;
       position.ay = dragItemPos.y;
@@ -804,7 +804,7 @@ export default class SortableGroupModifier extends Modifier {
         b.moveDirection,
         groupTopPos,
         groupLeftPos,
-        groupWidth
+        groupWidth,
       );
       position.bx = dragItemPos.x;
       position.by = dragItemPos.y;
