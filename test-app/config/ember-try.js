@@ -56,10 +56,10 @@ module.exports = async function () {
         },
       },
       {
-        name: 'ember-modifier-4',
+        name: 'ember-modifier-3',
         npm: {
           devDependencies: {
-            'ember-modifier': '^4.0.0',
+            'ember-modifier': '^3.0.0',
           },
         },
       },
