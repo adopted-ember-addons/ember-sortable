@@ -20,7 +20,7 @@ const OVERSHOOT = 2;
   @method reorder
   @param {'mouse'|'touch'} [mode]
     event mode
-  @param {String|Element} [itemSelector]
+  @param {String} [itemSelector]
     selector for all items
   @param {...String} [resultSelectors]
     selectors for the resultant order
