@@ -113,6 +113,6 @@ export async function drag(mode, itemSelector, offsetFn, callbacks = {}) {
     () => {
       return !find('.is-dropping');
     },
-    { timeout: 2000 }
+    { timeout: 2000 },
   );
 }
