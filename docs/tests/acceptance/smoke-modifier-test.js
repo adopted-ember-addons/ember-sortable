@@ -1,5 +1,12 @@
 import { module, test } from 'qunit';
-import { visit, find, findAll, triggerKeyEvent, focus, blur } from '@ember/test-helpers';
+import {
+  visit,
+  find,
+  findAll,
+  triggerKeyEvent,
+  focus,
+  blur,
+} from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import {
   drag,
@@ -32,7 +39,15 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(scrollableContents(), 'Four Three Two One Zero');
 
     order = findAll('[data-test-vertical-demo-handle]');
-    await reorder('mouse', '[data-test-vertical-demo-handle]', order[4], order[3], order[2], order[1], order[0]);
+    await reorder(
+      'mouse',
+      '[data-test-vertical-demo-handle]',
+      order[4],
+      order[3],
+      order[2],
+      order[1],
+      order[0],
+    );
 
     assert.equal(verticalContents(), 'Zero One Two Three Four');
     assert.equal(horizontalContents(), 'Zero One Two Three Four');
@@ -49,7 +64,15 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(scrollableContents(), 'Zero One Two Three Four');
 
     let order = findAll('[data-test-horizontal-demo-handle]');
-    await reorder('mouse', '[data-test-horizontal-demo-handle]', order[1], order[0], order[2], order[3], order[4]);
+    await reorder(
+      'mouse',
+      '[data-test-horizontal-demo-handle]',
+      order[1],
+      order[0],
+      order[2],
+      order[3],
+      order[4],
+    );
 
     assert.equal(verticalContents(), 'One Zero Two Three Four');
     assert.equal(horizontalContents(), 'One Zero Two Three Four');
@@ -81,7 +104,7 @@ module('Acceptance | smoke modifier', function (hooks) {
       order[0],
       order[2],
       order[3],
-      order[4]
+      order[4],
     );
 
     assert.equal(scrollableContents(), 'Two One Zero Three Four');
@@ -131,7 +154,15 @@ module('Acceptance | smoke modifier', function (hooks) {
 
     order = findAll('[data-test-vertical-demo-handle]');
 
-    await reorder('touch', '[data-test-vertical-demo-handle]', order[4], order[3], order[2], order[1], order[0]);
+    await reorder(
+      'touch',
+      '[data-test-vertical-demo-handle]',
+      order[4],
+      order[3],
+      order[2],
+      order[1],
+      order[0],
+    );
 
     assert.equal(verticalContents(), 'Zero One Two Three Four');
     assert.equal(horizontalContents(), 'Zero One Two Three Four');
@@ -148,7 +179,11 @@ module('Acceptance | smoke modifier', function (hooks) {
     assert.equal(scrollableContents(), 'Zero One Two Three Four');
 
     let order = findAll('[data-test-scrollable-demo-handle] .handle').reverse();
-    await reorder('touch', '[data-test-scrollable-demo-handle] .handle', ...order);
+    await reorder(
+      'touch',
+      '[data-test-scrollable-demo-handle] .handle',
+      ...order,
+    );
 
     assert.equal(verticalContents(), 'Four Three Two One Zero');
     assert.equal(horizontalContents(), 'Four Three Two One Zero');
@@ -164,7 +199,7 @@ module('Acceptance | smoke modifier', function (hooks) {
       order[3],
       order[2],
       order[1],
-      order[0]
+      order[0],
     );
 
     assert.equal(verticalContents(), 'Zero One Two Three Four');
@@ -198,17 +233,29 @@ module('Acceptance | smoke modifier', function (hooks) {
 
       const handle = find('[data-test-vertical-demo-handle]');
       await focus(handle);
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
-      assert.dom('[data-test-vertical-demo-item]').hasClass('sortable-item--active');
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
+      assert
+        .dom('[data-test-vertical-demo-item]')
+        .hasClass('sortable-item--active');
       assert.dom(handle).doesNotHaveClass('sortable-handle-up');
       assert.dom(handle).hasClass('sortable-handle-down');
 
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
       assert.dom(handle).hasClass('sortable-handle-up');
       assert.dom(handle).hasClass('sortable-handle-down');
 
       await blur('[data-test-vertical-demo-group]');
-      assert.dom('[data-test-vertical-demo-item]').doesNotHaveClass('sortable-item--active');
+      assert
+        .dom('[data-test-vertical-demo-item]')
+        .doesNotHaveClass('sortable-item--active');
       assert.dom(handle).doesNotHaveClass('sortable-handle-up');
       assert.dom(handle).doesNotHaveClass('sortable-handle-down');
     });
@@ -220,12 +267,20 @@ module('Acceptance | smoke modifier', function (hooks) {
 
       const handle = find('[data-test-horizontal-demo-handle]');
       await focus(handle);
-      await triggerKeyEvent('[data-test-horizontal-demo-handle]', 'keydown', SPACE_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
       assert.dom(handle).hasClass('sortable-item--active');
       assert.dom(handle).doesNotHaveClass('sortable-handle-left');
       assert.dom(handle).hasClass('sortable-handle-right');
 
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT,
+      );
       assert.dom(handle).hasClass('sortable-handle-left');
       assert.dom(handle).hasClass('sortable-handle-right');
 
@@ -240,10 +295,18 @@ module('Acceptance | smoke modifier', function (hooks) {
 
       await visit('/');
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
-      assert.dom('[data-test-vertical-demo-group]').hasAttribute('role', 'application');
-      assert.dom('[data-test-vertical-demo-group]').hasAttribute('tabindex', '-1');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('role', 'application');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('tabindex', '-1');
       assert.dom('[data-test-vertical-demo-group]').isFocused();
     });
 
@@ -252,10 +315,18 @@ module('Acceptance | smoke modifier', function (hooks) {
 
       await visit('/');
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
 
-      assert.dom('[data-test-vertical-demo-group]').hasAttribute('role', 'application');
-      assert.dom('[data-test-vertical-demo-group]').hasAttribute('tabindex', '-1');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('role', 'application');
+      assert
+        .dom('[data-test-vertical-demo-group]')
+        .hasAttribute('tabindex', '-1');
       assert.dom('[data-test-vertical-demo-group]').isFocused();
     });
 
@@ -264,8 +335,16 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ESCAPE_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ESCAPE_KEY_CODE,
+      );
 
       assert.dom('[data-test-vertical-demo-group]').hasNoAttribute('role');
       assert.dom('[data-test-vertical-demo-group]').hasNoAttribute('tabindex');
@@ -278,7 +357,11 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
       await blur('[data-test-vertical-demo-group]');
 
@@ -293,9 +376,21 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ESCAPE_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ESCAPE_KEY_CODE,
+      );
 
       const movedHandle = findAll('[data-test-vertical-demo-handle]')[0];
 
@@ -312,8 +407,16 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
 
       await blur('[data-test-vertical-demo-group]');
 
@@ -332,9 +435,21 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
       const movedHandle = findAll('[data-test-vertical-demo-handle]')[1];
 
@@ -351,11 +466,31 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.UP);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', SPACE_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.UP,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
 
       const movedHandle = findAll('[data-test-vertical-demo-handle]')[1];
 
@@ -372,9 +507,21 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', SPACE_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', SPACE_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        SPACE_KEY_CODE,
+      );
 
       const movedHandle = findAll('[data-test-vertical-demo-handle]')[1];
 
@@ -391,9 +538,21 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-horizontal-demo-handle]');
-      await triggerKeyEvent('[data-test-horizontal-demo-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT,
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
       const movedHandle = findAll('[data-test-horizontal-demo-handle]')[1];
 
@@ -410,11 +569,31 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-horizontal-demo-handle]');
-      await triggerKeyEvent('[data-test-horizontal-demo-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ARROW_KEY_CODES.RIGHT);
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ARROW_KEY_CODES.LEFT);
-      await triggerKeyEvent('[data-test-horizontal-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT,
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.RIGHT,
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.LEFT,
+      );
+      await triggerKeyEvent(
+        '[data-test-horizontal-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
       const movedHandle = findAll('[data-test-horizontal-demo-handle]')[1];
 
@@ -429,56 +608,146 @@ module('Acceptance | smoke modifier', function (hooks) {
       await visit('/');
 
       await focus('[data-test-vertical-demo-handle]');
-      await triggerKeyEvent('[data-test-vertical-demo-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-vertical-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-vertical-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
       assert.equal(justDraggedContents(), 'Zero');
 
-      assert.equal(tableConditionalCellContents(), 'avocado banana cashew watermelon durian apple lemon ');
+      assert.equal(
+        tableConditionalCellContents(),
+        'avocado banana cashew watermelon durian apple lemon ',
+      );
       await focus('[data-test-table-conditional-cell-handle]');
 
-      await triggerKeyEvent('[data-test-table-conditional-cell-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
-      assert.equal(tableConditionalCellContents(), 'banana avocado cashew watermelon durian apple lemon ');
+      assert.equal(
+        tableConditionalCellContents(),
+        'banana avocado cashew watermelon durian apple lemon ',
+      );
     });
 
     test('Keyboard selection works multiple times for conditionally rendered sort-handle', async function (assert) {
       await visit('/');
 
-      assert.equal(tableConditionalCellContents(), 'avocado banana cashew watermelon durian apple lemon ');
+      assert.equal(
+        tableConditionalCellContents(),
+        'avocado banana cashew watermelon durian apple lemon ',
+      );
 
       await focus('[data-test-table-conditional-cell-handle]');
 
-      await triggerKeyEvent('[data-test-table-conditional-cell-handle]', 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-handle]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
-      assert.equal(tableConditionalCellContents(), 'banana avocado cashew watermelon durian apple lemon ');
+      assert.equal(
+        tableConditionalCellContents(),
+        'banana avocado cashew watermelon durian apple lemon ',
+      );
 
-      const moveHandle = findAll('[data-test-table-conditional-cell-handle]')[4];
+      const moveHandle = findAll(
+        '[data-test-table-conditional-cell-handle]',
+      )[4];
       await focus(moveHandle);
 
       await triggerKeyEvent(moveHandle, 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.UP);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.UP);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.UP,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.UP,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
-      assert.equal(tableConditionalCellContents(), 'banana avocado durian cashew watermelon apple lemon ');
+      assert.equal(
+        tableConditionalCellContents(),
+        'banana avocado durian cashew watermelon apple lemon ',
+      );
 
-      const moveHandle1 = findAll('[data-test-table-conditional-cell-handle]')[0];
+      const moveHandle1 = findAll(
+        '[data-test-table-conditional-cell-handle]',
+      )[0];
       await focus(moveHandle1);
 
       await triggerKeyEvent(moveHandle1, 'keydown', ENTER_KEY_CODE);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ARROW_KEY_CODES.DOWN);
-      await triggerKeyEvent('[data-test-table-conditional-cell-demo-group]', 'keydown', ENTER_KEY_CODE);
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ARROW_KEY_CODES.DOWN,
+      );
+      await triggerKeyEvent(
+        '[data-test-table-conditional-cell-demo-group]',
+        'keydown',
+        ENTER_KEY_CODE,
+      );
 
-      assert.equal(tableConditionalCellContents(), 'avocado durian cashew watermelon banana apple lemon ');
+      assert.equal(
+        tableConditionalCellContents(),
+        'avocado durian cashew watermelon banana apple lemon ',
+      );
     });
   });
 
@@ -503,7 +772,11 @@ module('Acceptance | smoke modifier', function (hooks) {
   }
 
   function contents(selector) {
-    return find(selector).textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+    return find(selector)
+      .textContent.replace(/⇕/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/^\s+/, '')
+      .replace(/\s+$/, '');
   }
 
   function tableConditionalCellContents() {
@@ -512,7 +785,11 @@ module('Acceptance | smoke modifier', function (hooks) {
     for (const index in elements) {
       const element = elements[index];
       if (element.textContent) {
-        result += element.textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+        result += element.textContent
+          .replace(/⇕/g, '')
+          .replace(/\s+/g, ' ')
+          .replace(/^\s+/, '')
+          .replace(/\s+$/, '');
         result += ' ';
       }
     }

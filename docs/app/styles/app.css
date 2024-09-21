@@ -64,7 +64,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgba(71, 1, 1, 0.5);
+  background: rgb(71, 1, 1 / 50%);
   color: pink;
 }
 
@@ -93,9 +93,11 @@
 .horizontal-doc-auto-scroll-demo {
   white-space: nowrap;
 }
+
 .horizontal-doc-auto-scroll-demo ol {
-  padding-left: 0px;
+  padding-left: 0;
 }
+
 .horizontal-doc-auto-scroll-demo .sortable-item {
   width: 70px;
 }
@@ -106,7 +108,7 @@
   display: inline-block;
   position: relative;
   cursor: move;
-  background-color: hsl(197, 100%, 45%);
+  background-color: hsl(197deg 100% / 45%);
   margin: 0 4px;
 }
 
@@ -127,11 +129,12 @@
 
 .grid-demo .sortable-item.is-dragging,
 .horizontal-demo .sortable-item.is-dragging {
-  background: hsl(197, 100%, 35%);
+  background: hsl(197deg 100% / 35%);
 }
+
 .grid-demo .sortable-item.is-dropping,
 .horizontal-demo .sortable-item.is-dropping {
-  background: hsl(197, 100%, 40%);
+  background: hsl(197deg 100% / 40%);
   z-index: 10;
 }
 
@@ -148,6 +151,7 @@
   padding: 0;
   background: white;
 }
+
 .table-demo td:last-child,
 .table-demo th:last-child {
   padding: 0 1em 0 4px;
@@ -190,7 +194,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgba(71, 1, 1, 0.5);
+  background: rgb(71, 1, 1 / 50%);
   color: pink;
 }
 
@@ -198,6 +202,7 @@
   transform: none !important;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .sortable-item--active {
   outline: 2px solid purple;
 }
@@ -209,10 +214,10 @@
   position: relative;
 }
 
-.sortable-handle-up:before,
-.sortable-handle-down:after,
-.sortable-handle-left:before,
-.sortable-handle-right:after {
+.sortable-handle-up::before,
+.sortable-handle-down::after,
+.sortable-handle-left::before,
+.sortable-handle-right::after {
   position: absolute;
   left: 50%;
   margin-left: -4px;
@@ -223,23 +228,23 @@
   border-width: 4px;
 }
 
-.sortable-handle-up:before {
+.sortable-handle-up::before {
   top: -10px;
   border-bottom-color: #000;
 }
 
-.sortable-handle-down:after {
+.sortable-handle-down::after {
   bottom: -10px;
   border-top-color: #000;
 }
 
-.sortable-handle-left:before {
+.sortable-handle-left::before {
   top: 50%;
   left: -10px;
   border-right-color: #000;
 }
 
-.sortable-handle-right:after {
+.sortable-handle-right::after {
   top: 50%;
   left: calc(100% + 10px);
   border-left-color: #000;
