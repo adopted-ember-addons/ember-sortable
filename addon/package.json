@@ -54,7 +54,7 @@
     "@rollup/plugin-babel": "^6.0.3",
     "@babel/eslint-parser": "^7.11.0",
     "ember-modifier": "^4.2.0",
-    "eslint": "^7.32.0",
+    "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-ember": "^10.5.9",
     "eslint-plugin-n": "^14.0.0",
