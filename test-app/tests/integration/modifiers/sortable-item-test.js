@@ -31,6 +31,10 @@ module('Integration | Modifier | sortable-item', function (hooks) {
   });
 
   function contents(selector) {
-    return find(selector).textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+    return find(selector)
+      .textContent.replace(/⇕/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/^\s+/, '')
+      .replace(/\s+$/, '');
   }
 });

@@ -23,7 +23,10 @@ module('Acceptance | container auto scroll', function (hooks) {
     await drag('mouse', '[data-test-doc-auto-scroll-demo-item]', () => {
       return { dy: itemHeight() * 30 + 1, dx: undefined };
     });
-    assert.ok(document.getElementById('ember-testing-container').scrollTop, 'The container has scroll (top)');
+    assert.ok(
+      document.getElementById('ember-testing-container').scrollTop,
+      'The container has scroll (top)',
+    );
   });
 
   test('horizontaly reordering can scroll his parent container', async function (assert) {
@@ -38,6 +41,9 @@ module('Acceptance | container auto scroll', function (hooks) {
     await drag('mouse', '[data-test-doc-auto-scroll-demo-item]', () => {
       return { dy: undefined, dx: itemWidth() * 30 + 1 };
     });
-    assert.ok(document.getElementById('ember-testing-container').scrollLeft, 'The container has scroll (left)');
+    assert.ok(
+      document.getElementById('ember-testing-container').scrollLeft,
+      'The container has scroll (left)',
+    );
   });
 });

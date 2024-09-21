@@ -73,7 +73,7 @@ jobs:
           - ember-canary
           - ember-modifier-3
           - ember-test-helpers-2
-          - ember-test-helpers-4
+          - ember-test-helpers-3
           - embroider-safe
           - embroider-optimized
 
