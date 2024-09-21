@@ -61,7 +61,6 @@
     "eslint-plugin-n": "^17.10.3",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-qunit": "^8.1.2",
-    "husky": "^3.0.8",
     "lerna-changelog": "^0.8.2",
     "loader.js": "^4.7.0",
     "prettier": "^3.3.3",
