@@ -6,7 +6,9 @@ module('Unit | Service | ember-sortable', function (hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function () {
-    this.sortableService = this.owner.lookup('service:ember-sortable-internal-state');
+    this.sortableService = this.owner.lookup(
+      'service:ember-sortable-internal-state',
+    );
 
     // While not truly a group modifier, the service just registers whatever object is passed
     this.groupModifier = {
@@ -46,7 +48,10 @@ module('Unit | Service | ember-sortable', function (hooks) {
     assert.ok(isArray(groupDef.items));
     assert.ok(groupDef.items.includes(this.sortableItem));
 
-    this.sortableService.deregisterItem(this.unregisteredGroupName, this.sortableItem);
+    this.sortableService.deregisterItem(
+      this.unregisteredGroupName,
+      this.sortableItem,
+    );
     groupDef = this.sortableService.fetchGroup(this.groupName);
     assert.ok(groupDef.items.includes(this.sortableItem));
 
@@ -62,6 +67,10 @@ module('Unit | Service | ember-sortable', function (hooks) {
     assert.ok(isArray(groupDef.items));
 
     let groupDef2 = this.sortableService.fetchGroup(this.groupName);
-    assert.strictEqual(groupDef, groupDef2, 'Fetches the correct group is one exists');
+    assert.strictEqual(
+      groupDef,
+      groupDef2,
+      'Fetches the correct group is one exists',
+    );
   });
 });

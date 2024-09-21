@@ -1,6 +1,13 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { settled, find, findAll, render, triggerKeyEvent, waitUntil } from '@ember/test-helpers';
+import {
+  settled,
+  find,
+  findAll,
+  render,
+  triggerKeyEvent,
+  waitUntil,
+} from '@ember/test-helpers';
 import { set } from '@ember/object';
 import { reorder } from 'ember-sortable/test-support';
 import { hbs } from 'ember-cli-htmlbars';
@@ -80,7 +87,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
         {{#each this.items as |item|}}
           <li {{sortable-item model=item}}>
             {{item}}
-            <button data-test-handle={{item}} {{sortable-handle}}>
+            <button data-test-handle={{item}} type="button" {{sortable-handle}}>
               handle
             </button>
           </li>
@@ -94,7 +101,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     assert
       .dom(announcerSelector)
       .hasText(
-        'item at position, 1 of 3, is activated to be repositioned.Press up and down keys to change position, Space to confirm new position, Escape to cancel.'
+        'item at position, 1 of 3, is activated to be repositioned.Press up and down keys to change position, Space to confirm new position, Escape to cancel.',
       );
 
     triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 40) /* DOWN */;
@@ -102,7 +109,9 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     await announcerHasText();
     assert
       .dom(announcerSelector)
-      .hasText('item is moved to position, 2 of 3. Press Space to confirm new position, Escape to cancel.');
+      .hasText(
+        'item is moved to position, 2 of 3. Press Space to confirm new position, Escape to cancel.',
+      );
 
     triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
 
@@ -117,7 +126,11 @@ module('Integration | Modifier | sortable-group', function (hooks) {
   });
 
   function contents(selector) {
-    return find(selector).textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+    return find(selector)
+      .textContent.replace(/⇕/g, '')
+      .replace(/\s+/g, ' ')
+      .replace(/^\s+/, '')
+      .replace(/\s+$/, '');
   }
 
   let announcerSelector = '#test-list + .visually-hidden';
@@ -127,7 +140,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
       () => {
         return find(announcerSelector).textContent.includes(' ');
       },
-      { timeout: 2000 }
+      { timeout: 2000 },
     );
   };
 });
