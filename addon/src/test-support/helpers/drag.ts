@@ -62,7 +62,7 @@ export async function drag(
   const itemElement = find(itemSelector);
 
   if (!itemElement) {
-    throw new Error(`Element not found!`);
+    throw new Error(`Element with selector '${itemSelector}' not found!`);
   }
 
   const itemOffset = getOffset(itemElement);

@@ -6,7 +6,7 @@ import type SortableGroupModifier from './modifiers/sortable-group';
 import type SortableHandleModifier from './modifiers/sortable-handle';
 import type SortableItemModifier from './modifiers/sortable-item';
 
-export default interface EmberBasicDropdownRegistry {
+export default interface EmberSortableRegistry {
   'sortable-group': typeof SortableGroupModifier;
   'sortable-handle': typeof SortableHandleModifier;
   'sortable-item': typeof SortableItemModifier;

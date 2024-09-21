@@ -35,19 +35,19 @@ export async function reorder<T extends keyof HTMLElementTagNameMap>(
     const items = findAll(itemSelector);
     const result = resultSelectors[targetIndex];
     if (!result) {
-      throw new Error(`TargetElement not found!`);
+      throw new Error(`Element on position ${targetIndex} not found!`);
     }
 
     const sourceElement = find(result);
 
     if (!sourceElement) {
-      throw new Error(`SourceElement not found!`);
+      throw new Error(`SourceElement with selector '${result}' not found!`);
     }
 
     const targetElement = items[targetIndex];
 
     if (!targetElement) {
-      throw new Error(`TargetElement not found!`);
+      throw new Error(`TargetElement not found! Selector '${result}' has no element on index ${targetIndex}!`);
     }
 
     const dx = getOffset(targetElement).left - OVERSHOOT - getOffset(sourceElement).left;
