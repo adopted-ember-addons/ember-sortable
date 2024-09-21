@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2024-09-21)
+
+ember-sortable 5.2.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-sortable`, `test-app`
+  * [#581](https://github.com/adopted-ember-addons/ember-sortable/pull/581) Convert addon to TypeScript & add glint ([@mkszepp](https://github.com/mkszepp))
+
+#### :house: Internal
+* `ember-sortable`, `docs`, `test-app`
+  * [#582](https://github.com/adopted-ember-addons/ember-sortable/pull/582) Update dependencies & bring back green CI ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2024-08-03)
 
 ember-sortable 5.1.2 (patch)
