@@ -81,6 +81,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: wyvox/action-setup-pnpm@v3
       
+      - run: pnpm build
       - run: pnpm i -f # re-sync injected deps
       
       - name: Run Tests
