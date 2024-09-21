@@ -81,10 +81,10 @@ module.exports = async function () {
         },
       },
       {
-        name: 'ember-test-helpers-4',
+        name: 'ember-test-helpers-3',
         npm: {
           dependencies: {
-            '@ember/test-helpers': '^4.0.0',
+            '@ember/test-helpers': '^3.0.0',
           },
         },
       },
