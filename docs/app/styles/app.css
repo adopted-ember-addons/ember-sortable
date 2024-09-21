@@ -64,7 +64,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgb(71, 1, 1 / 50%);
+  background: rgb(71 1 1 / 50%);
   color: pink;
 }
 
@@ -108,7 +108,7 @@
   display: inline-block;
   position: relative;
   cursor: move;
-  background-color: hsl(197deg 100% / 45%);
+  background-color: hsl(197deg 100% 45%);
   margin: 0 4px;
 }
 
@@ -129,12 +129,12 @@
 
 .grid-demo .sortable-item.is-dragging,
 .horizontal-demo .sortable-item.is-dragging {
-  background: hsl(197deg 100% / 35%);
+  background: hsl(197deg 100% 35%);
 }
 
 .grid-demo .sortable-item.is-dropping,
 .horizontal-demo .sortable-item.is-dropping {
-  background: hsl(197deg 100% / 40%);
+  background: hsl(197deg 100% 40%);
   z-index: 10;
 }
 
@@ -194,7 +194,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background: rgb(71, 1, 1 / 50%);
+  background: rgb(71 1 1 / 50%);
   color: pink;
 }
 
