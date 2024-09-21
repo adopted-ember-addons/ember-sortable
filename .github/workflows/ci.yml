@@ -80,6 +80,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: wyvox/action-setup-pnpm@v3
+      
+      - run: pnpm i -f # re-sync injected deps
+      
       - name: Run Tests
         run: |
           pnpm _syncPnpm
