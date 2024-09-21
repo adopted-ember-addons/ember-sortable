@@ -21,10 +21,6 @@
     "test:all": "ember try:each"
   },
   "dependencies": {
-    "@ember/string": "^4.0.0",
-    "@ember/test-helpers": "^4.0.4",
-    "@ember/test-waiters": "^3.1.0",
-    "ember-modifier": "^4.2.0",
     "ember-sortable": "workspace:../addon"
   },
   "dependenciesMeta": {
@@ -38,6 +34,8 @@
     "@babel/plugin-proposal-decorators": "^7.24.7",
     "@ember/optional-features": "^2.1.0",
     "@ember/string": "^4.0.0",
+    "@ember/test-helpers": "^4.0.4",
+    "@ember/test-waiters": "^3.1.0",
     "@embroider/macros": "^1.16.6",
     "@embroider/test-setup": "^4.0.0",
     "@glimmer/component": "^1.1.2",

@@ -235,18 +235,6 @@ importers:
 
   test-app:
     dependencies:
-      '@ember/string':
-        specifier: ^4.0.0
-        version: 4.0.0
-      '@ember/test-helpers':
-        specifier: ^4.0.4
-        version: 4.0.4(@babel/core@7.25.2)(ember-source@5.11.0)
-      '@ember/test-waiters':
-        specifier: ^3.1.0
-        version: 3.1.0
-      ember-modifier:
-        specifier: ^4.2.0
-        version: 4.2.0(@babel/core@7.25.2)(ember-source@5.11.0)
       ember-sortable:
         specifier: workspace:../addon
         version: file:addon(@ember/test-helpers@4.0.4)(@ember/test-waiters@3.1.0)(ember-modifier@4.2.0)(ember-source@5.11.0)
@@ -263,6 +251,15 @@ importers:
       '@ember/optional-features':
         specifier: ^2.1.0
         version: 2.1.0
+      '@ember/string':
+        specifier: ^4.0.0
+        version: 4.0.0
+      '@ember/test-helpers':
+        specifier: ^4.0.4
+        version: 4.0.4(@babel/core@7.25.2)(ember-source@5.11.0)
+      '@ember/test-waiters':
+        specifier: ^3.1.0
+        version: 3.1.0
       '@embroider/macros':
         specifier: ^1.16.6
         version: 1.16.6
@@ -308,6 +305,9 @@ importers:
       ember-load-initializers:
         specifier: ^2.1.2
         version: 2.1.2(@babel/core@7.25.2)
+      ember-modifier:
+        specifier: ^4.2.0
+        version: 4.2.0(@babel/core@7.25.2)(ember-source@5.11.0)
       ember-qunit:
         specifier: ^8.1.0
         version: 8.1.0(@ember/test-helpers@4.0.4)(ember-source@5.11.0)(qunit@2.22.0)
@@ -1755,6 +1755,7 @@ packages:
 
   /@ember/string@4.0.0:
     resolution: {integrity: sha512-IMVyVE72twuAMSYcHzWSgtgYTtzlHlKSGW8vEbztnnmkU6uo7kVHmiqSN9R4RkBhzvh0VD4G76Eph+55t3iNIA==}
+    dev: true
 
   /@ember/test-helpers@4.0.4(@babel/core@7.25.2)(ember-source@5.11.0):
     resolution: {integrity: sha512-1mbOVyVEcLxYOGzBaeeaQkCrL1o9Av86QaHk/1RvrVBW24I6YUj1ILLEi2qLZT5PzcCy0TdfadHT3hKJwJ0GcQ==}
