@@ -1,7 +1,18 @@
 export default class ScrollContainer {
-  constructor(element) {
+  element: HTMLElement;
+  isWindow: boolean;
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  scrollWidth: number;
+  scrollHeight: number;
+  maxScrollTop: number;
+  maxScrollLeft: number;
+
+  constructor(element: HTMLElement | Document) {
     this.isWindow = element === document;
-    this.element = this.isWindow ? document.documentElement : element;
+    this.element = this.isWindow ? document.documentElement : (element as HTMLElement);
 
     if (this.isWindow) {
       this.top = 0;
@@ -10,7 +21,7 @@ export default class ScrollContainer {
       this.height = document.documentElement.clientHeight;
     } else {
       // Absolute position in document
-      let { top, left } = this.element.getBoundingClientRect();
+      const { top, left } = this.element.getBoundingClientRect();
       this.top = top;
       this.left = left;
       // Viewport size of the container element
@@ -33,7 +44,7 @@ export default class ScrollContainer {
     return this.left + this.width;
   }
 
-  scrollTop(value) {
+  scrollTop(value?: number) {
     if (value) {
       value = Math.max(0, Math.min(this.maxScrollTop, value));
       this.element.scrollTop = value;
@@ -42,7 +53,7 @@ export default class ScrollContainer {
     return this.element.scrollTop;
   }
 
-  scrollLeft(value) {
+  scrollLeft(value?: number) {
     if (value) {
       value = Math.max(0, Math.min(this.maxScrollLeft, value));
       this.element.scrollLeft = value;

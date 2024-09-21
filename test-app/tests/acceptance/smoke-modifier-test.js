@@ -1214,6 +1214,7 @@ module('Acceptance | smoke modifier', function (hooks) {
   function tableConditionalCellContents() {
     const elements = findAll('[data-test-fruits]');
     let result = '';
+
     for (const index in elements) {
       const element = elements[index];
       if (element.textContent) {

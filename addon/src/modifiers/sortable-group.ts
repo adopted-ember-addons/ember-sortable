@@ -10,14 +10,51 @@ import {
   isRightArrowKey,
   isSpaceKey,
   isUpArrowKey,
-} from '../utils/keyboard';
-import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant';
-import { defaultA11yAnnouncementConfig } from '../utils/defaults';
+} from '../utils/keyboard.ts';
+import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant.ts';
+import { defaultA11yAnnouncementConfig, type A11yAnnouncementConfig } from '../utils/defaults.ts';
 import { next, schedule, scheduleOnce, later } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import { registerDestructor, isDestroyed } from '@ember/destroyable';
+import type { ArgsFor, PositionalArgs, NamedArgs } from 'ember-modifier';
+import type Owner from '@ember/owner';
+import type EmberSortableService from '../services/ember-sortable-internal-state.ts';
+import type { Group } from '../services/ember-sortable-internal-state.ts';
+import type SortableItemModifier from './sortable-item.ts';
+import type { MoveDirection } from './sortable-item.ts';
 
-const NO_MODEL = {};
+const NO_MODEL: HandleVisualClass = {};
+
+export interface HandleVisualClass {
+  UP?: string;
+  DOWN?: string;
+  LEFT?: string;
+  RIGHT?: string;
+}
+
+interface Position {
+  x: number;
+  y: number;
+}
+
+export type TDirection = 'x' | 'y' | 'grid';
+
+interface SortableGroupModifierSignature<T> {
+  Args: {
+    Named: {
+      direction?: TDirection;
+      groupName?: string;
+      disabled?: boolean;
+      handleVisualClass?: HandleVisualClass;
+      a11yAnnouncementConfig?: A11yAnnouncementConfig;
+      itemVisualClass?: string;
+      a11yItemName?: string;
+      onChange: (itemModels: T[], draggedModel: T | undefined) => void;
+    };
+    Positional: unknown[];
+  };
+  Element: HTMLElement;
+}
 
 /**
  * Modifier to apply a11y support to a group container for the Sortable component
@@ -39,13 +76,17 @@ const NO_MODEL = {};
  *      {{/each}}
  *    </ol>
  */
-export default class SortableGroupModifier extends Modifier {
+export default class SortableGroupModifier<T> extends Modifier<SortableGroupModifierSignature<T>> {
   /** Primary keyboard utils */
   // Tracks the currently selected item
-  _selectedItem = null;
+  _selectedItem: SortableItemModifier<T> | null = null;
+  _group: SortableGroupModifier<T> | null = null;
+  _firstItemPosition?: Position;
+  _groupDef!: Group<T>;
+
   // Tracks the current move
   move = null;
-  moves = [];
+  moves: [number, number][] = [];
 
   // Tracks the status of keyboard reorder mode
   isKeyboardReorderModeEnabled = false;
@@ -73,7 +114,7 @@ export default class SortableGroupModifier extends Modifier {
    *  RIGHT: 'right',
    * }
    */
-  get handleVisualClass() {
+  get handleVisualClass(): HandleVisualClass {
     return this.named.handleVisualClass || NO_MODEL;
   }
 
@@ -88,15 +129,15 @@ export default class SortableGroupModifier extends Modifier {
    *  CANCEL: function() {},
    * }
    */
-  get a11yAnnouncementConfig() {
+  get a11yAnnouncementConfig(): A11yAnnouncementConfig {
     return this.named.a11yAnnouncementConfig || defaultA11yAnnouncementConfig;
   }
 
-  get itemVisualClass() {
+  get itemVisualClass(): string {
     return this.named.itemVisualClass || 'is-activated';
   }
 
-  get a11yItemName() {
+  get a11yItemName(): string {
     return this.named.a11yItemName || 'item';
   }
   /** End of a11y properties */
@@ -125,16 +166,21 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Event} event a DOM event
    */
   @action
-  keyDown(event) {
+  keyDown(event: KeyboardEvent) {
     if (!this.isKeyDownEnabled) {
       return;
     }
 
     // Note: If handle is specified, we need to target the keyDown on the handle
     const isKeyboardReorderModeEnabled = this.isKeyboardReorderModeEnabled;
-    const _selectedItem = this._selectedItem;
 
     if (!isKeyboardReorderModeEnabled && (isEnterKey(event) || isSpaceKey(event))) {
+      const _selectedItem = this._selectedItem;
+
+      if (!_selectedItem) {
+        return;
+      }
+
       this._prepareKeyboardReorderMode();
       this._announceAction(ANNOUNCEMENT_ACTION_TYPES.ACTIVATE);
       this._updateItemVisualIndicators(_selectedItem, true);
@@ -142,7 +188,7 @@ export default class SortableGroupModifier extends Modifier {
 
       this.isRetainingFocus = true;
 
-      scheduleOnce('render', () => {
+      scheduleOnce('render', this, () => {
         this.element.focus();
         this.isRetainingFocus = false;
       });
@@ -163,8 +209,8 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @param {Element} element a DOM element.
    */
-  _isElementWithinHandle(element) {
-    return element.closest(`[data-sortable-handle]`);
+  _isElementWithinHandle(element: Element | null): boolean {
+    return !!element?.closest(`[data-sortable-handle]`);
   }
 
   /**
@@ -173,11 +219,15 @@ export default class SortableGroupModifier extends Modifier {
    * @param {Integer} fromIndex the original index
    * @param {Integer} toIndex the new index
    */
-  _move(fromIndex, toIndex) {
+  _move(fromIndex: number, toIndex: number) {
     const direction = this.direction;
     const sortedItems = this.sortedItems;
     const item = sortedItems[fromIndex];
     const nextItem = sortedItems[toIndex];
+
+    if (!nextItem || !item) {
+      return;
+    }
 
     // switch direction values to notify sortedItems to update, so it sorts by direction.
     let value;
@@ -222,9 +272,13 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @param {Event} event a DOM event.
    */
-  _handleKeyboardReorder(event) {
+  _handleKeyboardReorder(event: KeyboardEvent) {
     const direction = this.direction;
     const selectedItem = this._selectedItem;
+
+    if (!selectedItem) {
+      return;
+    }
 
     if (direction === 'y' && isDownArrowKey(event)) {
       this.moveItem(selectedItem, 1);
@@ -241,7 +295,7 @@ export default class SortableGroupModifier extends Modifier {
       this.confirmKeyboardSelection();
 
       this.isRetainingFocus = true;
-      scheduleOnce('render', () => this._focusItem(itemElement));
+      scheduleOnce('render', this, () => this._focusItem(itemElement));
     } else if (isEscapeKey(event)) {
       // cancel will reset the selectedItem, so caching it here before we remove it.
       const _selectedItemElement = selectedItem.element;
@@ -249,12 +303,15 @@ export default class SortableGroupModifier extends Modifier {
       this.cancelKeyboardSelection();
 
       this.isRetainingFocus = true;
-      scheduleOnce('render', () => {
+      scheduleOnce('render', this, () => {
         const moves = this.moves;
-        if (moves && moves.length > 0) {
+        if (moves && moves[0]) {
           const sortedItems = this.sortedItems;
-          const itemElement = sortedItems[moves[0].fromIndex].element;
-          this._focusItem(itemElement);
+          const fromIndex = moves[0][1];
+          const itemElement = sortedItems[fromIndex]?.element;
+          if (itemElement) {
+            this._focusItem(itemElement);
+          }
         } else {
           this._focusItem(_selectedItemElement);
         }
@@ -269,7 +326,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {SortableItemModifier} item the item to be moved.
    * @param {Integer} delta how much to move index-wise.
    */
-  moveItem(item, delta) {
+  moveItem(item: SortableItemModifier<T>, delta: number) {
     const sortedItems = this.sortedItems;
     const moves = this.moves;
 
@@ -282,7 +339,7 @@ export default class SortableGroupModifier extends Modifier {
     }
     this._announceAction(ANNOUNCEMENT_ACTION_TYPES.MOVE, delta);
     // Guarantees that the before the UI is fully rendered before we move again.
-    scheduleOnce('render', () => {
+    scheduleOnce('render', this, () => {
       this._move(sortedIndex, newSortedIndex);
       this._updateHandleVisualIndicators(item, true);
 
@@ -300,12 +357,19 @@ export default class SortableGroupModifier extends Modifier {
   @action
   cancelKeyboardSelection() {
     const _selectedItem = this._selectedItem;
+
+    if (!_selectedItem) {
+      return;
+    }
+
     this._disableKeyboardReorderMode();
     // Revert the process by reversing the move.
     const moves = this.moves;
     while (moves.length > 0) {
       const move = moves.pop();
-      this._move(move[1], move[0]);
+      const fromIndex = move ? move[1] : 0;
+      const toIndex = move ? move[0] : 0;
+      this._move(fromIndex, toIndex);
     }
     this._tearDownA11yApplicationContainer();
     this._updateItemVisualIndicators(_selectedItem, false);
@@ -323,6 +387,11 @@ export default class SortableGroupModifier extends Modifier {
    */
   confirmKeyboardSelection() {
     const _selectedItem = this._selectedItem;
+
+    if (!_selectedItem) {
+      return;
+    }
+
     this.moves = [];
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
@@ -339,7 +408,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {String} type the action type.
    * @param {Number} delta how much distance (item-wise) is being moved.
    */
-  _announceAction(type, delta = null) {
+  _announceAction(type: keyof A11yAnnouncementConfig, delta: number = 0): void {
     const a11yAnnouncementConfig = this.a11yAnnouncementConfig;
     const a11yItemName = this.a11yItemName;
 
@@ -349,8 +418,17 @@ export default class SortableGroupModifier extends Modifier {
 
     const sortedItems = this.sortedItems;
     const _selectedItem = this._selectedItem;
+
+    if (!_selectedItem) {
+      return;
+    }
+
     const index = sortedItems.indexOf(_selectedItem);
     const announcer = this.announcer;
+
+    if (!announcer) {
+      return;
+    }
 
     const config = {
       a11yItemName,
@@ -372,7 +450,7 @@ export default class SortableGroupModifier extends Modifier {
   /**
    * Reset the selected item.
    */
-  _resetItemSelection() {
+  _resetItemSelection(): void {
     this._selectedItem = null;
   }
 
@@ -382,7 +460,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {SortableItemModifier} item the selected item.
    * @param {Boolean} isActive to activate or deactivate the class.
    */
-  _updateItemVisualIndicators(item, isActive) {
+  _updateItemVisualIndicators(item: SortableItemModifier<T>, isActive: boolean) {
     const itemVisualClass = this.itemVisualClass;
 
     if (!itemVisualClass || !item) {
@@ -402,7 +480,7 @@ export default class SortableGroupModifier extends Modifier {
    * @param {SortableItemModifier} item the selected item.
    * @param {boolean} isUpdate to update or not update.
    */
-  _updateHandleVisualIndicators(item, isUpdate) {
+  _updateHandleVisualIndicators(item: SortableItemModifier<T>, isUpdate: boolean) {
     const handleVisualClass = this.handleVisualClass;
 
     if (handleVisualClass === NO_MODEL || !item) {
@@ -414,22 +492,22 @@ export default class SortableGroupModifier extends Modifier {
     const index = sortedItems.indexOf(item);
     const handle = item.element.querySelector('[data-sortable-handle');
     const visualHandle = handle ? handle : item.element;
-    const visualKeys = direction === 'y' ? ['UP', 'DOWN'] : ['LEFT', 'RIGHT'];
+    const visualKeys: (keyof HandleVisualClass)[] = direction === 'y' ? ['UP', 'DOWN'] : ['LEFT', 'RIGHT'];
 
     visualKeys.forEach((visualKey) => {
-      visualHandle.classList.remove(handleVisualClass[visualKey]);
+      visualHandle.classList.remove(handleVisualClass[visualKey] ?? '');
     });
 
     if (!isUpdate) {
       return;
     }
 
-    if (index > 0) {
-      visualHandle.classList.add(handleVisualClass[visualKeys[0]]);
+    if (index > 0 && visualKeys[0]) {
+      visualHandle.classList.add(handleVisualClass[visualKeys[0]] ?? '');
     }
 
-    if (index < sortedItems.length - 1) {
-      visualHandle.classList.add(handleVisualClass[visualKeys[1]]);
+    if (index < sortedItems.length - 1 && visualKeys[1]) {
+      visualHandle.classList.add(handleVisualClass[visualKeys[1]] ?? '');
     }
   }
 
@@ -438,8 +516,8 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @param {Element} itemElement an DOM element representing an sortable-item.
    */
-  _focusItem(itemElement) {
-    const handle = itemElement.querySelector('[data-sortable-handle]');
+  _focusItem(itemElement: HTMLElement): void {
+    const handle = itemElement.querySelector('[data-sortable-handle]') as HTMLElement | null;
     if (handle) {
       handle.focus();
     } else {
@@ -451,21 +529,21 @@ export default class SortableGroupModifier extends Modifier {
   /**
    * Enables keyboard reorder mode.
    */
-  _enableKeyboardReorderMode() {
+  _enableKeyboardReorderMode(): void {
     this.isKeyboardReorderModeEnabled = true;
   }
 
   /**
    * Disables keyboard reorder mode
    */
-  _disableKeyboardReorderMode() {
+  _disableKeyboardReorderMode(): void {
     this.isKeyboardReorderModeEnabled = false;
   }
 
   /**
    * Sets up the group as an application and make it programmatically focusable.
    */
-  _setupA11yApplicationContainer() {
+  _setupA11yApplicationContainer(): void {
     this.element.setAttribute('role', 'application');
     this.element.tabIndex = -1;
   }
@@ -473,12 +551,12 @@ export default class SortableGroupModifier extends Modifier {
   /**
    * Tears down the `role=application` container.
    */
-  _tearDownA11yApplicationContainer() {
+  _tearDownA11yApplicationContainer(): void {
     this.element.removeAttribute('role');
     this.element.removeAttribute('tabIndex');
   }
 
-  _prepareKeyboardReorderMode() {
+  _prepareKeyboardReorderMode(): void {
     this._enableKeyboardReorderMode();
     this._setupA11yApplicationContainer();
   }
@@ -508,7 +586,7 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   @service('ember-sortable-internal-state')
-  sortableService;
+  declare sortableService: EmberSortableService<T>;
 
   /**
    * This is the group name used to keep groups separate if there are more than one on the screen at a time.
@@ -517,7 +595,7 @@ export default class SortableGroupModifier extends Modifier {
    * @default "_EmberSortableGroup"
    * @returns {*|string}
    */
-  get groupName() {
+  get groupName(): string {
     return this.named.groupName || '_EmberSortableGroup';
   }
 
@@ -527,10 +605,10 @@ export default class SortableGroupModifier extends Modifier {
    @property items
    @type SortableItemModifier[]
    */
-  get items() {
+  get items(): SortableItemModifier<T>[] {
     return this._groupDef.items;
   }
-  set(items) {
+  set(items: SortableItemModifier<T>[]) {
     this._groupDef.items = items;
   }
 
@@ -539,7 +617,7 @@ export default class SortableGroupModifier extends Modifier {
    *
    * @type {Element}
    */
-  announcer = null;
+  announcer: Element | null = null;
 
   /**
    Position for the first item.
@@ -548,10 +626,17 @@ export default class SortableGroupModifier extends Modifier {
    @type Number
    */
   @computed('direction', 'sortedItems')
-  get firstItemPosition() {
+  get firstItemPosition(): Position {
     const sortedItems = this.sortedItems;
 
     const item = sortedItems[0];
+
+    if (!item) {
+      return {
+        x: 0,
+        y: 0,
+      };
+    }
 
     return {
       x: item.x - item.spacing,
@@ -564,7 +649,7 @@ export default class SortableGroupModifier extends Modifier {
    @property sortedItems
    @type SortableItemModifier[]
    */
-  get sortedItems() {
+  get sortedItems(): SortableItemModifier<T>[] {
     const direction = this.direction;
 
     const groupStyles = getComputedStyle(this.element);
@@ -572,7 +657,7 @@ export default class SortableGroupModifier extends Modifier {
 
     return this.items.sort((a, b) => {
       if (direction === 'grid') {
-        let { ax, ay, bx, by } = this._calculateGridPosition(a, b, groupWidth);
+        const { ax, ay, bx, by } = this._calculateGridPosition(a, b, groupWidth);
         if (ay == by) return ax - bx;
         return ay - by;
       }
@@ -584,7 +669,7 @@ export default class SortableGroupModifier extends Modifier {
    * Enables keyboard navigation
    */
   @action
-  activateKeyDown(selectedItem) {
+  activateKeyDown(selectedItem: SortableItemModifier<T>): void {
     this._selectedItem = selectedItem;
     this.isKeyDownEnabled = true;
   }
@@ -596,7 +681,7 @@ export default class SortableGroupModifier extends Modifier {
    * by ignoring them.
    */
   @action
-  deactivateKeyDown() {
+  deactivateKeyDown(): void {
     this.isKeyDownEnabled = false;
   }
 
@@ -606,7 +691,7 @@ export default class SortableGroupModifier extends Modifier {
    @param {SortableGroupModifier} group
    */
   @action
-  registerGroup(group) {
+  registerGroup(group: SortableGroupModifier<T>): void {
     this._group = group;
   }
 
@@ -616,7 +701,7 @@ export default class SortableGroupModifier extends Modifier {
    @param {SortableGroupModifier} group
    */
   @action
-  deregisterGroup(group) {
+  deregisterGroup(group: SortableGroupModifier<T>) {
     if (this._group === group) {
       this._group = null;
     }
@@ -639,7 +724,7 @@ export default class SortableGroupModifier extends Modifier {
    @param {SortableItemModifier[]} sortedItems
    */
   @action
-  update(sortedItems) {
+  update(sortedItems: SortableItemModifier<T>[]): void {
     if (!sortedItems) {
       sortedItems = this.sortedItems;
     }
@@ -652,7 +737,7 @@ export default class SortableGroupModifier extends Modifier {
       axis = this.firstItemPosition;
     }
 
-    let direction = this.direction;
+    const direction = this.direction;
 
     let position = 0;
     let groupPositionRight = 0;
@@ -689,23 +774,19 @@ export default class SortableGroupModifier extends Modifier {
         position += item.spacing * 2;
       }
 
-      let dimension;
-
       if (direction === 'grid') {
-        dimension = 'width';
-
         if (item.height > maxPrevHeight) {
           maxPrevHeight = item.height;
         }
+
+        position += item.width;
       }
       if (direction === 'x') {
-        dimension = 'width';
+        position += item.height;
       }
       if (direction === 'y') {
-        dimension = 'height';
+        position += item.height;
       }
-
-      position += item[dimension];
     });
   }
 
@@ -713,7 +794,7 @@ export default class SortableGroupModifier extends Modifier {
    @method _commit
    */
   @action
-  commit() {
+  commit(): void {
     const items = this.sortedItems;
     const itemModels = items.map((item) => item.model);
     const draggedItem = items.find((item) => item.wasDropped);
@@ -729,7 +810,7 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   @action
-  _onChange(itemModels, draggedModel) {
+  _onChange(itemModels: T[], draggedModel: T | undefined): void {
     if (this.onChange) {
       this.onChange(itemModels, draggedModel);
     }
@@ -739,7 +820,7 @@ export default class SortableGroupModifier extends Modifier {
    * Keeps the UI in sync with actual changes.
    * Needed for drag and keyboard operations.
    */
-  _updateItems() {
+  _updateItems(): void {
     const items = this.sortedItems;
 
     delete this._firstItemPosition;
@@ -760,16 +841,25 @@ export default class SortableGroupModifier extends Modifier {
   }
 
   @action
-  _createAnnouncer() {
+  _createAnnouncer(): HTMLSpanElement {
     const announcer = document.createElement('span');
     announcer.setAttribute('aria-live', 'polite');
     announcer.classList.add('visually-hidden');
     return announcer;
   }
 
-  _calculateGridPosition(a, b, groupWidth) {
-    const groupTopPos = a.element.parentNode?.offsetTop ?? 0;
-    const groupLeftPos = a.element.parentNode?.offsetLeft ?? 0;
+  _calculateGridPosition(
+    a: SortableItemModifier<T>,
+    b: SortableItemModifier<T>,
+    groupWidth: number,
+  ): {
+    ax: number;
+    ay: number;
+    bx: number;
+    by: number;
+  } {
+    const groupTopPos = (a.element.parentNode as HTMLElement | null)?.offsetTop ?? 0;
+    const groupLeftPos = (a.element.parentNode as HTMLElement | null)?.offsetLeft ?? 0;
 
     const position = {
       ax: a.x,
@@ -825,7 +915,18 @@ export default class SortableGroupModifier extends Modifier {
     return position;
   }
 
-  _calculateGridDragItemPos(x, y, otherX, otherY, width, height, moveDirection, groupTopPos, groupLeftPos, groupWidth) {
+  _calculateGridDragItemPos(
+    x: number,
+    y: number,
+    otherX: number,
+    otherY: number,
+    width: number,
+    height: number,
+    moveDirection: MoveDirection,
+    groupTopPos: number,
+    groupLeftPos: number,
+    groupWidth: number,
+  ): Position {
     const toleranceWidth = width / 4;
     const initialX = x;
 
@@ -874,25 +975,30 @@ export default class SortableGroupModifier extends Modifier {
 
   // end of API
 
-  addEventListener() {
+  addEventListener(): void {
     this.element.addEventListener('keydown', this.keyDown);
     this.element.addEventListener('focusout', this.focusOut);
   }
 
-  removeEventListener() {
+  removeEventListener(): void {
     this.element.removeEventListener('keydown', this.keyDown);
     this.element.removeEventListener('focusout', this.focusOut);
   }
 
-  element;
+  element!: HTMLElement;
   didSetup = false;
+  named!: NamedArgs<SortableGroupModifierSignature<T>>;
 
-  constructor(owner, args) {
+  constructor(owner: Owner, args: ArgsFor<SortableGroupModifierSignature<T>>) {
     super(owner, args);
     registerDestructor(this, cleanup);
   }
 
-  modify(element, _positional, named) {
+  override modify(
+    element: HTMLElement,
+    _positional: PositionalArgs<SortableGroupModifierSignature<T>>,
+    named: NamedArgs<SortableGroupModifierSignature<T>>,
+  ) {
     this.element = element;
     this.named = named;
 
@@ -919,11 +1025,11 @@ export default class SortableGroupModifier extends Modifier {
  *
  * @param {SortableGroupModifier} instance
  */
-function cleanup(instance) {
+function cleanup<T>(instance: SortableGroupModifier<T>) {
   // todo cleanup the announcer
-  if (instance.announcer.parentNode) {
+  if (instance.announcer?.parentNode) {
     instance.announcer.parentNode.removeChild(instance.announcer);
   }
   instance.removeEventListener();
-  instance.sortableService.deregisterGroup(instance.groupName, instance);
+  instance.sortableService.deregisterGroup(instance.groupName);
 }

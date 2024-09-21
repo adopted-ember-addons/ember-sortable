@@ -1,6 +1,13 @@
 import Service from '@ember/service';
+import type SortableGroupModifier from '../modifiers/sortable-group';
+import type SortableItemModifier from '../modifiers/sortable-item';
 
-export default class EmberSortableService extends Service {
+export interface Group<T> {
+  groupModifier: SortableGroupModifier<T> | undefined;
+  items: SortableItemModifier<T>[];
+}
+
+export default class EmberSortableService<T> extends Service {
   /**
    * Internal State for any groups currently in DOM
    *
@@ -12,7 +19,7 @@ export default class EmberSortableService extends Service {
    * }
    * @type {{}}
    */
-  groups = {};
+  groups: Record<string, Group<T>> = {};
 
   /**
    * Register a new group with the service
@@ -20,7 +27,7 @@ export default class EmberSortableService extends Service {
    * @param {String} groupName
    * @param {SortableGroupModifier} groupModifier
    */
-  registerGroup(groupName, groupModifier) {
+  registerGroup(groupName: string, groupModifier: SortableGroupModifier<T> | undefined) {
     if (this.groups[groupName] === undefined) {
       this.groups[groupName] = {
         groupModifier: groupModifier,
@@ -36,7 +43,7 @@ export default class EmberSortableService extends Service {
    *
    * @param {String} groupName
    */
-  deregisterGroup(groupName) {
+  deregisterGroup(groupName: string): void {
     delete this.groups[groupName];
   }
 
@@ -47,8 +54,13 @@ export default class EmberSortableService extends Service {
    * @param {String} groupName
    * @param {SortableItemModifier} item
    */
-  registerItem(groupName, item) {
-    let groupDef = this.fetchGroup(groupName);
+  registerItem(groupName: string, item: SortableItemModifier<T>): void {
+    const groupDef = this.fetchGroup(groupName);
+
+    if (!groupDef) {
+      return;
+    }
+
     let items = groupDef.items;
 
     if (items.indexOf(item) === -1) {
@@ -65,13 +77,18 @@ export default class EmberSortableService extends Service {
    @param groupName
    @param item
    */
-  deregisterItem(groupName, item) {
-    let groupDef = this.fetchGroup(groupName);
-    let items = groupDef.items;
+  deregisterItem(groupName: string, item: SortableItemModifier<T>): void {
+    const groupDef = this.fetchGroup(groupName);
+
+    if (!groupDef) {
+      return;
+    }
+
+    const items = groupDef.items;
 
     const index = items.indexOf(item);
     if (index !== -1) {
-      let newItems = [...items.slice(0, index), ...items.slice(index + 1)];
+      const newItems = [...items.slice(0, index), ...items.slice(index + 1)];
       groupDef.items = newItems;
     }
   }
@@ -82,11 +99,11 @@ export default class EmberSortableService extends Service {
    * @param {String} groupName
    * @returns {*}
    */
-  fetchGroup(groupName) {
+  fetchGroup(groupName: string): Group<T> {
     if (this.groups[groupName] === undefined) {
       this.registerGroup(groupName, undefined);
     }
 
-    return this.groups[groupName];
+    return this.groups[groupName]!;
   }
 }

@@ -5,6 +5,7 @@ LICENSE.md
 
 # compiled output
 /dist/
+/declarations/
 /tmp/
 
 # dependencies

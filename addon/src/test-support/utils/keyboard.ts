@@ -17,8 +17,8 @@ export const ARROW_KEY_CODES = {
   DOWN: 40,
 };
 
-function createKeyTest(key, keyCode) {
-  return function isKey(event) {
+function createKeyTest(key: string, keyCode: number) {
+  return function isKey(event: KeyboardEvent) {
     return event.key === key || event.keyCode === keyCode;
   };
 }
