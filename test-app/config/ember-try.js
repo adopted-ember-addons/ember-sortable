@@ -48,21 +48,37 @@ module.exports = async function () {
         },
       },
       {
-        name: 'ember-modifier-4',
+        name: 'ember-lts-5.8',
         npm: {
           devDependencies: {
-            'ember-modifier': '^4.0.0',
+            'ember-source': '~5.8.0',
           },
         },
       },
       {
-        name: 'ember-test-helpers-3',
+        name: 'ember-modifier-3',
+        npm: {
+          devDependencies: {
+            'ember-modifier': '^3.0.0',
+          },
+        },
+      },
+      {
+        name: 'ember-test-helpers-2',
         npm: {
           dependencies: {
-            '@ember/test-helpers': '^3.0.0',
+            '@ember/test-helpers': '^2.0.0',
           },
           devDependencies: {
-            'ember-qunit': '^7.0.0',
+            'ember-qunit': '^5.0.0',
+          },
+        },
+      },
+      {
+        name: 'ember-test-helpers-4',
+        npm: {
+          dependencies: {
+            '@ember/test-helpers': '^4.0.0',
           },
         },
       },

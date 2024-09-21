@@ -831,8 +831,10 @@ module('Acceptance | smoke modifier', function (hooks) {
     let result = '';
     for (const index in elements) {
       const element = elements[index];
-      result += element.textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
-      result += ' ';
+      if (element.textContent) {
+        result += element.textContent.replace(/⇕/g, '').replace(/\s+/g, ' ').replace(/^\s+/, '').replace(/\s+$/, '');
+        result += ' ';
+      }
     }
     return result;
   }

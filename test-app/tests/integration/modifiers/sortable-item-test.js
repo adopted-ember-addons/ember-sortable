@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { find, render } from '@ember/test-helpers';
 import { set } from '@ember/object';
 import { drag } from 'ember-sortable/test-support';
-import hbs from 'htmlbars-inline-precompile';
+import { hbs } from 'ember-cli-htmlbars';
 
 module('Integration | Modifier | sortable-item', function (hooks) {
   setupRenderingTest(hooks);

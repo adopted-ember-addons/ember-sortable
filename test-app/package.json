@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@ember/string": "^3.1.1",
-    "@ember/test-helpers": "^2.6.0",
+    "@ember/test-helpers": "^3.0.0",
     "@ember/test-waiters": "^3.0.1",
-    "ember-modifier": "^3.2.0",
+    "ember-modifier": "^4.2.0",
     "ember-sortable": "workspace:../addon"
   },
   "dependenciesMeta": {
@@ -33,7 +33,7 @@
     "@babel/core": "^7.20.12",
     "@ember/optional-features": "^2.0.0",
     "@embroider/macros": "^1.9.0",
-    "@embroider/test-setup": "^2.1.1",
+    "@embroider/test-setup": "^4.0.0",
     "@glimmer/component": "^1.0.4",
     "@glimmer/tracking": "^1.0.4",
     "babel-eslint": "^10.0.3",
@@ -46,7 +46,7 @@
     "ember-cli-inject-live-reload": "^2.0.0",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-load-initializers": "^2.1.2",
-    "ember-qunit": "mydea/ember-qunit#fn/ember-auto-import-v2-node-12",
+    "ember-qunit": "^8.1.0",
     "ember-resolver": "^8.0.3",
     "ember-source": "^4.2.0",
     "ember-source-channel-url": "^3.0.0",
