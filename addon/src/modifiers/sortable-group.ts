@@ -23,9 +23,9 @@ import type { Group } from '../services/ember-sortable-internal-state.ts';
 import type SortableItemModifier from './sortable-item.ts';
 import type { MoveDirection } from './sortable-item.ts';
 
-const NO_MODEL: VisualClass = {};
+const NO_MODEL: HandleVisualClass = {};
 
-interface VisualClass {
+export interface HandleVisualClass {
   UP?: string;
   DOWN?: string;
   LEFT?: string;
@@ -45,7 +45,7 @@ interface SortableGroupModifierSignature<T> {
       direction?: TDirection;
       groupName?: string;
       disabled?: boolean;
-      handleVisualClass?: VisualClass;
+      handleVisualClass?: HandleVisualClass;
       a11yAnnouncementConfig?: A11yAnnouncementConfig;
       itemVisualClass?: string;
       a11yItemName?: string;
@@ -114,7 +114,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
    *  RIGHT: 'right',
    * }
    */
-  get handleVisualClass(): VisualClass {
+  get handleVisualClass(): HandleVisualClass {
     return this.named.handleVisualClass || NO_MODEL;
   }
 
@@ -492,7 +492,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     const index = sortedItems.indexOf(item);
     const handle = item.element.querySelector('[data-sortable-handle');
     const visualHandle = handle ? handle : item.element;
-    const visualKeys: (keyof VisualClass)[] = direction === 'y' ? ['UP', 'DOWN'] : ['LEFT', 'RIGHT'];
+    const visualKeys: (keyof HandleVisualClass)[] = direction === 'y' ? ['UP', 'DOWN'] : ['LEFT', 'RIGHT'];
 
     visualKeys.forEach((visualKey) => {
       visualHandle.classList.remove(handleVisualClass[visualKey] ?? '');
