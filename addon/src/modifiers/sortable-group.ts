@@ -49,7 +49,7 @@ interface SortableGroupModifierSignature<T> {
       a11yAnnouncementConfig?: A11yAnnouncementConfig;
       itemVisualClass?: string;
       a11yItemName?: string;
-      onChange: (itemModels: T[], draggedModel: T | undefined) => void;
+      onChange?: (itemModels: T[], draggedModel: T | undefined) => void;
     };
     Positional: unknown[];
   };
