@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2024-09-25)
+
+ember-sortable 5.2.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#585](https://github.com/adopted-ember-addons/ember-sortable/pull/585) Add missing declaration export for modifier, services & test-support ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2024-09-21)
 
 ember-sortable 5.2.0 (minor)
