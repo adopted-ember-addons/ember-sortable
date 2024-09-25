@@ -23,9 +23,18 @@
       "default": "./dist/*.js"
     },
     "./_app_/*": "./dist/_app_/*.js",
-    "./modifiers/*": "./dist/modifiers/*.js",
-    "./services/*": "./dist/services/*.js",
-    "./test-support": "./dist/test-support/index.js",
+    "./modifiers/*": {
+      "types": "./declarations/modifiers/*.d.ts",
+      "default": "./dist/modifiers/*.js"
+    },
+    "./services/*": {
+      "types": "./declarations/services/*.d.ts",
+      "default": "./dist/services/*.js"
+    },
+    "./test-support": {
+      "types": "./declarations/test-support/index.js",
+      "default": "./dist/test-support/index.js"
+    },
     "./addon-main.js": "./addon-main.cjs"
   },
   "typesVersions": {
