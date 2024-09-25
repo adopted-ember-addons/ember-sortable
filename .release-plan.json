@@ -1,21 +1,17 @@
 {
   "solution": {
     "ember-sortable": {
-      "impact": "minor",
-      "oldVersion": "5.1.2",
-      "newVersion": "5.2.0",
+      "impact": "patch",
+      "oldVersion": "5.2.0",
+      "newVersion": "5.2.1",
       "constraints": [
         {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
-        {
           "impact": "patch",
-          "reason": "Appears in changelog section :house: Internal"
+          "reason": "Appears in changelog section :bug: Bug Fix"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-09-21)\n\nember-sortable 5.2.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-sortable`, `test-app`\n  * [#581](https://github.com/adopted-ember-addons/ember-sortable/pull/581) Convert addon to TypeScript & add glint ([@mkszepp](https://github.com/mkszepp))\n\n#### :house: Internal\n* `ember-sortable`, `docs`, `test-app`\n  * [#582](https://github.com/adopted-ember-addons/ember-sortable/pull/582) Update dependencies & bring back green CI ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
+  "description": "## Release (2024-09-25)\n\nember-sortable 5.2.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#585](https://github.com/adopted-ember-addons/ember-sortable/pull/585) Add missing declaration export for modifier, services & test-support ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
 }
