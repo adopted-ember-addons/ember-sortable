@@ -37,7 +37,7 @@ interface Callbacks {
 
 export async function drag(
   mode: TMode,
-  itemSelector: string,
+  itemSelector: keyof (HTMLElementTagNameMap | SVGElementTagNameMap) | string, // or Parameters<typeof find>[0][]
   offsetFn: () => { dx: number; dy: number },
   callbacks: Callbacks = {},
 ) {

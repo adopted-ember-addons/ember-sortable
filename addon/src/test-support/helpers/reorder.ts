@@ -26,10 +26,10 @@ const OVERSHOOT = 2;
     selectors for the resultant order
   @return {Promise}
 */
-export async function reorder<T extends keyof HTMLElementTagNameMap>(
+export async function reorder(
   mode: TMode,
-  itemSelector: string,
-  ...resultSelectors: T[]
+  itemSelector: keyof (HTMLElementTagNameMap | SVGElementTagNameMap) | string, // or Parameters<typeof findAll>[0],
+  ...resultSelectors: (keyof (HTMLElementTagNameMap | SVGElementTagNameMap) | string)[] // or Parameters<typeof find>[0][]
 ) {
   for (let targetIndex = 0; targetIndex < resultSelectors.length; targetIndex++) {
     const items = findAll(itemSelector);
