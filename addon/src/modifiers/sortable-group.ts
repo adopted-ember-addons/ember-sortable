@@ -782,7 +782,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
         position += item.width;
       }
       if (direction === 'x') {
-        position += item.height;
+        position += item.width;
       }
       if (direction === 'y') {
         position += item.height;
