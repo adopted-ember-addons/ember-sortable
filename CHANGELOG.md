@@ -1,5 +1,18 @@
 # Changelog
 
+## Release (2024-10-03)
+
+ember-sortable 5.2.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#591](https://github.com/adopted-ember-addons/ember-sortable/pull/591) Fix direction x (calculation incorrect) ([@mkszepp](https://github.com/mkszepp))
+  * [#587](https://github.com/adopted-ember-addons/ember-sortable/pull/587) fix types for reorder and drag test helpers ([@BoussonKarel](https://github.com/BoussonKarel))
+
+#### Committers: 2
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+- [@BoussonKarel](https://github.com/BoussonKarel)
+
 ## Release (2024-09-25)
 
 ember-sortable 5.2.1 (patch)

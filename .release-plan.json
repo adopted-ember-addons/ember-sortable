@@ -2,8 +2,8 @@
   "solution": {
     "ember-sortable": {
       "impact": "patch",
-      "oldVersion": "5.2.0",
-      "newVersion": "5.2.1",
+      "oldVersion": "5.2.1",
+      "newVersion": "5.2.2",
       "constraints": [
         {
           "impact": "patch",
@@ -13,5 +13,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2024-09-25)\n\nember-sortable 5.2.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#585](https://github.com/adopted-ember-addons/ember-sortable/pull/585) Add missing declaration export for modifier, services & test-support ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
+  "description": "## Release (2024-10-03)\n\nember-sortable 5.2.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#591](https://github.com/adopted-ember-addons/ember-sortable/pull/591) Fix direction x (calculation incorrect) ([@mkszepp](https://github.com/mkszepp))\n  * [#587](https://github.com/adopted-ember-addons/ember-sortable/pull/587) fix types for reorder and drag test helpers ([@BoussonKarel](https://github.com/BoussonKarel))\n\n#### Committers: 2\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n- [@BoussonKarel](https://github.com/BoussonKarel)\n"
 }
