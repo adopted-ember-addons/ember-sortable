@@ -1,7 +1,7 @@
 "jobs":
   "yarn-publish":
     "container":
-      "image": "node:18"
+      "image": "mirror.gcr.io/node:18"
     "permissions":
       "contents": "read"
       "packages": "write"
@@ -12,6 +12,8 @@
       "uses": "actions/checkout@v3"
       "with":
         "ref": "${{ github.sha }}"
+    - "name": "git safe directory"
+      "run": "command -v git && git config --global --add safe.directory '*' || true"
     - "env":
         "NPM_TOKEN": "${{ secrets.npm_token }}"
       "name": "set gynzy npm_token"

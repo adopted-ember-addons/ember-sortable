@@ -1,20 +1,26 @@
+local base = import 'base.jsonnet';
+local images = import 'images.jsonnet';
+local misc = import 'misc.jsonnet';
+local yarn = import 'yarn.jsonnet';
+
 {
   postReleaseToNewRelicJob(
     apps,
-
+    cacheName=null,
+    source='gynzy',
   )::
-    $.ghJob(
+    base.ghJob(
       'post-newrelic-release',
-      image=$.default_backend_nest_image,
+      image='mirror.gcr.io/node:20.17',
       useCredentials=false,
       ifClause="${{ github.event.deployment.environment == 'production' }}",
       steps=[
-        $.checkoutAndYarn(ref='${{ github.sha }}'),
-        $.step(
+        yarn.checkoutAndYarn(ref='${{ github.sha }}', cacheName=cacheName, source=source),
+        base.step(
           'post-newrelic-release',
           'node .github/scripts/newrelic.js',
           env={
-            NEWRELIC_API_KEY: $.secret('NEWRELIC_API_KEY'),
+            NEWRELIC_API_KEY: misc.secret('NEWRELIC_API_KEY'),
             NEWRELIC_APPS: std.join(
               ' ', std.flatMap(
                 function(app)

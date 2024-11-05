@@ -1,3 +1,7 @@
+local base = import 'base.jsonnet';
+local images = import 'images.jsonnet';
+local misc = import 'misc.jsonnet';
+
 {
   buildDocker(
     imageName,
@@ -9,12 +13,12 @@
     registry='eu.gcr.io',
     project='unicorn-985',
   )::
-    $.action(
-      'build-docker',
-      $.docker_action_image,
+    base.action(
+      'build-docker ' + imageName,
+      images.docker_action_image,
       with={
              context: context,
-             gcloud_service_key: $.secret('docker_gcr_io_base64'),
+             gcloud_service_key: misc.secret('docker_gcr_io_base64'),
              image_name: imageName,
              image_tag: imageTag,
              project_id: project,

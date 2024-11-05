@@ -1,3 +1,6 @@
+local base = import 'base.jsonnet';
+local images = import 'images.jsonnet';
+
 {
   database_servers: {
     test: {
@@ -25,13 +28,6 @@
       server: 'eu-w4-responses-production',
       region: 'europe-west4',
       project: 'unicorn-985',
-    },
-    'eu-w4-metrics-production': {
-      type: 'mysql',
-      server: 'eu-w4-metrics-production',
-      region: 'europe-west4',
-      project: 'unicorn-985',
-      lifecycle: 'deprecated',
     },
     'gynzy-test': {
       type: 'mysql',
@@ -97,9 +93,9 @@
     // delete database by setting it to null and calling prune afterwards
     local pluginOptions = std.prune(mysqlActionOptions { task: 'clone', database: null });
 
-    $.action(
+    base.action(
       'copy-database',
-      $.mysql_action_image,
+      images.mysql_action_image,
       with=pluginOptions
     ),
 
@@ -110,9 +106,9 @@
     // delete database by setting it to null and calling prune afterwards
     local pluginOptions = std.prune(mysqlActionOptions { task: 'remove', database: null });
 
-    $.action(
+    base.action(
       'delete-database',
-      $.mysql_action_image,
+      images.mysql_action_image,
       with=pluginOptions
     ),
 }

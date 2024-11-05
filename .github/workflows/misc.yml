@@ -11,6 +11,8 @@
       "uses": "actions/checkout@v3"
       "with":
         "ref": "${{ github.event.pull_request.head.sha }}"
+    - "name": "git safe directory"
+      "run": "command -v git && git config --global --add safe.directory '*' || true"
     - "name": "remove-workflows"
       "run": "rm -f .github/workflows/*"
     - "name": "generate-workflows"
