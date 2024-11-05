@@ -1,8 +1,27 @@
+local base = import 'base.jsonnet';
+local clusters = import 'clusters.jsonnet';
+local databases = import 'databases.jsonnet';
+local images = import 'images.jsonnet';
+local misc = import 'misc.jsonnet';
+local services = import 'services.jsonnet';
+
 {
-  deployHelm(cluster, release, values, chartPath, delete=false, useHelm3=true, title=null, ifClause=null, ttl=null, namespace='default')::
-    $.action(
+  deployHelm(
+    cluster,
+    release,
+    values,
+    chartPath,
+    delete=false,
+    useHelm3=true,
+    title=null,
+    ifClause=null,
+    ttl=null,
+    namespace='default',
+    version='${{ github.event.pull_request.head.sha }}'
+  )::
+    base.action(
       (if title == null then if delete then 'delete-helm' else 'deploy-helm' else title),
-      $.helm_action_image,
+      images.helm_action_image,
       with={
              clusterProject: cluster.project,
              clusterLocation: cluster.zone,
@@ -13,7 +32,7 @@
              chart: chartPath,
              atomic: 'false',
              token: '${{ github.token }}',
-             version: '${{ github.event.pull_request.head.sha }}',
+             version: version,
              values: if std.isString(values) then values else std.manifestJsonMinified(values),  // Accepts a string and an object due to legacy reasons.
            } + (if delete then { task: 'remove' } else {})
            + (if useHelm3 then { helm: 'helm3' } else { helm: 'helm' })
@@ -27,10 +46,11 @@
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-prod',
     ifClause=null,
-    cluster=$.clusters.prod,
+    cluster=clusters.prod,
     namespace='default',
+    version='${{ github.event.pull_request.head.sha }}',
   )::
-    $.deployHelm(
+    self.deployHelm(
       cluster,
       deploymentName,
       {
@@ -45,6 +65,7 @@
       title='deploy-prod',
       ifClause=ifClause,
       namespace=namespace,
+      version=version,
     ),
 
   helmDeployProdJob(
@@ -52,17 +73,18 @@
     options={},
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-prod',
-    image=$.default_job_image,
+    image=images.default_job_image,
     useCredentials=false,
+    environment='production',
   )::
-    $.ghJob(
+    base.ghJob(
       'deploy-prod',
-      ifClause="${{ github.event.deployment.environment == 'production' }}",
+      ifClause="${{ github.event.deployment.environment == '" + environment + "' }}",
       image=image,
       useCredentials=useCredentials,
       steps=[
-        $.checkout(),
-        $.helmDeployProd(serviceName, options, helmPath, deploymentName),
+        misc.checkout(),
+        self.helmDeployProd(serviceName, options, helmPath, deploymentName),
       ],
     ),
 
@@ -71,10 +93,10 @@
     options={},
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-master',
-    cluster=$.clusters.test,
+    cluster=clusters.test,
     namespace='default',
   )::
-    $.deployHelm(
+    self.deployHelm(
       cluster,
       deploymentName,
       {
@@ -95,17 +117,17 @@
     options={},
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-master',
-    image=$.default_job_image,
+    image=images.default_job_image,
     useCredentials=false,
   )::
-    $.ghJob(
+    base.ghJob(
       'deploy-test',
       ifClause="${{ github.event.deployment.environment == 'test' }}",
       image=image,
       useCredentials=useCredentials,
       steps=[
-        $.checkout(),
-        $.helmDeployTest(serviceName, options, helmPath, deploymentName),
+        misc.checkout(),
+        self.helmDeployTest(serviceName, options, helmPath, deploymentName),
       ],
     ),
 
@@ -114,10 +136,10 @@
     options={},
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-pr-${{ github.event.number }}',
-    cluster=$.clusters.test,
+    cluster=clusters.test,
     namespace='default',
   )::
-    $.deployHelm(
+    self.deployHelm(
       cluster,
       deploymentName,
       {
@@ -138,16 +160,16 @@
     options={},
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-pr-${{ github.event.number }}',
-    image=$.default_job_image,
+    image=images.default_job_image,
     useCredentials=false,
   )::
-    $.ghJob(
+    base.ghJob(
       'deploy-pr',
       image=image,
       useCredentials=useCredentials,
       steps=[
-        $.checkout(),
-        $.helmDeployPR(serviceName, options, helmPath, deploymentName),
+        misc.checkout(),
+        self.helmDeployPR(serviceName, options, helmPath, deploymentName),
       ],
     ),
 
@@ -156,10 +178,10 @@
     options={},
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-pr-${{ github.event.number }}',
-    cluster=$.clusters.test,
+    cluster=clusters.test,
     namespace='default',
   )::
-    $.deployHelm(
+    self.deployHelm(
       cluster,
       deploymentName,
       options,
@@ -176,16 +198,16 @@
     deploymentName=serviceName + '-pr-${{ github.event.number }}',
     mysqlDeleteOptions={ enabled: false },
   )::
-    $.ghJob(
+    base.ghJob(
       'helm-delete-pr',
-      image=$.default_job_image,
+      image=images.default_job_image,
       useCredentials=false,
       steps=[
-              $.checkout(),
-              $.helmDeletePr(serviceName, options, helmPath, deploymentName),
+              misc.checkout(),
+              self.helmDeletePr(serviceName, options, helmPath, deploymentName),
             ] +
-            (if mysqlDeleteOptions.enabled then [$.deleteDatabase(mysqlDeleteOptions)] else []),
-      services=(if mysqlDeleteOptions.enabled then { 'cloudsql-proxy': $.cloudsql_proxy_service(mysqlDeleteOptions.database) } else null),
+            (if mysqlDeleteOptions.enabled then [databases.deleteDatabase(mysqlDeleteOptions)] else []),
+      services=(if mysqlDeleteOptions.enabled then { 'cloudsql-proxy': services.cloudsql_proxy_service(mysqlDeleteOptions.database) } else null),
     ),
 
   helmDeletePRPipeline(
@@ -194,10 +216,10 @@
     helmPath='./helm/' + serviceName,
     deploymentName=serviceName + '-pr-${{ github.event.number }}',
   )::
-    $.pipeline(
+    base.pipeline(
       'close-pr',
       [
-        $.helmDeletePRJob(serviceName, options, helmPath, deploymentName),
+        self.helmDeletePRJob(serviceName, options, helmPath, deploymentName),
       ],
       event={
         pull_request: {
@@ -213,8 +235,8 @@
     deploymentName=serviceName + '-canary',
     ifClause=null,
   )::
-    $.deployHelm(
-      $.clusters.prod,
+    self.deployHelm(
+      clusters.prod,
       deploymentName,
       {
         identifier: 'prod',
@@ -234,17 +256,17 @@
     options={},
     helmPath='./helm/' + serviceName + '-canary',
     deploymentName=serviceName + '-canary',
-    image=$.default_job_image,
+    image=images.default_job_image,
     useCredentials=false,
   )::
-    $.ghJob(
+    base.ghJob(
       'deploy-canary',
       image=image,
       useCredentials=useCredentials,
       ifClause="${{ github.event.deployment.environment == 'canary' }}",
       steps=[
-        $.checkout(),
-        $.helmDeployCanary(serviceName, options, helmPath, deploymentName),
+        misc.checkout(),
+        self.helmDeployCanary(serviceName, options, helmPath, deploymentName),
       ],
     ),
 
@@ -255,8 +277,8 @@
     deploymentName=serviceName + '-canary',
     ifClause=null,
   )::
-    $.deployHelm(
-      $.clusters.prod,
+    self.deployHelm(
+      clusters.prod,
       deploymentName,
       {
         identifier: 'prod',
@@ -277,14 +299,14 @@
     helmPath='./helm/' + serviceName + '-canary',
     deploymentName=serviceName + '-canary',
   )::
-    $.ghJob(
+    base.ghJob(
       'kill-canary',
       ifClause="${{ github.event.deployment.environment == 'kill-canary' || github.event.deployment.environment == 'production' }}",
-      image=$.default_job_image,
+      image=images.default_job_image,
       useCredentials=false,
       steps=[
-        $.checkout(),
-        $.helmKillCanary(serviceName, options, helmPath, deploymentName),
+        misc.checkout(),
+        self.helmKillCanary(serviceName, options, helmPath, deploymentName),
       ],
     ),
 }

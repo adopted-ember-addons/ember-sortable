@@ -1,3 +1,6 @@
+local images = import 'images.jsonnet';
+local misc = import 'misc.jsonnet';
+
 {
   pipeline(name, jobs, event=['pull_request'], permissions=null, concurrency=null):: {
     [name + '.yml']:
@@ -14,7 +17,7 @@
     name,
     timeoutMinutes=30,
     runsOn=null,
-    image=$.default_job_image,
+    image=images.default_job_image,
     steps=[],
     ifClause=null,
     needs=null,
@@ -36,7 +39,7 @@
                   {
                     container: {
                       image: image,
-                    } + (if useCredentials then { credentials: { username: '_json_key', password: $.secret('docker_gcr_io') } } else {}),
+                    } + (if useCredentials then { credentials: { username: '_json_key', password: misc.secret('docker_gcr_io') } } else {}),
                   }
               ) +
               {
@@ -49,7 +52,7 @@
               (if permissions == null then {} else { permissions: permissions }) +
               (if concurrency == null then {} else { concurrency: concurrency }) +
               (if continueOnError == null then {} else { 'continue-on-error': continueOnError }) +
-              (if env == null then {} else { env: env })
+              (if env == null then {} else { env: env }),
     },
 
   ghExternalJob(
@@ -65,7 +68,7 @@
            } else {}),
     },
 
-  step(name, run, env=null, workingDirectory=null, ifClause=null, id=null, continueOnError=null)::
+  step(name, run, env=null, workingDirectory=null, ifClause=null, id=null, continueOnError=null, shell=null)::
     [
       {
         name: name,
@@ -74,7 +77,8 @@
       + (if env != null then { env: env } else {})
       + (if ifClause != null then { 'if': ifClause } else {})
       + (if id != null then { id: id } else {})
-      + (if continueOnError == null then {} else { 'continue-on-error': continueOnError }),
+      + (if continueOnError == null then {} else { 'continue-on-error': continueOnError })
+      + (if shell == null then {} else { 'shell': shell }),
     ],
 
   action(name, uses, env=null, with=null, id=null, ifClause=null, continueOnError=null)::

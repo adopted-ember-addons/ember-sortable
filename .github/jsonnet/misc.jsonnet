@@ -1,44 +1,57 @@
+local base = import 'base.jsonnet';
+local images = import 'images.jsonnet';
+
 {
   checkout(ifClause=null, fullClone=false, ref=null)::
     local with = (if fullClone then { 'fetch-depth': 0 } else {}) + (if ref != null then { ref: ref } else {});
-    $.action(
+    base.action(
       'Check out repository code',
       'actions/checkout@v3',
       with=with,
       ifClause=ifClause
-    ),
+    ) +
+    base.step('git safe directory', "command -v git && git config --global --add safe.directory '*' || true"),
 
   lint(service)::
-    $.step('lint-' + service,
-           './node_modules/.bin/eslint "./packages/' + service + '/{app,lib,tests,config,addon}/**/*.js" --quiet'),
+    base.step('lint-' + service,
+              './node_modules/.bin/eslint "./packages/' + service + '/{app,lib,tests,config,addon}/**/*.js" --quiet'),
 
   lintAll()::
-    $.step('lint', 'yarn lint'),
+    base.step('lint', 'yarn lint'),
 
   verifyGoodFences()::
-    $.step('verify-good-fences', 'yarn run gf'),
+    base.step('verify-good-fences', 'yarn run gf'),
 
   improvedAudit()::
-    $.step('audit', 'yarn improved-audit'),
+    base.step('audit', 'yarn improved-audit'),
+
+  verifyJsonnetWorkflow()::
+    base.pipeline(
+      'misc',
+      [
+        self.verifyJsonnet(fetch_upstream=false),
+      ],
+      event='pull_request',
+    ),
 
   verifyJsonnet(fetch_upstream=true, runsOn=null)::
-    $.ghJob(
+    base.ghJob(
       'verify-jsonnet-gh-actions',
       runsOn=runsOn,
-      image=$.jsonnet_bin_image,
+      image=images.jsonnet_bin_image,
       steps=[
-              $.checkout(ref='${{ github.event.pull_request.head.sha }}'),
-              $.step('remove-workflows', 'rm -f .github/workflows/*'),
+              self.checkout(ref='${{ github.event.pull_request.head.sha }}'),
+              base.step('remove-workflows', 'rm -f .github/workflows/*'),
             ] +
             (
-              if fetch_upstream then [$.step('fetch latest lib-jsonnet',
-                                             ' rm -rf .github/jsonnet/;\n                mkdir .github/jsonnet/;\n                cd .github;\n                curl https://files.gynzy.net/lib-jsonnet/v1/jsonnet-prod.tar.gz | tar xvzf -;\n              ')] else []
+              if fetch_upstream then [base.step('fetch latest lib-jsonnet',
+                                                ' rm -rf .github/jsonnet/;\n                mkdir .github/jsonnet/;\n                cd .github;\n                curl https://files.gynzy.net/lib-jsonnet/v1/jsonnet-prod.tar.gz | tar xvzf -;\n              ')] else []
             )
             + [
-              $.step('generate-workflows', 'jsonnet -m .github/workflows/ -S .github.jsonnet;'),
-              $.step('git workaround', 'git config --global --add safe.directory $PWD'),
-              $.step('check-jsonnet-diff', 'git diff --exit-code'),
-              $.step(
+              base.step('generate-workflows', 'jsonnet -m .github/workflows/ -S .github.jsonnet;'),
+              base.step('git workaround', 'git config --global --add safe.directory $PWD'),
+              base.step('check-jsonnet-diff', 'git diff --exit-code'),
+              base.step(
                 'possible-causes-for-error',
                 'echo "Possible causes: \n' +
                 '1. You updated jsonnet files, but did not regenerate the workflows. \n' +
@@ -53,28 +66,28 @@
   updatePRDescriptionPipeline(
     bodyTemplate,
     titleTemplate='',
-    baseBranchRegex='[a-z\\d-_.\\\\/]+',
-    headBranchRegex='[a-z]+-\\d+',
+    baseBranchRegex=null,
+    headBranchRegex=null,
     bodyUpdateAction='suffix',
     titleUpdateAction='prefix',
     otherOptions={},
   )::
-    $.pipeline(
+    base.pipeline(
       'update-pr-description',
       event={
         pull_request: { types: ['opened'] },
       },
       jobs=[
-        $.ghJob(
+        base.ghJob(
           'update-pr-description',
           steps=[
-            $.action(
+            base.action(
               'update-pr-description',
               'gynzy/pr-update-action@v2',
               with={
                 'repo-token': '${{ secrets.GITHUB_TOKEN }}',
-                'base-branch-regex': baseBranchRegex,
-                'head-branch-regex': headBranchRegex,
+                [if baseBranchRegex != null then 'base-branch-regex']: baseBranchRegex,
+                [if headBranchRegex != null then 'head-branch-regex']: headBranchRegex,
                 'title-template': titleTemplate,
                 'body-template': bodyTemplate,
                 'body-update-action': bodyUpdateAction,
@@ -90,6 +103,113 @@
       },
     ),
 
+  // Create a markdown table.
+  //
+  // The headers array and each row array must have the same length.
+  //
+  // Parameters:
+  // headers: a list of headers for the table
+  // rows: a list of rows, where each row is a list of values
+  //
+  // Returns:
+  // a markdown table as a string
+  markdownTable(headers, rows)::
+    local renderLine = function(line) '| ' + std.join(' | ', line) + ' |\n';
+    local renderedHeader = renderLine(headers) + renderLine(std.map(function(x) '---', headers));
+
+    local renderedRows = std.map(
+      function(line)
+        assert std.length(headers) == std.length(line) : 'Headers and rows must have the same length';
+        renderLine(line),
+      rows
+    );
+    renderedHeader + std.join('', renderedRows),
+
+  // Create a collapsable markdown section.
+  //
+  // Parameters:
+  // title: the title of the section
+  // content: the content of the section
+  //
+  // Returns:
+  // a collapsable markdown section as a string
+  markdownCollapsable(title, content)::
+    '<details>\n' +
+    '<summary>' + title + '</summary>\n\n' +
+    content + '\n' +
+    '</details>\n',
+
+  // Create a markdown table with preview links.
+  //
+  // Parameters:
+  // environments: a list of environment names
+  // apps: a list of apps, where each app is an object with the following fields:
+  //   - name: the name of the app
+  //   - linkToLinear: a list of environment names for which to create a preview link in Linear
+  //   - environment names: the environment links
+  //     - the key is the environment name
+  //     - the value is the link, or an object with the link name as the key and the link as the value. This is useful for multiple links per environment.
+  //
+  // Returns:
+  // a markdown table with preview links as a string
+  //
+  // Example:
+  // misc.previewLinksTable(
+  //   ['pr', 'acceptance', 'test', 'prod'],
+  //   [
+  //     {
+  //       name: 'app1',
+  //       pr: 'https://pr-link',
+  //       acceptance: 'https://acceptance-link',
+  //       test: 'https://test-link',
+  //       prod: 'https://prod-link',
+  //     },
+  //     {
+  //       name: 'app2',
+  //       linkToLinear: ['pr', 'acceptance'],
+  //       pr: 'https://pr-link',
+  //       acceptance: 'https://acceptance-link',
+  //       test: 'https://test-link',
+  //       prod: {
+  //         prod-nl: 'https://prod-link/nl',
+  //         prod-en: 'https://prod-link/en',
+  //       },
+  //     },
+  //   ],
+  // )
+  previewLinksTable(environments, apps)::
+    local headers = ['Application'] + environments;
+    local rows = std.map(
+      function(app)
+        [app.name] + std.map(
+          function(env)
+            if !std.objectHas(app, env) then
+              '-'
+            else
+              local link = app[env];
+              if std.isObject(link) then
+                std.join(' - ', std.map(function(linkName) '[' + linkName + '](' + link[linkName] + ')', std.objectFields(link)))
+              else
+                '[' + env + '](' + link + ')',
+          environments
+        )
+      ,
+      apps
+    );
+    local linearLinks = std.flatMap(
+      function(app) std.flatMap(
+        function(env)
+          if std.isObject(app[env]) then
+            std.map(function(linkName) '[' + app.name + ' ' + env + ' ' + linkName + ' preview](' + app[env][linkName] + ')', std.objectFields(app[env]))
+          else
+            ['[' + app.name + ' ' + env + ' preview](' + app[env] + ')'],
+
+        app.linkToLinear,
+      ),
+      std.filter(function(app) std.objectHas(app, 'linkToLinear'), apps)
+    );
+    self.markdownTable(headers, rows) + self.markdownCollapsable('Linear links', std.join('\n', linearLinks)),
+
   shortServiceName(name)::
     assert name != null;
     std.strReplace(std.strReplace(name, 'gynzy-', ''), 'unicorn-', ''),
@@ -98,7 +218,7 @@
     '${{ secrets.' + secretName + ' }}',
 
   pollUrlForContent(url, expectedContent, name='verify-deploy', attempts='100', interval='2000', ifClause=null)::
-    $.action(
+    base.action(
       name,
       'gynzy/wait-for-http-content@v1',
       with={
@@ -110,17 +230,17 @@
       ifClause=ifClause,
     ),
 
-  cleanupOldBranchesPipelineCron()::
-    $.pipeline(
+  cleanupOldBranchesPipelineCron(protectedBranchRegex='^(main|master|gynzy|upstream)$')::
+    base.pipeline(
       'purge-old-branches',
       [
-        $.ghJob(
+        base.ghJob(
           'purge-old-branches',
           useCredentials=false,
           steps=[
-            $.step('setup', 'apk add git bash'),
-            $.checkout(),
-            $.action(
+            base.step('setup', 'apk add git bash'),
+            self.checkout(),
+            base.action(
               'Run delete-old-branches-action',
               'beatlabs/delete-old-branches-action@6e94df089372a619c01ae2c2f666bf474f890911',
               with={
@@ -128,7 +248,7 @@
                 date: '3 months ago',
                 dry_run: false,
                 delete_tags: false,
-                extra_protected_branch_regex: '^(main|master|gynzy|upstream)$',
+                extra_protected_branch_regex: protectedBranchRegex,
                 extra_protected_tag_regex: '^v.*',
                 exclude_open_pr_branches: true,
               },
@@ -142,35 +262,6 @@
       event={
         schedule: [{ cron: '0 12 * * 1' }],
       },
-    ),
-
-  codiumAIPRAgent()::
-    $.pipeline(
-      'codium-ai',
-      [
-        $.ghJob(
-          'pr_agent_job',
-          useCredentials=false,
-          ifClause='${{ github.event.pull_request.draft == false }}',
-          steps=[
-            $.action(
-              'PR Agent action step',
-              'gynzy/pr-agent@712f0ff0c37b71c676398f73c6ea0198eb9cdd03',
-              continueOnError=true,
-              env={
-                OPENAI_KEY: $.secret('OPENAI_KEY'),
-                GITHUB_TOKEN: $.secret('GITHUB_TOKEN'),
-              },
-            ),
-          ]
-        ),
-      ],
-      event={
-        pull_request: {
-          types: ['opened', 'reopened', 'ready_for_review'],
-        },
-        issue_comment: {},
-      }
     ),
 
   // Test if the changed files match the given glob patterns.
@@ -188,7 +279,7 @@
   // Requires the 'pull-requests': 'read' permission
   //
   // Example:
-  // $.testForChangedFiles({
+  // misc.testForChangedFiles({
   //   'app': ['packages/*/app/**/*', 'package.json'],
   //   'lib': ['packages/*/lib/**/*'],
   // })
@@ -203,8 +294,8 @@
   // See https://github.com/dorny/paths-filter for more information.
   testForChangedFiles(changedFiles, headRef=null, baseRef=null)::
     [
-      $.step('git safe directory', 'git config --global --add safe.directory $PWD'),
-      $.action(
+      base.step('git safe directory', 'git config --global --add safe.directory $PWD'),
+      base.action(
         'check-for-changes',
         uses='dorny/paths-filter@v2',
         id='changes',
@@ -219,6 +310,15 @@
       ),
     ],
 
+  // Wait for the given jobs to finish.
+  // Exits successfully if all jobs are successful, otherwise exits with an error.
+  //
+  // Parameters:
+  // name: the name of the github job
+  // jobs: a list of job names to wait for
+  //
+  // Returns:
+  // a job that waits for the given jobs to finish
   awaitJob(name, jobs)::
     local dependingJobs = std.flatMap(
       function(job)
@@ -227,18 +327,18 @@
       jobs
     );
     [
-      $.ghJob(
+      base.ghJob(
         'await-' + name,
         ifClause='${{ always() }}',
         needs=dependingJobs,
         useCredentials=false,
         steps=[
-          $.step(
+          base.step(
             'success',
             'exit 0',
             ifClause="${{ contains(join(needs.*.result, ','), 'success') }}"
           ),
-          $.step(
+          base.step(
             'failure',
             'exit 1',
             ifClause="${{ contains(join(needs.*.result, ','), 'failure') }}"
@@ -246,4 +346,60 @@
         ],
       ),
     ],
+
+  // Post a job to a kubernetes cluster
+  //
+  // Parameters:
+  // name: the name of the github job
+  // job_name: the name of the job to be posted
+  // cluster: the cluster to post the job to. This should be an object from the clusters module
+  // image: the image to use for the job
+  // environment: a map of environment variables to pass to the job
+  // command: the command to run in the job (optional)
+  // ifClause: the condition under which to run the job (optional)
+  postJob(name, job_name, cluster, image, environment, command='', ifClause=null)::
+    base.action(
+      name,
+      'docker://' + images.job_poster_image,
+      ifClause=ifClause,
+      env={
+        JOB_NAME: job_name,
+        IMAGE: image,
+        COMMAND: command,
+        ENVIRONMENT: std.join(' ', std.objectFields(environment)),
+        GCE_JSON: cluster.secret,
+        GKE_PROJECT: cluster.project,
+        GKE_ZONE: cluster.zone,
+        GKE_CLUSTER: cluster.name,
+        NODESELECTOR_TYPE: cluster.jobNodeSelectorType,
+      } + environment,
+    ),
+  
+  // Auto approve PRs made by specific users. Usefull for renovate PRs.
+  //
+  // Parameters:
+  // users: a list of users to auto approve PRs for. Defaults to gynzy-virko.
+  autoApprovePRs(users = ['gynzy-virko'])::
+    base.pipeline(
+      'auto-approve-prs',
+      [
+        base.ghJob(
+          'auto-approve',
+          steps=[
+            base.action(
+              'auto-approve-prs',
+              'hmarr/auto-approve-action@v4',
+            ),
+          ],
+          useCredentials=false,
+          ifClause='${{ ' + std.join(' || ', std.map(function(user) 'github.actor == \'' + user + '\'', users)) + ' }}',
+        ),
+      ],
+      permissions={
+        'pull-requests': 'write',
+      },
+      event={
+        pull_request: { types: ['opened'] },
+      },
+    ),
 }
