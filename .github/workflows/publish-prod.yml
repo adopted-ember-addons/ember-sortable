@@ -8,8 +8,55 @@
       "pull-requests": "read"
     "runs-on": "ubuntu-latest"
     "steps":
-    - "name": "Check out repository code"
-      "uses": "actions/checkout@v3"
+    - "id": "check-binaries"
+      "name": "check for ssh/git binaries"
+      "run": |
+        if command -v git;
+          then
+            echo "gitBinaryExists=true" >> $GITHUB_OUTPUT;
+            echo "Git binary exists";
+          else
+            echo "Attempt to install git binary";
+            if command -v apk; then
+              echo "apk exists";
+              apk add git && echo "gitBinaryExists=true" >> $GITHUB_OUTPUT;
+            elif command -v apt; then
+              echo "apt exists";
+              apt update && apt install -y git && echo "gitBinaryExists=true" >> $GITHUB_OUTPUT;
+            else
+              echo "No package manager found, unable to install git cli binary";
+              echo "gitBinaryExists=false" >> $GITHUB_OUTPUT;
+            fi;
+        fi;
+        
+        if command -v ssh;
+          then
+            echo "sshBinaryExists=true" >> $GITHUB_OUTPUT;
+            echo "SSH binary exists";
+            exit 0;
+          else
+            echo "Attempt to install ssh binary";
+            if command -v apk; then
+              echo "apk exists";
+              apk add openssh-client && echo "sshBinaryExists=true" >> $GITHUB_OUTPUT && exit 0;
+            elif command -v apt; then
+              echo "apt exists";
+              apt update && apt install -y openssh-client && echo "sshBinaryExists=true" >> $GITHUB_OUTPUT && exit 0;
+            else
+              echo "No package manager found, unable to install ssh cli binary";
+              echo "sshBinaryExists=false" >> $GITHUB_OUTPUT;
+            fi;
+        fi;
+        echo "sshBinaryExists=false" >> $GITHUB_OUTPUT;
+    - "if": "${{  ( steps.check-binaries.outputs.sshBinaryExists == 'true' && steps.check-binaries.outputs.gitBinaryExists == 'true' ) }}"
+      "name": "Check out repository code via ssh"
+      "uses": "actions/checkout@v4"
+      "with":
+        "ref": "${{ github.sha }}"
+        "ssh-key": "${{ secrets.VIRKO_GITHUB_SSH_KEY }}"
+    - "if": "${{  ( steps.check-binaries.outputs.sshBinaryExists == 'false' || steps.check-binaries.outputs.gitBinaryExists == 'false' ) }}"
+      "name": "Check out repository code via https"
+      "uses": "actions/checkout@v4"
       "with":
         "ref": "${{ github.sha }}"
     - "name": "git safe directory"

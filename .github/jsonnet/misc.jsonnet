@@ -2,11 +2,79 @@ local base = import 'base.jsonnet';
 local images = import 'images.jsonnet';
 
 {
-  checkout(ifClause=null, fullClone=false, ref=null)::
+  checkout(ifClause=null, fullClone=false, ref=null, preferSshClone=true)::
+    local with = (if fullClone then { 'fetch-depth': 0 } else {}) + (if ref != null then { ref: ref } else {});
+    local sshSteps = (if (preferSshClone) then
+                        base.step(
+                          'check for ssh/git binaries',
+                          |||
+                            if command -v git;
+                              then
+                                echo "gitBinaryExists=true" >> $GITHUB_OUTPUT;
+                                echo "Git binary exists";
+                              else
+                                echo "Attempt to install git binary";
+                                if command -v apk; then
+                                  echo "apk exists";
+                                  apk add git && echo "gitBinaryExists=true" >> $GITHUB_OUTPUT;
+                                elif command -v apt; then
+                                  echo "apt exists";
+                                  apt update && apt install -y git && echo "gitBinaryExists=true" >> $GITHUB_OUTPUT;
+                                else
+                                  echo "No package manager found, unable to install git cli binary";
+                                  echo "gitBinaryExists=false" >> $GITHUB_OUTPUT;
+                                fi;
+                            fi;
+
+                            if command -v ssh;
+                              then
+                                echo "sshBinaryExists=true" >> $GITHUB_OUTPUT;
+                                echo "SSH binary exists";
+                                exit 0;
+                              else
+                                echo "Attempt to install ssh binary";
+                                if command -v apk; then
+                                  echo "apk exists";
+                                  apk add openssh-client && echo "sshBinaryExists=true" >> $GITHUB_OUTPUT && exit 0;
+                                elif command -v apt; then
+                                  echo "apt exists";
+                                  apt update && apt install -y openssh-client && echo "sshBinaryExists=true" >> $GITHUB_OUTPUT && exit 0;
+                                else
+                                  echo "No package manager found, unable to install ssh cli binary";
+                                  echo "sshBinaryExists=false" >> $GITHUB_OUTPUT;
+                                fi;
+                            fi;
+                            echo "sshBinaryExists=false" >> $GITHUB_OUTPUT;
+                          |||,
+                          id='check-binaries',
+                        ) else []);
+
+    // strip the ${{ }} from the IfClause so we can inject and add our own if clause
+    local localIfClause = (if ifClause == null then null else std.strReplace(std.strReplace(ifClause, '${{ ', ''), ' }}', ''));
+
+    if (preferSshClone) then
+      sshSteps +
+      base.action(
+        'Check out repository code via ssh',
+        'actions/checkout@v4',
+        with=with + (if preferSshClone then { 'ssh-key': '${{ secrets.VIRKO_GITHUB_SSH_KEY }}' } else {}),
+        ifClause='${{ ' + (if ifClause == null then '' else '( ' + localIfClause + ' ) && ') + " ( steps.check-binaries.outputs.sshBinaryExists == 'true' && steps.check-binaries.outputs.gitBinaryExists == 'true' ) }}",
+      ) +
+      base.action(
+        'Check out repository code via https',
+        'actions/checkout@v4',
+        with=with,
+        ifClause='${{ ' + (if ifClause == null then '' else '( ' + localIfClause + ' ) && ') + " ( steps.check-binaries.outputs.sshBinaryExists == 'false' || steps.check-binaries.outputs.gitBinaryExists == 'false' ) }}",
+      ) +
+      base.step('git safe directory', "command -v git && git config --global --add safe.directory '*' || true")
+    else
+      self.checkoutWithoutSshMagic(ifClause, fullClone, ref),
+
+  checkoutWithoutSshMagic(ifClause=null, fullClone=false, ref=null)::
     local with = (if fullClone then { 'fetch-depth': 0 } else {}) + (if ref != null then { ref: ref } else {});
     base.action(
       'Check out repository code',
-      'actions/checkout@v3',
+      'actions/checkout@v4',
       with=with,
       ifClause=ifClause
     ) +
@@ -200,9 +268,14 @@ local images = import 'images.jsonnet';
       function(app) std.flatMap(
         function(env)
           if std.isObject(app[env]) then
-            std.map(function(linkName) '[' + app.name + ' ' + env + ' ' + linkName + ' preview](' + app[env][linkName] + ')', std.objectFields(app[env]))
+            std.map(
+              function(linkName)
+                '[' + std.strReplace(std.strReplace(app.name + ' ' + env + ' ' + linkName, '(', ''), ')', '') + ' preview]' +
+                '(' + app[env][linkName] + ')',
+              std.objectFields(app[env])
+            )
           else
-            ['[' + app.name + ' ' + env + ' preview](' + app[env] + ')'],
+            ['[' + std.strReplace(std.strReplace(app.name + ' ' + env, '(', ''), ')', '') + ' preview](' + app[env] + ')'],
 
         app.linkToLinear,
       ),
@@ -374,12 +447,12 @@ local images = import 'images.jsonnet';
         NODESELECTOR_TYPE: cluster.jobNodeSelectorType,
       } + environment,
     ),
-  
+
   // Auto approve PRs made by specific users. Usefull for renovate PRs.
   //
   // Parameters:
   // users: a list of users to auto approve PRs for. Defaults to gynzy-virko.
-  autoApprovePRs(users = ['gynzy-virko'])::
+  autoApprovePRs(users=['gynzy-virko'])::
     base.pipeline(
       'auto-approve-prs',
       [
@@ -392,7 +465,7 @@ local images = import 'images.jsonnet';
             ),
           ],
           useCredentials=false,
-          ifClause='${{ ' + std.join(' || ', std.map(function(user) 'github.actor == \'' + user + '\'', users)) + ' }}',
+          ifClause='${{ ' + std.join(' || ', std.map(function(user) "github.actor == '" + user + "'", users)) + ' }}',
         ),
       ],
       permissions={
