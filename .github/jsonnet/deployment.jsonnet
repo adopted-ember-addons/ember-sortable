@@ -124,7 +124,7 @@ local notifications = import 'notifications.jsonnet';
                     if branch.notifyOnDeploy then
                       [
                         notifications.sendSlackMessage(
-                          message='Deploy to ' + std.join(' and ', branch.deployments) + ' of <https://github.com/${{ github.action_repository }}/pulls/${{ github.event.number }}|*PR ${{ github.event.number }}*> started!\nTitle: ${{ github.event.pull_request.title }}\nBranch: ${{ github.head_ref }}',
+                          message='Deploy to ' + std.join(' and ', branch.deployments) + ' of <https://github.com/${{ github.repository }}/pull/${{ github.event.number }}|*PR ${{ github.event.number }}*> started!\nTitle: ${{ github.event.pull_request.title }}\nBranch: ${{ github.head_ref }}',
                           ifClause=ifClause,
                         ),
                       ]

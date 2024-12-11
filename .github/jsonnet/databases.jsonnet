@@ -23,12 +23,6 @@ local images = import 'images.jsonnet';
       region: 'europe-west4',
       project: 'unicorn-985',
     },
-    'eu-w4-responses-production': {
-      type: 'mysql',
-      server: 'eu-w4-responses-production',
-      region: 'europe-west4',
-      project: 'unicorn-985',
-    },
     'gynzy-test': {
       type: 'mysql',
       server: 'gynzy-test',
