@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2025-01-13)
+
+ember-sortable 5.2.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#606](https://github.com/adopted-ember-addons/ember-sortable/pull/606) bug: Support when border-spacing returns a single value ([@cyril-sf](https://github.com/cyril-sf))
+
+#### Committers: 1
+- Cyril Fluck ([@cyril-sf](https://github.com/cyril-sf))
+
 ## Release (2024-10-03)
 
 ember-sortable 5.2.2 (patch)
