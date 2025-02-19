@@ -6,7 +6,8 @@ local misc = import 'misc.jsonnet';
     name: 'test',
     zone: 'europe-west4-b',
     secret: misc.secret('GCE_NEW_TEST_JSON'),
-    jobNodeSelectorType: 'preemptible',
+    jobNodeSelectorKey: 'type',
+    jobNodeSelectorValue: 'preemptible',
   },
 
   prod: {
@@ -14,7 +15,8 @@ local misc = import 'misc.jsonnet';
     name: 'prod-europe-west4',
     zone: 'europe-west4',
     secret: misc.secret('GCE_JSON'),
-    jobNodeSelectorType: 'worker',
+    jobNodeSelectorKey: 'worker',
+    jobNodeSelectorValue: 'true',
   },
 
   'gynzy-intern': {
@@ -22,6 +24,7 @@ local misc = import 'misc.jsonnet';
     name: 'gynzy-intern',
     zone: 'europe-west4',
     secret: misc.secret('CONTINUOUS_DEPLOYMENT_GCE_JSON'),
-    jobNodeSelectorType: 'worker',
+    jobNodeSelectorKey: 'type',
+    jobNodeSelectorValue: 'worker',
   },
 }

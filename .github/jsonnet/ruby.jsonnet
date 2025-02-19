@@ -9,7 +9,7 @@ local servicesImport = import 'services.jsonnet';
 {
   rubyDeployPRPipeline(
     serviceName,
-    dockerImageName='github-gynzy-docker-' + serviceName,
+    dockerImageName='backend-' + serviceName,
     helmDeployOptions={
       ingress: { enabled: true },
       cronjob: { enabled: true },

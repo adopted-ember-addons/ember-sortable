@@ -4,7 +4,7 @@
       "credentials":
         "password": "${{ secrets.docker_gcr_io }}"
         "username": "_json_key"
-      "image": "eu.gcr.io/unicorn-985/docker-images_jsonnet:v1"
+      "image": "europe-docker.pkg.dev/unicorn-985/private-images/docker-images_jsonnet:v1"
     "runs-on": "ubuntu-latest"
     "steps":
     - "id": "check-binaries"
