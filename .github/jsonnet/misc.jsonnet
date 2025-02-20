@@ -424,19 +424,23 @@ local images = import 'images.jsonnet';
   //
   // Parameters:
   // name: the name of the github job
-  // job_name: the name of the job to be posted
+  // jobName: the name of the job to be posted
   // cluster: the cluster to post the job to. This should be an object from the clusters module
   // image: the image to use for the job
   // environment: a map of environment variables to pass to the job
   // command: the command to run in the job (optional)
   // ifClause: the condition under which to run the job (optional)
-  postJob(name, job_name, cluster, image, environment, command='', ifClause=null)::
+  // memory: the memory requested for the job (optional)
+  // memoryLimit: the memory limit for the job (optional)
+  // cpu: the cpu requested for the job (optional)
+  // cpuLimit: the cpu limit for the job (optional)
+  postJob(name, jobName, cluster, image, environment, command='', ifClause=null, memory='100Mi', memoryLimit='100Mi', cpu='100m', cpuLimit='100m')::
     base.action(
       name,
       'docker://' + images.job_poster_image,
       ifClause=ifClause,
       env={
-        JOB_NAME: job_name,
+        JOB_NAME: jobName,
         IMAGE: image,
         COMMAND: command,
         ENVIRONMENT: std.join(' ', std.objectFields(environment)),
@@ -444,7 +448,12 @@ local images = import 'images.jsonnet';
         GKE_PROJECT: cluster.project,
         GKE_ZONE: cluster.zone,
         GKE_CLUSTER: cluster.name,
-        NODESELECTOR_TYPE: cluster.jobNodeSelectorType,
+        NODESELECTOR_KEY: cluster.jobNodeSelectorKey,
+        NODESELECTOR_VALUE: cluster.jobNodeSelectorValue,
+        JOB_REQUEST_MEM: memory,
+        JOB_REQUEST_MEM_LIMIT: memoryLimit,
+        JOB_REQUEST_CPU: cpu,
+        JOB_REQUEST_CPU_LIMIT: cpuLimit,
       } + environment,
     ),
 

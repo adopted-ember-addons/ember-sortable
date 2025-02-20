@@ -2,24 +2,6 @@ local images = import 'images.jsonnet';
 local misc = import 'misc.jsonnet';
 
 {
-  mysql57service(database=null, password=null, root_password=null, username=null, port='3306')::
-    {
-      image: images.default_mysql57_image,
-      credentials: {
-        username: '_json_key',
-        password: misc.secret('docker_gcr_io'),
-      },
-      env: {
-        MYSQL_DATABASE: database,
-        MYSQL_PASSWORD: password,
-        MYSQL_ROOT_PASSWORD: root_password,
-        MYSQL_USER: username,
-        MYSQL_TCP_PORT: port,
-      },
-      options: '--health-cmd="mysqladmin ping" --health-interval=1s --health-timeout=1s --health-retries=40',
-      ports: [port + ':' + port],
-    },
-
   mysql8service(database=null, password=null, root_password=null, username=null, port='3306')::
     {
       image: images.default_mysql8_image,

@@ -103,7 +103,7 @@ local prodProjectSettings = {
 
     misc.postJob(
       name='copy-mongo-db',
-      job_name='mongo-copy-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
+      jobName='mongo-copy-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
       cluster=mongoCluster.gke_cluster,
       image=images.mongo_job_image,
       environment={
@@ -113,7 +113,15 @@ local prodProjectSettings = {
         MONGO_HOST: mongoCluster.connectionString,
         MONGO_USER: mongoCluster.CIUsername,
         MONGO_PASS: mongoCluster.CIPassword,
+        JOB_REQUEST_CPU: "500m",
+        JOB_REQUEST_CPU_LIMIT: "1",
+        JOB_REQUEST_MEM: "512Mi",
+        JOB_REQUEST_MEM_LIMIT: "1Gi",
       },
+      memory='1Gi',
+      memoryLimit='1Gi',
+      cpu='500m',
+      cpuLimit='1',
     ),
 
   // Delete a MongoDB PR database.
@@ -131,7 +139,7 @@ local prodProjectSettings = {
 
     misc.postJob(
       name='delete-mongo-db',
-      job_name='mongo-delete-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
+      jobName='mongo-delete-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
       cluster=mongoCluster.gke_cluster,
       image=images.mongo_job_image,
       environment={
@@ -140,6 +148,8 @@ local prodProjectSettings = {
         MONGO_HOST: mongoCluster.connectionString,
         MONGO_USER: mongoCluster.CIUsername,
         MONGO_PASS: mongoCluster.CIPassword,
+        JOB_REQUEST_MEM: '200Mi',
+        JOB_REQUEST_MEM_LIMIT: '200Mi',
       },
     ),
   // Sync the indexes of a MongoDB database with the current codebase.
@@ -156,7 +166,7 @@ local prodProjectSettings = {
   mongoSyncIndexes(service, image, mongoCluster, database, ifClause=null)::
     misc.postJob(
       name='sync-mongo-indexes-' + mongoCluster.name + '-' + database,
-      job_name='mongo-sync-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
+      jobName='mongo-sync-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
       cluster=mongoCluster.gke_cluster,
       image=image,
       environment={
@@ -167,6 +177,9 @@ local prodProjectSettings = {
         MONGO_USER: mongoCluster.CIUsername,
         MONGO_PASS: mongoCluster.CIPassword,
         IS_ATLAS_MONGO: 'true',
+        JOB_REQUEST_MEM: '200Mi',
+        JOB_REQUEST_MEM_LIMIT: '200Mi',
+        JOB_REQUEST_CPU_LIMIT: '1',
       },
       ifClause=ifClause,
       command='docker/mongo-sync-indexes.sh',
@@ -188,7 +201,7 @@ local prodProjectSettings = {
 
     misc.postJob(
       name='diff-mongo-indexes-' + mongoCluster.name + '-' + database,
-      job_name='mongo-diff-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
+      jobName='mongo-diff-' + service + '-${{ github.run_number }}-${{ github.run_attempt }}',
       cluster=mongoCluster.gke_cluster,
       image=image,
       environment={
@@ -203,6 +216,9 @@ local prodProjectSettings = {
         MONGO_CLUSTER: mongoCluster.name,
         MONGO_DEEPLINK: mongoDBLink,
         IS_ATLAS_MONGO: 'true',
+        JOB_REQUEST_MEM: '200Mi',
+        JOB_REQUEST_MEM_LIMIT: '200Mi',
+        JOB_REQUEST_CPU_LIMIT: '1',
       },
       command='docker/mongo-sync-indexes.sh',
     ),
