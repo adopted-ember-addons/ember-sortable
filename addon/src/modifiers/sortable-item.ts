@@ -10,7 +10,7 @@ import ScrollContainer from '../system/scroll-container.ts';
 import scrollParent from '../system/scroll-parent.ts';
 import { getBorderSpacing } from '../utils/css-calculation.ts';
 import { buildWaiter } from '@ember/test-waiters';
-import { inject as service } from '@ember/service';
+import * as s from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
 import { registerDestructor } from '@ember/destroyable';
 import { isTesting } from '@embroider/macros';
@@ -20,6 +20,8 @@ import type Owner from '@ember/owner';
 import type { Group } from '../services/ember-sortable-internal-state.ts';
 import type SortableGroupModifier from './sortable-group.ts';
 import type { TDirection } from './sortable-group.ts';
+
+const service = s.service ?? s.inject;
 
 const sortableItemWaiter = buildWaiter('sortable-item-waiter');
 
