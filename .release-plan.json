@@ -1,17 +1,17 @@
 {
   "solution": {
     "ember-sortable": {
-      "impact": "patch",
-      "oldVersion": "5.2.2",
-      "newVersion": "5.2.3",
+      "impact": "minor",
+      "oldVersion": "5.2.3",
+      "newVersion": "5.3.0",
       "constraints": [
         {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
+          "impact": "minor",
+          "reason": "Appears in changelog section :rocket: Enhancement"
         }
       ],
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-01-13)\n\nember-sortable 5.2.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#606](https://github.com/adopted-ember-addons/ember-sortable/pull/606) bug: Support when border-spacing returns a single value ([@cyril-sf](https://github.com/cyril-sf))\n\n#### Committers: 1\n- Cyril Fluck ([@cyril-sf](https://github.com/cyril-sf))\n"
+  "description": "## Release (2025-03-31)\n\nember-sortable 5.3.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-sortable`\n  * [#616](https://github.com/adopted-ember-addons/ember-sortable/pull/616) Cleanup `@ember/service` deprecation ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
 }
