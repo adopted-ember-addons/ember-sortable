@@ -69,8 +69,7 @@
   "peerDependencies": {
     "ember-modifier": "^3.2.0 || >= 4.0.0",
     "@ember/test-helpers": "^2.6.0 || >= 3.0.0",
-    "@ember/test-waiters": ">= 3.0.1",
-    "ember-source": "^3.28.0 || >= 4.0.0"
+    "@ember/test-waiters": ">= 3.0.1"
   },
   "dependencies": {
     "@embroider/addon-shim": "^1.8.9",
