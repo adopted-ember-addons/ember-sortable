@@ -1,17 +1,8 @@
 {
   "solution": {
     "ember-sortable": {
-      "impact": "patch",
-      "oldVersion": "5.3.0",
-      "newVersion": "5.3.1",
-      "constraints": [
-        {
-          "impact": "patch",
-          "reason": "Appears in changelog section :bug: Bug Fix"
-        }
-      ],
-      "pkgJSONPath": "./addon/package.json"
+      "oldVersion": "5.3.1"
     }
   },
-  "description": "## Release (2025-05-10)\n\nember-sortable 5.3.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#620](https://github.com/adopted-ember-addons/ember-sortable/pull/620) Remove unneeded peer dependency on ember-source ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
+  "description": "\n\n\n\n"
 }
