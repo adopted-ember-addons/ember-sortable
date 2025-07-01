@@ -1,5 +1,27 @@
 # Changelog
 
+## Release (2025-05-10)
+
+ember-sortable 5.3.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#620](https://github.com/adopted-ember-addons/ember-sortable/pull/620) Remove unneeded peer dependency on ember-source ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
+## Release (2025-03-31)
+
+ember-sortable 5.3.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-sortable`
+  * [#616](https://github.com/adopted-ember-addons/ember-sortable/pull/616) Cleanup `@ember/service` deprecation ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2025-01-13)
 
 ember-sortable 5.2.3 (patch)
