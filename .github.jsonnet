@@ -1,3 +1,3 @@
 local util = import '.github/jsonnet/index.jsonnet';
 
-util.workflowJavascriptPackage(branch='master')
+util.workflowJavascriptPackage(branch='main')
