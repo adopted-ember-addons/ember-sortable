@@ -2,8 +2,9 @@
   "solution": {
     "ember-sortable": {
       "impact": "patch",
-      "oldVersion": "5.3.0",
-      "newVersion": "5.3.1",
+      "oldVersion": "5.3.1",
+      "newVersion": "5.3.2",
+      "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
@@ -13,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-05-10)\n\nember-sortable 5.3.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#620](https://github.com/adopted-ember-addons/ember-sortable/pull/620) Remove unneeded peer dependency on ember-source ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 1\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n"
+  "description": "## Release (2025-08-05)\n\n* ember-sortable 5.3.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#634](https://github.com/adopted-ember-addons/ember-sortable/pull/634) Remove unnecessary condition check for `this.isAnimated` ([@mkszepp](https://github.com/mkszepp))\n  * [#633](https://github.com/adopted-ember-addons/ember-sortable/pull/633) `transitionend` will not fired, when transition has a short duration ([@mkszepp](https://github.com/mkszepp))\n\n#### :house: Internal\n* [#635](https://github.com/adopted-ember-addons/ember-sortable/pull/635) Update release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n\n#### Committers: 2\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }

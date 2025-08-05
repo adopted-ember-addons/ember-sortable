@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2025-08-05)
+
+* ember-sortable 5.3.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#634](https://github.com/adopted-ember-addons/ember-sortable/pull/634) Remove unnecessary condition check for `this.isAnimated` ([@mkszepp](https://github.com/mkszepp))
+  * [#633](https://github.com/adopted-ember-addons/ember-sortable/pull/633) `transitionend` will not fired, when transition has a short duration ([@mkszepp](https://github.com/mkszepp))
+
+#### :house: Internal
+* [#635](https://github.com/adopted-ember-addons/ember-sortable/pull/635) Update release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 2
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-05-10)
 
 ember-sortable 5.3.1 (patch)
