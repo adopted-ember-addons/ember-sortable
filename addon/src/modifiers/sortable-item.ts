@@ -830,8 +830,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
         deferred.resolve();
       }, duration + 200);
     } else {
-      const duration = this.isAnimated ? this.transitionDuration : 200;
-      transitionPromise = new Promise((resolve) => later(resolve, duration));
+      transitionPromise = new Promise((resolve) => later(resolve, 200));
     }
 
     if (DEBUG) {
