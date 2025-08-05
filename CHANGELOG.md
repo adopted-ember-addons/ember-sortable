@@ -2,6 +2,17 @@
 
 ## Release (2025-08-05)
 
+* ember-sortable 5.3.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#636](https://github.com/adopted-ember-addons/ember-sortable/pull/636) Use native `Promise` instead from `rsvp` ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
+## Release (2025-08-05)
+
 * ember-sortable 5.3.2 (patch)
 
 #### :bug: Bug Fix
