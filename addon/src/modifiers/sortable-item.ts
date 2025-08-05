@@ -819,6 +819,16 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       transitionPromise = deferred.promise.finally(() => {
         this.element.removeEventListener('transitionend', deferred.resolve);
       });
+
+      const duration = this.transitionDuration;
+
+      // When transition is ended before we have added the event (found this issue already with 125ms), the dragging is blocked, since fully page refresh
+      // To ensure that this would never happen, we need an later, to resolve the promise, when it wasn't resolved by transitionEnd
+      // The duration addition with 200ms is just a choice (taken from else case), its just a way to let transitionend a little bit more time
+      // Note: Unfortunately this issue is also not solvable with Element.getAnimations(), getAnimations brings no active animation at this point
+      later(() => {
+        deferred.resolve();
+      }, duration + 200);
     } else {
       const duration = this.isAnimated ? this.transitionDuration : 200;
       transitionPromise = new Promise((resolve) => later(resolve, duration));
@@ -850,8 +860,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     if (this.isAnimated) {
       const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
 
-      const animationPromises = animations.map((animation) => {
-        return animation.every((x) => x.finished);
+      const animationPromises = animations.flatMap((animationList) => {
+        return animationList.map(animation => animation.finished);
       });
 
       transitionPromise = Promise.all(animationPromises);
