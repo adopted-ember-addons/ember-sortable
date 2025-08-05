@@ -861,7 +861,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
 
       const animationPromises = animations.flatMap((animationList) => {
-        return animationList.map(animation => animation.finished);
+        return animationList.map((animation) => animation.finished);
       });
 
       transitionPromise = Promise.all(animationPromises);
