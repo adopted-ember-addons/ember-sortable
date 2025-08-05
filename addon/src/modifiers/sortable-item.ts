@@ -1,6 +1,5 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Modifier from 'ember-modifier';
-import { Promise, defer } from 'rsvp';
 import { action, set } from '@ember/object';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant.ts';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
@@ -814,21 +813,28 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     let transitionPromise;
 
     if (this.isAnimated) {
-      const deferred = defer();
-      this.element.addEventListener('transitionend', deferred.resolve);
-      transitionPromise = deferred.promise.finally(() => {
-        this.element.removeEventListener('transitionend', deferred.resolve);
+      transitionPromise = new Promise<void>((resolve) => {
+        let resolved = false;
+
+        const handler = () => {
+          if (resolved) return;
+          resolved = true;
+          this.element.removeEventListener('transitionend', handler);
+          resolve();
+        };
+
+        this.element.addEventListener('transitionend', handler);
+
+        const duration = this.transitionDuration;
+
+        // When transition is ended before we have added the event (found this issue already with 125ms), the dragging is blocked, since fully page refresh
+        // To ensure that this would never happen, we need an later, to resolve the promise, when it wasn't resolved by transitionEnd
+        // The duration addition with 200ms is just a choice (taken from else case), its just a way to let transitionend a little bit more time
+        // Note: Unfortunately this issue is also not solvable with Element.getAnimations(), getAnimations brings no active animation at this point
+        later(() => {
+          handler();
+        }, duration + 200);
       });
-
-      const duration = this.transitionDuration;
-
-      // When transition is ended before we have added the event (found this issue already with 125ms), the dragging is blocked, since fully page refresh
-      // To ensure that this would never happen, we need an later, to resolve the promise, when it wasn't resolved by transitionEnd
-      // The duration addition with 200ms is just a choice (taken from else case), its just a way to let transitionend a little bit more time
-      // Note: Unfortunately this issue is also not solvable with Element.getAnimations(), getAnimations brings no active animation at this point
-      later(() => {
-        deferred.resolve();
-      }, duration + 200);
     } else {
       transitionPromise = new Promise((resolve) => later(resolve, 200));
     }
