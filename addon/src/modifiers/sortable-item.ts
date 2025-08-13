@@ -3,7 +3,7 @@ import Modifier from 'ember-modifier';
 import { action, set } from '@ember/object';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant.ts';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
-import { DEBUG } from '@glimmer/env';
+import { macroCondition, isDevelopingApp } from '@embroider/macros';
 import { getX, getY } from '../utils/coordinate.ts';
 import ScrollContainer from '../system/scroll-container.ts';
 import scrollParent from '../system/scroll-parent.ts';
@@ -806,7 +806,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   _waitForTransition() {
     let waiterToken: unknown;
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       waiterToken = sortableItemWaiter.beginAsync();
     }
 
@@ -839,7 +839,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       transitionPromise = new Promise((resolve) => later(resolve, 200));
     }
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       transitionPromise = transitionPromise.finally(() => {
         sortableItemWaiter.endAsync(waiterToken);
       });
@@ -856,7 +856,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   _waitForAllTransitions() {
     let waiterToken: unknown;
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       waiterToken = sortableItemWaiter.beginAsync();
     }
 
@@ -875,7 +875,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       transitionPromise = new Promise((resolve) => later(resolve, duration));
     }
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       transitionPromise = transitionPromise.finally(() => {
         sortableItemWaiter.endAsync(waiterToken);
       });
