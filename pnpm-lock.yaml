@@ -20,12 +20,6 @@ importers:
       '@embroider/macros':
         specifier: ^1.16.6
         version: 1.18.1(@glint/template@1.5.2)
-      '@glimmer/env':
-        specifier: ^0.1.7
-        version: 0.1.7
-      rsvp:
-        specifier: ^4.8.5
-        version: 4.8.5
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2

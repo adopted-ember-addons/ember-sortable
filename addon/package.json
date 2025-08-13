@@ -73,9 +73,7 @@
   },
   "dependencies": {
     "@embroider/addon-shim": "^1.8.9",
-    "@embroider/macros": "^1.16.6",
-    "@glimmer/env": "^0.1.7",
-    "rsvp": "^4.8.5"
+    "@embroider/macros": "^1.16.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
