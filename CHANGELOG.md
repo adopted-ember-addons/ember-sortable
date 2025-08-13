@@ -1,5 +1,18 @@
 # Changelog
 
+## Release (2025-08-13)
+
+* ember-sortable 5.3.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#638](https://github.com/adopted-ember-addons/ember-sortable/pull/638) Remove virtual dependencies from dependencies list ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#636](https://github.com/adopted-ember-addons/ember-sortable/pull/636) Use native `Promise` instead from `rsvp` ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 2
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-08-05)
 
 * ember-sortable 5.3.2 (patch)
