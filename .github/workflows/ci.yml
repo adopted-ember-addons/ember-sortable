@@ -17,7 +17,7 @@ jobs:
     name: "Setup"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: wyvox/action-setup-pnpm@v3
 
   test:
@@ -26,7 +26,7 @@ jobs:
     needs: [setup]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: wyvox/action-setup-pnpm@v3
       - run: pnpm test
 
@@ -36,7 +36,7 @@ jobs:
     needs: [setup]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: wyvox/action-setup-pnpm@v3
       - name: Lint
         run: pnpm lint
@@ -47,7 +47,7 @@ jobs:
     needs: [test]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: wyvox/action-setup-pnpm@v3
         with:
           args: '--no-lockfile'
@@ -78,7 +78,7 @@ jobs:
           - embroider-optimized
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: wyvox/action-setup-pnpm@v3
       - name: Run Tests
         run: |
