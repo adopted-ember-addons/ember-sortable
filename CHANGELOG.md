@@ -1,5 +1,10 @@
 # Changelog
 
+
+
+
+
+
 ## Release (2025-08-13)
 
 * ember-sortable 5.3.3 (patch)
