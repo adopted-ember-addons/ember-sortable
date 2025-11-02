@@ -508,6 +508,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     DRAG_ACTIONS.forEach((event) => window.addEventListener(event, dragThrottled));
     END_ACTIONS.forEach((event) => window.addEventListener(event, drop));
 
+    if (!this.sortableGroup) return;
+
     this.sortableGroup.prepare();
     set(this, 'isDragging', true);
     this.onDragStart(this.model);
