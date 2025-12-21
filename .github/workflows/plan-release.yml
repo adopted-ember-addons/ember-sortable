@@ -80,7 +80,7 @@ jobs:
         env:
           GITHUB_AUTH: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: peter-evans/create-pull-request@v7
+      - uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "Prepare Release ${{ steps.explanation.outputs.new_version}} using 'release-plan'"
           labels: "internal"
