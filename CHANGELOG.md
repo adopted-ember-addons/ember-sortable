@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-02-12)
+
+* ember-sortable 5.3.4 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#655](https://github.com/adopted-ember-addons/ember-sortable/pull/655) Drag start: be defensive around sortableGroup.prepare() ([@tniezurawski](https://github.com/tniezurawski))
+
+#### Committers: 1
+- Tomek Nieżurawski ([@tniezurawski](https://github.com/tniezurawski))
+
 ## Release (2025-08-13)
 
 * ember-sortable 5.3.3 (patch)

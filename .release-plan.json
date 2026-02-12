@@ -2,8 +2,8 @@
   "solution": {
     "ember-sortable": {
       "impact": "patch",
-      "oldVersion": "5.3.2",
-      "newVersion": "5.3.3",
+      "oldVersion": "5.3.3",
+      "newVersion": "5.3.4",
       "tagName": "latest",
       "constraints": [
         {
@@ -14,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-08-13)\n\n* ember-sortable 5.3.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#638](https://github.com/adopted-ember-addons/ember-sortable/pull/638) Remove virtual dependencies from dependencies list ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#636](https://github.com/adopted-ember-addons/ember-sortable/pull/636) Use native `Promise` instead from `rsvp` ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 2\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
+  "description": "## Release (2026-02-12)\n\n* ember-sortable 5.3.4 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#655](https://github.com/adopted-ember-addons/ember-sortable/pull/655) Drag start: be defensive around sortableGroup.prepare() ([@tniezurawski](https://github.com/tniezurawski))\n\n#### Committers: 1\n- Tomek Nieżurawski ([@tniezurawski](https://github.com/tniezurawski))\n"
 }
