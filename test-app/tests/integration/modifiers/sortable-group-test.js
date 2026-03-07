@@ -154,7 +154,9 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     const firstPositionBeforeResize = group.firstItemPosition.x;
     find('#test-wrapper').style.width = '500px';
 
-    group.items.forEach((item) => item.reset());
+    group.items.forEach((item) => {
+      item.reset();
+    });
     await settled();
 
     const firstItem = group.items[0];
