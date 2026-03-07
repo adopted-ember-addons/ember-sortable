@@ -79,7 +79,7 @@ export default class ModifierController extends Controller {
     set(this, 'model.dragged', draggedModel);
   }
 
-  `@action`
+  @action
   updateMutable(newOrder, draggedModel) {
     this.mutableRecords = newOrder;
   }
