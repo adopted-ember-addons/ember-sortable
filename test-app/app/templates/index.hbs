@@ -77,7 +77,6 @@
         <ol
           class='flex-1' data-test-horizontal-demo-group
           {{sortable-group
-            this.mutableRecords
             direction='x'
             onChange=this.updateMutable
             itemVisualClass=this.itemVisualClass
@@ -167,18 +166,18 @@
       {{! template-lint-disable table-groups}}
       <table>
         <thead>
-        <tr>
-          <th>&vArr;</th>
-          <th>Item</th>
-        </tr>
+          <tr>
+            <th>&vArr;</th>
+            <th>Item</th>
+          </tr>
         </thead>
         <tbody {{sortable-group onChange=this.update groupName='table'}}>
-        {{#each @model.items as |item|}}
-          <tr data-test-table-demo-item class='handle' {{sortable-item model=item groupName='table'}}>
-            <td><span data-test-table-demo-handle data-item={{item}} class='handle'>&vArr;</span></td>
-            <td>{{item}}</td>
-          </tr>
-        {{/each}}
+          {{#each @model.items as |item|}}
+            <tr data-test-table-demo-item class='handle' {{sortable-item model=item groupName='table'}}>
+              <td><span data-test-table-demo-handle data-item={{item}} class='handle'>&vArr;</span></td>
+              <td>{{item}}</td>
+            </tr>
+          {{/each}}
         </tbody>
       </table>
     </section>
