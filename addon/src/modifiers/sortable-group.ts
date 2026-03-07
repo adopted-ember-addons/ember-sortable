@@ -14,7 +14,7 @@ import {
 import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant.ts';
 import { defaultA11yAnnouncementConfig, type A11yAnnouncementConfig } from '../utils/defaults.ts';
 import { next, schedule, scheduleOnce, later } from '@ember/runloop';
-import { inject as service } from '@ember/service';
+import * as s from '@ember/service';
 import { registerDestructor, isDestroyed } from '@ember/destroyable';
 import type { ArgsFor, PositionalArgs, NamedArgs } from 'ember-modifier';
 import type Owner from '@ember/owner';
@@ -22,6 +22,8 @@ import type EmberSortableService from '../services/ember-sortable-internal-state
 import type { Group } from '../services/ember-sortable-internal-state.ts';
 import type SortableItemModifier from './sortable-item.ts';
 import type { MoveDirection } from './sortable-item.ts';
+
+const service = s.service ?? s.inject;
 
 const NO_MODEL: HandleVisualClass = {};
 

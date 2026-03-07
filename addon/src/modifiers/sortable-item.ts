@@ -1,16 +1,15 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Modifier from 'ember-modifier';
-import { Promise, defer } from 'rsvp';
 import { action, set } from '@ember/object';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant.ts';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
-import { DEBUG } from '@glimmer/env';
+import { macroCondition, isDevelopingApp } from '@embroider/macros';
 import { getX, getY } from '../utils/coordinate.ts';
 import ScrollContainer from '../system/scroll-container.ts';
 import scrollParent from '../system/scroll-parent.ts';
 import { getBorderSpacing } from '../utils/css-calculation.ts';
 import { buildWaiter } from '@ember/test-waiters';
-import { inject as service } from '@ember/service';
+import * as s from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
 import { registerDestructor } from '@ember/destroyable';
 import { isTesting } from '@embroider/macros';
@@ -20,6 +19,8 @@ import type Owner from '@ember/owner';
 import type { Group } from '../services/ember-sortable-internal-state.ts';
 import type SortableGroupModifier from './sortable-group.ts';
 import type { TDirection } from './sortable-group.ts';
+
+const service = s.service ?? s.inject;
 
 const sortableItemWaiter = buildWaiter('sortable-item-waiter');
 
@@ -507,6 +508,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     DRAG_ACTIONS.forEach((event) => window.addEventListener(event, dragThrottled));
     END_ACTIONS.forEach((event) => window.addEventListener(event, drop));
 
+    if (!this.sortableGroup) return;
+
     this.sortableGroup.prepare();
     set(this, 'isDragging', true);
     this.onDragStart(this.model);
@@ -805,24 +808,40 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   _waitForTransition() {
     let waiterToken: unknown;
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       waiterToken = sortableItemWaiter.beginAsync();
     }
 
     let transitionPromise;
 
     if (this.isAnimated) {
-      const deferred = defer();
-      this.element.addEventListener('transitionend', deferred.resolve);
-      transitionPromise = deferred.promise.finally(() => {
-        this.element.removeEventListener('transitionend', deferred.resolve);
+      transitionPromise = new Promise<void>((resolve) => {
+        let resolved = false;
+
+        const handler = () => {
+          if (resolved) return;
+          resolved = true;
+          this.element.removeEventListener('transitionend', handler);
+          resolve();
+        };
+
+        this.element.addEventListener('transitionend', handler);
+
+        const duration = this.transitionDuration;
+
+        // When transition is ended before we have added the event (found this issue already with 125ms), the dragging is blocked, since fully page refresh
+        // To ensure that this would never happen, we need an later, to resolve the promise, when it wasn't resolved by transitionEnd
+        // The duration addition with 200ms is just a choice (taken from else case), its just a way to let transitionend a little bit more time
+        // Note: Unfortunately this issue is also not solvable with Element.getAnimations(), getAnimations brings no active animation at this point
+        later(() => {
+          handler();
+        }, duration + 200);
       });
     } else {
-      const duration = this.isAnimated ? this.transitionDuration : 200;
-      transitionPromise = new Promise((resolve) => later(resolve, duration));
+      transitionPromise = new Promise((resolve) => later(resolve, 200));
     }
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       transitionPromise = transitionPromise.finally(() => {
         sortableItemWaiter.endAsync(waiterToken);
       });
@@ -839,7 +858,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   _waitForAllTransitions() {
     let waiterToken: unknown;
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       waiterToken = sortableItemWaiter.beginAsync();
     }
 
@@ -848,8 +867,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     if (this.isAnimated) {
       const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
 
-      const animationPromises = animations.map((animation) => {
-        return animation.every((x) => x.finished);
+      const animationPromises = animations.flatMap((animationList) => {
+        return animationList.map((animation) => animation.finished);
       });
 
       transitionPromise = Promise.all(animationPromises);
@@ -858,7 +877,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       transitionPromise = new Promise((resolve) => later(resolve, duration));
     }
 
-    if (DEBUG) {
+    if (macroCondition(isDevelopingApp())) {
       transitionPromise = transitionPromise.finally(() => {
         sortableItemWaiter.endAsync(waiterToken);
       });

@@ -1,5 +1,56 @@
 # Changelog
 
+## Release (2025-08-13)
+
+* ember-sortable 5.3.3 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#638](https://github.com/adopted-ember-addons/ember-sortable/pull/638) Remove virtual dependencies from dependencies list ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#636](https://github.com/adopted-ember-addons/ember-sortable/pull/636) Use native `Promise` instead from `rsvp` ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 2
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+## Release (2025-08-05)
+
+* ember-sortable 5.3.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#634](https://github.com/adopted-ember-addons/ember-sortable/pull/634) Remove unnecessary condition check for `this.isAnimated` ([@mkszepp](https://github.com/mkszepp))
+  * [#633](https://github.com/adopted-ember-addons/ember-sortable/pull/633) `transitionend` will not fired, when transition has a short duration ([@mkszepp](https://github.com/mkszepp))
+
+#### :house: Internal
+* [#635](https://github.com/adopted-ember-addons/ember-sortable/pull/635) Update release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 2
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
+## Release (2025-05-10)
+
+ember-sortable 5.3.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#620](https://github.com/adopted-ember-addons/ember-sortable/pull/620) Remove unneeded peer dependency on ember-source ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
+## Release (2025-03-31)
+
+ember-sortable 5.3.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-sortable`
+  * [#616](https://github.com/adopted-ember-addons/ember-sortable/pull/616) Cleanup `@ember/service` deprecation ([@mkszepp](https://github.com/mkszepp))
+
+#### Committers: 1
+- Markus Sanin ([@mkszepp](https://github.com/mkszepp))
+
 ## Release (2025-01-13)
 
 ember-sortable 5.2.3 (patch)

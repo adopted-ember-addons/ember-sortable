@@ -2,8 +2,9 @@
   "solution": {
     "ember-sortable": {
       "impact": "patch",
-      "oldVersion": "5.2.2",
-      "newVersion": "5.2.3",
+      "oldVersion": "5.3.2",
+      "newVersion": "5.3.3",
+      "tagName": "latest",
       "constraints": [
         {
           "impact": "patch",
@@ -13,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2025-01-13)\n\nember-sortable 5.2.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#606](https://github.com/adopted-ember-addons/ember-sortable/pull/606) bug: Support when border-spacing returns a single value ([@cyril-sf](https://github.com/cyril-sf))\n\n#### Committers: 1\n- Cyril Fluck ([@cyril-sf](https://github.com/cyril-sf))\n"
+  "description": "## Release (2025-08-13)\n\n* ember-sortable 5.3.3 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#638](https://github.com/adopted-ember-addons/ember-sortable/pull/638) Remove virtual dependencies from dependencies list ([@NullVoxPopuli](https://github.com/NullVoxPopuli))\n  * [#636](https://github.com/adopted-ember-addons/ember-sortable/pull/636) Use native `Promise` instead from `rsvp` ([@mkszepp](https://github.com/mkszepp))\n\n#### Committers: 2\n- Markus Sanin ([@mkszepp](https://github.com/mkszepp))\n- [@NullVoxPopuli](https://github.com/NullVoxPopuli)\n"
 }
