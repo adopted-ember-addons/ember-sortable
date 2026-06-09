@@ -1,5 +1,21 @@
 # Changelog
 
+## Release (2026-06-09)
+
+* ember-sortable 5.3.4 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#672](https://github.com/adopted-ember-addons/ember-sortable/pull/672) Remove @embroider/macros ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+  * [#655](https://github.com/adopted-ember-addons/ember-sortable/pull/655) Drag start: be defensive around sortableGroup.prepare() ([@tniezurawski](https://github.com/tniezurawski))
+
+#### :house: Internal
+* [#673](https://github.com/adopted-ember-addons/ember-sortable/pull/673) update release-plan ([@NullVoxPopuli](https://github.com/NullVoxPopuli))
+
+#### Committers: 2
+- Tomek Nieżurawski ([@tniezurawski](https://github.com/tniezurawski))
+- [@NullVoxPopuli](https://github.com/NullVoxPopuli)
+
 ## Release (2025-08-13)
 
 * ember-sortable 5.3.3 (patch)
