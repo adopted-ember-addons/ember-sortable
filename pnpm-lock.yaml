@@ -17,9 +17,6 @@ importers:
       '@embroider/addon-shim':
         specifier: ^1.8.9
         version: 1.10.2
-      '@embroider/macros':
-        specifier: ^1.16.6
-        version: 1.19.4(@glint/template@1.7.3)
     devDependencies:
       '@babel/core':
         specifier: ^7.25.2
@@ -45,6 +42,9 @@ importers:
       '@embroider/addon-dev':
         specifier: ^5.0.0
         version: 5.0.0(@glint/template@1.7.3)(rollup@3.30.0)
+      '@embroider/macros':
+        specifier: ^1.16.6
+        version: 1.19.4(@glint/template@1.7.3)
       '@glimmer/component':
         specifier: ^1.1.2
         version: 1.1.2(@babel/core@7.28.5)
@@ -14888,6 +14888,5 @@ packages:
       '@embroider/macros': 1.19.4(@glint/template@1.7.3)
       ember-modifier: 4.2.2(@babel/core@7.28.5)
     transitivePeerDependencies:
-      - '@glint/template'
       - supports-color
     dev: false
