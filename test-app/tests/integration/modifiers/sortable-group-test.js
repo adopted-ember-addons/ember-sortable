@@ -125,6 +125,46 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     assert.dom(announcerSelector).hasText('Cancelling item repositioning');
   });
 
+  test('firstItemPosition recomputes after external container layout changes', async function (assert) {
+    this.items = ['One', 'Two'];
+
+    this.update = (items) => {
+      set(this, 'items', items);
+    };
+
+    await render(hbs`
+      <div id="test-wrapper" style="display:flex;justify-content:center;width:700px;">
+        <ol
+          id="test-list"
+          style="display:block;white-space:nowrap;list-style:none;padding:0;margin:0;width:320px;"
+          {{sortable-group direction="x" onChange=this.update groupName="external-changes"}}
+        >
+          {{#each this.items as |item|}}
+            <li style="display:inline-block;width:80px;" {{sortable-item model=item groupName="external-changes"}}>
+              {{item}}
+            </li>
+          {{/each}}
+        </ol>
+      </div>
+    `);
+
+    const sortableService = this.owner.lookup('service:ember-sortable-internal-state');
+    const group = sortableService.fetchGroup('external-changes').groupModifier;
+
+    const firstPositionBeforeResize = group.firstItemPosition.x;
+    find('#test-wrapper').style.width = '500px';
+
+    group.items.forEach((item) => {
+      item.reset();
+    });
+    await settled();
+
+    const firstItem = group.items[0];
+    const expectedPositionAfterResize = firstItem.x - firstItem.spacing;
+    assert.equal(group.firstItemPosition.x, expectedPositionAfterResize);
+    assert.notEqual(group.firstItemPosition.x, firstPositionBeforeResize);
+  });
+
   function contents(selector) {
     return find(selector)
       .textContent.replace(/⇕/g, '')

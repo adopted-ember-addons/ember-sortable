@@ -67,7 +67,50 @@
         {{~/each}}
       </ol>
     </section>
-    
+
+    <section class='horizontal-demo'>
+      <h3 class='flex align-items-center'>Horizontal Mutable
+        &nbsp; &nbsp;<button type='button' {{on 'click' this.addItemToHorizontal}}>Add Item</button>
+      </h3>
+
+      <div class='flex align-items-center full-width'>
+        <ol
+          class='flex-1' data-test-horizontal-demo-group
+          {{sortable-group
+            direction='x'
+            onChange=this.updateMutable
+            itemVisualClass=this.itemVisualClass
+            handleVisualClass=this.handleVisualClass
+            groupName='horizontal-add-1'
+          }}
+        >
+          {{#each this.mutableRecords as |item|~}}
+            <li data-test-horizontal-demo-handle tabindex='0' {{sortable-item model=item groupName='horizontal-add-1'}}>
+              <ItemPresenter @item={{item}} />
+              <button type='button' {{on 'click' (fn this.removeItemHorizontal item)}}>x</button>
+            </li>
+          {{~/each}}
+        </ol>
+        <ol
+          data-test-horizontal-demo-group
+          {{sortable-group
+            direction='x'
+            onChange=this.updateMutable
+            itemVisualClass=this.itemVisualClass
+            handleVisualClass=this.handleVisualClass
+            groupName='horizontal-add-2'
+          }}>
+          {{#each this.mutableRecords as |item|~}}
+            <li data-test-horizontal-demo-handle tabindex='0' {{sortable-item model=item groupName='horizontal-add-2'}}>
+              <ItemPresenter @item={{item}} />
+              <button type='button' {{on 'click' (fn this.removeItemHorizontal item)}}>x
+              </button>
+            </li>
+          {{~/each}}
+        </ol>
+      </div>
+    </section>
+
     <section class="grid-demo">
       <div class="row">
         <div class="col">
@@ -77,13 +120,13 @@
       <div class="row">
         <div class="col">
           <div class="row" data-test-grid-demo-group
-          {{sortable-group
-            direction='grid'
-            onChange=this.updateGrid
-            itemVisualClass=this.itemVisualClass
-            handleVisualClass=this.handleVisualClass
-            groupName='grid'
-          }}>
+            {{sortable-group
+              direction='grid'
+              onChange=this.updateGrid
+              itemVisualClass=this.itemVisualClass
+              handleVisualClass=this.handleVisualClass
+              groupName='grid'
+            }}>
             {{#each @model.itemsGrid as |item|~}}
               <div class="col-120" data-test-grid-demo-handle tabindex='0' {{sortable-item model=item groupName='grid'}}>
                 <div class="card">
