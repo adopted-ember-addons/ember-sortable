@@ -749,8 +749,11 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     if (direction === 'grid') {
       position = axis.x;
       lastTopOffset = axis.y;
-      const groupStyles = getComputedStyle(this.element);
-      groupPositionRight = position + parseFloat(groupStyles.width);
+
+      // `getBoundingClientRect` instead of `getComputedStyle(...).width`,
+      // which serializes to only 3 decimal places and can itself introduce
+      // rounding drift against item widths.
+      groupPositionRight = position + this.element.getBoundingClientRect().width;
     } else {
       position = axis[direction];
     }
