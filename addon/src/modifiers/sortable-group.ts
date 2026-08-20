@@ -25,6 +25,10 @@ import type { MoveDirection } from './sortable-item.ts';
 
 const service = s.service ?? s.inject;
 
+// Tolerance for the grid direction's wrap check, absorbing residual
+// subpixel float error so a row that truly fits doesn't wrap on noise.
+const GRID_WRAP_EPSILON = 1;
+
 const NO_MODEL: HandleVisualClass = {};
 
 export interface HandleVisualClass {
@@ -749,14 +753,17 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     if (direction === 'grid') {
       position = axis.x;
       lastTopOffset = axis.y;
-      const groupStyles = getComputedStyle(this.element);
-      groupPositionRight = position + parseFloat(groupStyles.width);
+
+      // `getBoundingClientRect` instead of `getComputedStyle(...).width`,
+      // which serializes to only 3 decimal places and can itself introduce
+      // rounding drift against item widths.
+      groupPositionRight = position + this.element.getBoundingClientRect().width;
     } else {
       position = axis[direction];
     }
 
     sortedItems.forEach((item) => {
-      if (direction === 'grid' && position + item.width > groupPositionRight) {
+      if (direction === 'grid' && position + item.width > groupPositionRight + GRID_WRAP_EPSILON) {
         lastTopOffset = lastTopOffset + maxPrevHeight;
         position = axis.x;
         maxPrevHeight = 0;

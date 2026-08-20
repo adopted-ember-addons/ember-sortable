@@ -980,10 +980,13 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    */
   get width(): number {
     const el = this.element;
-    let width = el.offsetWidth;
+
+    // `offsetWidth` rounds to the nearest integer; summing rounded widths
+    // across items can drift enough to break the grid direction's wrap check.
+    let width = el.getBoundingClientRect().width;
     const elStyles = getComputedStyle(el);
 
-    width += parseInt(elStyles.marginLeft) + parseInt(elStyles.marginRight); // equal to jQuery.outerWidth(true)
+    width += parseFloat(elStyles.marginLeft) + parseFloat(elStyles.marginRight); // equal to jQuery.outerWidth(true)
 
     width += getBorderSpacing(el).horizontal;
 
@@ -997,7 +1000,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    */
   get height(): number {
     const el = this.element;
-    let height = el.offsetHeight;
+
+    // See `width` above for why this avoids the rounded `offsetHeight`.
+    let height = el.getBoundingClientRect().height;
     const elStyles = getComputedStyle(el);
 
     // This is needed atm only for grid, to fix jumping on drag-start.

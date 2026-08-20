@@ -295,3 +295,19 @@
 .word-break {
   word-wrap: break-word;
 }
+
+/* Used by the grid-direction subpixel-rounding regression test. */
+.test-grid-tight-fit {
+  display: flex;
+  flex-wrap: wrap;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.test-grid-tight-fit-item {
+  box-sizing: content-box;
+  width: 100.6px;
+  margin: 0;
+}
