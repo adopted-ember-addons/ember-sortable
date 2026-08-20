@@ -70,4 +70,10 @@ export default class ModifierController extends Controller {
     set(this, 'model.itemsGrid', newOrder);
     set(this, 'model.dragged', draggedModel);
   }
+
+  @action
+  updateGridGap(newOrder, draggedModel) {
+    set(this, 'model.itemsGridGap', newOrder);
+    set(this, 'model.dragged', draggedModel);
+  }
 }

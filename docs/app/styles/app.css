@@ -138,6 +138,32 @@
   z-index: 10;
 }
 
+.grid-gap-demo ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.grid-gap-demo .sortable-item {
+  width: 120px;
+  height: 120px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: move;
+  background-color: hsl(197deg 100% 45%);
+}
+
+.grid-gap-demo .sortable-item.is-dragging {
+  background: hsl(197deg 100% 35%);
+}
+
+.grid-gap-demo .sortable-item.is-dropping {
+  background: hsl(197deg 100% 40%);
+  z-index: 10;
+}
+
 .table-demo table {
   position: relative;
   border-collapse: separate;
