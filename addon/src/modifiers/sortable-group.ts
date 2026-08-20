@@ -12,6 +12,7 @@ import {
   isUpArrowKey,
 } from '../utils/keyboard.ts';
 import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant.ts';
+import { getGap } from '../utils/css-calculation.ts';
 import { defaultA11yAnnouncementConfig, type A11yAnnouncementConfig } from '../utils/defaults.ts';
 import { next, schedule, scheduleOnce, later } from '@ember/runloop';
 import * as s from '@ember/service';
@@ -740,6 +741,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     }
 
     const direction = this.direction;
+    const gap = getGap(this.element);
 
     let position = 0;
     let groupPositionRight = 0;
@@ -778,16 +780,16 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
 
       if (direction === 'grid') {
         if (item.height > maxPrevHeight) {
-          maxPrevHeight = item.height;
+          maxPrevHeight = item.height + gap.vertical;
         }
 
-        position += item.width;
+        position += item.width + gap.horizontal;
       }
       if (direction === 'x') {
-        position += item.width;
+        position += item.width + gap.horizontal;
       }
       if (direction === 'y') {
-        position += item.height;
+        position += item.height + gap.vertical;
       }
     });
   }
