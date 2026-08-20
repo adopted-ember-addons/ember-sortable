@@ -1004,15 +1004,18 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     // See `width` above for why this avoids the rounded `offsetHeight`.
     let height = el.getBoundingClientRect().height;
     const elStyles = getComputedStyle(el);
+    const marginTop = parseFloat(elStyles.marginTop);
+    const marginBottom = parseFloat(elStyles.marginBottom);
 
-    // This is needed atm only for grid, to fix jumping on drag-start.
-    // In test-app it looks like there is a side-effect when we activate also for direction vertical.
-    // If any user will anytime report a jumping in vertical direction, we should activate for every direction and fix our test-app
-    if (this.direction === 'grid') {
-      height += parseFloat(elStyles.marginTop);
+    // Adjacent margins only collapse (to their max) in normal block flow;
+    // flex/grid parents (needed for `gap` support) keep both in full.
+    const parentDisplay = el.parentElement && getComputedStyle(el.parentElement).display;
+
+    if (parentDisplay === 'block') {
+      height += Math.max(marginTop, marginBottom);
+    } else {
+      height += marginTop + marginBottom;
     }
-
-    height += parseFloat(elStyles.marginBottom);
 
     height += getBorderSpacing(el).vertical;
 

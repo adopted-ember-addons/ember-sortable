@@ -69,7 +69,7 @@
     </section>
     
     <section class='grid-demo'>
-      <h3>Grid</h3>
+      <h3>Grid (spacing via margin)</h3>
 
       <ol
         data-test-grid-demo-group
@@ -83,6 +83,27 @@
       >
         {{#each @model.itemsGrid as |item|~}}
           <li data-test-grid-demo-handle tabindex='0' {{sortable-item model=item groupName='grid'}}>
+            <ItemPresenter @item={{item}} />
+          </li>
+        {{~/each}}
+      </ol>
+    </section>
+
+    <section class='grid-gap-demo'>
+      <h3>Grid (spacing via `gap`, no margin)</h3>
+
+      <ol
+        data-test-grid-gap-demo-group
+        {{sortable-group
+          direction='grid'
+          onChange=this.updateGridGap
+          itemVisualClass=this.itemVisualClass
+          handleVisualClass=this.handleVisualClass
+          groupName='grid-gap'
+        }}
+      >
+        {{#each @model.itemsGridGap as |item|~}}
+          <li data-test-grid-gap-demo-handle tabindex='0' {{sortable-item model=item groupName='grid-gap'}}>
             <ItemPresenter @item={{item}} />
           </li>
         {{~/each}}
