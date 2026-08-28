@@ -37,7 +37,10 @@ module('Integration | Modifier | sortable-item', function (hooks) {
     item.sortableGroup.sortedItems.forEach((sortedItem) => {
       sortedItem.element.style.transition = 'transform 100ms';
     });
-    assert.true(item.isAnimated, 'the item is animated, so the getAnimations() path runs');
+    assert.true(
+      item.isAnimated,
+      'the item is animated, so the getAnimations() path runs',
+    );
 
     const stubAnimations = (finished) => {
       item.sortableGroup.sortedItems.forEach((sortedItem) => {
@@ -45,13 +48,23 @@ module('Integration | Modifier | sortable-item', function (hooks) {
       });
     };
 
-    stubAnimations(Promise.reject(new DOMException('The user aborted a request', 'AbortError')));
+    stubAnimations(
+      Promise.reject(
+        new DOMException('The user aborted a request', 'AbortError'),
+      ),
+    );
 
     try {
       await item._waitForAllTransitions();
-      assert.ok(true, 'the drop resolves instead of rejecting on a cancelled animation');
+      assert.ok(
+        true,
+        'the drop resolves instead of rejecting on a cancelled animation',
+      );
     } catch {
-      assert.ok(false, 'the drop should not reject when an animation is cancelled');
+      assert.ok(
+        false,
+        'the drop should not reject when an animation is cancelled',
+      );
     }
 
     stubAnimations(Promise.reject(new Error('boom')));
