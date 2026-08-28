@@ -868,7 +868,19 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
       const animations = this.sortableGroup.sortedItems.map((x) => x.element.getAnimations());
 
       const animationPromises = animations.flatMap((animationList) => {
-        return animationList.map((animation) => animation.finished);
+        return animationList.map((animation) =>
+          // A cancelled animation (e.g. one interrupted by the re-render that
+          // happens mid-drop) rejects `finished` with an AbortError. Treat it
+          // as finished so the drop still completes, instead of leaving this
+          // promise chain unhandled and blocking all subsequent drag/drop.
+          // Re-throw anything else. See #641.
+          animation.finished.catch((error: unknown) => {
+            if (error instanceof DOMException && error.name === 'AbortError') {
+              return;
+            }
+            throw error;
+          }),
+        );
       });
 
       transitionPromise = Promise.all(animationPromises);
