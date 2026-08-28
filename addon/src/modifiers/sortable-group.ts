@@ -772,11 +772,13 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
       }
 
       if (!isDestroyed(item) && !item.isDragging) {
+        // Round only at assignment to match offsetLeft/offsetTop's integer
+        // rounding, so undragged items don't jitter by a fractional pixel.
         if (direction === 'grid') {
-          item.x = position;
-          item.y = lastTopOffset;
+          item.x = Math.round(position);
+          item.y = Math.round(lastTopOffset);
         } else {
-          set(item, direction, position);
+          set(item, direction, Math.round(position));
         }
       }
 
