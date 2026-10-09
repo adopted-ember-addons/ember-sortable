@@ -6,7 +6,6 @@ import {
   findAll,
   render,
   triggerKeyEvent,
-  waitUntil,
 } from '@ember/test-helpers';
 import { set } from '@ember/object';
 import { drag, reorder } from 'ember-sortable/test-support';
@@ -133,33 +132,29 @@ module('Integration | Modifier | sortable-group', function (hooks) {
       </ol>
     `);
 
-    triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
+    await triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
 
-    await announcerHasText();
     assert
       .dom(announcerSelector)
       .hasText(
         'item at position, 1 of 3, is activated to be repositioned.Press up and down keys to change position, Space to confirm new position, Escape to cancel.',
       );
 
-    triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 40) /* DOWN */;
+    await triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 40) /* DOWN */;
 
-    await announcerHasText();
     assert
       .dom(announcerSelector)
       .hasText(
         'item is moved to position, 2 of 3. Press Space to confirm new position, Escape to cancel.',
       );
 
-    triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
+    await triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
 
-    await announcerHasText();
     assert.dom(announcerSelector).hasText('item is successfully repositioned.');
 
     await triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 32) /* SPACE */;
-    triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 27) /* ESC */;
+    await triggerKeyEvent('[data-test-handle=Uno]', 'keydown', 27) /* ESC */;
 
-    await announcerHasText();
     assert.dom(announcerSelector).hasText('Cancelling item repositioning');
   });
 
@@ -172,13 +167,4 @@ module('Integration | Modifier | sortable-group', function (hooks) {
   }
 
   let announcerSelector = '#test-list + .visually-hidden';
-
-  let announcerHasText = async function () {
-    return await waitUntil(
-      () => {
-        return find(announcerSelector).textContent.includes(' ');
-      },
-      { timeout: 2000 },
-    );
-  };
 });

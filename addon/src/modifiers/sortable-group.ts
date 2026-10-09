@@ -14,7 +14,7 @@ import {
 import { ANNOUNCEMENT_ACTION_TYPES } from '../utils/constant.ts';
 import { getGap } from '../utils/css-calculation.ts';
 import { defaultA11yAnnouncementConfig, type A11yAnnouncementConfig } from '../utils/defaults.ts';
-import { next, schedule, scheduleOnce, later } from '@ember/runloop';
+import { next, schedule, scheduleOnce } from '@ember/runloop';
 import * as s from '@ember/service';
 import { registerDestructor, isDestroyed } from '@ember/destroyable';
 import type { ArgsFor, PositionalArgs, NamedArgs } from 'ember-modifier';
@@ -446,10 +446,13 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     };
 
     const message = a11yAnnouncementConfig[type](config);
+    // Cancel the reset of a previous message so it can't clear this one early.
+    clearTimeout(this._announcerResetTimer);
     announcer.textContent = message;
 
-    // Reset the message after the message is announced.
-    later(() => {
+    // Reset the message after the message is announced. A native timer is used
+    // so the reset doesn't hold up `settled()` in tests.
+    this._announcerResetTimer = setTimeout(() => {
       announcer.textContent = '';
     }, 1000);
   }
@@ -625,6 +628,11 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
    * @type {Element}
    */
   announcer: Element | null = null;
+
+  /**
+   * Pending timer that resets the announcer message
+   */
+  _announcerResetTimer?: ReturnType<typeof setTimeout>;
 
   /**
    Position for the first item.
@@ -1037,7 +1045,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
  * @param {SortableGroupModifier} instance
  */
 function cleanup<T>(instance: SortableGroupModifier<T>) {
-  // todo cleanup the announcer
+  clearTimeout(instance._announcerResetTimer);
   if (instance.announcer?.parentNode) {
     instance.announcer.parentNode.removeChild(instance.announcer);
   }
