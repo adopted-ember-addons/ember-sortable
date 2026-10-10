@@ -3,6 +3,20 @@
 const getChannelURL = require('ember-source-channel-url');
 const { embroiderSafe, embroiderOptimized } = require('@embroider/test-setup');
 
+// Older versions of these packages do not support ember-source 7.
+const emberSevenDependencies = {
+  '@ember/test-helpers': '^5.7.0',
+  '@ember/test-waiters': '^4.1.2',
+  '@embroider/macros': '^1.21.3',
+  '@glimmer/component': '^2.1.1',
+  'ember-auto-import': '^2.13.1',
+  'ember-cli': '~7.3.0',
+  'ember-cli-babel': '^8.3.2',
+  'ember-cli-htmlbars': '^7.0.1',
+  'ember-qunit': '^9.2.0',
+  'tracked-built-ins': '^4.1.2',
+};
+
 module.exports = async function () {
   return {
     usePnpm: true,
@@ -91,6 +105,7 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('release'),
+            ...emberSevenDependencies,
           },
         },
       },
@@ -99,6 +114,7 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('beta'),
+            ...emberSevenDependencies,
           },
         },
       },
@@ -107,6 +123,7 @@ module.exports = async function () {
         npm: {
           devDependencies: {
             'ember-source': await getChannelURL('canary'),
+            ...emberSevenDependencies,
           },
         },
       },

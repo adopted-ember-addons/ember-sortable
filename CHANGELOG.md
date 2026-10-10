@@ -1,5 +1,23 @@
 # Changelog
 
+## Release (2026-08-28)
+
+* ember-sortable 5.4.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-sortable`
+  * [#679](https://github.com/adopted-ember-addons/ember-sortable/pull/679) feat: support flex/grid gap between sortable items ([@BoussonKarel](https://github.com/BoussonKarel))
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#677](https://github.com/adopted-ember-addons/ember-sortable/pull/677) fix: don't abort drop when a drop animation is cancelled (#641) ([@samridhivig](https://github.com/samridhivig))
+  * [#681](https://github.com/adopted-ember-addons/ember-sortable/pull/681) fix: round position only at assignment to avoid subpixel item jitter ([@BoussonKarel](https://github.com/BoussonKarel))
+  * [#678](https://github.com/adopted-ember-addons/ember-sortable/pull/678) fix: use subpixel rect widths in grid-direction position math ([@BoussonKarel](https://github.com/BoussonKarel))
+
+#### Committers: 2
+- Samridhi Vig ([@samridhivig](https://github.com/samridhivig))
+- [@BoussonKarel](https://github.com/BoussonKarel)
+
 ## Release (2026-06-09)
 
 * ember-sortable 5.3.4 (patch)
