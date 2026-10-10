@@ -1,15 +1,11 @@
 {
   "solution": {
     "ember-sortable": {
-      "impact": "minor",
-      "oldVersion": "5.3.4",
-      "newVersion": "5.4.0",
+      "impact": "patch",
+      "oldVersion": "5.4.0",
+      "newVersion": "5.4.1",
       "tagName": "latest",
       "constraints": [
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
@@ -18,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2026-08-28)\n\n* ember-sortable 5.4.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-sortable`\n  * [#679](https://github.com/adopted-ember-addons/ember-sortable/pull/679) feat: support flex/grid gap between sortable items ([@BoussonKarel](https://github.com/BoussonKarel))\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#677](https://github.com/adopted-ember-addons/ember-sortable/pull/677) fix: don't abort drop when a drop animation is cancelled (#641) ([@samridhivig](https://github.com/samridhivig))\n  * [#681](https://github.com/adopted-ember-addons/ember-sortable/pull/681) fix: round position only at assignment to avoid subpixel item jitter ([@BoussonKarel](https://github.com/BoussonKarel))\n  * [#678](https://github.com/adopted-ember-addons/ember-sortable/pull/678) fix: use subpixel rect widths in grid-direction position math ([@BoussonKarel](https://github.com/BoussonKarel))\n\n#### Committers: 2\n- Samridhi Vig ([@samridhivig](https://github.com/samridhivig))\n- [@BoussonKarel](https://github.com/BoussonKarel)\n"
+  "description": "## Release (2026-10-10)\n\n* ember-sortable 5.4.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#684](https://github.com/adopted-ember-addons/ember-sortable/pull/684) fix: don't hold up settled() when resetting the a11y announcer ([@BoussonKarel](https://github.com/BoussonKarel))\n\n#### :house: Internal\n* [#685](https://github.com/adopted-ember-addons/ember-sortable/pull/685) Fix the Ember 7 try scenarios in CI ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))\n\n#### Committers: 2\n- @NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))\n- [@BoussonKarel](https://github.com/BoussonKarel)\n"
 }

@@ -1,5 +1,20 @@
 # Changelog
 
+## Release (2026-10-10)
+
+* ember-sortable 5.4.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#684](https://github.com/adopted-ember-addons/ember-sortable/pull/684) fix: don't hold up settled() when resetting the a11y announcer ([@BoussonKarel](https://github.com/BoussonKarel))
+
+#### :house: Internal
+* [#685](https://github.com/adopted-ember-addons/ember-sortable/pull/685) Fix the Ember 7 try scenarios in CI ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+
+#### Committers: 2
+- @NullVoxPopuli's reduced-access machine account for AI usage ([@NullVoxPopuli-ai-agent](https://github.com/NullVoxPopuli-ai-agent))
+- [@BoussonKarel](https://github.com/BoussonKarel)
+
 ## Release (2026-08-28)
 
 * ember-sortable 5.4.0 (minor)
