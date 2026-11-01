@@ -1,6 +1,5 @@
 /* eslint-disable ember/no-incorrect-calls-with-inline-anonymous-functions */
 import Modifier from 'ember-modifier';
-import { set } from '@ember/object';
 import {
   isDownArrowKey,
   isEnterKey,
@@ -247,8 +246,8 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
         nextItem.y = valueY;
       } else {
         value = item[direction];
-        set(item, direction, nextItem[direction] + (nextItem[dimension] - item[dimension]));
-        set(nextItem, direction, value);
+        item[direction] = nextItem[direction] + (nextItem[dimension] - item[dimension]);
+        nextItem[direction] = value;
       }
       // UP or LEFT
     } else {
@@ -261,8 +260,8 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
         item.y = valueY;
       } else {
         value = nextItem[direction];
-        set(nextItem, direction, item[direction] + (item[dimension] - nextItem[dimension]));
-        set(item, direction, value);
+        nextItem[direction] = item[direction] + (item[dimension] - nextItem[dimension]);
+        item[direction] = value;
       }
     }
   }
@@ -398,7 +397,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
     this.moves = [];
     this._disableKeyboardReorderMode();
     this._tearDownA11yApplicationContainer();
-    set(_selectedItem, 'wasDropped', true);
+    _selectedItem.wasDropped = true;
     this.commit();
     this._updateItemVisualIndicators(_selectedItem, false);
     this._updateHandleVisualIndicators(_selectedItem, false);
@@ -775,7 +774,7 @@ export default class SortableGroupModifier<T> extends Modifier<SortableGroupModi
           item.x = Math.round(position);
           item.y = Math.round(lastTopOffset);
         } else {
-          set(item, direction, Math.round(position));
+          item[direction] = Math.round(position);
         }
       }
 
