@@ -1,6 +1,5 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Modifier from 'ember-modifier';
-import { action, set } from '@ember/object';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant.ts';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { macroCondition, isDevelopingApp } from '@embroider/macros';
@@ -345,8 +344,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   /**
    @method mouseDown
    */
-  @action
-  mouseDown(event: MouseEvent) {
+  mouseDown = (event: MouseEvent) => {
     if (event.which !== 1) {
       return;
     }
@@ -355,10 +353,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     }
 
     this._primeDrag(event);
-  }
+  };
 
-  @action
-  keyDown(event: Event) {
+  keyDown = (event: Event) => {
     if (this.isDisabled) {
       return;
     }
@@ -371,15 +368,14 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     } else {
       this.sortableGroup.deactivateKeyDown();
     }
-  }
+  };
 
   /**
    @method touchStart
    */
-  @action
-  touchStart(event: TouchEvent) {
+  touchStart = (event: TouchEvent) => {
     this._primeDrag(event);
-  }
+  };
 
   /**
    @method freeze
@@ -511,7 +507,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     if (!this.sortableGroup) return;
 
     this.sortableGroup.prepare();
-    set(this, 'isDragging', true);
+    this.isDragging = true;
     this.onDragStart(this.model);
     this._scrollOnEdges(drag);
   }
@@ -767,8 +763,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     // Calling this getter here, makes no difference for other directions
     const sortedItems = this.sortableGroup.sortedItems;
 
-    set(this, 'isDragging', false);
-    set(this, 'isDropping', true);
+    this.isDragging = false;
+    this.isDropping = true;
 
     this.sortableGroup.update(sortedItems);
 
@@ -904,8 +900,8 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
    */
   _complete(): void {
     this.onDragStop(this.model);
-    set(this, 'isDropping', false);
-    set(this, 'wasDropped', true);
+    this.isDropping = false;
+    this.wasDropped = true;
     this.sortableGroup.commit();
   }
 
