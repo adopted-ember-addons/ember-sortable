@@ -166,6 +166,7 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     };
 
     await render(hbs`
+      {{! template-lint-disable no-inline-styles }}
       <div id="test-wrapper" style="display:flex;justify-content:center;width:700px;">
         <ol
           id="test-list"
@@ -181,7 +182,9 @@ module('Integration | Modifier | sortable-group', function (hooks) {
       </div>
     `);
 
-    const sortableService = this.owner.lookup('service:ember-sortable-internal-state');
+    const sortableService = this.owner.lookup(
+      'service:ember-sortable-internal-state',
+    );
     const group = sortableService.fetchGroup('external-changes').groupModifier;
 
     const firstPositionBeforeResize = group.firstItemPosition.x;
