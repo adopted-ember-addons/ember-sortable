@@ -1,6 +1,6 @@
 /* eslint-disable ember/no-computed-properties-in-native-classes */
 import Modifier from 'ember-modifier';
-import { action, set } from '@ember/object';
+import { set } from '@ember/object';
 import { DRAG_ACTIONS, ELEMENT_CLICK_ACTION, END_ACTIONS } from '../utils/constant.ts';
 import { run, throttle, bind, scheduleOnce, later } from '@ember/runloop';
 import { macroCondition, isDevelopingApp } from '@embroider/macros';
@@ -345,8 +345,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
   /**
    @method mouseDown
    */
-  @action
-  mouseDown(event: MouseEvent) {
+  mouseDown = (event: MouseEvent) => {
     if (event.which !== 1) {
       return;
     }
@@ -355,10 +354,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     }
 
     this._primeDrag(event);
-  }
+  };
 
-  @action
-  keyDown(event: Event) {
+  keyDown = (event: Event) => {
     if (this.isDisabled) {
       return;
     }
@@ -371,15 +369,14 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     } else {
       this.sortableGroup.deactivateKeyDown();
     }
-  }
+  };
 
   /**
    @method touchStart
    */
-  @action
-  touchStart(event: TouchEvent) {
+  touchStart = (event: TouchEvent) => {
     this._primeDrag(event);
-  }
+  };
 
   /**
    @method freeze
@@ -594,7 +591,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
         delta = Math.min(Math.max(delta, -1 * speed), speed);
 
         delta = scrollContainer[scrollKey](scroll + delta) - scroll;
+      }
 
+      if (delta !== 0) {
         const event = createFakeEvent();
         if (event) {
           if (scrollContainer.isWindow) {
