@@ -1,5 +1,25 @@
 # Changelog
 
+## Release (2026-11-09)
+
+* ember-sortable 5.5.0 (minor)
+
+#### :rocket: Enhancement
+* `ember-sortable`
+  * [#691](https://github.com/adopted-ember-addons/ember-sortable/pull/691) Assign the item state directly instead of with set() ([@johanrd](https://github.com/johanrd))
+  * [#690](https://github.com/adopted-ember-addons/ember-sortable/pull/690) Declare the modifiers' actions as arrow functions ([@johanrd](https://github.com/johanrd))
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#693](https://github.com/adopted-ember-addons/ember-sortable/pull/693) Only drag on auto scroll when the container scrolled ([@johanrd](https://github.com/johanrd))
+  * [#688](https://github.com/adopted-ember-addons/ember-sortable/pull/688) Recompute firstItemPosition, and drop the last @computed ([@johanrd](https://github.com/johanrd))
+
+#### :memo: Documentation
+* [#689](https://github.com/adopted-ember-addons/ember-sortable/pull/689) Use a plain array in the autoscroll demo ([@johanrd](https://github.com/johanrd))
+
+#### Committers: 1
+- Johan Røed ([@johanrd](https://github.com/johanrd))
+
 ## Release (2026-10-10)
 
 * ember-sortable 5.4.1 (patch)
