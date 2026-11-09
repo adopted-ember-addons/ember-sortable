@@ -590,7 +590,9 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
         delta = Math.min(Math.max(delta, -1 * speed), speed);
 
         delta = scrollContainer[scrollKey](scroll + delta) - scroll;
+      }
 
+      if (delta !== 0) {
         const event = createFakeEvent();
         if (event) {
           if (scrollContainer.isWindow) {
