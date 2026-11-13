@@ -199,6 +199,36 @@ module('Integration | Modifier | sortable-group', function (hooks) {
     assert.notEqual(group.firstItemPosition.x, firstPositionBeforeResize);
   });
 
+  // `drag` derives a scale from the integer `clientHeight` and the fractional
+  // bounding rect. With a fractional item height and no transform, that scale
+  // comes out below 1 and shrinks every drag, so a long `reorder` used to stop
+  // short of the first position.
+  test('reorder reaches the first position when item heights are fractional', async function (assert) {
+    // The default test container is scaled by 0.5, which hides the rounding.
+    const container = document.getElementById('ember-testing-container');
+    container.classList.add('ember-testing-container-full-screen');
+
+    try {
+      this.items = ['Uno', 'Dos', 'Tres'];
+      this.update = (items) => set(this, 'items', items);
+
+      await render(hbs`
+        <ol id="test-list" {{sortable-group onChange=this.update}}>
+          {{#each this.items as |item|}}
+            <li style="height: 21.375px; margin: 0 0 60px; padding: 0;" {{sortable-item model=item}}>{{item}}</li>
+          {{/each}}
+        </ol>
+      `);
+
+      let order = findAll('li');
+
+      await reorder('mouse', 'li', order[2], order[1], order[0]);
+      assert.equal(contents('#test-list'), 'Tres Dos Uno');
+    } finally {
+      container.classList.remove('ember-testing-container-full-screen');
+    }
+  });
+
   function contents(selector) {
     return find(selector)
       .textContent.replace(/⇕/g, '')
