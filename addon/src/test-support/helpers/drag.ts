@@ -81,7 +81,21 @@ export async function drag(
     (itemElement as HTMLElement).offsetHeight ||
     (itemElement.parentNode as HTMLElement | null)?.offsetHeight ||
     0;
-  const scale = clientHeight / (rect.bottom - rect.top);
+  // clientHeight is an integer but the rect is fractional, so an unscaled
+  // element would get a scale below 1 and the drag would stop short. Prefer the
+  // fractional layout height, and fall back to clientHeight when the computed
+  // height is `auto`.
+  const computed = getComputedStyle(itemElement);
+  let layoutHeight = parseFloat(computed.height);
+  if (computed.boxSizing === 'content-box') {
+    layoutHeight +=
+      parseFloat(computed.paddingTop) +
+      parseFloat(computed.paddingBottom) +
+      parseFloat(computed.borderTopWidth) +
+      parseFloat(computed.borderBottomWidth);
+  }
+  const scale =
+    (Number.isFinite(layoutHeight) && layoutHeight > 0 ? layoutHeight : clientHeight) / (rect.bottom - rect.top);
   const halfwayX = itemOffset.left + (dx * scale) / 2;
   const halfwayY = itemOffset.top + (dy * scale) / 2;
   const targetX = itemOffset.left + dx * scale;
