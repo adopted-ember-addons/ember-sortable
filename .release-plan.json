@@ -1,15 +1,11 @@
 {
   "solution": {
     "ember-sortable": {
-      "impact": "minor",
-      "oldVersion": "5.4.1",
-      "newVersion": "5.5.0",
+      "impact": "patch",
+      "oldVersion": "5.5.0",
+      "newVersion": "5.5.1",
       "tagName": "latest",
       "constraints": [
-        {
-          "impact": "minor",
-          "reason": "Appears in changelog section :rocket: Enhancement"
-        },
         {
           "impact": "patch",
           "reason": "Appears in changelog section :bug: Bug Fix"
@@ -18,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2026-11-09)\n\n* ember-sortable 5.5.0 (minor)\n\n#### :rocket: Enhancement\n* `ember-sortable`\n  * [#691](https://github.com/adopted-ember-addons/ember-sortable/pull/691) Assign the item state directly instead of with set() ([@johanrd](https://github.com/johanrd))\n  * [#690](https://github.com/adopted-ember-addons/ember-sortable/pull/690) Declare the modifiers' actions as arrow functions ([@johanrd](https://github.com/johanrd))\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#693](https://github.com/adopted-ember-addons/ember-sortable/pull/693) Only drag on auto scroll when the container scrolled ([@johanrd](https://github.com/johanrd))\n  * [#688](https://github.com/adopted-ember-addons/ember-sortable/pull/688) Recompute firstItemPosition, and drop the last @computed ([@johanrd](https://github.com/johanrd))\n\n#### :memo: Documentation\n* [#689](https://github.com/adopted-ember-addons/ember-sortable/pull/689) Use a plain array in the autoscroll demo ([@johanrd](https://github.com/johanrd))\n\n#### Committers: 1\n- Johan Røed ([@johanrd](https://github.com/johanrd))\n"
+  "description": "## Release (2026-11-16)\n\n* ember-sortable 5.5.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#695](https://github.com/adopted-ember-addons/ember-sortable/pull/695) Fix drag test helper scale when the element has no transform ([@gitKrystan](https://github.com/gitKrystan))\n\n#### Committers: 1\n- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))\n"
 }
