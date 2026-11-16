@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-11-16)
+
+* ember-sortable 5.5.1 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#695](https://github.com/adopted-ember-addons/ember-sortable/pull/695) Fix drag test helper scale when the element has no transform ([@gitKrystan](https://github.com/gitKrystan))
+
+#### Committers: 1
+- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+
 ## Release (2026-11-09)
 
 * ember-sortable 5.5.0 (minor)
