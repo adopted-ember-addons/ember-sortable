@@ -6,7 +6,7 @@ import { macroCondition, isDevelopingApp } from '@embroider/macros';
 import { getX, getY } from '../utils/coordinate.ts';
 import ScrollContainer from '../system/scroll-container.ts';
 import scrollParent from '../system/scroll-parent.ts';
-import { getBorderSpacing } from '../utils/css-calculation.ts';
+import { getBorderSpacing, getLayoutSize } from '../utils/css-calculation.ts';
 import { buildWaiter } from '@ember/test-waiters';
 import * as s from '@ember/service';
 import { assert, deprecate } from '@ember/debug';
@@ -993,7 +993,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
 
     // `offsetWidth` rounds to the nearest integer; summing rounded widths
     // across items can drift enough to break the grid direction's wrap check.
-    let width = el.getBoundingClientRect().width;
+    let width = getLayoutSize(el, 'width');
     const elStyles = getComputedStyle(el);
 
     width += parseFloat(elStyles.marginLeft) + parseFloat(elStyles.marginRight); // equal to jQuery.outerWidth(true)
@@ -1012,7 +1012,7 @@ export default class SortableItemModifier<T> extends Modifier<SortableItemModifi
     const el = this.element;
 
     // See `width` above for why this avoids the rounded `offsetHeight`.
-    let height = el.getBoundingClientRect().height;
+    let height = getLayoutSize(el, 'height');
     const elStyles = getComputedStyle(el);
     const marginTop = parseFloat(elStyles.marginTop);
     const marginBottom = parseFloat(elStyles.marginBottom);
