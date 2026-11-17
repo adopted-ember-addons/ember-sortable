@@ -98,6 +98,38 @@ module('Integration | Modifier | sortable-item', function (hooks) {
     assert.equal(contents('#test-list'), 'Uno');
   });
 
+  // `getBoundingClientRect()` is scaled by a CSS transform on an ancestor, but
+  // `offsetTop`, `offsetLeft` and the margins are not, so item sizes have to
+  // come from layout pixels.
+  test('Item size ignores a CSS transform on an ancestor', async function (assert) {
+    this.items = ['Uno', 'Dos'];
+
+    await render(hbs`
+      <div style="transform: scale(0.5); transform-origin: top left;">
+        <ol id="test-list" style="width: 100px; margin: 0; padding: 0; list-style: none;" {{sortable-group groupName="scaled"}}>
+          {{#each this.items as |item|}}
+            <li
+              data-test-item
+              style="box-sizing: border-box; width: 60.5px; height: 20.5px; margin: 0 0 4px; padding: 0;"
+              {{sortable-item groupName="scaled" model=item}}
+            >{{item}}</li>
+          {{/each}}
+        </ol>
+      </div>
+    `);
+
+    const item = this.owner
+      .lookup('service:ember-sortable-internal-state')
+      .fetchGroup('scaled').items[0];
+
+    assert.strictEqual(
+      item.height,
+      24.5,
+      'height is the layout height plus the bottom margin',
+    );
+    assert.strictEqual(item.width, 60.5, 'width is the layout width');
+  });
+
   function contents(selector) {
     return find(selector)
       .textContent.replace(/⇕/g, '')
