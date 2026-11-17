@@ -2,8 +2,8 @@
   "solution": {
     "ember-sortable": {
       "impact": "patch",
-      "oldVersion": "5.5.0",
-      "newVersion": "5.5.1",
+      "oldVersion": "5.5.1",
+      "newVersion": "5.5.2",
       "tagName": "latest",
       "constraints": [
         {
@@ -14,5 +14,5 @@
       "pkgJSONPath": "./addon/package.json"
     }
   },
-  "description": "## Release (2026-11-16)\n\n* ember-sortable 5.5.1 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#695](https://github.com/adopted-ember-addons/ember-sortable/pull/695) Fix drag test helper scale when the element has no transform ([@gitKrystan](https://github.com/gitKrystan))\n\n#### Committers: 1\n- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))\n"
+  "description": "## Release (2026-11-17)\n\n* ember-sortable 5.5.2 (patch)\n\n#### :bug: Bug Fix\n* `ember-sortable`\n  * [#698](https://github.com/adopted-ember-addons/ember-sortable/pull/698) Read sortable-item size from layout pixels, not the transformed rect ([@gitKrystan](https://github.com/gitKrystan))\n\n#### Committers: 1\n- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))\n"
 }
