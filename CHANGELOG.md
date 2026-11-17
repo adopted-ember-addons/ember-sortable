@@ -1,5 +1,16 @@
 # Changelog
 
+## Release (2026-11-17)
+
+* ember-sortable 5.5.2 (patch)
+
+#### :bug: Bug Fix
+* `ember-sortable`
+  * [#698](https://github.com/adopted-ember-addons/ember-sortable/pull/698) Read sortable-item size from layout pixels, not the transformed rect ([@gitKrystan](https://github.com/gitKrystan))
+
+#### Committers: 1
+- Krystan HuffMenne ([@gitKrystan](https://github.com/gitKrystan))
+
 ## Release (2026-11-16)
 
 * ember-sortable 5.5.1 (patch)
