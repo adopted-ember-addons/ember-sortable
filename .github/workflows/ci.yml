@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: wyvox/action-setup-pnpm@v3
+      - uses: wyvox/action-setup-pnpm@v4
 
   test:
     name: "Tests"
@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: wyvox/action-setup-pnpm@v3
+      - uses: wyvox/action-setup-pnpm@v4
       - run: pnpm test
 
   lint:
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: wyvox/action-setup-pnpm@v3
+      - uses: wyvox/action-setup-pnpm@v4
       - name: Lint
         run: pnpm lint
 
@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: wyvox/action-setup-pnpm@v3
+      - uses: wyvox/action-setup-pnpm@v4
         with:
           args: '--no-lockfile'
       - run: pnpm test
@@ -79,7 +79,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: wyvox/action-setup-pnpm@v3
+      - uses: wyvox/action-setup-pnpm@v4
       - name: Run Tests
         run: |
           pnpm _syncPnpm
